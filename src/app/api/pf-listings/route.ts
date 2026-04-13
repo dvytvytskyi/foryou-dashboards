@@ -77,7 +77,6 @@ export async function GET() {
     let totalCrmMeetings = bqRows[0]?.total_meetings || 0;
     let totalCrmDeals = bqRows[0]?.total_deals || 0;
     let totalCrmRevenue = bqRows[0]?.total_revenue || 0;
-    let totalCrmPotential = bqRows[0]?.total_potential_revenue || 0;
 
     let matchedSpamTotal = 0;
     let matchedQualifiedTotal = 0;
@@ -93,7 +92,6 @@ export async function GET() {
       const meetingsCount = Number(r.meetings_count || 0);
       const dealsCount = Number(r.deals_count || 0);
       const revenue = Number(r.revenue_sum || 0);
-      const potential = Number(r.potential_revenue_sum || 0);
 
       if (r.listing_ref && r.listing_ref !== '0') {
         listingSpamMap[r.listing_ref] = (listingSpamMap[r.listing_ref] || 0) + spamCount;
