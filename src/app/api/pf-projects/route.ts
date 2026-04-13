@@ -38,12 +38,12 @@ export async function GET() {
     `;
     const [bqRows] = await bq.query(crmQuery);
 
-    const projectSpamMap = {};
-    const projectQualifiedMap = {};
-    const projectQLActualMap = {};
-    const projectMeetingsMap = {};
-    const projectDealsMap = {};
-    const projectRevenueMap = {};
+    const projectSpamMap: Record<string, number> = {};
+    const projectQualifiedMap: Record<string, number> = {};
+    const projectQLActualMap: Record<string, number> = {};
+    const projectMeetingsMap: Record<string, number> = {};
+    const projectDealsMap: Record<string, number> = {};
+    const projectRevenueMap: Record<string, number> = {};
 
     bqRows.forEach((r: any) => {
       if (r.listing_ref) {
