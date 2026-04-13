@@ -58,7 +58,7 @@
   background: #b0b9c9;
 }
 
-:root {
+.page {
   --bg-0: #131417;
   --panel: #131417;
   --panel-2: #131417;
