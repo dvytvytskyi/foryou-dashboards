@@ -1,0 +1,108 @@
+.scoreboardWrap {
+  display: flex;
+  margin: 30px 32px 24px 32px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+:global([data-dashboard-theme='night']) .scoreboardWrap {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.05);
+  box-shadow: none;
+}
+
+.scoreboardCard {
+  flex: 1;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: relative;
+}
+
+.scoreboardCard:not(:last-child) {
+  border-right: 1px solid #e2e8f0;
+}
+
+:global([data-dashboard-theme='night']) .scoreboardCard:not(:last-child) {
+  border-right-color: rgba(255, 255, 255, 0.05);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #64748b;
+}
+
+:global([data-dashboard-theme='night']) .cardHeader {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.scoreboardLabel {
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.infoIcon {
+  opacity: 0.5;
+}
+
+.scoreboardValue {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 2px 0;
+}
+
+:global([data-dashboard-theme='night']) .scoreboardValue {
+  color: #ffffff;
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+}
+
+.comparisonText {
+  color: #94a3b8;
+}
+
+:global([data-dashboard-theme='night']) .comparisonText {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.badge {
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.badgeSuccess {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+:global([data-dashboard-theme='night']) .badgeSuccess {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.badgeWarning {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+:global([data-dashboard-theme='night']) .badgeWarning {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}

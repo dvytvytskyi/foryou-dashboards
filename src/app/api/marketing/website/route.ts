@@ -1,0 +1,110 @@
+
+import { NextResponse } from 'next/server';
+
+export async function GET(request: Request) {
+    const { searchParams } = new URL(request.url);
+    const startDate = searchParams.get('startDate');
+    const endDate = searchParams.get('endDate');
+
+    // Mock data for Website dashboard
+    // In real scenario, this would fetch from Google Analytics + amoCRM
+    const data = [
+        {
+            channel: 'Organic',
+            level_1: 'Google',
+            level_2: null,
+            level_3: null,
+            impressions: 50000,
+            clicks: 1200,
+            ad_cost: 0,
+            sessions: 1100,
+            bounce_rate: 0.35,
+            avg_duration: 145,
+            leads_crm: 45,
+            leads_wa: 20,
+            no_answer: 5,
+            qualified_leads: 12,
+            meetings: 3,
+            deals: 1,
+            revenue: 15000,
+        },
+        {
+            channel: 'Organic',
+            level_1: 'Yahoo',
+            level_2: null,
+            level_3: null,
+            impressions: 5000,
+            clicks: 150,
+            ad_cost: 0,
+            sessions: 140,
+            bounce_rate: 0.40,
+            avg_duration: 90,
+            leads_crm: 5,
+            leads_wa: 2,
+            no_answer: 1,
+            qualified_leads: 1,
+            meetings: 0,
+            deals: 0,
+            revenue: 0,
+        },
+        {
+            channel: 'Direct',
+            level_1: null,
+            level_2: null,
+            level_3: null,
+            impressions: 0,
+            clicks: 0,
+            ad_cost: 0,
+            sessions: 800,
+            bounce_rate: 0.25,
+            avg_duration: 210,
+            leads_crm: 30,
+            leads_wa: 15,
+            no_answer: 2,
+            qualified_leads: 8,
+            meetings: 2,
+            deals: 1,
+            revenue: 12000,
+        },
+        {
+            channel: 'Google Ads',
+            level_1: 'Search_Brand',
+            level_2: 'Google / cpc',
+            level_3: 'Creative_1',
+            impressions: 25000,
+            clicks: 800,
+            ad_cost: 4500,
+            sessions: 750,
+            bounce_rate: 0.45,
+            avg_duration: 120,
+            leads_crm: 40,
+            leads_wa: 10,
+            no_answer: 8,
+            qualified_leads: 15,
+            meetings: 5,
+            deals: 2,
+            revenue: 45000,
+        },
+        {
+            channel: 'Facebook Ads',
+            level_1: 'Retargeting_UAE',
+            level_2: 'Facebook / social',
+            level_3: 'Video_AD',
+            impressions: 120000,
+            clicks: 3500,
+            ad_cost: 2100,
+            sessions: 3200,
+            bounce_rate: 0.65,
+            avg_duration: 45,
+            leads_crm: 85,
+            leads_wa: 40,
+            no_answer: 15,
+            qualified_leads: 20,
+            meetings: 4,
+            deals: 1,
+            revenue: 25000,
+        }
+    ];
+
+    return NextResponse.json({ success: true, data });
+}

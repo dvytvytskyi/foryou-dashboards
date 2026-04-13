@@ -1,0 +1,2796 @@
+[
+  {
+    "Category": "Primary Plus",
+    "District": "Yas Island",
+    "Reference": "f52c999e-80de-4eb9-813a-bdf2bbc44221",
+    "Title": "Balghaiylam",
+    "ProjectId": "f52c999e-80de-4eb9-813a-bdf2bbc44221",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-04": 1
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2026-04": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Hills Estate",
+    "Reference": "b027cd57-3ea9-4771-84f6-474d83534e39",
+    "Title": "Swiss Residences",
+    "ProjectId": "b027cd57-3ea9-4771-84f6-474d83534e39",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-04": 1
+    },
+    "Budget": 126,
+    "BudgetByMonth": {
+      "2026-04": 126
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Land",
+    "Reference": "4a1462c4-820a-43d4-9eda-d192025ef299",
+    "Title": "La Tilia at Villanova 2",
+    "ProjectId": "4a1462c4-820a-43d4-9eda-d192025ef299",
+    "Leads": 8,
+    "LeadsByMonth": {
+      "2026-03": 6,
+      "2026-01": 1,
+      "2025-12": 1
+    },
+    "Budget": 1788,
+    "BudgetByMonth": {
+      "2026-03": 1488,
+      "2026-01": 150,
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Investment Park (DIP)",
+    "Reference": "e38fd919-e9d3-4f5f-a911-69bcf680587d",
+    "Title": "Damac Riverside Views - Marine 2",
+    "ProjectId": "e38fd919-e9d3-4f5f-a911-69bcf680587d",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2026-03": 2
+    },
+    "Budget": 244,
+    "BudgetByMonth": {
+      "2026-03": 244
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Palm Jebel Ali",
+    "Reference": "ef493980-95a1-4ed4-ab02-a78253dfec0e",
+    "Title": "Palm Jebel Ali Frond B",
+    "ProjectId": "ef493980-95a1-4ed4-ab02-a78253dfec0e",
+    "Leads": 3,
+    "LeadsByMonth": {
+      "2026-03": 3
+    },
+    "Budget": 600,
+    "BudgetByMonth": {
+      "2026-03": 600
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Marjan Island",
+    "Reference": "9a326774-d6f7-4c87-a894-d7324d5468d0",
+    "Title": "Playa Del Sol",
+    "ProjectId": "9a326774-d6f7-4c87-a894-d7324d5468d0",
+    "Leads": 6,
+    "LeadsByMonth": {
+      "2026-03": 6
+    },
+    "Budget": 875,
+    "BudgetByMonth": {
+      "2026-03": 875
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Masdar City",
+    "Reference": "40761b77-2241-440f-a140-77970f6187c2",
+    "Title": "The Gate Masdar City",
+    "ProjectId": "40761b77-2241-440f-a140-77970f6187c2",
+    "Leads": 6,
+    "LeadsByMonth": {
+      "2026-03": 2,
+      "2026-02": 1,
+      "2026-01": 1,
+      "2025-12": 2
+    },
+    "Budget": 975,
+    "BudgetByMonth": {
+      "2026-03": 350,
+      "2026-02": 175,
+      "2026-01": 150,
+      "2025-12": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Ramhan Island",
+    "Reference": "407de31f-caf4-45f4-8319-a445e1457ff1",
+    "Title": "Ramhan Island Villas Phase 4 by Eagle",
+    "ProjectId": "407de31f-caf4-45f4-8319-a445e1457ff1",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-03": 1
+    },
+    "Budget": 0,
+    "BudgetByMonth": {}
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Shamkha",
+    "Reference": "8b14a9ce-7b73-4091-93da-cd5c27a54ecf",
+    "Title": "PUD Residences 1",
+    "ProjectId": "8b14a9ce-7b73-4091-93da-cd5c27a54ecf",
+    "Leads": 62,
+    "LeadsByMonth": {
+      "2026-03": 1,
+      "2026-01": 10,
+      "2025-12": 51
+    },
+    "Budget": 4477,
+    "BudgetByMonth": {
+      "2026-03": 175,
+      "2026-01": 783,
+      "2025-12": 3519
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Other",
+    "Reference": "bb9c7296-09af-42f4-ab43-3afdfa21c0da",
+    "Title": "Unknown Project",
+    "ProjectId": "bb9c7296-09af-42f4-ab43-3afdfa21c0da",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-02": 1
+    },
+    "Budget": 175,
+    "BudgetByMonth": {
+      "2026-02": 175
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Shamkha",
+    "Reference": "b8fa53e0-925a-4004-bc47-f8b999eb06b8",
+    "Title": "Right Capital 1",
+    "ProjectId": "b8fa53e0-925a-4004-bc47-f8b999eb06b8",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-02": 1
+    },
+    "Budget": 175,
+    "BudgetByMonth": {
+      "2026-02": 175
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Mamzar - Sharjah",
+    "Reference": "85558a5f-12be-4f86-bcd3-e884d1535e17",
+    "Title": "S1 Tower",
+    "ProjectId": "85558a5f-12be-4f86-bcd3-e884d1535e17",
+    "Leads": 6,
+    "LeadsByMonth": {
+      "2026-02": 2,
+      "2026-01": 3,
+      "2025-12": 1
+    },
+    "Budget": 925,
+    "BudgetByMonth": {
+      "2026-02": 325,
+      "2026-01": 450,
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Muwaileh",
+    "Reference": "f7c1277b-eccf-49eb-a27e-ee89503533da",
+    "Title": "Suroor By Alef Group",
+    "ProjectId": "f7c1277b-eccf-49eb-a27e-ee89503533da",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-02": 1
+    },
+    "Budget": 175,
+    "BudgetByMonth": {
+      "2026-02": 175
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Sharjah Waterfront City",
+    "Reference": "fc881be4-cafd-4b92-9578-6d7cb6774c65",
+    "Title": "Blue Waves At Bluebay Walk",
+    "ProjectId": "fc881be4-cafd-4b92-9578-6d7cb6774c65",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2026-02": 1,
+      "2025-12": 1
+    },
+    "Budget": 325,
+    "BudgetByMonth": {
+      "2026-02": 175,
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Sharjah Waterfront City",
+    "Reference": "904ba31f-7594-4ad3-b437-c65a8480f76a",
+    "Title": "Blue Pearls At Bluebay Walk",
+    "ProjectId": "904ba31f-7594-4ad3-b437-c65a8480f76a",
+    "Leads": 5,
+    "LeadsByMonth": {
+      "2026-02": 1,
+      "2026-01": 2,
+      "2025-12": 2
+    },
+    "Budget": 775,
+    "BudgetByMonth": {
+      "2026-02": 175,
+      "2026-01": 300,
+      "2025-12": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Sharjah",
+    "Reference": "c1166989-e775-473c-8c1c-fdc099436d1f",
+    "Title": "Arim Villas And Townhouses",
+    "ProjectId": "c1166989-e775-473c-8c1c-fdc099436d1f",
+    "Leads": 5,
+    "LeadsByMonth": {
+      "2026-02": 3,
+      "2026-01": 2
+    },
+    "Budget": 775,
+    "BudgetByMonth": {
+      "2026-02": 475,
+      "2026-01": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Studio City",
+    "Reference": "6e58780b-2cc1-427e-84c8-0d42968d33f8",
+    "Title": "Ryah Living",
+    "ProjectId": "6e58780b-2cc1-427e-84c8-0d42968d33f8",
+    "Leads": 3,
+    "LeadsByMonth": {
+      "2026-02": 1,
+      "2026-01": 1,
+      "2025-12": 1
+    },
+    "Budget": 475,
+    "BudgetByMonth": {
+      "2026-02": 175,
+      "2026-01": 150,
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Business Bay",
+    "Reference": "24dbdcf1-a75c-46ca-a228-cde1029dddef",
+    "Title": "Symphony Tower",
+    "ProjectId": "24dbdcf1-a75c-46ca-a228-cde1029dddef",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-02": 1
+    },
+    "Budget": 175,
+    "BudgetByMonth": {
+      "2026-02": 175
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Khan",
+    "Reference": "c6b01e43-e0c0-49f6-9400-ac2f83dbdb07",
+    "Title": "Jawaher Residences Phase 2 By Eagle Hills",
+    "ProjectId": "c6b01e43-e0c0-49f6-9400-ac2f83dbdb07",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-02": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-02": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Hayyan",
+    "Reference": "29916f84-fdf7-49aa-bdbb-7a4e2c254798",
+    "Title": "Hayyan",
+    "ProjectId": "29916f84-fdf7-49aa-bdbb-7a4e2c254798",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-02": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-02": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Muwaileh",
+    "Reference": "4943f6f5-e1ad-4cbc-bec9-54575becc51b",
+    "Title": "Suroor 4",
+    "ProjectId": "4943f6f5-e1ad-4cbc-bec9-54575becc51b",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-02": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-02": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Reem Island",
+    "Reference": "a8ea4460-53b3-4cda-8170-60b0ea48fb33",
+    "Title": "Radisson Residences Tower 2",
+    "ProjectId": "a8ea4460-53b3-4cda-8170-60b0ea48fb33",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-02": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-02": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Industrial City",
+    "Reference": "fcf6341a-cf9c-4e7a-a9d3-da8ee483e4d5",
+    "Title": "Samana Hills South",
+    "ProjectId": "fcf6341a-cf9c-4e7a-a9d3-da8ee483e4d5",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2026-02": 2
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2026-02": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Land",
+    "Reference": "2954f725-cf16-4897-a12d-5386b0e5aa82",
+    "Title": "The Acres Estates Phase 3 by Meraas",
+    "ProjectId": "2954f725-cf16-4897-a12d-5386b0e5aa82",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-02": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-02": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai South (Dubai World Central)",
+    "Reference": "1c0bb8ef-f125-4432-9303-660ed284c05a",
+    "Title": "Bahria Town Dubai",
+    "ProjectId": "1c0bb8ef-f125-4432-9303-660ed284c05a",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Damac Hills 2",
+    "Reference": "50fab324-1609-4469-9ba6-7a61feab7453",
+    "Title": "ELO",
+    "ProjectId": "50fab324-1609-4469-9ba6-7a61feab7453",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "DAMAC Hills",
+    "Reference": "19771c75-82ce-481a-aa38-773640bed0aa",
+    "Title": "Utopia",
+    "ProjectId": "19771c75-82ce-481a-aa38-773640bed0aa",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Meydan",
+    "Reference": "b6400acf-0752-4606-8a37-a273e045d282",
+    "Title": "Sukoon by Nuri",
+    "ProjectId": "b6400acf-0752-4606-8a37-a273e045d282",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Arjan",
+    "Reference": "fbc0d380-dfee-43b4-ad04-79db4e839553",
+    "Title": "Gharbi 1 Residences",
+    "ProjectId": "fbc0d380-dfee-43b4-ad04-79db4e839553",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Sheikh Zayed Road",
+    "Reference": "ceea3012-5d53-4438-9d27-aa0266a269f4",
+    "Title": "City Tower Phase 1 By H & H",
+    "ProjectId": "ceea3012-5d53-4438-9d27-aa0266a269f4",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2026-01": 2
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2026-01": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "International City",
+    "Reference": "5ba0602b-0e1b-4647-8726-cc9ab98d0b9b",
+    "Title": "Wasl 611",
+    "ProjectId": "5ba0602b-0e1b-4647-8726-cc9ab98d0b9b",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Barsha",
+    "Reference": "d03f650c-0479-4a2e-a73e-a4d6798e8249",
+    "Title": "Mas Barsha Residency",
+    "ProjectId": "d03f650c-0479-4a2e-a73e-a4d6798e8249",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Silicon Oasis",
+    "Reference": "bf31d381-d658-40b6-8e8d-14c70d3fbda1",
+    "Title": "Belle Vie",
+    "ProjectId": "bf31d381-d658-40b6-8e8d-14c70d3fbda1",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2026-01": 1,
+      "2025-12": 1
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2026-01": 150,
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Khan",
+    "Reference": "0c6b4897-7bec-4d62-9caf-31ea7c521ccd",
+    "Title": "Pearl Tower",
+    "ProjectId": "0c6b4897-7bec-4d62-9caf-31ea7c521ccd",
+    "Leads": 3,
+    "LeadsByMonth": {
+      "2026-01": 3
+    },
+    "Budget": 450,
+    "BudgetByMonth": {
+      "2026-01": 450
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Mamzar - Sharjah",
+    "Reference": "046d0026-2353-4b7c-9172-409383ef4163",
+    "Title": "La Plage Tower",
+    "ProjectId": "046d0026-2353-4b7c-9172-409383ef4163",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Yas Island",
+    "Reference": "ef0a9500-4559-4c3f-93ca-fd850b8a6e0d",
+    "Title": "Opula Residence",
+    "ProjectId": "ef0a9500-4559-4c3f-93ca-fd850b8a6e0d",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Land",
+    "Reference": "ae6a773b-685e-4df3-88a8-70764b05b3a5",
+    "Title": "Edison House Phase 2 By Arabian Gulf",
+    "ProjectId": "ae6a773b-685e-4df3-88a8-70764b05b3a5",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Land",
+    "Reference": "526a2f75-4e46-4dd0-a869-3484f391e3eb",
+    "Title": "Serenity",
+    "ProjectId": "526a2f75-4e46-4dd0-a869-3484f391e3eb",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2026-01": 1,
+      "2025-12": 1
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2026-01": 150,
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Reem Island",
+    "Reference": "2550decc-51d5-49ca-8f6a-f51166b99c7c",
+    "Title": "Radiant Wave",
+    "ProjectId": "2550decc-51d5-49ca-8f6a-f51166b99c7c",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2026-01": 2
+    },
+    "Budget": 172,
+    "BudgetByMonth": {
+      "2026-01": 172
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Khan",
+    "Reference": "1dd586e0-fd5b-47bd-a63a-1223841c2ab9",
+    "Title": "Topaz Residences",
+    "ProjectId": "1dd586e0-fd5b-47bd-a63a-1223841c2ab9",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2026-01": 1,
+      "2025-12": 1
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2026-01": 150,
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Khalifa City",
+    "Reference": "7288f1d8-bfd3-4acd-9af8-b579a89f7465",
+    "Title": "Cordoba",
+    "ProjectId": "7288f1d8-bfd3-4acd-9af8-b579a89f7465",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 0,
+    "BudgetByMonth": {}
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Satwa",
+    "Reference": "abd1574b-bca2-4bfe-aea9-49ef7b53278e",
+    "Title": "Jad 288",
+    "ProjectId": "abd1574b-bca2-4bfe-aea9-49ef7b53278e",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 0,
+    "BudgetByMonth": {}
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Living Legends",
+    "Reference": "e383b11a-7303-4da3-ac3f-8b91c0950f47",
+    "Title": "Living Legends Phase 5",
+    "ProjectId": "e383b11a-7303-4da3-ac3f-8b91c0950f47",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2026-01": 2
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2026-01": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Khan",
+    "Reference": "18320b86-5865-4bd2-bb49-591e0a51b691",
+    "Title": "Almaza Tower",
+    "ProjectId": "18320b86-5865-4bd2-bb49-591e0a51b691",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Silicon Oasis",
+    "Reference": "2989d5fb-6ac5-46ec-91cc-8d57b2715d09",
+    "Title": "Solen Residence",
+    "ProjectId": "2989d5fb-6ac5-46ec-91cc-8d57b2715d09",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2026-01": 1,
+      "2025-12": 1
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2026-01": 150,
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jebel Ali",
+    "Reference": "3aa8daf2-efd7-4006-9c74-5c259fc9ece7",
+    "Title": "Equiti Gate",
+    "ProjectId": "3aa8daf2-efd7-4006-9c74-5c259fc9ece7",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Village Circle",
+    "Reference": "de5af93f-4a24-4e21-939b-8c558960eb5c",
+    "Title": "The Orchard Place",
+    "ProjectId": "de5af93f-4a24-4e21-939b-8c558960eb5c",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Alia",
+    "Reference": "e1d3c48e-c2e4-45db-ac13-e807aa540f34",
+    "Title": "Rockhill Tower",
+    "ProjectId": "e1d3c48e-c2e4-45db-ac13-e807aa540f34",
+    "Leads": 8,
+    "LeadsByMonth": {
+      "2026-01": 3,
+      "2025-12": 5
+    },
+    "Budget": 1200,
+    "BudgetByMonth": {
+      "2026-01": 450,
+      "2025-12": 750
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Hudayriat Island",
+    "Reference": "4ca1006e-528a-4ed6-9ccb-f6aa903ba7c4",
+    "Title": "Wadeem by Modon",
+    "ProjectId": "4ca1006e-528a-4ed6-9ccb-f6aa903ba7c4",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Village Circle",
+    "Reference": "53aad28b-d937-40c9-a599-800f26856fab",
+    "Title": "Westar Reflections",
+    "ProjectId": "53aad28b-d937-40c9-a599-800f26856fab",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Arjan",
+    "Reference": "2a029dda-ea4c-4e73-998e-ed846a658c99",
+    "Title": "Legacy by Sunrise",
+    "ProjectId": "2a029dda-ea4c-4e73-998e-ed846a658c99",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Marjan Island",
+    "Reference": "c1ef4b0c-e038-4fcd-aa49-36c6b3ad8047",
+    "Title": "Danah Bay",
+    "ProjectId": "c1ef4b0c-e038-4fcd-aa49-36c6b3ad8047",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2026-01": 2
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Beach Residence",
+    "Reference": "498a9b45-b4e3-4f1e-b0a2-483ac30776fe",
+    "Title": "The Residences Al Habtoor Grand",
+    "ProjectId": "498a9b45-b4e3-4f1e-b0a2-483ac30776fe",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2026-01": 2
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2026-01": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Land",
+    "Reference": "19b5db2d-d46e-406d-b08f-fedae6de551c",
+    "Title": "Parkgreen Residences",
+    "ProjectId": "19b5db2d-d46e-406d-b08f-fedae6de551c",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Village Circle",
+    "Reference": "d80a0d46-158e-4379-b985-3f51f353d2cf",
+    "Title": "Elegance By Chaimaa",
+    "ProjectId": "d80a0d46-158e-4379-b985-3f51f353d2cf",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Reem Island",
+    "Reference": "fdc92675-f0b1-4245-832c-70d490500e51",
+    "Title": "Canal by M",
+    "ProjectId": "fdc92675-f0b1-4245-832c-70d490500e51",
+    "Leads": 3,
+    "LeadsByMonth": {
+      "2026-01": 1,
+      "2025-12": 2
+    },
+    "Budget": 450,
+    "BudgetByMonth": {
+      "2026-01": 150,
+      "2025-12": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Silicon Oasis",
+    "Reference": "068896bc-ed21-47b2-aa8b-43d9667a015e",
+    "Title": "Aura Prestige",
+    "ProjectId": "068896bc-ed21-47b2-aa8b-43d9667a015e",
+    "Leads": 3,
+    "LeadsByMonth": {
+      "2026-01": 1,
+      "2025-12": 2
+    },
+    "Budget": 450,
+    "BudgetByMonth": {
+      "2026-01": 150,
+      "2025-12": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai South (Dubai World Central)",
+    "Reference": "5ffeacca-eeac-4a71-8f2b-65844ba5cbaf",
+    "Title": "South Bay Phase 4 By Dubai South",
+    "ProjectId": "5ffeacca-eeac-4a71-8f2b-65844ba5cbaf",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Village Circle",
+    "Reference": "7f5d2c6b-a831-4b64-836b-ade63a9c0a11",
+    "Title": "Samana Waves",
+    "ProjectId": "7f5d2c6b-a831-4b64-836b-ade63a9c0a11",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2026-01": 1,
+      "2025-12": 1
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2026-01": 150,
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Business Bay",
+    "Reference": "db75f3c6-84e7-42bd-8c80-a7c474d04d59",
+    "Title": "The Crestmark",
+    "ProjectId": "db75f3c6-84e7-42bd-8c80-a7c474d04d59",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2026-01": 2
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2026-01": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Marina",
+    "Reference": "c15f2a78-fb39-4ba8-b249-551c4a07954e",
+    "Title": "Liv Lux",
+    "ProjectId": "c15f2a78-fb39-4ba8-b249-551c4a07954e",
+    "Leads": 5,
+    "LeadsByMonth": {
+      "2026-01": 3,
+      "2025-12": 2
+    },
+    "Budget": 750,
+    "BudgetByMonth": {
+      "2026-01": 450,
+      "2025-12": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Furjan",
+    "Reference": "b9a2bdb3-7cbb-4459-a6d2-936877370036",
+    "Title": "Maison Cannelle Residences",
+    "ProjectId": "b9a2bdb3-7cbb-4459-a6d2-936877370036",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Warsan",
+    "Reference": "8f5894f2-e359-4bbc-836b-5582a183e5c7",
+    "Title": "Chapter 01",
+    "ProjectId": "8f5894f2-e359-4bbc-836b-5582a183e5c7",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Village Circle",
+    "Reference": "5d263309-b4e5-461b-910a-1f976e6034b2",
+    "Title": "The Haven Gardens",
+    "ProjectId": "5d263309-b4e5-461b-910a-1f976e6034b2",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Lake Towers",
+    "Reference": "daea6ccb-d1ef-4926-8f6f-7a9dacbac7fa",
+    "Title": "UH West",
+    "ProjectId": "daea6ccb-d1ef-4926-8f6f-7a9dacbac7fa",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2026-01": 1,
+      "2025-12": 1
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2026-01": 150,
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Mamzar - Sharjah",
+    "Reference": "297ab33a-e4c2-46ee-92a2-9fabde6db752",
+    "Title": "La Plage Tower 2",
+    "ProjectId": "297ab33a-e4c2-46ee-92a2-9fabde6db752",
+    "Leads": 4,
+    "LeadsByMonth": {
+      "2026-01": 1,
+      "2025-12": 3
+    },
+    "Budget": 600,
+    "BudgetByMonth": {
+      "2026-01": 150,
+      "2025-12": 450
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Mohammed Bin Rashid City",
+    "Reference": "a665b491-78d7-4703-b5f1-8de6c8cda140",
+    "Title": "The Willows Residences",
+    "ProjectId": "a665b491-78d7-4703-b5f1-8de6c8cda140",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Village Circle",
+    "Reference": "1a84cdf9-f987-412f-bb24-6b1b7be1c4ac",
+    "Title": "Aria Heights",
+    "ProjectId": "1a84cdf9-f987-412f-bb24-6b1b7be1c4ac",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Rashidiya",
+    "Reference": "76209783-b002-47ce-9df9-6422547c72d0",
+    "Title": "Oasis Tower 3 by GJ",
+    "ProjectId": "76209783-b002-47ce-9df9-6422547c72d0",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Ras al Khaimah Gateway",
+    "Reference": "760dcadc-0674-4fcd-8364-83353ef62953",
+    "Title": "Ras Al Khaimah Gateway",
+    "ProjectId": "760dcadc-0674-4fcd-8364-83353ef62953",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Sports City",
+    "Reference": "37f81f38-5944-45a6-97bd-641e8555b6b1",
+    "Title": "Azizi Grand",
+    "ProjectId": "37f81f38-5944-45a6-97bd-641e8555b6b1",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Furjan",
+    "Reference": "0f323773-3214-4eb4-af55-aa8474e8a422",
+    "Title": "Zazen Ivy",
+    "ProjectId": "0f323773-3214-4eb4-af55-aa8474e8a422",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Khan",
+    "Reference": "60ef2df7-700b-43ab-8764-327fe2829f4f",
+    "Title": "Sharjah Terraces",
+    "ProjectId": "60ef2df7-700b-43ab-8764-327fe2829f4f",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2026-01": 1,
+      "2025-12": 1
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2026-01": 150,
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Village Circle",
+    "Reference": "6f229ebf-f054-4c0c-825b-262265164f79",
+    "Title": "Rose Gold Residences",
+    "ProjectId": "6f229ebf-f054-4c0c-825b-262265164f79",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Furjan",
+    "Reference": "84c37602-b36d-4e7c-9865-db77e74cedbe",
+    "Title": "Sparklz",
+    "ProjectId": "84c37602-b36d-4e7c-9865-db77e74cedbe",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "International City",
+    "Reference": "0a571382-57dc-4cc0-9704-9f20c79846fa",
+    "Title": "Longford Residences",
+    "ProjectId": "0a571382-57dc-4cc0-9704-9f20c79846fa",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Khan",
+    "Reference": "01fbb93f-1284-4a62-951e-3b7516934627",
+    "Title": "Al Walid Tower",
+    "ProjectId": "01fbb93f-1284-4a62-951e-3b7516934627",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2026-01": 1,
+      "2025-12": 1
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2026-01": 150,
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Marina",
+    "Reference": "ec341f84-2c0b-49be-adfe-1694e285946c",
+    "Title": "Franck Muller Vanguard",
+    "ProjectId": "ec341f84-2c0b-49be-adfe-1694e285946c",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Suyoh",
+    "Reference": "84857160-c84b-4c99-8d2d-657c32b2a870",
+    "Title": "Madain Square",
+    "ProjectId": "84857160-c84b-4c99-8d2d-657c32b2a870",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2026-01": 1,
+      "2025-12": 1
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2026-01": 150,
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Zorah",
+    "Reference": "38fd7af2-bf37-4143-99a0-21c21de5eee7",
+    "Title": "Glam Residence",
+    "ProjectId": "38fd7af2-bf37-4143-99a0-21c21de5eee7",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Khalifa City",
+    "Reference": "9de9be88-a365-4532-add3-5a5c0a644a2c",
+    "Title": "Granada",
+    "ProjectId": "9de9be88-a365-4532-add3-5a5c0a644a2c",
+    "Leads": 4,
+    "LeadsByMonth": {
+      "2026-01": 4
+    },
+    "Budget": 372,
+    "BudgetByMonth": {
+      "2026-01": 372
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Tilal City",
+    "Reference": "8bca87f4-d5f0-4804-bc2a-f16c5ec30084",
+    "Title": "Hawa Residence",
+    "ProjectId": "8bca87f4-d5f0-4804-bc2a-f16c5ec30084",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Arjan",
+    "Reference": "f1945c8f-d64b-4fa9-b006-217ab0b6856b",
+    "Title": "Vincitore Benessere",
+    "ProjectId": "f1945c8f-d64b-4fa9-b006-217ab0b6856b",
+    "Leads": 3,
+    "LeadsByMonth": {
+      "2026-01": 1,
+      "2025-12": 2
+    },
+    "Budget": 450,
+    "BudgetByMonth": {
+      "2026-01": 150,
+      "2025-12": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Warsan",
+    "Reference": "3299518c-61f8-4a82-9cbe-eb3fa31e38b7",
+    "Title": "Elevia Residences Phase 3 by Valores",
+    "ProjectId": "3299518c-61f8-4a82-9cbe-eb3fa31e38b7",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2026-01": 1,
+      "2025-12": 1
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2026-01": 150,
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Wasl",
+    "Reference": "df5023bc-a7a5-48a0-aefa-a5f692e97cc0",
+    "Title": "Canal Front Residences Phaze 6 By Meydan Group",
+    "ProjectId": "df5023bc-a7a5-48a0-aefa-a5f692e97cc0",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2026-01": 1,
+      "2025-12": 1
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2026-01": 150,
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Warsan",
+    "Reference": "d93faa57-2fd3-4172-be5b-8d675f69bfb5",
+    "Title": "Zyra Vista Residence",
+    "ProjectId": "d93faa57-2fd3-4172-be5b-8d675f69bfb5",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2026-01": 1,
+      "2025-12": 1
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2026-01": 150,
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Downtown Dubai",
+    "Reference": "1aa2c8d4-f189-4021-ab6e-4db27b2b5204",
+    "Title": "One Residence",
+    "ProjectId": "1aa2c8d4-f189-4021-ab6e-4db27b2b5204",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2026-01": 1,
+      "2025-12": 1
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2026-01": 150,
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Land",
+    "Reference": "351d3ec3-ece1-4652-b532-ec0e5e7e7ce2",
+    "Title": "Dalmore Tower",
+    "ProjectId": "351d3ec3-ece1-4652-b532-ec0e5e7e7ce2",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2026-01": 1,
+      "2025-12": 1
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2026-01": 150,
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai South (Dubai World Central)",
+    "Reference": "a58621f0-6637-408f-a309-0165bee05aff",
+    "Title": "Manam Prime",
+    "ProjectId": "a58621f0-6637-408f-a309-0165bee05aff",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2026-01": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2026-01": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai South (Dubai World Central)",
+    "Reference": "3b42aeac-f110-4dea-8a7e-c2492560f52e",
+    "Title": "Grove Ridge",
+    "ProjectId": "3b42aeac-f110-4dea-8a7e-c2492560f52e",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 220,
+    "BudgetByMonth": {
+      "2025-12": 220
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Masdar City",
+    "Reference": "51ca88d0-0e53-4316-b58b-e90c93f08dec",
+    "Title": "Plaza Phase 2 By Reportage",
+    "ProjectId": "51ca88d0-0e53-4316-b58b-e90c93f08dec",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Jaddaf",
+    "Reference": "6f4903d4-b03f-483c-b878-2afdd963642f",
+    "Title": "Adeba Azizi",
+    "ProjectId": "6f4903d4-b03f-483c-b878-2afdd963642f",
+    "Leads": 3,
+    "LeadsByMonth": {
+      "2025-12": 3
+    },
+    "Budget": 450,
+    "BudgetByMonth": {
+      "2025-12": 450
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Rashidiya",
+    "Reference": "6c3cee9e-e6b7-4c7c-b941-3854b165aaa6",
+    "Title": "Barajeel Towers",
+    "ProjectId": "6c3cee9e-e6b7-4c7c-b941-3854b165aaa6",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2025-12": 2
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2025-12": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Mina Al Arab",
+    "Reference": "4a57dcba-5a3b-4bb0-ac2a-0d02198bec5c",
+    "Title": "Edge at Raha Island By RAK",
+    "ProjectId": "4a57dcba-5a3b-4bb0-ac2a-0d02198bec5c",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Warsan",
+    "Reference": "8297f61c-56f7-455b-94b5-b575cdb4ffad",
+    "Title": "27 East End Garden Residences",
+    "ProjectId": "8297f61c-56f7-455b-94b5-b575cdb4ffad",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2025-12": 2
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2025-12": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Land",
+    "Reference": "a2a493c8-5119-4c13-a7bc-0c85bed52fe8",
+    "Title": "The Boulevard",
+    "ProjectId": "a2a493c8-5119-4c13-a7bc-0c85bed52fe8",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Furjan",
+    "Reference": "0f340c12-ce03-4c62-887d-042781e5158b",
+    "Title": "Equiti Garden",
+    "ProjectId": "0f340c12-ce03-4c62-887d-042781e5158b",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2025-12": 2
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2025-12": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Land",
+    "Reference": "cb3e6171-d2df-48c5-b1f4-de6362f232d1",
+    "Title": "Time Phase 3",
+    "ProjectId": "cb3e6171-d2df-48c5-b1f4-de6362f232d1",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Saadiyat Island",
+    "Reference": "347c4345-9750-413c-8c67-9923b50d31db",
+    "Title": "Ethir",
+    "ProjectId": "347c4345-9750-413c-8c67-9923b50d31db",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2025-12": 2
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2025-12": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai South (Dubai World Central)",
+    "Reference": "33db24d6-84cf-416a-bb96-0963ad260eaf",
+    "Title": "South Bay Phase 6 By Dubai South",
+    "ProjectId": "33db24d6-84cf-416a-bb96-0963ad260eaf",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Village Circle",
+    "Reference": "c4798f5f-8af6-43db-9ac6-04098ac4f9bb",
+    "Title": "Sky Living",
+    "ProjectId": "c4798f5f-8af6-43db-9ac6-04098ac4f9bb",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Satwa",
+    "Reference": "dc048184-76b8-4f98-a992-0e0bdc48fdce",
+    "Title": "Olivia Gardens Residence",
+    "ProjectId": "dc048184-76b8-4f98-a992-0e0bdc48fdce",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Amerah",
+    "Reference": "7d12ff88-cee4-4b1b-b366-71b9433205d4",
+    "Title": "Azha Al Aamra Residences",
+    "ProjectId": "7d12ff88-cee4-4b1b-b366-71b9433205d4",
+    "Leads": 3,
+    "LeadsByMonth": {
+      "2025-12": 3
+    },
+    "Budget": 450,
+    "BudgetByMonth": {
+      "2025-12": 450
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Village Triangle",
+    "Reference": "32cdca6d-96cf-40c4-9cd9-a7d851e37e98",
+    "Title": "The Vyne Residence",
+    "ProjectId": "32cdca6d-96cf-40c4-9cd9-a7d851e37e98",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Other",
+    "Reference": "8a188438-ceb4-4502-abdd-d532667b46e8",
+    "Title": "Unknown Project",
+    "ProjectId": "8a188438-ceb4-4502-abdd-d532667b46e8",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Furjan",
+    "Reference": "17956f19-18e4-428e-966e-3061a150f774",
+    "Title": "Gate Royale Residences",
+    "ProjectId": "17956f19-18e4-428e-966e-3061a150f774",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Industrial City",
+    "Reference": "139bd514-9818-4ef3-a34a-ab83d730504a",
+    "Title": "Al Haseen Residence Phase 3 By Dugasta",
+    "ProjectId": "139bd514-9818-4ef3-a34a-ab83d730504a",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Land",
+    "Reference": "e8be7acf-438a-459b-9e4a-ebd9919c6bdc",
+    "Title": "AUM Residence",
+    "ProjectId": "e8be7acf-438a-459b-9e4a-ebd9919c6bdc",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Expo City",
+    "Reference": "60e3ba68-ddcb-4e89-be87-7dd8cf03bdf8",
+    "Title": "Terra Gardens",
+    "ProjectId": "60e3ba68-ddcb-4e89-be87-7dd8cf03bdf8",
+    "Leads": 3,
+    "LeadsByMonth": {
+      "2025-12": 3
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Saadiyat Island",
+    "Reference": "25bf0ef3-cf14-4f04-9e6f-47000bf0b684",
+    "Title": "The Grove - Heart",
+    "ProjectId": "25bf0ef3-cf14-4f04-9e6f-47000bf0b684",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2025-12": 2
+    },
+    "Budget": 244,
+    "BudgetByMonth": {
+      "2025-12": 244
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Muwaileh",
+    "Reference": "b1308d3b-b6a6-459a-bf77-68d6356d0b07",
+    "Title": "Suroor Phase 2 By Alef Group",
+    "ProjectId": "b1308d3b-b6a6-459a-bf77-68d6356d0b07",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Village Circle",
+    "Reference": "2e8e9a04-428d-4e4b-b789-1c68f242cb09",
+    "Title": "J Haus Residences",
+    "ProjectId": "2e8e9a04-428d-4e4b-b789-1c68f242cb09",
+    "Leads": 3,
+    "LeadsByMonth": {
+      "2025-12": 3
+    },
+    "Budget": 450,
+    "BudgetByMonth": {
+      "2025-12": 450
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Business Bay",
+    "Reference": "85939eea-8372-48d6-ad70-a96070d332da",
+    "Title": "Onda By Kasco",
+    "ProjectId": "85939eea-8372-48d6-ad70-a96070d332da",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Arjan",
+    "Reference": "3fa343df-7716-44ba-b5b5-21ac2c9a82d6",
+    "Title": "Parkside Boulevard",
+    "ProjectId": "3fa343df-7716-44ba-b5b5-21ac2c9a82d6",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Village Triangle",
+    "Reference": "8af32a3d-2359-4bc9-bdd9-c76230d8df19",
+    "Title": "W1nner Tower",
+    "ProjectId": "8af32a3d-2359-4bc9-bdd9-c76230d8df19",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Islands",
+    "Reference": "85d0bcd7-c7cc-41e7-8187-f69a51341d40",
+    "Title": "AGUA Residences",
+    "ProjectId": "85d0bcd7-c7cc-41e7-8187-f69a51341d40",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Nad Al Sheba",
+    "Reference": "275c404a-b173-45da-aeb4-af45777908af",
+    "Title": "Celia Gardens",
+    "ProjectId": "275c404a-b173-45da-aeb4-af45777908af",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai South (Dubai World Central)",
+    "Reference": "c46aa29e-f424-4260-8d0a-803f1155b547",
+    "Title": "Expo Golf Villas 6",
+    "ProjectId": "c46aa29e-f424-4260-8d0a-803f1155b547",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2025-12": 2
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2025-12": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Land",
+    "Reference": "1233ff1e-36fe-431c-b334-99e2b25eedf7",
+    "Title": "Haven Phase 2 By Aldar",
+    "ProjectId": "1233ff1e-36fe-431c-b334-99e2b25eedf7",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Creek Harbour (The Lagoons)",
+    "Reference": "235149ff-1491-4d13-a8f3-64cff5c6e3c8",
+    "Title": "Lyvia by Palace",
+    "ProjectId": "235149ff-1491-4d13-a8f3-64cff5c6e3c8",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2025-12": 2
+    },
+    "Budget": 548,
+    "BudgetByMonth": {
+      "2025-12": 548
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Lake Towers",
+    "Reference": "8ad06819-abc0-442e-a330-aa6733afbd3b",
+    "Title": "MBL Signature",
+    "ProjectId": "8ad06819-abc0-442e-a330-aa6733afbd3b",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Damac Hills 2",
+    "Reference": "974114ef-1ee5-49c4-a18b-6290523929e7",
+    "Title": "ELO 2",
+    "ProjectId": "974114ef-1ee5-49c4-a18b-6290523929e7",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2025-12": 2
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2025-12": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Amerah",
+    "Reference": "2c6db4de-325d-49eb-a716-ea37ae6e4e13",
+    "Title": "Azha Community",
+    "ProjectId": "2c6db4de-325d-49eb-a716-ea37ae6e4e13",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2025-12": 2
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2025-12": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Lake Towers",
+    "Reference": "67114df2-92f7-4a4e-bac2-ed2d73ddb6b4",
+    "Title": "Vista Heights",
+    "ProjectId": "67114df2-92f7-4a4e-bac2-ed2d73ddb6b4",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2025-12": 2
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2025-12": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Village Circle",
+    "Reference": "c6a0ed72-0688-4c8a-b095-b89d1233c5ca",
+    "Title": "Heilbronn Park Lane Phase 2",
+    "ProjectId": "c6a0ed72-0688-4c8a-b095-b89d1233c5ca",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Production City (IMPZ)",
+    "Reference": "c781a079-2dbb-48c5-89ea-7d4a8b8ba091",
+    "Title": "Imperial Residence",
+    "ProjectId": "c781a079-2dbb-48c5-89ea-7d4a8b8ba091",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Furjan",
+    "Reference": "07b5898b-ba6e-43d6-950f-d07616a423df",
+    "Title": "Azizi Raffi",
+    "ProjectId": "07b5898b-ba6e-43d6-950f-d07616a423df",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Land",
+    "Reference": "4719d32f-231a-4878-89b9-73aea8759c38",
+    "Title": "Diagon at Athlon",
+    "ProjectId": "4719d32f-231a-4878-89b9-73aea8759c38",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Mohammed Bin Rashid City",
+    "Reference": "5bd99cfb-48b6-4429-aa9c-e0e6b598e38a",
+    "Title": "Mag Keturah Reserve",
+    "ProjectId": "5bd99cfb-48b6-4429-aa9c-e0e6b598e38a",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Creek Harbour (The Lagoons)",
+    "Reference": "ac6dbe14-b2d9-4d23-9b26-ffaa26a93b3d",
+    "Title": "Moor at Creek Beach",
+    "ProjectId": "ac6dbe14-b2d9-4d23-9b26-ffaa26a93b3d",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Land",
+    "Reference": "c1d5169a-905c-40b9-9b76-ba8e30d2b429",
+    "Title": "Lacina By Majid Al Futtaim",
+    "ProjectId": "c1d5169a-905c-40b9-9b76-ba8e30d2b429",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Warsan",
+    "Reference": "44892ccd-a521-4b63-a0c3-173bc3d0597b",
+    "Title": "Tavora Residences",
+    "ProjectId": "44892ccd-a521-4b63-a0c3-173bc3d0597b",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Other",
+    "Reference": "ad27d733-1e22-46b9-b47b-04b5637f0674",
+    "Title": "Unknown Project",
+    "ProjectId": "ad27d733-1e22-46b9-b47b-04b5637f0674",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Ajman Downtown",
+    "Reference": "37ae917a-f0ee-41fe-bb68-1eb4a0d1ac38",
+    "Title": "Ajman Pearl Tower",
+    "ProjectId": "37ae917a-f0ee-41fe-bb68-1eb4a0d1ac38",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Land",
+    "Reference": "8ea2885d-5a35-463a-95b8-1e28c92c6909",
+    "Title": "Falls",
+    "ProjectId": "8ea2885d-5a35-463a-95b8-1e28c92c6909",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Investment Park (DIP)",
+    "Reference": "023c03a0-3f35-458f-9c41-c0f0b3f93ba4",
+    "Title": "Olivia Residences",
+    "ProjectId": "023c03a0-3f35-458f-9c41-c0f0b3f93ba4",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2025-12": 2
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2025-12": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Yas Island",
+    "Reference": "9ff74be7-1aff-4440-83ad-a0395f33a1f1",
+    "Title": "Al Deem Townhomes",
+    "ProjectId": "9ff74be7-1aff-4440-83ad-a0395f33a1f1",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Lake Towers",
+    "Reference": "8e0ce666-c45b-4684-904d-16fb20619126",
+    "Title": "Me Do Re",
+    "ProjectId": "8e0ce666-c45b-4684-904d-16fb20619126",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Muwaileh",
+    "Reference": "2ca6bbef-6ee6-4b8b-97da-24ab7c243c05",
+    "Title": "Darb Phase 2 By Alef Group",
+    "ProjectId": "2ca6bbef-6ee6-4b8b-97da-24ab7c243c05",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai South (Dubai World Central)",
+    "Reference": "586d92ad-eed6-4b9e-baa4-a58fe7434a4b",
+    "Title": "Oasis Residences",
+    "ProjectId": "586d92ad-eed6-4b9e-baa4-a58fe7434a4b",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Reem Island",
+    "Reference": "a60a2d3b-c30d-4ae7-a989-5e46c23cb082",
+    "Title": "Radiant Marina Towers",
+    "ProjectId": "a60a2d3b-c30d-4ae7-a989-5e46c23cb082",
+    "Leads": 12,
+    "LeadsByMonth": {
+      "2025-12": 12
+    },
+    "Budget": 1068,
+    "BudgetByMonth": {
+      "2025-12": 1068
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Lake Towers",
+    "Reference": "88c92441-464e-4859-a2bd-d1d7ce2bec55",
+    "Title": "UH East",
+    "ProjectId": "88c92441-464e-4859-a2bd-d1d7ce2bec55",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Damac Lagoons",
+    "Reference": "70ae7364-859c-4f98-9689-529bab41b795",
+    "Title": "Damac Lagoon Views Phase 7",
+    "ProjectId": "70ae7364-859c-4f98-9689-529bab41b795",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2025-12": 2
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2025-12": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Silicon Oasis",
+    "Reference": "65c0258e-c3ad-431e-85dc-8b5c12bd1d6a",
+    "Title": "Pearls By Vision",
+    "ProjectId": "65c0258e-c3ad-431e-85dc-8b5c12bd1d6a",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2025-12": 2
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2025-12": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Tilal Al Ghaf",
+    "Reference": "8d21fca3-8d19-4058-a971-2fbc5e3fbaf8",
+    "Title": "Serenity Mansions",
+    "ProjectId": "8d21fca3-8d19-4058-a971-2fbc5e3fbaf8",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Qasimia",
+    "Reference": "291f2b03-95c7-40da-8e00-4c4118d113be",
+    "Title": "Sunlight Building",
+    "ProjectId": "291f2b03-95c7-40da-8e00-4c4118d113be",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2025-12": 2
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2025-12": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Satwa",
+    "Reference": "1bb8d82c-c532-4e05-b35c-408ef3f4cc7d",
+    "Title": "The Grandala",
+    "ProjectId": "1bb8d82c-c532-4e05-b35c-408ef3f4cc7d",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Maritime City",
+    "Reference": "65373f9f-1657-431a-a2e6-8f86104ed30b",
+    "Title": "The Pier Residences",
+    "ProjectId": "65373f9f-1657-431a-a2e6-8f86104ed30b",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Islands",
+    "Reference": "2ddf383f-37b1-4e6c-8390-fa68285bbbbc",
+    "Title": "Edgewater Residences Phase 3 By MGS",
+    "ProjectId": "2ddf383f-37b1-4e6c-8390-fa68285bbbbc",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "DAMAC Hills",
+    "Reference": "d2f5be69-c902-4e3b-924b-ad4e5b4fee9c",
+    "Title": "Golf Gate 2",
+    "ProjectId": "d2f5be69-c902-4e3b-924b-ad4e5b4fee9c",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Lake Towers",
+    "Reference": "981d6b93-3c1a-4dc8-878b-c7138c38925d",
+    "Title": "Hilton Residences JLT",
+    "ProjectId": "981d6b93-3c1a-4dc8-878b-c7138c38925d",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2025-12": 2
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2025-12": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Meydan",
+    "Reference": "613b1980-acd4-4cd3-9fa1-177dab68ee71",
+    "Title": "Solcasa Residence",
+    "ProjectId": "613b1980-acd4-4cd3-9fa1-177dab68ee71",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Marina",
+    "Reference": "f1748885-bb42-4562-a87b-0a4454ec576f",
+    "Title": "Ciel Tower",
+    "ProjectId": "f1748885-bb42-4562-a87b-0a4454ec576f",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Lake Towers",
+    "Reference": "3445bd32-f494-441f-acba-395ab6117e1f",
+    "Title": "Saba 4",
+    "ProjectId": "3445bd32-f494-441f-acba-395ab6117e1f",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Yas Island",
+    "Reference": "0dd05546-2040-4841-840c-26e6f639d4b1",
+    "Title": "Ansam Phase 2 by Aldar",
+    "ProjectId": "0dd05546-2040-4841-840c-26e6f639d4b1",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Ghantoot",
+    "Reference": "fb18f493-fbec-4844-8491-aa0809af82a8",
+    "Title": "Bayn Lagoon",
+    "ProjectId": "fb18f493-fbec-4844-8491-aa0809af82a8",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 159,
+    "BudgetByMonth": {
+      "2025-12": 159
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Satwa",
+    "Reference": "8c46b7bf-99df-48d6-ad7e-ed25132b939f",
+    "Title": "Rose Gardens 1",
+    "ProjectId": "8c46b7bf-99df-48d6-ad7e-ed25132b939f",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2025-12": 2
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2025-12": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Land",
+    "Reference": "5106921d-8698-4839-aeae-673da9d44c79",
+    "Title": "California Residences",
+    "ProjectId": "5106921d-8698-4839-aeae-673da9d44c79",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Land",
+    "Reference": "c23d5eee-3676-4e3e-a922-5cbe88fe56f1",
+    "Title": "Platinum by Vision",
+    "ProjectId": "c23d5eee-3676-4e3e-a922-5cbe88fe56f1",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Satwa",
+    "Reference": "0895c64b-136c-4846-b650-ec50024772ec",
+    "Title": "Elmora Residence",
+    "ProjectId": "0895c64b-136c-4846-b650-ec50024772ec",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2025-12": 2
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2025-12": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Furjan",
+    "Reference": "af6fdc8a-e684-444f-8a32-2331d9c71d0e",
+    "Title": "Tori by IGO",
+    "ProjectId": "af6fdc8a-e684-444f-8a32-2331d9c71d0e",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Village Circle",
+    "Reference": "abf869c5-1525-4f8b-a4ad-62300fa3d792",
+    "Title": "Helvetia Residences By DHG Properties",
+    "ProjectId": "abf869c5-1525-4f8b-a4ad-62300fa3d792",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Furjan",
+    "Reference": "15b6b83a-167e-40fd-90c5-523209124b70",
+    "Title": "Repose Residence",
+    "ProjectId": "15b6b83a-167e-40fd-90c5-523209124b70",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Ajman Downtown",
+    "Reference": "814bd384-f6c6-4c0c-b7be-9b23ecda7d87",
+    "Title": "Ajman One Phase 2 By Aqaar",
+    "ProjectId": "814bd384-f6c6-4c0c-b7be-9b23ecda7d87",
+    "Leads": 2,
+    "LeadsByMonth": {
+      "2025-12": 2
+    },
+    "Budget": 300,
+    "BudgetByMonth": {
+      "2025-12": 300
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Village Circle",
+    "Reference": "39c34e19-5788-4e57-90bc-ca3768a4e30b",
+    "Title": "VUE Crystal Bay",
+    "ProjectId": "39c34e19-5788-4e57-90bc-ca3768a4e30b",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Sports City",
+    "Reference": "e1b4f29d-1861-4260-99f1-35e727bf5650",
+    "Title": "Aspirz Tower",
+    "ProjectId": "e1b4f29d-1861-4260-99f1-35e727bf5650",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Land",
+    "Reference": "76f5061f-03ab-4efe-b0b5-1823b222ff83",
+    "Title": "Samana Barari Heights",
+    "ProjectId": "76f5061f-03ab-4efe-b0b5-1823b222ff83",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Furjan",
+    "Reference": "a2b53bf3-674e-4097-9046-61c854b178b0",
+    "Title": "Trussardi Residences Phase 2 By Mira Developments",
+    "ProjectId": "a2b53bf3-674e-4097-9046-61c854b178b0",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Village Circle",
+    "Reference": "1cdd985b-76e9-4882-8ef6-cdcef49a9087",
+    "Title": "Lucky Royale Residence",
+    "ProjectId": "1cdd985b-76e9-4882-8ef6-cdcef49a9087",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Land",
+    "Reference": "1833d51a-f8de-44e6-9275-a2e57834580b",
+    "Title": "Tranquillity",
+    "ProjectId": "1833d51a-f8de-44e6-9275-a2e57834580b",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Jumeirah Village Circle",
+    "Reference": "d2c89610-d6e0-4300-a7c2-8073f33a53df",
+    "Title": "Azurline Residences",
+    "ProjectId": "d2c89610-d6e0-4300-a7c2-8073f33a53df",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Reem Island",
+    "Reference": "268cf7b3-1520-4916-b4a9-a9b363e1734a",
+    "Title": "Renad Tower",
+    "ProjectId": "268cf7b3-1520-4916-b4a9-a9b363e1734a",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Hudayriat Island",
+    "Reference": "c0118dcf-304e-418b-8b08-191587724386",
+    "Title": "Bashayer Residences",
+    "ProjectId": "c0118dcf-304e-418b-8b08-191587724386",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 172,
+    "BudgetByMonth": {
+      "2025-12": 172
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Raha Beach",
+    "Reference": "d97910cc-3e43-418b-b643-88bb4f835d46",
+    "Title": "Juman 2",
+    "ProjectId": "d97910cc-3e43-418b-b643-88bb4f835d46",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 81,
+    "BudgetByMonth": {
+      "2025-12": 81
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Ghantoot",
+    "Reference": "90e25abd-f2b0-40af-90ef-a6040c31d675",
+    "Title": "Bayn Waterway",
+    "ProjectId": "90e25abd-f2b0-40af-90ef-a6040c31d675",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 209,
+    "BudgetByMonth": {
+      "2025-12": 209
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Nad Al Sheba",
+    "Reference": "cb1a15f0-a92c-4058-83a4-81ff8535d5a1",
+    "Title": "The Roof Residence",
+    "ProjectId": "cb1a15f0-a92c-4058-83a4-81ff8535d5a1",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Other",
+    "Reference": "4f8d112e-10b7-452e-80d8-c56618aa9511",
+    "Title": "Unknown Project",
+    "ProjectId": "4f8d112e-10b7-452e-80d8-c56618aa9511",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Creek Harbour (The Lagoons)",
+    "Reference": "508b355b-a832-41c3-808f-97bbb63fed1f",
+    "Title": "Island Park Phase 2 By Emaar",
+    "ProjectId": "508b355b-a832-41c3-808f-97bbb63fed1f",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Arjan",
+    "Reference": "14e131c2-0775-404d-aa6d-9123a7483754",
+    "Title": "Butterfly Towers",
+    "ProjectId": "14e131c2-0775-404d-aa6d-9123a7483754",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Al Hudayriat Island",
+    "Reference": "840269d9-4674-4217-8259-0c2e7213c645",
+    "Title": "Nawayef West B",
+    "ProjectId": "840269d9-4674-4217-8259-0c2e7213c645",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 1500,
+    "BudgetByMonth": {
+      "2025-12": 1500
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Umm Al Quwain Marina",
+    "Reference": "0ec1892e-1d7b-403d-849d-bf4578dfa03f",
+    "Title": "Sobha Coraline Beach Residences",
+    "ProjectId": "0ec1892e-1d7b-403d-849d-bf4578dfa03f",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  },
+  {
+    "Category": "Primary Plus",
+    "District": "Dubai Land",
+    "Reference": "33cb9f2c-f665-438a-b710-5921dba302ff",
+    "Title": "Dusit Rijas Residence",
+    "ProjectId": "33cb9f2c-f665-438a-b710-5921dba302ff",
+    "Leads": 1,
+    "LeadsByMonth": {
+      "2025-12": 1
+    },
+    "Budget": 150,
+    "BudgetByMonth": {
+      "2025-12": 150
+    }
+  }
+]

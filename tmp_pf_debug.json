@@ -1,0 +1,2202 @@
+Access token received
+Fetched credits transactions: 4794
+Sample credit transaction 1: {
+  "createdAt": "2026-04-13T08:10:10.019Z",
+  "description": "Standard",
+  "listingInfo": {
+    "category": "Residential for Sale",
+    "id": "99abda97-3d15-443c-9f13-1348e8a67431",
+    "locationId": "17263",
+    "publicProfileId": "250137",
+    "reference": "00000397",
+    "type": "Apartment"
+  },
+  "transactionInfo": {
+    "action": "charge",
+    "amount": -21,
+    "balance": 28152,
+    "type": "credits"
+  }
+}
+Sample credit transaction 2: {
+  "createdAt": "2026-04-12T13:45:22.438Z",
+  "description": "Standard",
+  "listingInfo": {
+    "category": "Residential for Sale",
+    "id": "24348d77-36b4-4e20-a9cd-7fddf93287b9",
+    "locationId": "13346",
+    "publicProfileId": "250137",
+    "reference": "1111123",
+    "type": "Villa"
+  },
+  "transactionInfo": {
+    "action": "charge",
+    "amount": -3,
+    "balance": 28173,
+    "type": "credits"
+  }
+}
+Fetched 183 listings for residential sale state=live
+Fetched 0 listings for residential sale state=archived
+Fetched 0 listings for residential sale state=unpublished
+Fetched 62 listings for residential sale state=takendown
+Total listings for Sell: 245
+Sample listing 1: {
+  "amenities": [
+    "balcony",
+    "central-ac",
+    "built-in-wardrobes",
+    "shared-pool",
+    "security",
+    "concierge",
+    "shared-gym",
+    "lobby-in-building",
+    "view-of-landmark",
+    "covered-parking"
+  ],
+  "assignedTo": {
+    "id": 372790,
+    "name": "Radik Pogosyan",
+    "photos": {
+      "thumbnail": "https://www.propertyfinder.ae/agent/0/130/100/MODE/53eed9/372790-bd7b5o.jpg?ctr=ae"
+    }
+  },
+  "availableFrom": "2026-03-18",
+  "bathrooms": "2",
+  "bedrooms": "1",
+  "category": "residential",
+  "compliance": {
+    "issuingClientLicenseNumber": "1230242",
+    "listingAdvertisementNumber": "71511450859",
+    "type": "rera"
+  },
+  "createdAt": "2026-03-18T11:32:02.223188514Z",
+  "createdBy": {
+    "id": 250137,
+    "name": "Artem Gerasimov",
+    "photos": {
+      "thumbnail": "https://www.propertyfinder.ae/agent/0/130/100/MODE/bd0db5/250137-edb8ao.jpg?ctr=ae"
+    }
+  },
+  "description": {
+    "en": "FOR YOU REAL ESTATE is proud to present this brand new 1-bedroom apartment, offering the best layout in the building with abundant storage, a park view, and immediate move-in readiness.\n\nProperty Highlights:\n- Fully Furnished and Equipped with appliances\n- Brand New Unit – never lived in\n- Vacant and Ready to Move In\n- Best Layout in the Building – thoughtfully designed\n- Plenty of Storage Space – a rare feature in Dubai\n\nBuilding Amenities:\n- 2 Swimming Pools (including ladies-only pool)\n- Fully Equipped Gym\n- Landscaped Gardens and Park Access\n- Children's Play Area\n- Covered Parking\n- Advanced Security System and 24/7 Security\n\nIn FOR YOU REAL ESTATE\nWe provide comprehensive real estate services tailored to your needs.\nAdvantages of working with us:\nDetailed market analysis – we select the perfect property based on your request\nWe manage the entire transaction process from purchase to sale\nAccess to exclusive listings and the best options\nFirst class service. We are always for long-term cooperation\nOur team has the best brokers\nWe have been working in the market with premium clients for a long time\nFor You Real Estate L.L.C. is based in The Onyx Tower 2, office 910 with a team of agents who are focused on the sales, rentals and management of properties in Dubai."
+  },
+  "furnishingType": "furnished",
+  "id": "00NTFJQ4A4GSHW0PPJWSAJ81DG",
+  "location": {
+    "id": 12940
+  },
+  "media": {
+    "images": [
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/4ebd45da-a030-43a0-afec-64108cb34b18/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/4ebd45da-a030-43a0-afec-64108cb34b18/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/9eac2bfe-7669-48d5-b988-f72f69bef923/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/9eac2bfe-7669-48d5-b988-f72f69bef923/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/a6baa0ef-d342-4d1c-adf0-804c44dd4723/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/a6baa0ef-d342-4d1c-adf0-804c44dd4723/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/ad740526-4b36-4751-aeae-cb3f012d98fb/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/ad740526-4b36-4751-aeae-cb3f012d98fb/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/0692b700-958d-4537-890b-62562b1d4d40/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/0692b700-958d-4537-890b-62562b1d4d40/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/4d0cd6ea-168e-43a9-841b-ce90187d95fd/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/4d0cd6ea-168e-43a9-841b-ce90187d95fd/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/0bb8f8cd-6326-4b20-97bb-5d17539d3e44/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/0bb8f8cd-6326-4b20-97bb-5d17539d3e44/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/a74a1fa5-09f6-4327-920e-be370030f4a7/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/a74a1fa5-09f6-4327-920e-be370030f4a7/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/b8096caf-560a-4f39-aae1-bb229b045482/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/b8096caf-560a-4f39-aae1-bb229b045482/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/91b18ef4-605e-4492-9c81-b932d58efd42/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/91b18ef4-605e-4492-9c81-b932d58efd42/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/09c5f078-7333-44b4-89af-b320d102d617/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/09c5f078-7333-44b4-89af-b320d102d617/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/b6423047-5dab-41eb-a9da-4aa6e7518f59/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/b6423047-5dab-41eb-a9da-4aa6e7518f59/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/275fe7c4-7200-4a0d-aba3-8d9b1c1bb533/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/275fe7c4-7200-4a0d-aba3-8d9b1c1bb533/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/6d5bba84-0c65-42b7-8229-7bfa47e76af9/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/6d5bba84-0c65-42b7-8229-7bfa47e76af9/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/8a257c71-05ff-4626-8abc-46185cd23fec/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/8a257c71-05ff-4626-8abc-46185cd23fec/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/80911fe5-b791-4b57-8a1b-db32757bd5e6/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/80911fe5-b791-4b57-8a1b-db32757bd5e6/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/ffa07ce0-6b81-4c83-9096-6389c1216b58/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/ffa07ce0-6b81-4c83-9096-6389c1216b58/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/e759418d-5c96-4f9a-91a0-9135a7a3ff31/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/e759418d-5c96-4f9a-91a0-9135a7a3ff31/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/350776cb-2e3c-4b25-83fa-8448e7182e65/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/350776cb-2e3c-4b25-83fa-8448e7182e65/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/e6c689c5-e349-421a-861d-b0963598a595/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/e6c689c5-e349-421a-861d-b0963598a595/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/c1a20f8b-5e63-4769-a09c-5fd3c62bb9d9/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/c1a20f8b-5e63-4769-a09c-5fd3c62bb9d9/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/d5045d0e-672e-4b9b-82ec-d77ed1aabbfa/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/d5045d0e-672e-4b9b-82ec-d77ed1aabbfa/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/3e0c548b-1f9b-42fe-9c4f-ae3dc39abdeb/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/00NTFJQ4A4GSHW0PPJWSAJ81DG/3e0c548b-1f9b-42fe-9c4f-ae3dc39abdeb/watermarked.jpg"
+        }
+      }
+    ]
+  },
+  "parkingSlots": 1,
+  "portals": {
+    "propertyfinder": {
+      "isLive": true,
+      "publishedAt": "2026-03-18T11:47:26.888943006Z"
+    }
+  },
+  "price": {
+    "amounts": {
+      "sale": 1378000
+    },
+    "type": "sale"
+  },
+  "products": {
+    "standard": {
+      "createdAt": "2026-03-18T15:47:26+04:00",
+      "expiresAt": "2026-04-18T11:47:25Z",
+      "id": "standard",
+      "renewalEnabled": true
+    }
+  },
+  "projectStatus": "completed",
+  "qualityScore": {
+    "color": "green",
+    "details": {
+      "description": {
+        "color": "green",
+        "group": "description",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 10,
+        "weight": 10
+      },
+      "image": {
+        "color": "green",
+        "group": "image",
+        "tag": "23 / 30",
+        "tagAr": "23 / 30",
+        "value": 6,
+        "weight": 6
+      },
+      "imageDiversity": {
+        "color": "green",
+        "group": "image",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 5,
+        "weight": 5
+      },
+      "imageDuplicates": {
+        "color": "green",
+        "group": "image",
+        "help": "Photos are unique",
+        "helpAr": "الصور فريدة من نوعها",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 10,
+        "weight": 10
+      },
+      "imagesDimensions": {
+        "color": "green",
+        "group": "image",
+        "help": "Correct photo sizes",
+        "helpAr": "أحجام الصور صحيحة",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 18,
+        "weight": 18
+      },
+      "listingCompletion": {
+        "color": "green",
+        "group": "listing_completion",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 2,
+        "weight": 2
+      },
+      "location": {
+        "color": "green",
+        "group": "location",
+        "tag": "4 / 4",
+        "tagAr": "4 / 4",
+        "value": 19,
+        "weight": 19
+      },
+      "title": {
+        "color": "green",
+        "group": "title",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 10,
+        "weight": 10
+      },
+      "verified": {
+        "color": "green",
+        "group": "verification",
+        "tag": "Yes",
+        "tagAr": "نعم",
+        "value": 20,
+        "weight": 20
+      }
+    },
+    "value": 100
+  },
+  "reference": "00000495",
+  "size": 804,
+  "state": {
+    "stage": "live",
+    "type": "live"
+  },
+  "title": {
+    "en": "VACANT | PARK VIEW | FULLY FURNISHED"
+  },
+  "type": "apartment",
+  "uaeEmirate": "dubai",
+  "updatedAt": "2026-04-07T11:13:30.428815944Z",
+  "updatedBy": {
+    "id": 250137,
+    "name": "Artem Gerasimov",
+    "photos": {
+      "thumbnail": "https://www.propertyfinder.ae/agent/0/130/100/MODE/bd0db5/250137-edb8ao.jpg?ctr=ae"
+    }
+  },
+  "verificationStatus": "approved"
+}
+Sample listing 2: {
+  "amenities": [
+    "study",
+    "central-ac",
+    "balcony",
+    "shared-pool",
+    "security",
+    "concierge",
+    "built-in-wardrobes",
+    "walk-in-closet",
+    "view-of-landmark",
+    "shared-gym",
+    "lobby-in-building",
+    "childrens-play-area"
+  ],
+  "assignedTo": {
+    "id": 372790,
+    "name": "Radik Pogosyan",
+    "photos": {
+      "thumbnail": "https://www.propertyfinder.ae/agent/0/130/100/MODE/53eed9/372790-bd7b5o.jpg?ctr=ae"
+    }
+  },
+  "bathrooms": "2",
+  "bedrooms": "1",
+  "category": "residential",
+  "compliance": {
+    "issuingClientLicenseNumber": "1230242",
+    "listingAdvertisementNumber": "71444493397",
+    "type": "rera"
+  },
+  "createdAt": "2025-04-12T09:01:26.344834655Z",
+  "description": {
+    "en": "FOR YOU Real estate is resenting desirable spacious 1 bedroom type with direct Burj Khalifa View. Peninsula 4 The Plaza is one of the top quality towers in Peninsula community.\n\nPeninsula is located in Business Bay, a central business district in Dubai known for its mix of residential, commercial, and retail establishments. It offers views of the Dubai Canal and has easy accessibility to various parts of the city.\nSelect Group is one of the leading developers in the UAE. Their reputation is built on delivering high-quality projects.\n\nAmenities will include:\n- barbecue areas\n- retail and leisure elements\n- sauna\n- gymnasium\n- children&#39;s pool\n- swimming pools.\n\nPayment plan is available \n\nIn FOR YOU REAL ESTATE \nWe provide a full range of services from consulting and selection of investment-profitable real estate to receiving dividends from your investments.\nAdvantages of working with us:\n - Detailed market analysis — we will select the appropriate object based on your request\n - We will take over the entire transaction process from purchase to sale, marketing placement and rental\n - Many developers have access to exclusive lots and the best options\n - We provide first-class service. We are always for long-term cooperation\n - Our team has the best brokers\n - We have been working in the market with premium clients for a long time\n\nFor You Real Estate L.L.C. is based in The Onyx Tower 2, office 910 with a team of agents who are focused on the sales, rentals and management of properties in Dubai.\nThe portfolio of our services includes:\n* Off-plan sales\n* Secondary market/ resales\n* Leasing\n* Property management\n* Short term leasing."
+  },
+  "furnishingType": "furnished",
+  "id": "01JRMKPYY8RKQWBEN7YN9MSJHY",
+  "location": {
+    "id": 12023
+  },
+  "media": {
+    "images": [
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/ed6f247a-2ff3-4d70-a108-15847be1cc79.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/f421f8ec-a129-46f8-aade-95dea19ed477-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/0e806d85-9728-41c4-9d5a-b9e40ce7e96f.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/cbb19637-0eb1-4b27-8261-331f90d86215-watermarked.png"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/6d493a73-11a0-4157-8db7-b9b191aede11.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/784275cd-6bd6-4aa3-9156-c6f83d80b348-watermarked.png"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/78de8a00-dea0-4796-b40e-5a973ef55e26.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/01924c06-9680-478d-9468-7fac71894acd-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/a8045c0f-7eea-45cc-8368-fe23c5c82dce.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/4a48bfa4-0edd-4eac-b429-a13c3568948a-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/f1668a0a-1af8-4d99-9f83-d0d192a2980c.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/55cb98d2-171e-42d4-831a-2934ce096160-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/c2cca4e7-0469-4997-a920-02625f397bc2.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/d30d741b-a95c-4595-bbd8-d0b4d12bcdfe-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/546ac595-c8b3-4d47-8bd6-ee450d642601.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/f67f5dd5-2d80-4fa3-b4fc-a78cf3fc965d-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/26d2222f-02aa-4ff9-b3ca-9116db6a4780.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/b49e066d-cf37-43a3-8b8d-de90679ab420-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/3ceece65-298c-4674-87a7-e5f4630cde7c.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/972e8cb8-bc38-4e1e-94b9-83fb16dadf38-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/435561c1-397e-4870-88bd-3452cc8f5fb5.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/8cc960c0-3538-40e6-aa99-ccfa2820458f-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/ffeb686d-8904-4356-9b7a-66d19c40c4f8.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/ec9241c3-e989-4813-a248-cb1266f214a6-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/26c45633-0f77-4269-ba63-f08d05eb6c4d.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/273ab3c8-f4b2-4a66-afbb-50ddb309c62b-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/a6369d81-70cc-4a13-a26e-dc02510dd1c1.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/5ca4609d-b5b2-40b1-b933-330045a66e83-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/ac12fc37-081d-4890-af75-8557db125f00.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/7afe3813-7d14-422f-9726-eb78b27b8b41-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/8c75ce5a-478f-445b-9122-10f623ecd008.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/9b1f89c3-4477-473c-87b1-12275a78b0d3-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/79313daf-87f3-45dc-b7d5-d03ab39d9e74.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/ce3426cb-24f5-4dc9-a9b1-f55c79dc13d4-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/599b94d8-064d-4ec3-8055-432e8c52207e.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/0999c06e-86d6-4744-a2be-e468457c1189-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/1856be17-d253-495b-be67-038380c8243f.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/d0058bd5-cb6b-4ac9-81b9-457e8fabd021-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/83113fff-921a-42e9-92cd-269264f0460f.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/a010312d-3701-4a11-b488-88e818b4b400-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/a6f3fd2c-83ff-4ad5-a796-4dbe35233a59.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/32d5534e-0d07-43a0-945a-8dcdbaa54ff9-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/852dfa53-a18b-4365-abe9-9bafee34f473.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRMKPYY8RKQWBEN7YN9MSJHY/8d2f7842-3119-464d-a5b2-9d9e48bfe6d0-watermarked.jpeg"
+        }
+      }
+    ]
+  },
+  "parkingSlots": 10,
+  "portals": {
+    "propertyfinder": {
+      "isLive": true,
+      "publishedAt": "2025-11-12T11:21:40.68559611Z"
+    }
+  },
+  "price": {
+    "amounts": {
+      "sale": 2300000
+    },
+    "type": "sale"
+  },
+  "products": {
+    "standard": {
+      "createdAt": "2026-04-04T13:45:26+04:00",
+      "expiresAt": "2026-05-04T09:45:25Z",
+      "id": "standard",
+      "renewalEnabled": true
+    }
+  },
+  "projectStatus": "off_plan",
+  "qualityScore": {
+    "color": "green",
+    "details": {
+      "description": {
+        "color": "green",
+        "group": "description",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 10,
+        "weight": 10
+      },
+      "image": {
+        "color": "green",
+        "group": "image",
+        "tag": "22 / 30",
+        "tagAr": "22 / 30",
+        "value": 6,
+        "weight": 6
+      },
+      "imageDiversity": {
+        "color": "green",
+        "group": "image",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 5,
+        "weight": 5
+      },
+      "imageDuplicates": {
+        "color": "green",
+        "group": "image",
+        "help": "Photos are unique",
+        "helpAr": "الصور فريدة من نوعها",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 10,
+        "weight": 10
+      },
+      "imagesDimensions": {
+        "color": "green",
+        "group": "image",
+        "help": "Correct photo sizes",
+        "helpAr": "أحجام الصور صحيحة",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 18,
+        "weight": 18
+      },
+      "listingCompletion": {
+        "color": "green",
+        "group": "listing_completion",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 2,
+        "weight": 2
+      },
+      "location": {
+        "color": "green",
+        "group": "location",
+        "tag": "4 / 4",
+        "tagAr": "4 / 4",
+        "value": 19,
+        "weight": 19
+      },
+      "title": {
+        "color": "red",
+        "group": "title",
+        "help": "Title too long: 30 - 50 characters recommended",
+        "helpAr": "العنوان طويل: عدد الأحرف الموصى بها من 50 الى 30 حرف",
+        "tag": "Long",
+        "tagAr": "طويل",
+        "value": 9,
+        "weight": 10
+      },
+      "verified": {
+        "color": "green",
+        "group": "verification",
+        "tag": "Yes",
+        "tagAr": "نعم",
+        "value": 20,
+        "weight": 20
+      }
+    },
+    "value": 99
+  },
+  "reference": "for-you-real-estate-11349352",
+  "size": 832,
+  "state": {
+    "stage": "live",
+    "type": "live"
+  },
+  "title": {
+    "en": "BURJ KHALIFA VIEW | MOTIVATED SELLER | PAYMENT PLAN"
+  },
+  "type": "apartment",
+  "uaeEmirate": "dubai",
+  "unitNumber": "B-1801",
+  "updatedAt": "2026-04-07T11:21:10.037596165Z",
+  "updatedBy": {
+    "id": 250137,
+    "name": "Artem Gerasimov",
+    "photos": {
+      "thumbnail": "https://www.propertyfinder.ae/agent/0/130/100/MODE/bd0db5/250137-edb8ao.jpg?ctr=ae"
+    }
+  },
+  "verificationStatus": "approved"
+}
+Fetched 59 listings for residential rent state=live
+Fetched 0 listings for residential rent state=archived
+Fetched 0 listings for residential rent state=unpublished
+Fetched 8 listings for residential rent state=takendown
+Total listings for Rent: 67
+Sample listing 1: {
+  "amenities": [
+    "central-ac",
+    "balcony",
+    "shared-pool",
+    "security",
+    "concierge",
+    "covered-parking",
+    "built-in-wardrobes",
+    "kitchen-appliances",
+    "view-of-water",
+    "pets-allowed",
+    "shared-gym",
+    "lobby-in-building"
+  ],
+  "assignedTo": {
+    "id": 296372,
+    "name": "Gulnoza Rakhimova",
+    "photos": {
+      "thumbnail": "https://www.propertyfinder.ae/agent/0/130/100/MODE/3a8bf8/296372-26c61o.jpg?ctr=ae"
+    }
+  },
+  "bathrooms": "5",
+  "bedrooms": "3",
+  "category": "residential",
+  "compliance": {
+    "issuingClientLicenseNumber": "1230242",
+    "listingAdvertisementNumber": "7118354700",
+    "type": "rera"
+  },
+  "createdAt": "2025-04-14T09:11:37.510269505Z",
+  "description": {
+    "en": "FOR YOU REAL ESTATE is thrilled to introduce you a comfortable living in spacious 3-bedroom apartment, located at La Residencia Del Mar, Dubai Marina. \n\nSpacious Layout\n3 Good Size Bedroom\nKitchen with Appliances\nLiving Area\n5 Wash Rooms\nBalcony\nParking\n\nCommunity Features:\nSwimming Pool\nGym\nMaintenance Staff\nSecurity Staff\nWaste Disposal\nEntertainment and Recreational Area\nCctv Security\n24/7 Helpful Security Agents\n\nIn FOR YOU REAL ESTATE \nWe provide a full range of services from consulting and selection of investment-profitable real estate to receiving dividends from your investments.\n - Detailed market analysis — we will select the appropriate object based on your request\n - We will take over the entire transaction process from purchase to sale, marketing placement and rental\n - Many developers have access to exclusive lots and the best options\n - We provide first-class service. We are always for long-term cooperation\n - Our team has the best brokers\n - We have been working in the market with premium clients for a long time."
+  },
+  "furnishingType": "furnished",
+  "id": "01JRSS31S6AN762VFBSQR6ZR4T",
+  "location": {
+    "id": 3055
+  },
+  "media": {
+    "images": [
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/027dd40f-bb6d-425c-8df1-ef6c499299ba.jpg"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/c8c95ee8-88e3-4ac8-a46b-94707be75aee.jpg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/2690dda5-3e4e-45e2-8266-b074b1bbfbf2.jpg"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/8215cfaa-739d-48ea-9b3c-1fbce06195b8.jpg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/2ff84557-7bf5-41fd-ab37-bc0f867062f4.jpg"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/5a074e16-16cd-4561-a2ac-ccbaf218de2c.jpg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/026ee669-6620-4a3a-b445-dae5bfbc7502.jpg"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/75c8d6dc-2401-4d15-b7ff-448691256acc.jpg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/4a302cab-b2b3-44f7-b72b-249726b59797.jpg"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/bcdd6cd1-041f-41e4-8655-e5070075e23d.jpg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/1c304bfd-0a35-4574-b47c-867d8bfbc924.jpg"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/df3b8b79-376b-4533-9652-db517ba9ef57.jpg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/25ed1a36-2c5f-4261-98ab-5eef3b3b6d7c.jpg"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/543bfb07-1e8e-4751-bd07-a9e4b18c27f3.jpg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/f9696eb2-1bde-415a-9c6d-d2581a533235.jpg"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/953b7d51-0341-4252-a938-99ce0d1ffaed.jpg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/f7b67e54-1798-44f0-a140-7f9b28a67ccb.jpg"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/1aac85b0-b911-4490-985b-d0d6b64ecc0d.jpg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/7f37705b-2aef-4c9c-92d2-b805e23e2d70.jpg"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/8a2e66e9-b788-48cc-9ef9-cb304336ca84.jpg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/8a53c377-a606-456b-8dac-1f58a7de9ce0.jpg"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/bbe3931a-dff2-4e05-ad6b-9865be6130e6.jpg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/300c45b0-d3bb-4496-ab38-e4f408adf849.jpg"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/f3768498-ab7d-4c2a-9983-a322cb2cedcd.jpg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/dad8f714-6fb7-4ff8-a0e7-27893c713d56.jpg"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/a77913e8-89a5-4924-960e-2a9a05f0d0ef.jpg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/e8239034-cef8-4a35-a6d0-552f4e479c75.jpg"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/6ba81458-cf75-4cce-85ff-1aafa14c5a8b.jpg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/d9defad8-d7a3-4f44-a79c-5de9c2cec138.jpg"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/fe787e9d-6681-490d-bb36-2b5ce1622586.jpg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/3e47c385-70b2-49aa-a67a-6781c3e5bb63.jpg"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JRSS31S6AN762VFBSQR6ZR4T/305c6c4f-b6c1-46a7-890f-f23428001fcd.jpg"
+        }
+      }
+    ]
+  },
+  "parkingSlots": 1,
+  "portals": {
+    "propertyfinder": {
+      "isLive": true,
+      "publishedAt": "2026-02-28T13:35:11.896507087Z"
+    }
+  },
+  "price": {
+    "amounts": {
+      "yearly": 300000
+    },
+    "numberOfCheques": 4,
+    "type": "yearly"
+  },
+  "products": {
+    "standard": {
+      "createdAt": "2026-04-04T13:45:25+04:00",
+      "expiresAt": "2026-05-04T09:45:24Z",
+      "id": "standard",
+      "renewalEnabled": true
+    }
+  },
+  "qualityScore": {
+    "color": "green",
+    "details": {
+      "description": {
+        "color": "green",
+        "group": "description",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 10,
+        "weight": 10
+      },
+      "image": {
+        "color": "green",
+        "group": "image",
+        "tag": "16 / 30",
+        "tagAr": "16 / 30",
+        "value": 6,
+        "weight": 6
+      },
+      "imageDiversity": {
+        "color": "green",
+        "group": "image",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 5,
+        "weight": 5
+      },
+      "imageDuplicates": {
+        "color": "green",
+        "group": "image",
+        "help": "Photos are unique",
+        "helpAr": "الصور فريدة من نوعها",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 10,
+        "weight": 10
+      },
+      "imagesDimensions": {
+        "color": "green",
+        "group": "image",
+        "help": "Correct photo sizes",
+        "helpAr": "أحجام الصور صحيحة",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 18,
+        "weight": 18
+      },
+      "listingCompletion": {
+        "color": "orange",
+        "group": "listing_completion",
+        "help": "Fill out additional fields",
+        "helpAr": "املأ الحقول الإضافية",
+        "tag": "No",
+        "tagAr": "لا",
+        "value": 1,
+        "weight": 2
+      },
+      "location": {
+        "color": "green",
+        "group": "location",
+        "tag": "3 / 3",
+        "tagAr": "3 / 3",
+        "value": 19,
+        "weight": 19
+      },
+      "title": {
+        "color": "green",
+        "group": "title",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 10,
+        "weight": 10
+      },
+      "verified": {
+        "color": "green",
+        "group": "verification",
+        "tag": "Yes",
+        "tagAr": "نعم",
+        "value": 20,
+        "weight": 20
+      }
+    },
+    "value": 99
+  },
+  "reference": "for-you-real-estate-12298292",
+  "size": 3456,
+  "state": {
+    "stage": "live",
+    "type": "live"
+  },
+  "title": {
+    "en": "STUNNING MARINA VIEW| VACANT | FURNISHED"
+  },
+  "type": "apartment",
+  "uaeEmirate": "dubai",
+  "unitNumber": "802",
+  "updatedAt": "2026-02-28T13:35:11.896535013Z",
+  "updatedBy": {
+    "id": 250137,
+    "name": "Artem Gerasimov",
+    "photos": {
+      "thumbnail": "https://www.propertyfinder.ae/agent/0/130/100/MODE/bd0db5/250137-edb8ao.jpg?ctr=ae"
+    }
+  },
+  "verificationStatus": "approved"
+}
+Sample listing 2: {
+  "amenities": [
+    "balcony",
+    "built-in-wardrobes",
+    "central-ac",
+    "covered-parking",
+    "kitchen-appliances",
+    "pets-allowed",
+    "shared-pool",
+    "security",
+    "view-of-landmark",
+    "childrens-play-area",
+    "shared-gym",
+    "lobby-in-building"
+  ],
+  "assignedTo": {
+    "id": 250137,
+    "name": "Artem Gerasimov",
+    "photos": {
+      "thumbnail": "https://www.propertyfinder.ae/agent/0/130/100/MODE/bd0db5/250137-edb8ao.jpg?ctr=ae"
+    }
+  },
+  "bathrooms": "1",
+  "bedrooms": "1",
+  "category": "residential",
+  "compliance": {
+    "issuingClientLicenseNumber": "1230242",
+    "listingAdvertisementNumber": "71511124694",
+    "type": "rera"
+  },
+  "createdAt": "2025-07-15T07:20:10.715512591Z",
+  "createdBy": {
+    "id": 250137,
+    "name": "Artem Gerasimov",
+    "photos": {
+      "thumbnail": "https://www.propertyfinder.ae/agent/0/130/100/MODE/bd0db5/250137-edb8ao.jpg?ctr=ae"
+    }
+  },
+  "description": {
+    "en": "FOR YOU REAL ESTATE is delighted to present you this elegant 1-bedroom apartment in JVC District 11, Jumeirah Village Circle, Dubai. The apartment has a beautiful view on Five hotel, floor-to-ceiling windows, fully equipped kitchen, and an extra bed. Ideal for couples and families, this luxurious 1-bedroom offers modern style and convenience.\n\n15 minutes away from Mall of the Emirates\n20 minutes away from Dubai Marina\n25 minutes away from Downtown Dubai \n7 minutes away from Circle Mall\n10 minutes away from Dubai Hills Mall\n\nProperty Features: \n- 1 Bedroom with king-size bed\n- 1 Bathroom\n- 1 parking space\n- Smart home\n- Fully furnished\n- Balcony\n- Built-in Wardrobe\n- Black-out curtains\n- Smart TV\n\nBuilding Amenities: \n- Swimming Pool\n- Sun loungers\n- Fully Equipped Gym\n- Kids swimming pool\n- Gazebo \n- 24/7 Security & Concierge service\n\nWithin walking distance:\n- Pharmacy\n- VIVA supermarket\n- Gas station \n- Cafes\n- Community parks\n\nIn FOR YOU REAL ESTATE \nWe provide a full range of services from consulting and selection of investment-profitable real estate to receiving dividends from your investments.\nAdvantages of working with us:\n - Detailed market analysis — we will select the appropriate object based on your request\n - We will take over the entire transaction process from purchase to sale, marketing placement and rental\n - Many developers have access to exclusive lots and the best options\n - We provide first-class service. We are always for long-term cooperation\n - Our team has the best brokers\n - We have been working in the market with premium clients for a long time.\nFor You Real Estate L.L.C. is based in The Onyx Tower 2, office 910 with a team of agents who are focused on the sales, rentals and management of properties in Dubai.\n\n"
+  },
+  "furnishingType": "furnished",
+  "id": "01K06EH7KY3FGTZ3YANSGJX3S9",
+  "location": {
+    "id": 12640
+  },
+  "media": {
+    "images": [
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01K06EH7KY3FGTZ3YANSGJX3S9/32e2d139-1b98-4f01-bb48-7445e99efad8.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01K06EH7KY3FGTZ3YANSGJX3S9/15d7f5a4-1c0d-410c-95e4-fe4c9844782d.png"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01K06EH7KY3FGTZ3YANSGJX3S9/9046ff66-f182-4c6a-aa8c-d8ddb0527280.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01K06EH7KY3FGTZ3YANSGJX3S9/7cf5a438-a9b9-4aab-ab58-0ccab9b4eee9.png"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01K06EH7KY3FGTZ3YANSGJX3S9/be5b9e45-5433-45c2-99d8-5552c3de412e.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01K06EH7KY3FGTZ3YANSGJX3S9/7be4a305-3d19-41f0-bc2e-59f12416e12e.png"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01K06EH7KY3FGTZ3YANSGJX3S9/d425ebdb-0a71-4dc1-896e-63446866f5da.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01K06EH7KY3FGTZ3YANSGJX3S9/5282958f-0f9f-4e68-81f8-11304d3d599f.png"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01K06EH7KY3FGTZ3YANSGJX3S9/f75e6c6a-a2e0-4c42-af7a-e9152a27d6b4.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01K06EH7KY3FGTZ3YANSGJX3S9/17dedd46-5717-4741-921e-c1d88c5b9482.png"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01K06EH7KY3FGTZ3YANSGJX3S9/57f30718-a0b7-4d25-8a09-077eb36537d7.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01K06EH7KY3FGTZ3YANSGJX3S9/9fbececf-c8c1-4667-8fed-cb23afefde53.png"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01K06EH7KY3FGTZ3YANSGJX3S9/19c6f5f6-e0e3-495e-8684-a55ad5578904.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01K06EH7KY3FGTZ3YANSGJX3S9/9be19f14-4601-44d4-90f7-15f76329dd92.png"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01K06EH7KY3FGTZ3YANSGJX3S9/351e0c87-b05f-4690-9f01-b93f85135042.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01K06EH7KY3FGTZ3YANSGJX3S9/32563548-5272-4e5f-994b-dbe6a876974d.png"
+        }
+      }
+    ]
+  },
+  "numberOfFloors": 0,
+  "parkingSlots": 1,
+  "plotSize": 0,
+  "portals": {
+    "propertyfinder": {
+      "isLive": true,
+      "publishedAt": "2025-12-15T08:34:30.537454725Z"
+    }
+  },
+  "price": {
+    "amounts": {
+      "yearly": 80000
+    },
+    "downpayment": 0,
+    "numberOfCheques": 0,
+    "type": "yearly"
+  },
+  "products": {
+    "standard": {
+      "createdAt": "2026-04-04T13:35:23+04:00",
+      "expiresAt": "2026-05-04T09:35:22Z",
+      "id": "standard",
+      "renewalEnabled": true
+    }
+  },
+  "qualityScore": {
+    "color": "green",
+    "details": {
+      "description": {
+        "color": "green",
+        "group": "description",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 10,
+        "weight": 10
+      },
+      "image": {
+        "color": "green",
+        "group": "image",
+        "tag": "8 / 30",
+        "tagAr": "8 / 30",
+        "value": 6,
+        "weight": 6
+      },
+      "imageDiversity": {
+        "color": "green",
+        "group": "image",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 5,
+        "weight": 5
+      },
+      "imageDuplicates": {
+        "color": "green",
+        "group": "image",
+        "help": "Photos are unique",
+        "helpAr": "الصور فريدة من نوعها",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 10,
+        "weight": 10
+      },
+      "imagesDimensions": {
+        "color": "green",
+        "group": "image",
+        "help": "Correct photo sizes",
+        "helpAr": "أحجام الصور صحيحة",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 18,
+        "weight": 18
+      },
+      "listingCompletion": {
+        "color": "red",
+        "group": "listing_completion",
+        "help": "Fill out additional fields",
+        "helpAr": "املأ الحقول الإضافية",
+        "tag": "No",
+        "tagAr": "لا",
+        "weight": 2
+      },
+      "location": {
+        "color": "green",
+        "group": "location",
+        "tag": "4 / 4",
+        "tagAr": "4 / 4",
+        "value": 19,
+        "weight": 19
+      },
+      "title": {
+        "color": "green",
+        "group": "title",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 10,
+        "weight": 10
+      },
+      "verified": {
+        "color": "green",
+        "group": "verification",
+        "tag": "Yes",
+        "tagAr": "نعم",
+        "value": 20,
+        "weight": 20
+      }
+    },
+    "value": 98
+  },
+  "reference": "00000122",
+  "size": 525,
+  "state": {
+    "stage": "live",
+    "type": "live"
+  },
+  "title": {
+    "en": "FULLY FURNISHED | LUXURY LIVING | HIGH FLOOR"
+  },
+  "type": "apartment",
+  "uaeEmirate": "dubai",
+  "updatedAt": "2025-12-15T08:34:30.537486307Z",
+  "updatedBy": {
+    "id": 250137,
+    "name": "Artem Gerasimov",
+    "photos": {
+      "thumbnail": "https://www.propertyfinder.ae/agent/0/130/100/MODE/bd0db5/250137-edb8ao.jpg?ctr=ae"
+    }
+  },
+  "verificationStatus": "approved"
+}
+Fetched 2 listings for commercial sale state=live
+Fetched 0 listings for commercial sale state=archived
+Fetched 0 listings for commercial sale state=unpublished
+Fetched 0 listings for commercial sale state=takendown
+Total listings for Commercial Sell: 2
+Sample listing 1: {
+  "amenities": [
+    "shared-pool",
+    "covered-parking",
+    "shared-gym",
+    "lobby-in-building"
+  ],
+  "assignedTo": {
+    "id": 296372,
+    "name": "Gulnoza Rakhimova",
+    "photos": {
+      "thumbnail": "https://www.propertyfinder.ae/agent/0/130/100/MODE/3a8bf8/296372-26c61o.jpg?ctr=ae"
+    }
+  },
+  "bathrooms": "1",
+  "category": "commercial",
+  "compliance": {
+    "issuingClientLicenseNumber": "1230242",
+    "listingAdvertisementNumber": "71102223121",
+    "type": "rera"
+  },
+  "createdAt": "2025-05-03T12:46:55.633467136Z",
+  "description": {
+    "en": "FOR YOU REAL ESTATE is thrilled to introduce you a studio at Côte d’Azur, a beachfront resort inspired by the French Riviera, just 6 km off Dubai shores. Enjoy world-class amenities and the best of the Mediterranean lifestyle with a collection of stunning properties, all with sea views.\n\nThe Heart of Europe celebrates the very best of European lifestyle and luxury design. Located just off the coast of Dubai, The Heart of Europe is a complex of six fully developed islands offering unrivalled resort and leisure experiences. \n\nA Great Investment in Prime Dubai\nGuaranteed 10% net ROI\nTax free rental income\nReady units available\nThe only resort with boat anchorage at your door step in Dubai\nFree annual 14 days vacation.\n\nIndulge in your favorite activities and take to the water to sail, dive or jet ski and enjoy a complete European shopping experience with the best brands in the world.\n\nIn FOR YOU REAL ESTATE \nWe provide a full range of services from consulting and selection of investment-profitable real estate to receiving dividends from your investments.\nAdvantages of working with us:\n - Detailed market analysis — we will select the appropriate object based on your request\n - We will take over the entire transaction process from purchase to sale, marketing placement and rental\n - Many developers have access to exclusive lots and the best options\n - We provide first-class service. We are always for long-term cooperation\n - Our team has the best brokers\n - We have been working in the market with premium clients for a long time.\nFor You Real Estate L.L.C. is based in The Onyx Tower 2, office 910 with a team of agents who are focused on the sales, rentals and management of properties in Dubai."
+  },
+  "id": "01JTB2YY4H1T2PGB7N59K060T0",
+  "location": {
+    "id": 4591
+  },
+  "media": {
+    "images": [
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/91613ccd-e09d-4c13-91b5-b1b6ca45d7fb.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/44ff6dab-5a67-4652-968f-2f29cd15118d-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/99032f90-1e19-48db-b43b-a5e40e19a331.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/c6a8dbb6-dabf-4bc4-847d-51a1d3652f6e-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/5c6bed7f-dca2-47e4-8895-4d47c1edccde.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/b25db331-9a92-4db3-8b41-4c249594134c-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/7f265925-51d3-498d-83d1-d3ed83ce515a.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/139a6040-c87a-4300-bb7c-87fd9d80fbb1-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/4e1d4849-e305-4505-b8af-f43b3e774b9d.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/0d879afc-be4b-43e4-8da8-ee57c6025a08-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/3d824fd7-074c-4a24-818b-79e52b48ab77.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/f1fdcd52-ff51-4fb6-a58c-0326ae4f75a3-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/059106de-eb82-4c1b-aa3c-e015642888e5.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/9b077899-3537-46ca-bcf6-074ce5029a55-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/3bce868e-f25d-41b7-9303-7c32c7b56490.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/8d7b1892-ed5f-48f5-9f18-4dc55b69545a-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/15cde4cf-fe3d-4681-97a0-3b08feacc576.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/807f7811-d5b6-4e0a-9fa6-88e3f4fecc40-watermarked.png"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/4e962ac4-f443-4d3c-bad3-974d06e526e6.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/a2c07771-e20b-447f-b4a2-9c16b8e078f6-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/69a2e721-2659-4730-a0b6-db0afd8bb10f.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/5d949dd2-b39a-4f63-905b-062822a62859-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/49f8ae7f-bc31-43ad-8571-1dc1847dd62b.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/36d04abd-dd8e-4b05-9abf-ddc404d5a7d0-watermarked.png"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/055ef011-aef8-4a2e-897e-8f195cb3dcfa.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/7ef8116d-1a20-4cf4-931b-d59370ce3518-watermarked.png"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/a02d0e30-748a-48d3-872d-5145a7f0e343.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/54846fdc-773b-4f56-9930-21d21edfe24f-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/50d4707a-e0fb-43ae-889a-0d00f1f46926.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/ea2d590b-000c-4f6c-bdad-08693d8c1272-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/781c812f-21f2-4ba4-8746-0c55e8556959.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/8aa972a3-c37f-4f93-8b17-f33f63954f1f-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/bf1e287b-8584-47eb-9c51-117df7fed1d3.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/edfcca9a-833d-4d50-b55a-6200d3d8bc57-watermarked.jpeg"
+        }
+      },
+      {
+        "original": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/b001b97b-0ec7-4f4f-b3f9-a23f36320d59.png"
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/01JTB2YY4H1T2PGB7N59K060T0/8f16aa0b-f71d-4a3b-bf45-7a7a4e0f5810-watermarked.jpeg"
+        }
+      }
+    ]
+  },
+  "numberOfFloors": 0,
+  "parkingSlots": 1,
+  "plotSize": 0,
+  "portals": {
+    "propertyfinder": {
+      "isLive": true,
+      "publishedAt": "2026-01-08T10:34:52.24699277Z"
+    }
+  },
+  "price": {
+    "amounts": {
+      "sale": 1250000
+    },
+    "downpayment": 0,
+    "numberOfCheques": 0,
+    "onRequest": false,
+    "type": "sale"
+  },
+  "products": {
+    "standard": {
+      "createdAt": "2026-03-17T23:45:14+04:00",
+      "expiresAt": "2026-04-17T19:45:13Z",
+      "id": "standard",
+      "renewalEnabled": true
+    }
+  },
+  "projectStatus": "completed",
+  "qualityScore": {
+    "color": "green",
+    "details": {
+      "description": {
+        "color": "green",
+        "group": "description",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 10,
+        "weight": 10
+      },
+      "image": {
+        "color": "green",
+        "group": "image",
+        "tag": "18 / 30",
+        "tagAr": "18 / 30",
+        "value": 6,
+        "weight": 6
+      },
+      "imageDiversity": {
+        "color": "green",
+        "group": "image",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 5,
+        "weight": 5
+      },
+      "imageDuplicates": {
+        "color": "green",
+        "group": "image",
+        "help": "Photos are unique",
+        "helpAr": "الصور فريدة من نوعها",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 10,
+        "weight": 10
+      },
+      "imagesDimensions": {
+        "color": "green",
+        "group": "image",
+        "help": "Correct photo sizes",
+        "helpAr": "أحجام الصور صحيحة",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 18,
+        "weight": 18
+      },
+      "listingCompletion": {
+        "color": "green",
+        "group": "listing_completion",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 2,
+        "weight": 2
+      },
+      "location": {
+        "color": "green",
+        "group": "location",
+        "tag": "4 / 4",
+        "tagAr": "4 / 4",
+        "value": 19,
+        "weight": 19
+      },
+      "title": {
+        "color": "red",
+        "group": "title",
+        "help": "Title too long: 30 - 50 characters recommended",
+        "helpAr": "العنوان طويل: عدد الأحرف الموصى بها من 50 الى 30 حرف",
+        "tag": "Long",
+        "tagAr": "طويل",
+        "value": 9,
+        "weight": 10
+      },
+      "verified": {
+        "color": "orange",
+        "group": "verification",
+        "help": "Verify your listing",
+        "helpAr": "تقديم الوثائق للتحقق",
+        "tag": "No",
+        "tagAr": "لا",
+        "value": 15,
+        "weight": 20
+      }
+    },
+    "value": 94
+  },
+  "reference": "for-you-real-estate-13651513",
+  "size": 405,
+  "state": {
+    "stage": "live",
+    "type": "live"
+  },
+  "title": {
+    "en": "GARANTED 10% ROI | CHEAPEST PRICE | MOTIVATED SELLER"
+  },
+  "type": "hotel-apartment",
+  "uaeEmirate": "dubai",
+  "unitNumber": "0",
+  "updatedAt": "2026-01-08T10:34:52.247023363Z"
+}
+Sample listing 2: {
+  "amenities": [
+    "networked",
+    "covered-parking",
+    "lobby-in-building"
+  ],
+  "assignedTo": {
+    "id": 351535,
+    "name": "Vladimir Salokhin",
+    "photos": {
+      "thumbnail": "https://www.propertyfinder.ae/agent/0/130/100/MODE/d5e105/351535-c9f18o.jpg?ctr=ae"
+    }
+  },
+  "availableFrom": "2026-02-28",
+  "bathrooms": "none",
+  "category": "commercial",
+  "compliance": {
+    "issuingClientLicenseNumber": "1230242",
+    "listingAdvertisementNumber": "71585901000",
+    "type": "rera"
+  },
+  "createdAt": "2026-02-28T08:34:27.63832663Z",
+  "createdBy": {
+    "id": 250137,
+    "name": "Artem Gerasimov",
+    "photos": {
+      "thumbnail": "https://www.propertyfinder.ae/agent/0/130/100/MODE/bd0db5/250137-edb8ao.jpg?ctr=ae"
+    }
+  },
+  "description": {
+    "ar": "تقع قرية الجميرا سركل في قلب دبي، وهي واحدة من أبرز المناطق السكنية التي توفر حياة مجتمعية متكاملة. يتميز هذا الموقع الاستراتيجي بقربه من شارع الشيخ محمد بن زايد وشارع الخيل، مما يجعل الوصول إلى أبراج بحيرات جميرا، دبي مارينا، البرشاء، ومول الإمارات أمرًا سهلاً ومريحًا. تعتبر قرية الجميرا سركل مجتمعًا سكنيًا متنوعًا يناسب العائلات والأفراد على حد سواء. توفر المنطقة مجموعة متنوعة من العقارات مثل الشقق، الفلل، والتاون هاوس، مع وفرة المرافق الأساسية والترفيهية مثل الحدائق، المدارس، المولات، والصالات الرياضية. هذا يجعلها وجهة مثالية للباحثين عن عقارات سكنية أو تجارية في دبي. يتميز هذا العقار التجاري بموقعه المتميز في قرية الجميرا سركل، حيث يسهل الوصول إلى العديد من المناطق الحيوية في دبي. كما يضم مرافق هامة مثل مواقف سيارات مغطاة، مما يجعله خيارًا مثاليًا للأعمال التجارية التي تتطلب سهولة في الوصول والوقوف.",
+    "en": "FOR YOU REAL ESTATE is proud to present this retail Shop #4 in brand new building in JVC Bingahtti Phantom. \nImportant thing that it placed in the next to main entrance unit on the right side, so each resident or guest of the building will see it every time he/ she goes to or from the building. \n\nProperty details:\n• Type - Shell & Core\n• Size - 2189 sqft\n• Next to main entrance on the right side\n\nProvisions:\n• Power load - 21 KW (can be extended by DEWA)\n• ⁠Gas connection available\n• ⁠Fresh air and exhaust ducts installed \n• ⁠Wet areas + in-unit restroom\n• ⁠3 dedicated podium level parking spaces\n• ⁠Ceilings 4.5 meters\n• ⁠F&B allowed\n\nIn FOR YOU REAL ESTATE \nWe provide a full range of services from consulting and selection of investment-profitable real estate to receiving dividends from your investments.\nAdvantages of working with us:\n - Detailed market analysis — we will select the appropriate object based on your request\n - We will take over the entire transaction process from purchase to sale, marketing placement and rental\n - Many developers have access to exclusive lots and the best options\n - We provide first-class service. We are always for long-term cooperation\n - Our team has the best brokers\n - We have been working in the market with premium clients for a long time.\nFor You Real Estate L.L.C. is based in The Onyx Tower 2, office 910 with a team of agents who are focused on the sales, rentals and management of properties in Dubai."
+  },
+  "developer": "Binghatti",
+  "furnishingType": "unfurnished",
+  "id": "D9KJYDM3Q9QMACH3YCX6XKXKWM",
+  "location": {
+    "id": 13602
+  },
+  "media": {
+    "images": [
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/725cca0a-701b-4956-86c5-f466e3180a00/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/725cca0a-701b-4956-86c5-f466e3180a00/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/4031c90a-2d27-42e5-a4ee-abfbec0b7e18/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/4031c90a-2d27-42e5-a4ee-abfbec0b7e18/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/429ae818-1d42-4e4b-a969-80e74d50fba5/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/429ae818-1d42-4e4b-a969-80e74d50fba5/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/3bf40e7c-ed19-48d5-bba6-827ef5fdf355/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/3bf40e7c-ed19-48d5-bba6-827ef5fdf355/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/332615ab-9ee4-48b7-a287-945ac9d0997f/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/332615ab-9ee4-48b7-a287-945ac9d0997f/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/3e9cd473-4f0c-44cd-9ab0-ba081792a8a1/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/3e9cd473-4f0c-44cd-9ab0-ba081792a8a1/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/12a0a958-bae3-4388-9f9b-31d301b67446/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/12a0a958-bae3-4388-9f9b-31d301b67446/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/ca1fa7a5-78d7-4eac-b2d8-46fac0434574/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/ca1fa7a5-78d7-4eac-b2d8-46fac0434574/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/fb6bd967-63c4-4729-aa05-36faa476543c/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/fb6bd967-63c4-4729-aa05-36faa476543c/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/29e79d36-a2f7-4643-a653-1fa5d645af2f/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/29e79d36-a2f7-4643-a653-1fa5d645af2f/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/5ba99b18-d87d-4b36-9bd6-543a4f9c0303/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/5ba99b18-d87d-4b36-9bd6-543a4f9c0303/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/3a22e2da-a74f-4b51-95ce-7515773ca491/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/3a22e2da-a74f-4b51-95ce-7515773ca491/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/50df5194-4c80-4d55-9f8d-5c9a1159c1f2/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/50df5194-4c80-4d55-9f8d-5c9a1159c1f2/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/1298f24a-3af2-41fd-88e4-a8121391963e/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/1298f24a-3af2-41fd-88e4-a8121391963e/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/1c594ddd-6c9d-4c34-a5a7-8b564d179057/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/1c594ddd-6c9d-4c34-a5a7-8b564d179057/watermarked.jpg"
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/ab0ae8fa-4a49-4efc-90b8-18cd6edd7561/original.jpg",
+          "width": 1312
+        },
+        "watermarked": {
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/D9KJYDM3Q9QMACH3YCX6XKXKWM/ab0ae8fa-4a49-4efc-90b8-18cd6edd7561/watermarked.jpg"
+        }
+      }
+    ]
+  },
+  "parkingSlots": 3,
+  "portals": {
+    "propertyfinder": {
+      "isLive": true,
+      "publishedAt": "2026-02-28T08:35:27.927865592Z"
+    }
+  },
+  "price": {
+    "amounts": {
+      "sale": 7500000
+    },
+    "type": "sale"
+  },
+  "products": {
+    "standard": {
+      "createdAt": "2026-03-28T13:51:32+04:00",
+      "expiresAt": "2026-04-28T09:51:32Z",
+      "id": "standard",
+      "renewalEnabled": true
+    }
+  },
+  "projectStatus": "completed",
+  "qualityScore": {
+    "color": "green",
+    "details": {
+      "description": {
+        "color": "green",
+        "group": "description",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 10,
+        "weight": 10
+      },
+      "image": {
+        "color": "green",
+        "group": "image",
+        "tag": "16 / 30",
+        "tagAr": "16 / 30",
+        "value": 6,
+        "weight": 6
+      },
+      "imageDiversity": {
+        "color": "green",
+        "group": "image",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 5,
+        "weight": 5
+      },
+      "imageDuplicates": {
+        "color": "green",
+        "group": "image",
+        "help": "Photos are unique",
+        "helpAr": "الصور فريدة من نوعها",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 10,
+        "weight": 10
+      },
+      "imagesDimensions": {
+        "color": "green",
+        "group": "image",
+        "help": "Correct photo sizes",
+        "helpAr": "أحجام الصور صحيحة",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 18,
+        "weight": 18
+      },
+      "listingCompletion": {
+        "color": "green",
+        "group": "listing_completion",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 2,
+        "weight": 2
+      },
+      "location": {
+        "color": "green",
+        "group": "location",
+        "tag": "4 / 4",
+        "tagAr": "4 / 4",
+        "value": 19,
+        "weight": 19
+      },
+      "title": {
+        "color": "green",
+        "group": "title",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 10,
+        "weight": 10
+      },
+      "verified": {
+        "color": "green",
+        "group": "verification",
+        "tag": "Yes",
+        "tagAr": "نعم",
+        "value": 20,
+        "weight": 20
+      }
+    },
+    "value": 100
+  },
+  "reference": "VS-10",
+  "size": 2189,
+  "state": {
+    "stage": "live",
+    "type": "live"
+  },
+  "title": {
+    "ar": "عقار تجاري في قرية الجميرا سركل - 3 مواقف سيارات",
+    "en": "NEXT TO MAIN ENTRANCE | SHELL AND CORE"
+  },
+  "type": "shop",
+  "uaeEmirate": "dubai",
+  "updatedAt": "2026-02-28T08:35:27.927894608Z",
+  "updatedBy": {
+    "id": 250137,
+    "name": "Artem Gerasimov",
+    "photos": {
+      "thumbnail": "https://www.propertyfinder.ae/agent/0/130/100/MODE/bd0db5/250137-edb8ao.jpg?ctr=ae"
+    }
+  },
+  "verificationStatus": "approved"
+}
+Fetched 1 listings for commercial rent state=live
+Fetched 0 listings for commercial rent state=archived
+Fetched 0 listings for commercial rent state=unpublished
+Fetched 0 listings for commercial rent state=takendown
+Total listings for Commercial Rent: 1
+Sample listing 1: {
+  "age": 1,
+  "amenities": [
+    "covered-parking",
+    "lobby-in-building"
+  ],
+  "assignedTo": {
+    "id": 351535,
+    "name": "Vladimir Salokhin",
+    "photos": {
+      "thumbnail": "https://www.propertyfinder.ae/agent/0/130/100/MODE/d5e105/351535-c9f18o.jpg?ctr=ae"
+    }
+  },
+  "availableFrom": "2026-01-19",
+  "bathrooms": "1",
+  "category": "commercial",
+  "compliance": {
+    "issuingClientLicenseNumber": "1230242",
+    "listingAdvertisementNumber": "71585901000",
+    "type": "rera"
+  },
+  "createdAt": "2026-01-18T14:30:33.124479517Z",
+  "createdBy": {
+    "id": 351535,
+    "name": "Vladimir Salokhin",
+    "photos": {
+      "thumbnail": "https://www.propertyfinder.ae/agent/0/130/100/MODE/d5e105/351535-c9f18o.jpg?ctr=ae"
+    }
+  },
+  "description": {
+    "en": "FOR YOU Real Estate is proud to present an excellent opportunity to acquire a brand new retail unit in Binghatti Phantom, strategically located next to the main entrance, ensuring high visibility and strong footfall. Ideal for F&B or retail concepts looking to establish a presence in a modern, high-demand development.\n\n- Payment Terms: 4 cheques per year\n- Power load: 21 KW (extendable through DEWA)\n- Gas connection available\n- Fresh air intake and exhaust ducts already installed\n- Wet areas provision with in-unit restroom\n- 4.5-meter ceiling height, ideal for flexible fit-outs\n- F&B permitted\n- 3 dedicated parking spaces on podium level\n\nThis unit offers flexibility for various business concepts and is well suited for investors or end users seeking a high-potential commercial space in a growing area.\nPrime exposure, modern infrastructure, and strong long-term value.\n\nIn FOR YOU REAL ESTATE \nWe provide a full range of services from consulting and selection of investment-profitable real estate to receiving dividends from your investments.\nAdvantages of working with us:\n - Detailed market analysis — we will select the appropriate object based on your request\n - We will take over the entire transaction process from purchase to sale, marketing placement and rental\n - Many developers have access to exclusive lots and the best options\n - We provide first-class service. We are always for long-term cooperation\n - Our team has the best brokers\n - We have been working in the market with premium clients for a long time.\nFor You Real Estate L.L.C. is based in The Onyx Tower 2, office 910 with a team of agents who are focused on the sales, rentals and management of properties in Dubai."
+  },
+  "developer": "Binghatti",
+  "furnishingType": "unfurnished",
+  "id": "JQD2J3EAAG9E66XKZEAY3YB868",
+  "location": {
+    "id": 13602
+  },
+  "media": {
+    "images": [
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/JQD2J3EAAG9E66XKZEAY3YB868/38da0bac-2c80-403d-9653-7bffc0822a74/original.jpg",
+          "width": 1312
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/JQD2J3EAAG9E66XKZEAY3YB868/e20c671e-abe7-4d04-b09b-9a24ad053528/original.jpg",
+          "width": 1312
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/JQD2J3EAAG9E66XKZEAY3YB868/fd92858c-7546-4488-9b69-7804d19dfd2b/original.jpg",
+          "width": 1312
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/JQD2J3EAAG9E66XKZEAY3YB868/2408b8b4-1d76-4745-a651-d20c87fd3acc/original.jpg",
+          "width": 1312
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/JQD2J3EAAG9E66XKZEAY3YB868/2a595d6b-1554-473d-80d5-a6123b000027/original.jpg",
+          "width": 1312
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/JQD2J3EAAG9E66XKZEAY3YB868/a23f28e0-8ee1-4357-b8ed-3d933dcb3952/original.jpg",
+          "width": 1312
+        }
+      },
+      {
+        "original": {
+          "height": 894,
+          "url": "https://static.shared.propertyfinder.ae/media/images/listing/JQD2J3EAAG9E66XKZEAY3YB868/4504fc8a-d1bd-44cb-aa82-8d75957c3170/original.jpg",
+          "width": 1312
+        }
+      }
+    ]
+  },
+  "parkingSlots": 3,
+  "portals": {
+    "propertyfinder": {
+      "isLive": true,
+      "publishedAt": "2026-01-21T11:40:55.972448215Z"
+    }
+  },
+  "price": {
+    "amounts": {
+      "yearly": 650000
+    },
+    "numberOfCheques": 4,
+    "type": "yearly"
+  },
+  "products": {
+    "standard": {
+      "createdAt": "2026-03-19T16:15:08+04:00",
+      "expiresAt": "2026-04-19T12:15:08Z",
+      "id": "standard",
+      "renewalEnabled": true
+    }
+  },
+  "qualityScore": {
+    "color": "green",
+    "details": {
+      "description": {
+        "color": "green",
+        "group": "description",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 10,
+        "weight": 10
+      },
+      "image": {
+        "color": "green",
+        "group": "image",
+        "tag": "7 / 30",
+        "tagAr": "7 / 30",
+        "value": 6,
+        "weight": 6
+      },
+      "imageDiversity": {
+        "color": "green",
+        "group": "image",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 5,
+        "weight": 5
+      },
+      "imageDuplicates": {
+        "color": "green",
+        "group": "image",
+        "help": "Photos are unique",
+        "helpAr": "الصور فريدة من نوعها",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 10,
+        "weight": 10
+      },
+      "imagesDimensions": {
+        "color": "green",
+        "group": "image",
+        "help": "Correct photo sizes",
+        "helpAr": "أحجام الصور صحيحة",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 18,
+        "weight": 18
+      },
+      "listingCompletion": {
+        "color": "green",
+        "group": "listing_completion",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 2,
+        "weight": 2
+      },
+      "location": {
+        "color": "green",
+        "group": "location",
+        "tag": "4 / 4",
+        "tagAr": "4 / 4",
+        "value": 19,
+        "weight": 19
+      },
+      "title": {
+        "color": "green",
+        "group": "title",
+        "tag": "Ok",
+        "tagAr": "جيد",
+        "value": 10,
+        "weight": 10
+      },
+      "verified": {
+        "color": "green",
+        "group": "verification",
+        "tag": "Yes",
+        "tagAr": "نعم",
+        "value": 20,
+        "weight": 20
+      }
+    },
+    "value": 100
+  },
+  "reference": "VS02",
+  "size": 2189,
+  "state": {
+    "stage": "live",
+    "type": "live"
+  },
+  "title": {
+    "en": "Retail | Shell and Core | Brand New"
+  },
+  "type": "shop",
+  "uaeEmirate": "dubai",
+  "unitNumber": "Retail 4",
+  "updatedAt": "2026-01-21T11:40:55.972450304Z",
+  "updatedBy": {
+    "id": 250137,
+    "name": "Artem Gerasimov",
+    "photos": {
+      "thumbnail": "https://www.propertyfinder.ae/agent/0/130/100/MODE/bd0db5/250137-edb8ao.jpg?ctr=ae"
+    }
+  },
+  "verificationStatus": "approved"
+}
+Done! Data saved to pf_listings_report.json

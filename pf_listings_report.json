@@ -1,0 +1,6564 @@
+[
+  {
+    "Category": "Sell",
+    "Reference": "00000495",
+    "Title": "VACANT | PARK VIEW | FULLY FURNISHED",
+    "CreatedAt": "2026-03-18T11:32:02.223188514Z",
+    "Budget": 3,
+    "BudgetByMonth": {
+      "2026-03": 3
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_28467214",
+      "call_lead_11997976"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-11349352",
+    "Title": "BURJ KHALIFA VIEW | MOTIVATED SELLER | PAYMENT PLAN",
+    "CreatedAt": "2025-04-12T09:01:26.344834655Z",
+    "Budget": 926,
+    "BudgetByMonth": {
+      "2026-04": 47,
+      "2026-03": 47,
+      "2026-02": 47,
+      "2026-01": 47,
+      "2025-12": 47,
+      "2025-11": 58,
+      "2025-10": 58,
+      "2025-09": 58,
+      "2025-08": 51,
+      "2025-07": 49,
+      "2025-06": 49,
+      "2025-05": 51,
+      "2025-04": 46,
+      "2025-03": 47,
+      "2025-02": 51,
+      "2025-01": 54,
+      "2024-12": 58,
+      "2024-11": 61
+    },
+    "Leads": 10,
+    "LeadsIds": [
+      "message_lead_28326750",
+      "message_lead_28008405",
+      "message_lead_27746605",
+      "call_lead_11893577",
+      "message_lead_27645023",
+      "message_lead_27534794",
+      "message_lead_27491566",
+      "message_lead_27438159",
+      "message_lead_27360118",
+      "message_lead_26638446"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-13571752",
+    "Title": "BEST INVESTMENT | LUXURY 1 BDR | MARINA VIEW",
+    "CreatedAt": "2025-04-17T08:17:54.593540358Z",
+    "Budget": 637,
+    "BudgetByMonth": {
+      "2026-04": 49,
+      "2026-03": 49,
+      "2026-02": 49,
+      "2026-01": 49,
+      "2025-12": 49,
+      "2025-11": 61,
+      "2025-10": 61,
+      "2025-09": 53,
+      "2025-08": 54,
+      "2025-07": 54,
+      "2025-05": 54,
+      "2025-04": 55
+    },
+    "Leads": 7,
+    "LeadsIds": [
+      "message_lead_28695763",
+      "message_lead_28065414",
+      "message_lead_27768805",
+      "message_lead_27556974",
+      "message_lead_27392641",
+      "message_lead_26560299",
+      "message_lead_26212905"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-13785652",
+    "Title": "BEST OPEN VIEW | MOTIVATED SELLER | HIGH ROI",
+    "CreatedAt": "2025-04-29T12:51:10.09450076Z",
+    "Budget": 655,
+    "BudgetByMonth": {
+      "2026-03": 49,
+      "2026-02": 49,
+      "2026-01": 98,
+      "2025-12": 49,
+      "2025-11": 61,
+      "2025-10": 61,
+      "2025-09": 53,
+      "2025-08": 54,
+      "2025-07": 49,
+      "2025-06": 23,
+      "2025-05": 54,
+      "2025-04": 55
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_27302761"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-13525710",
+    "Title": "BEST PRICE| PRIME LOCATION| STYLISH 1BEDROOM",
+    "CreatedAt": "2025-04-29T13:05:13.764806194Z",
+    "Budget": 450,
+    "BudgetByMonth": {
+      "2026-04": 2,
+      "2026-03": 2,
+      "2026-02": 2,
+      "2026-01": 2,
+      "2025-12": 4,
+      "2025-11": 4,
+      "2025-10": 425,
+      "2025-09": 3,
+      "2025-08": 3,
+      "2025-06": 1,
+      "2025-05": 1,
+      "2025-04": 1
+    },
+    "Leads": 7,
+    "LeadsIds": [
+      "message_lead_28402849",
+      "message_lead_28127290",
+      "message_lead_28047168",
+      "message_lead_28012005",
+      "message_lead_27605997",
+      "message_lead_27567615",
+      "message_lead_26935573"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-13633559",
+    "Title": "SPACIOUS 2BR | BURJ KHALIFA VIEW| MOTIVATED SELLER",
+    "CreatedAt": "2025-04-29T13:07:15.635907614Z",
+    "Budget": 288,
+    "BudgetByMonth": {
+      "2026-03": 1,
+      "2026-02": 1,
+      "2026-01": 1,
+      "2025-12": 1,
+      "2025-11": 1,
+      "2025-10": 1,
+      "2025-09": 1,
+      "2025-08": 1,
+      "2025-07": 1,
+      "2025-06": 277,
+      "2025-05": 1,
+      "2025-04": 1
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "message_lead_27901685",
+      "message_lead_27681745",
+      "message_lead_27015211"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-13608874",
+    "Title": "Studio Apartment | Top Location | Viewz Residence",
+    "CreatedAt": "2025-04-30T09:33:09.314712394Z",
+    "Budget": 461,
+    "BudgetByMonth": {
+      "2026-03": 40,
+      "2026-02": 40,
+      "2026-01": 40,
+      "2025-12": 40,
+      "2025-11": 40,
+      "2025-09": 49,
+      "2025-08": 47,
+      "2025-07": 43,
+      "2025-06": 42,
+      "2025-05": 42,
+      "2025-04": 38
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_27362322"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-13467294",
+    "Title": "BEST INVESTMENT| FITTED KITCHEN| MODERN STUDIO",
+    "CreatedAt": "2025-05-03T12:53:40.063623491Z",
+    "Budget": 27,
+    "BudgetByMonth": {
+      "2026-04": 3,
+      "2026-03": 3,
+      "2026-02": 3,
+      "2026-01": 3,
+      "2025-12": 3,
+      "2025-11": 3,
+      "2025-10": 2,
+      "2025-09": 2,
+      "2025-08": 1,
+      "2025-07": 1,
+      "2025-06": 1,
+      "2025-05": 1,
+      "2025-04": 1
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_28167630",
+      "message_lead_26520552"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-13425717",
+    "Title": "VACANT | UPGRADED UNIT | SPACIOUS",
+    "CreatedAt": "2025-05-04T07:26:50.93655335Z",
+    "Budget": 1655,
+    "BudgetByMonth": {
+      "2026-03": 125,
+      "2026-02": 125,
+      "2026-01": 125,
+      "2025-12": 250,
+      "2025-11": 257,
+      "2025-10": 125,
+      "2025-06": 112,
+      "2025-05": 298,
+      "2025-04": 238
+    },
+    "Leads": 6,
+    "LeadsIds": [
+      "call_lead_12019001",
+      "message_lead_28436902",
+      "message_lead_27540675",
+      "message_lead_27371535",
+      "message_lead_26552274",
+      "message_lead_26256519"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-12803606",
+    "Title": "MID FLOOR | CREEK WATER VIEW | FITTED KITCHEN",
+    "CreatedAt": "2025-05-04T07:47:33.407194034Z",
+    "Budget": 63,
+    "BudgetByMonth": {
+      "2026-04": 7,
+      "2026-03": 7,
+      "2026-02": 7,
+      "2026-01": 7,
+      "2025-12": 7,
+      "2025-11": 7,
+      "2025-10": 7,
+      "2025-09": 4,
+      "2025-08": 4,
+      "2025-07": 1,
+      "2025-06": 1,
+      "2025-05": 1,
+      "2025-04": 1,
+      "2025-03": 1,
+      "2025-02": 1
+    },
+    "Leads": 12,
+    "LeadsIds": [
+      "call_lead_12022291",
+      "call_lead_11963954",
+      "message_lead_28102481",
+      "message_lead_28102429",
+      "message_lead_27906899",
+      "message_lead_27707595",
+      "message_lead_27352386",
+      "call_lead_11840488",
+      "message_lead_27032278",
+      "call_lead_11755022",
+      "message_lead_26519786",
+      "message_lead_26216670"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-13079667",
+    "Title": "MIDDLE FLOOR | BEST POOL VIEW| FULLY FURNISHED",
+    "CreatedAt": "2025-05-04T13:41:15.044376171Z",
+    "Budget": 556,
+    "BudgetByMonth": {
+      "2026-04": 37,
+      "2026-03": 37,
+      "2026-02": 37,
+      "2026-01": 37,
+      "2025-12": 37,
+      "2025-11": 46,
+      "2025-10": 47,
+      "2025-09": 45,
+      "2025-08": 41,
+      "2025-07": 39,
+      "2025-06": 40,
+      "2025-05": 36,
+      "2025-04": 37,
+      "2025-03": 40
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_27915702",
+      "message_lead_26446028"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-13823278",
+    "Title": "92% COMPLETION | MID FLOOR | BOULEVARD VIEW",
+    "CreatedAt": "2025-05-04T14:25:47.722238866Z",
+    "Budget": 56,
+    "BudgetByMonth": {
+      "2026-04": 7,
+      "2026-03": 7,
+      "2026-02": 7,
+      "2026-01": 7,
+      "2025-12": 7,
+      "2025-11": 7,
+      "2025-10": 7,
+      "2025-09": 3,
+      "2025-08": 1,
+      "2025-07": 1,
+      "2025-06": 1,
+      "2025-05": 1
+    },
+    "Leads": 8,
+    "LeadsIds": [
+      "call_lead_11939834",
+      "message_lead_27833143",
+      "message_lead_27465463",
+      "call_lead_11857311",
+      "message_lead_27336630",
+      "message_lead_27298079",
+      "call_lead_11797489",
+      "message_lead_26454625"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-13828117",
+    "Title": "PAYMENT PLAN | PRIME LOCATION | HIGH ROI",
+    "CreatedAt": "2025-05-05T10:21:03.893991229Z",
+    "Budget": 7645,
+    "BudgetByMonth": {
+      "2026-03": 40,
+      "2026-02": 40,
+      "2026-01": 40,
+      "2025-12": 40,
+      "2025-11": 50,
+      "2025-10": 1610,
+      "2025-09": 1840,
+      "2025-08": 1716,
+      "2025-07": 838,
+      "2025-06": 722,
+      "2025-05": 709
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "0000011",
+    "Title": "FURNISHED | HIGH FLOOR | PANORAMIC VIEWS",
+    "CreatedAt": "2025-05-11T16:13:38.779523205Z",
+    "Budget": 39,
+    "BudgetByMonth": {
+      "2026-03": 3,
+      "2026-02": 3,
+      "2026-01": 3,
+      "2025-12": 6,
+      "2025-11": 5,
+      "2025-10": 5,
+      "2025-09": 4,
+      "2025-08": 4,
+      "2025-07": 4,
+      "2025-06": 1,
+      "2025-05": 1
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_28520470",
+      "call_lead_11986777"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "0000016",
+    "Title": "Luxury Living | Business Bay | High ROI",
+    "CreatedAt": "2025-05-19T09:54:42.333270685Z",
+    "Budget": 477,
+    "BudgetByMonth": {
+      "2026-04": 40,
+      "2026-03": 40,
+      "2026-02": 40,
+      "2026-01": 40,
+      "2025-12": 40,
+      "2025-11": 50,
+      "2025-10": 50,
+      "2025-08": 48,
+      "2025-07": 44,
+      "2025-06": 42,
+      "2025-05": 43
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_26597079"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "0000018",
+    "Title": "Luxury Living | Business Bay | High ROI",
+    "CreatedAt": "2025-05-19T15:35:45.686498174Z",
+    "Budget": 559,
+    "BudgetByMonth": {
+      "2026-04": 53,
+      "2026-03": 53,
+      "2026-02": 53,
+      "2026-01": 53,
+      "2025-12": 53,
+      "2025-11": 66,
+      "2025-08": 64,
+      "2025-07": 58,
+      "2025-06": 55,
+      "2025-05": 51
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "0000019",
+    "Title": "Spacious 1BR | Burj Khalifa view | High ROI",
+    "CreatedAt": "2025-05-19T17:00:35.375862682Z",
+    "Budget": 566,
+    "BudgetByMonth": {
+      "2026-04": 42,
+      "2026-03": 42,
+      "2026-02": 44,
+      "2026-01": 44,
+      "2025-12": 44,
+      "2025-11": 54,
+      "2025-10": 54,
+      "2025-09": 54,
+      "2025-08": 52,
+      "2025-07": 47,
+      "2025-06": 45,
+      "2025-05": 44
+    },
+    "Leads": 7,
+    "LeadsIds": [
+      "message_lead_28118055",
+      "message_lead_27590949",
+      "call_lead_11872405",
+      "message_lead_27537225",
+      "message_lead_27528587",
+      "call_lead_11857927",
+      "message_lead_26860319"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "0000024",
+    "Title": "Modern 1BR in Central Park Dubai",
+    "CreatedAt": "2025-05-22T13:14:19.645632123Z",
+    "Budget": 751,
+    "BudgetByMonth": {
+      "2026-04": 7,
+      "2026-03": 7,
+      "2026-02": 351,
+      "2026-01": 358,
+      "2025-12": 7,
+      "2025-11": 7,
+      "2025-10": 7,
+      "2025-08": 4,
+      "2025-07": 1,
+      "2025-06": 1,
+      "2025-05": 1
+    },
+    "Leads": 10,
+    "LeadsIds": [
+      "message_lead_28450119",
+      "message_lead_27712726",
+      "message_lead_27474207",
+      "message_lead_27395490",
+      "message_lead_27381884",
+      "message_lead_27218173",
+      "message_lead_27137648",
+      "message_lead_27073513",
+      "message_lead_26648410",
+      "message_lead_26369505"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "0000026",
+    "Title": "HIGH FLOOR | BURJ KHALIFA VIEW | CORNER UNIT",
+    "CreatedAt": "2025-05-23T12:48:13.343511717Z",
+    "Budget": 1218,
+    "BudgetByMonth": {
+      "2026-04": 104,
+      "2026-03": 104,
+      "2026-02": 104,
+      "2026-01": 104,
+      "2025-12": 104,
+      "2025-11": 130,
+      "2025-10": 130,
+      "2025-08": 126,
+      "2025-07": 117,
+      "2025-06": 112,
+      "2025-05": 83
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "0000035",
+    "Title": "HIGH QUALITY | PRIME LOCATION | HIGH ROI",
+    "CreatedAt": "2025-06-02T13:43:35.6699636Z",
+    "Budget": 49,
+    "BudgetByMonth": {
+      "2026-04": 3,
+      "2026-03": 3,
+      "2026-02": 3,
+      "2026-01": 3,
+      "2025-12": 3,
+      "2025-11": 12,
+      "2025-10": 6,
+      "2025-09": 5,
+      "2025-08": 5,
+      "2025-07": 5,
+      "2025-06": 1
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "0000046",
+    "Title": "LUXURY | HIGH QUALITY | HIGHT ROI",
+    "CreatedAt": "2025-06-07T11:46:55.065701905Z",
+    "Budget": 38,
+    "BudgetByMonth": {
+      "2026-04": 3,
+      "2026-03": 3,
+      "2026-02": 3,
+      "2026-01": 3,
+      "2025-12": 3,
+      "2025-11": 5,
+      "2025-10": 5,
+      "2025-09": 4,
+      "2025-08": 4,
+      "2025-07": 4,
+      "2025-06": 1
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "0000055",
+    "Title": "FULL LAGOON VIEW| HIGH FLOOR | CLOSE HANDOVER",
+    "CreatedAt": "2025-06-10T13:25:20.519797588Z",
+    "Budget": 34,
+    "BudgetByMonth": {
+      "2026-04": 4,
+      "2026-03": 4,
+      "2026-02": 4,
+      "2026-01": 4,
+      "2025-12": 4,
+      "2025-11": 4,
+      "2025-10": 4,
+      "2025-09": 3,
+      "2025-08": 1,
+      "2025-07": 1,
+      "2025-06": 1
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "0000065",
+    "Title": "CANAL VIEW | FURNISHED | HIGH FLOOR",
+    "CreatedAt": "2025-06-16T12:35:59.44694168Z",
+    "Budget": 3060,
+    "BudgetByMonth": {
+      "2026-04": 57,
+      "2025-12": 57,
+      "2025-11": 71,
+      "2025-09": 62,
+      "2025-08": 63,
+      "2025-07": 1281,
+      "2025-06": 1469
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "0000097",
+    "Title": "FULLY FURNISHED | BEST VIEWS | UNIQUE PP",
+    "CreatedAt": "2025-06-26T12:16:53.963031371Z",
+    "Budget": 904,
+    "BudgetByMonth": {
+      "2026-04": 74,
+      "2026-03": 74,
+      "2026-02": 74,
+      "2026-01": 74,
+      "2025-12": 74,
+      "2025-11": 92,
+      "2025-10": 100,
+      "2025-09": 87,
+      "2025-08": 88,
+      "2025-07": 79,
+      "2025-06": 88
+    },
+    "Leads": 11,
+    "LeadsIds": [
+      "call_lead_11915866",
+      "message_lead_27727101",
+      "message_lead_27456969",
+      "message_lead_27270470",
+      "message_lead_27046925",
+      "call_lead_11750338",
+      "call_lead_11735340",
+      "message_lead_26503745",
+      "message_lead_26496300",
+      "message_lead_26401724",
+      "message_lead_26198413"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "0000111",
+    "Title": "PRIME LOCATION | SPACIOUS | GREAT DEAL",
+    "CreatedAt": "2025-07-02T13:24:24.849195349Z",
+    "Budget": 16,
+    "BudgetByMonth": {
+      "2026-03": 3,
+      "2026-02": 1,
+      "2026-01": 1,
+      "2025-12": 1,
+      "2025-11": 4,
+      "2025-10": 2,
+      "2025-09": 2,
+      "2025-08": 1,
+      "2025-07": 1
+    },
+    "Leads": 18,
+    "LeadsIds": [
+      "message_lead_28703508",
+      "message_lead_28529892",
+      "call_lead_12003721",
+      "message_lead_28100210",
+      "message_lead_28037649",
+      "message_lead_27636600",
+      "message_lead_27563044",
+      "message_lead_27450228",
+      "message_lead_27257719",
+      "message_lead_27167695",
+      "message_lead_27161892",
+      "call_lead_11811760",
+      "message_lead_27118566",
+      "message_lead_26974929",
+      "call_lead_11786220",
+      "message_lead_26973464",
+      "call_lead_11740085",
+      "message_lead_26296195"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000135",
+    "Title": "FULLY FURNISHED | HIGH ROI | VACANT STUDIO",
+    "CreatedAt": "2025-07-24T13:27:37.356540032Z",
+    "Budget": 24,
+    "BudgetByMonth": {
+      "2026-03": 2,
+      "2026-02": 2,
+      "2025-12": 2,
+      "2025-11": 4,
+      "2025-10": 4,
+      "2025-09": 4,
+      "2025-08": 3,
+      "2025-07": 3
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000151",
+    "Title": "DUBAI MARINA | LUXURY LIVING | SPACIOUS",
+    "CreatedAt": "2025-08-07T19:20:41.243671673Z",
+    "Budget": 668,
+    "BudgetByMonth": {
+      "2026-04": 71,
+      "2026-03": 71,
+      "2026-02": 71,
+      "2026-01": 71,
+      "2025-12": 71,
+      "2025-11": 88,
+      "2025-10": 77,
+      "2025-09": 78,
+      "2025-08": 70
+    },
+    "Leads": 12,
+    "LeadsIds": [
+      "message_lead_28656740",
+      "message_lead_28628707",
+      "message_lead_28234397",
+      "message_lead_27727969",
+      "message_lead_27655792",
+      "message_lead_27646069",
+      "message_lead_27456925",
+      "message_lead_27317094",
+      "message_lead_27239154",
+      "message_lead_27038764",
+      "message_lead_26828065",
+      "message_lead_26403647"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000155",
+    "Title": "PRIME LOCATION | BEST PRICE | STUNNING 1BR",
+    "CreatedAt": "2025-08-08T14:12:37.275763983Z",
+    "Budget": 77,
+    "BudgetByMonth": {
+      "2026-04": 10,
+      "2026-03": 10,
+      "2026-02": 10,
+      "2026-01": 10,
+      "2025-12": 10,
+      "2025-11": 10,
+      "2025-10": 10,
+      "2025-09": 6,
+      "2025-08": 1
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_28026315"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000163",
+    "Title": "LUXURY LIVING | SPACIOUS | PRIVATE POOL",
+    "CreatedAt": "2025-08-14T12:10:29.03027932Z",
+    "Budget": 8,
+    "BudgetByMonth": {
+      "2026-03": 1,
+      "2026-02": 1,
+      "2026-01": 1,
+      "2025-12": 1,
+      "2025-11": 1,
+      "2025-10": 1,
+      "2025-09": 1,
+      "2025-08": 1
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_28401587",
+      "message_lead_27632259"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000164",
+    "Title": "LARGE LAYOUT | GREAT LOCATION | FAMILY FRIENDLY",
+    "CreatedAt": "2025-08-14T12:50:44.056461104Z",
+    "Budget": 45,
+    "BudgetByMonth": {
+      "2026-04": 4,
+      "2026-03": 4,
+      "2026-02": 4,
+      "2026-01": 4,
+      "2025-12": 4,
+      "2025-11": 8,
+      "2025-10": 8,
+      "2025-09": 5,
+      "2025-08": 4
+    },
+    "Leads": 8,
+    "LeadsIds": [
+      "message_lead_28568600",
+      "message_lead_28435663",
+      "message_lead_28002787",
+      "message_lead_27681522",
+      "message_lead_27646415",
+      "call_lead_11851214",
+      "message_lead_27227132",
+      "message_lead_27140033"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000165",
+    "Title": "PRIVATE POOL | PRIME LOCATION | PREMIUM FINISHING",
+    "CreatedAt": "2025-08-17T16:01:20.514547675Z",
+    "Budget": 154,
+    "BudgetByMonth": {
+      "2026-04": 4,
+      "2026-03": 4,
+      "2026-02": 4,
+      "2026-01": 4,
+      "2025-12": 1,
+      "2025-11": 1,
+      "2025-10": 1,
+      "2025-09": 67,
+      "2025-08": 68
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000171",
+    "Title": "DUBAI MARINA | SPACIOUS STUDIO | LUXURY LIVING",
+    "CreatedAt": "2025-08-27T10:44:21.74767502Z",
+    "Budget": 2405,
+    "BudgetByMonth": {
+      "2026-04": 44,
+      "2026-03": 606,
+      "2026-02": 606,
+      "2026-01": 44,
+      "2025-12": 44,
+      "2025-11": 913,
+      "2025-10": 54,
+      "2025-09": 47,
+      "2025-08": 47
+    },
+    "Leads": 8,
+    "LeadsIds": [
+      "message_lead_28544097",
+      "message_lead_28519842",
+      "message_lead_28387184",
+      "message_lead_28285550",
+      "message_lead_28058816",
+      "message_lead_27176575",
+      "message_lead_27129900",
+      "message_lead_26791315"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000176",
+    "Title": "VACANT 1 BEDROOM | FURNISHED | BEST PRICE",
+    "CreatedAt": "2025-08-29T11:33:58.976319276Z",
+    "Budget": 48,
+    "BudgetByMonth": {
+      "2026-04": 1,
+      "2026-03": 1,
+      "2026-02": 1,
+      "2025-12": 1,
+      "2025-11": 1,
+      "2025-10": 1,
+      "2025-09": 1,
+      "2025-08": 41
+    },
+    "Leads": 27,
+    "LeadsIds": [
+      "message_lead_28488163",
+      "message_lead_28465415",
+      "message_lead_28463083",
+      "message_lead_28439665",
+      "message_lead_28330856",
+      "message_lead_28313923",
+      "message_lead_28191819",
+      "message_lead_28178678",
+      "message_lead_28130331",
+      "message_lead_28113247",
+      "message_lead_28087402",
+      "message_lead_28087170",
+      "message_lead_28048014",
+      "call_lead_11943772",
+      "message_lead_28039742",
+      "message_lead_28005827",
+      "message_lead_27970235",
+      "message_lead_27964253",
+      "message_lead_27942304",
+      "message_lead_27938083",
+      "message_lead_27789008",
+      "message_lead_27770949",
+      "message_lead_27759643",
+      "message_lead_27674032",
+      "message_lead_27641524",
+      "message_lead_26352925",
+      "message_lead_26256132"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000185",
+    "Title": "JUMEIRAH ISLAND VIEW | FULLY FURNISHED | RENTED",
+    "CreatedAt": "2025-09-02T16:10:52.017426211Z",
+    "Budget": 1846,
+    "BudgetByMonth": {
+      "2026-04": 1058,
+      "2026-01": 66,
+      "2025-12": 66,
+      "2025-11": 164,
+      "2025-10": 82,
+      "2025-09": 410
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_28565025"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000186",
+    "Title": "BURJ KHALIFA VIEW | PRIME LOCATION | LUXURY LIVING",
+    "CreatedAt": "2025-09-02T16:33:40.430379354Z",
+    "Budget": 465,
+    "BudgetByMonth": {
+      "2026-04": 47,
+      "2026-03": 47,
+      "2026-02": 47,
+      "2026-01": 47,
+      "2025-12": 47,
+      "2025-11": 116,
+      "2025-10": 58,
+      "2025-09": 56
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000187",
+    "Title": "SEA VIEW | PREMIUM QUALITY | STANDOUT INVESTMENT",
+    "CreatedAt": "2025-09-03T09:09:45.373269162Z",
+    "Budget": 615,
+    "BudgetByMonth": {
+      "2026-03": 71,
+      "2026-02": 71,
+      "2026-01": 71,
+      "2025-12": 71,
+      "2025-11": 176,
+      "2025-10": 77,
+      "2025-09": 78
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "message_lead_28656890",
+      "message_lead_28047475",
+      "message_lead_26520718"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000194",
+    "Title": "LUXURY LIVING | PRIME LOCATION | RENTED",
+    "CreatedAt": "2025-09-09T10:43:00.574917207Z",
+    "Budget": 1427,
+    "BudgetByMonth": {
+      "2026-03": 178,
+      "2026-02": 178,
+      "2026-01": 178,
+      "2025-12": 178,
+      "2025-11": 356,
+      "2025-10": 178,
+      "2025-09": 181
+    },
+    "Leads": 6,
+    "LeadsIds": [
+      "message_lead_28440184",
+      "message_lead_27983848",
+      "message_lead_27776340",
+      "message_lead_27159098",
+      "message_lead_27103291",
+      "message_lead_26676518"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000195",
+    "Title": "HIGH FLOOR | CANAL AND SKYLINE VIEW | BEST PRICE",
+    "CreatedAt": "2025-09-09T15:09:58.744022395Z",
+    "Budget": 364,
+    "BudgetByMonth": {
+      "2026-04": 42,
+      "2026-03": 42,
+      "2026-02": 42,
+      "2026-01": 42,
+      "2025-12": 42,
+      "2025-11": 52,
+      "2025-10": 52,
+      "2025-09": 50
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_28124364",
+      "message_lead_26537925"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000205",
+    "Title": "Studio for personal use | Hotel service | Vacant",
+    "CreatedAt": "2025-09-12T09:13:20.904503752Z",
+    "Budget": 254,
+    "BudgetByMonth": {
+      "2026-03": 32,
+      "2026-02": 32,
+      "2026-01": 32,
+      "2025-12": 32,
+      "2025-11": 42,
+      "2025-10": 42,
+      "2025-09": 42
+    },
+    "Leads": 70,
+    "LeadsIds": [
+      "message_lead_28622462",
+      "message_lead_28568147",
+      "message_lead_28516602",
+      "message_lead_28390748",
+      "message_lead_28355459",
+      "message_lead_28344106",
+      "message_lead_28342016",
+      "message_lead_28228109",
+      "call_lead_11962174",
+      "message_lead_28101306",
+      "message_lead_28090643",
+      "message_lead_27964568",
+      "call_lead_11927763",
+      "message_lead_27896712",
+      "message_lead_27891393",
+      "message_lead_27831344",
+      "message_lead_27636799",
+      "message_lead_27616142",
+      "message_lead_27605917",
+      "message_lead_27565876",
+      "message_lead_27459937",
+      "message_lead_27444773",
+      "message_lead_27430924",
+      "message_lead_27392218",
+      "message_lead_27392027",
+      "message_lead_27363465",
+      "message_lead_27327426",
+      "message_lead_27327121",
+      "call_lead_11838702",
+      "message_lead_27310725",
+      "message_lead_27295980",
+      "message_lead_27241488",
+      "message_lead_27218801",
+      "message_lead_27212654",
+      "message_lead_27207786",
+      "message_lead_27201669",
+      "call_lead_11817637",
+      "message_lead_27112729",
+      "message_lead_27105609",
+      "message_lead_27090017",
+      "message_lead_27090014",
+      "message_lead_27077993",
+      "message_lead_27050691",
+      "message_lead_26969118",
+      "message_lead_26965402",
+      "message_lead_26960161",
+      "message_lead_26938863",
+      "message_lead_26933967",
+      "message_lead_26910929",
+      "message_lead_26846646",
+      "message_lead_26844643",
+      "call_lead_11765163",
+      "message_lead_26817412",
+      "message_lead_26809225",
+      "message_lead_26800851",
+      "message_lead_26786095",
+      "message_lead_26785491",
+      "message_lead_26720800",
+      "message_lead_26687785",
+      "message_lead_26664659",
+      "message_lead_26609096",
+      "call_lead_11726825",
+      "call_lead_11726495",
+      "message_lead_26496962",
+      "message_lead_26424818",
+      "message_lead_26402655",
+      "message_lead_26392832",
+      "message_lead_26371882",
+      "message_lead_26353194",
+      "message_lead_26303464"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000215",
+    "Title": "SEA VIEW | 10% ROI | PURE INVESTMENT",
+    "CreatedAt": "2025-09-17T08:51:07.288173726Z",
+    "Budget": 3925,
+    "BudgetByMonth": {
+      "2026-03": 1422,
+      "2026-02": 687,
+      "2026-01": 50,
+      "2025-12": 50,
+      "2025-11": 124,
+      "2025-10": 796,
+      "2025-09": 796
+    },
+    "Leads": 4,
+    "LeadsIds": [
+      "message_lead_28470420",
+      "message_lead_28027682",
+      "call_lead_11932758",
+      "message_lead_26204469"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000226",
+    "Title": "LAGOON CANAL VIEW | MID FLOOR | HANDOVER SOON",
+    "CreatedAt": "2025-09-21T12:06:10.34781971Z",
+    "Budget": 269,
+    "BudgetByMonth": {
+      "2026-03": 35,
+      "2026-02": 35,
+      "2026-01": 35,
+      "2025-12": 35,
+      "2025-11": 43,
+      "2025-10": 43,
+      "2025-09": 43
+    },
+    "Leads": 5,
+    "LeadsIds": [
+      "message_lead_28149564",
+      "message_lead_27769204",
+      "message_lead_27710399",
+      "message_lead_27536692",
+      "message_lead_27511365"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000228",
+    "Title": "STUNNING VIEW | LUXURY LIVING | PRIME LOCATION",
+    "CreatedAt": "2025-09-24T16:52:55.823747425Z",
+    "Budget": 1739,
+    "BudgetByMonth": {
+      "2026-03": 868,
+      "2026-02": 868,
+      "2025-11": 1,
+      "2025-10": 1,
+      "2025-09": 1
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_28395736"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000048",
+    "Title": "MIDDLE FLOOR| CORNER UNIT | PREMIUM VIEW",
+    "CreatedAt": "2025-09-30T07:48:35.724164796Z",
+    "Budget": 525,
+    "BudgetByMonth": {
+      "2026-04": 60,
+      "2026-03": 60,
+      "2026-02": 60,
+      "2026-01": 60,
+      "2025-12": 60,
+      "2025-11": 75,
+      "2025-10": 75,
+      "2025-09": 75
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000235",
+    "Title": "PRIME LOCATION | LUXURY LIVING | GREAT INVESTMENT",
+    "CreatedAt": "2025-09-30T09:58:51.623121411Z",
+    "Budget": 419,
+    "BudgetByMonth": {
+      "2026-04": 48,
+      "2026-03": 48,
+      "2026-02": 48,
+      "2026-01": 48,
+      "2025-12": 48,
+      "2025-11": 59,
+      "2025-10": 59,
+      "2025-09": 61
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_26349382"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000239",
+    "Title": "RENOVATED | FURNISHED | VACANT | PRIME LOCATION",
+    "CreatedAt": "2025-10-02T11:57:34.279683348Z",
+    "Budget": 71,
+    "BudgetByMonth": {
+      "2026-03": 6,
+      "2026-02": 12,
+      "2026-01": 6,
+      "2025-12": 6,
+      "2025-11": 26,
+      "2025-10": 15
+    },
+    "Leads": 69,
+    "LeadsIds": [
+      "message_lead_28582074",
+      "message_lead_28578986",
+      "message_lead_28517814",
+      "message_lead_28502863",
+      "message_lead_28252136",
+      "message_lead_28226183",
+      "message_lead_28219332",
+      "message_lead_28203486",
+      "message_lead_28195074",
+      "message_lead_28174195",
+      "message_lead_28132437",
+      "message_lead_28129113",
+      "message_lead_28078118",
+      "message_lead_28065959",
+      "message_lead_28053589",
+      "message_lead_28021341",
+      "call_lead_11941000",
+      "message_lead_27967903",
+      "message_lead_27956602",
+      "message_lead_27823824",
+      "message_lead_27794699",
+      "message_lead_27532528",
+      "message_lead_27471698",
+      "message_lead_27426242",
+      "call_lead_11856355",
+      "message_lead_27409279",
+      "message_lead_27224072",
+      "message_lead_27213788",
+      "message_lead_27201697",
+      "message_lead_27201005",
+      "call_lead_11818532",
+      "message_lead_27164210",
+      "message_lead_27158716",
+      "message_lead_27081514",
+      "message_lead_27063760",
+      "message_lead_27058757",
+      "message_lead_27046093",
+      "message_lead_27038581",
+      "message_lead_27003538",
+      "message_lead_26970994",
+      "message_lead_26960226",
+      "message_lead_26922025",
+      "message_lead_26861472",
+      "message_lead_26852370",
+      "message_lead_26831258",
+      "message_lead_26822439",
+      "message_lead_26759163",
+      "message_lead_26743906",
+      "message_lead_26721499",
+      "message_lead_26696263",
+      "message_lead_26663352",
+      "message_lead_26634951",
+      "message_lead_26633445",
+      "message_lead_26624111",
+      "message_lead_26574513",
+      "message_lead_26571149",
+      "message_lead_26564329",
+      "message_lead_26523193",
+      "message_lead_26426674",
+      "message_lead_26413632",
+      "message_lead_26331432",
+      "message_lead_26289526",
+      "message_lead_26264582",
+      "message_lead_26261857",
+      "message_lead_26240458",
+      "message_lead_26237106",
+      "message_lead_26231540",
+      "message_lead_26198031",
+      "message_lead_26190067"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000241",
+    "Title": "FULLY FURNISHED | VACANT | PARTIAL CANAL VIEW",
+    "CreatedAt": "2025-10-03T08:47:56.870885501Z",
+    "Budget": 439,
+    "BudgetByMonth": {
+      "2026-03": 52,
+      "2026-02": 104,
+      "2026-01": 52,
+      "2025-12": 52,
+      "2025-11": 65,
+      "2025-10": 114
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_27573831"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000244",
+    "Title": "LUXURY LIVING | HIGH QUALITY | PRIME LOCATION",
+    "CreatedAt": "2025-10-04T17:25:50.986769025Z",
+    "Budget": 336,
+    "BudgetByMonth": {
+      "2026-04": 48,
+      "2026-03": 48,
+      "2026-02": 48,
+      "2026-01": 48,
+      "2025-12": 48,
+      "2025-11": 48,
+      "2025-10": 48
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_28435621",
+      "message_lead_27767804"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000247",
+    "Title": "54TH FLOOR | GENUINE RESALE | STUNNING SEA VIEW",
+    "CreatedAt": "2025-10-08T06:37:21.535322185Z",
+    "Budget": 272,
+    "BudgetByMonth": {
+      "2026-04": 63,
+      "2025-12": 63,
+      "2025-11": 78,
+      "2025-10": 68
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000248",
+    "Title": "SEA VIEW | WATERFRONT | LUXURY 3BR ",
+    "CreatedAt": "2025-10-08T12:33:03.061541446Z",
+    "Budget": 7,
+    "BudgetByMonth": {
+      "2026-04": 1,
+      "2026-03": 1,
+      "2026-02": 1,
+      "2026-01": 1,
+      "2025-12": 1,
+      "2025-11": 1,
+      "2025-10": 1
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000253",
+    "Title": "CANAL VIEW | NEWLY RENOVATED | PRIME LOCATION",
+    "CreatedAt": "2025-10-13T13:01:51.136370172Z",
+    "Budget": 2104,
+    "BudgetByMonth": {
+      "2026-03": 63,
+      "2026-02": 63,
+      "2026-01": 63,
+      "2025-12": 63,
+      "2025-11": 1774,
+      "2025-10": 78
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_27336776",
+      "message_lead_27324449"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000254",
+    "Title": "SEA SIDE | JACUZZI | CORNER UNIT | BEACHFRONT",
+    "CreatedAt": "2025-10-13T17:25:39.420609896Z",
+    "Budget": 6,
+    "BudgetByMonth": {
+      "2026-03": 1,
+      "2026-02": 1,
+      "2026-01": 1,
+      "2025-12": 1,
+      "2025-11": 1,
+      "2025-10": 1
+    },
+    "Leads": 6,
+    "LeadsIds": [
+      "message_lead_28351570",
+      "call_lead_11957719",
+      "call_lead_11956818",
+      "message_lead_27930536",
+      "call_lead_11762354",
+      "message_lead_26292410"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000255",
+    "Title": "MARINA VIEW | UPGRADED | LUXURY | HIGH FLOOR",
+    "CreatedAt": "2025-10-14T08:23:19.085676625Z",
+    "Budget": 690,
+    "BudgetByMonth": {
+      "2026-04": 92,
+      "2026-03": 92,
+      "2026-02": 92,
+      "2026-01": 92,
+      "2025-12": 92,
+      "2025-11": 115,
+      "2025-10": 115
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "message_lead_28526369",
+      "message_lead_28440667",
+      "message_lead_26831224"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000259",
+    "Title": "PREMIER STUDIO | SKYLINE VIEW | PRIME LOCATION",
+    "CreatedAt": "2025-10-16T11:16:54.02245563Z",
+    "Budget": 5497,
+    "BudgetByMonth": {
+      "2026-04": 39,
+      "2026-03": 1967,
+      "2026-02": 798,
+      "2026-01": 39,
+      "2025-12": 39,
+      "2025-11": 2567,
+      "2025-10": 48
+    },
+    "Leads": 6,
+    "LeadsIds": [
+      "call_lead_12005244",
+      "message_lead_28520269",
+      "message_lead_28085431",
+      "message_lead_27401600",
+      "message_lead_26953913",
+      "message_lead_26838375"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000265",
+    "Title": "FULL MARINA VIEW | GENUINE RESALE | HANDOVER 2025",
+    "CreatedAt": "2025-10-18T11:43:23.494178322Z",
+    "Budget": 637,
+    "BudgetByMonth": {
+      "2026-04": 85,
+      "2026-03": 85,
+      "2026-02": 85,
+      "2026-01": 85,
+      "2025-12": 85,
+      "2025-11": 106,
+      "2025-10": 106
+    },
+    "Leads": 6,
+    "LeadsIds": [
+      "message_lead_28573181",
+      "message_lead_27615788",
+      "message_lead_27082982",
+      "call_lead_11775591",
+      "message_lead_26627753",
+      "message_lead_26455336"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000275",
+    "Title": "SPACIOUS 2BR | PANORAMIC VIEWS | DUBAI MARINA",
+    "CreatedAt": "2025-10-24T12:05:35.600886806Z",
+    "Budget": 4270,
+    "BudgetByMonth": {
+      "2026-03": 1364,
+      "2026-02": 1364,
+      "2026-01": 71,
+      "2025-12": 71,
+      "2025-11": 88,
+      "2025-10": 1312
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_27681525",
+      "message_lead_26437926"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000276",
+    "Title": "PRIME LOCATION | LUXURY LIVING | HIGH ROI",
+    "CreatedAt": "2025-10-26T12:18:37.754921659Z",
+    "Budget": 1330,
+    "BudgetByMonth": {
+      "2026-03": 60,
+      "2026-02": 60,
+      "2026-01": 60,
+      "2025-11": 1075,
+      "2025-10": 75
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_27801305"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000279",
+    "Title": "HIGH ROI STUDIO | CANAL VIEWS | PENINSULA ONE",
+    "CreatedAt": "2025-10-28T08:12:39.130835166Z",
+    "Budget": 291,
+    "BudgetByMonth": {
+      "2026-04": 39,
+      "2026-03": 39,
+      "2026-02": 39,
+      "2026-01": 39,
+      "2025-12": 39,
+      "2025-11": 48,
+      "2025-10": 48
+    },
+    "Leads": 7,
+    "LeadsIds": [
+      "message_lead_28563233",
+      "message_lead_27778307",
+      "message_lead_27574144",
+      "message_lead_27002032",
+      "message_lead_26827871",
+      "call_lead_11749938",
+      "message_lead_26595990"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000283",
+    "Title": "SPACIOUS 1BR | PRIVATE BEACH ACCESS | PALM TOWER",
+    "CreatedAt": "2025-10-31T14:25:46.566526425Z",
+    "Budget": 2125,
+    "BudgetByMonth": {
+      "2026-03": 85,
+      "2026-02": 85,
+      "2026-01": 85,
+      "2025-12": 829,
+      "2025-11": 935,
+      "2025-10": 106
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_26732799",
+      "message_lead_26219236"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000282",
+    "Title": "SMART STUDIO | LAKE AND PARK VIEW | PRIME LOCATION",
+    "CreatedAt": "2025-10-31T15:51:00.642701587Z",
+    "Budget": 298,
+    "BudgetByMonth": {
+      "2026-04": 40,
+      "2026-03": 40,
+      "2026-02": 40,
+      "2026-01": 40,
+      "2025-12": 40,
+      "2025-11": 49,
+      "2025-10": 49
+    },
+    "Leads": 10,
+    "LeadsIds": [
+      "message_lead_28551173",
+      "call_lead_11984089",
+      "message_lead_28336464",
+      "message_lead_28232834",
+      "message_lead_28197959",
+      "message_lead_27703894",
+      "message_lead_27651850",
+      "message_lead_27617186",
+      "message_lead_27617168",
+      "message_lead_27592281"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000289",
+    "Title": "LUXURY 3BR | BURJ KHALIFA VIEW | OPERA GRAND",
+    "CreatedAt": "2025-11-06T12:05:25.086909371Z",
+    "Budget": 2914,
+    "BudgetByMonth": {
+      "2026-03": 114,
+      "2026-02": 1384,
+      "2026-01": 114,
+      "2025-12": 1160,
+      "2025-11": 142
+    },
+    "Leads": 4,
+    "LeadsIds": [
+      "message_lead_28658371",
+      "message_lead_28206136",
+      "message_lead_26730555",
+      "message_lead_26459306"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000290",
+    "Title": "SPACIOUS 2BR | SKYLINE VIEWS | BURJ VISTA",
+    "CreatedAt": "2025-11-06T12:23:43.716996926Z",
+    "Budget": 3435,
+    "BudgetByMonth": {
+      "2026-04": 1068,
+      "2026-03": 1131,
+      "2026-02": 89,
+      "2026-01": 89,
+      "2025-12": 947,
+      "2025-11": 111
+    },
+    "Leads": 9,
+    "LeadsIds": [
+      "message_lead_28530707",
+      "message_lead_28437426",
+      "call_lead_11969391",
+      "message_lead_27681619",
+      "message_lead_26500819",
+      "message_lead_26329536",
+      "message_lead_26329454",
+      "email_lead_4697681",
+      "message_lead_26202793"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000291",
+    "Title": "LUXURY 1BR | LIV LUX | DUBAI MARINA VIEWS",
+    "CreatedAt": "2025-11-06T13:28:45.307594893Z",
+    "Budget": 350,
+    "BudgetByMonth": {
+      "2026-04": 56,
+      "2026-03": 56,
+      "2026-02": 56,
+      "2026-01": 56,
+      "2025-12": 56,
+      "2025-11": 70
+    },
+    "Leads": 6,
+    "LeadsIds": [
+      "message_lead_28064054",
+      "message_lead_27625379",
+      "message_lead_27624158",
+      "message_lead_27257890",
+      "message_lead_26714267",
+      "message_lead_26273964"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000292",
+    "Title": "LUXURY 2BR | BIGGEST LAYOUT | ELEGANCE",
+    "CreatedAt": "2025-11-07T09:12:47.724139621Z",
+    "Budget": 2936,
+    "BudgetByMonth": {
+      "2026-03": 76,
+      "2025-11": 2860
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000298",
+    "Title": "PREMIUM 1BR | ELLINGTON PROPERTIES | JLT",
+    "CreatedAt": "2025-11-12T15:02:21.708185059Z",
+    "Budget": 196,
+    "BudgetByMonth": {
+      "2026-03": 49,
+      "2026-01": 49,
+      "2025-12": 49,
+      "2025-11": 49
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_28621930"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000303",
+    "Title": "1BR RESIDENCE | BURJ KHALIFA VIEW | SMART HOME",
+    "CreatedAt": "2025-11-17T11:24:53.162041832Z",
+    "Budget": 220,
+    "BudgetByMonth": {
+      "2026-03": 44,
+      "2026-02": 44,
+      "2026-01": 44,
+      "2025-12": 44,
+      "2025-11": 44
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_27921927",
+      "call_lead_11911339"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000311",
+    "Title": "LARGE LAYOUT | PAYMENT PLAN | Q1 2027",
+    "CreatedAt": "2025-11-20T09:45:02.811040791Z",
+    "Budget": 10,
+    "BudgetByMonth": {
+      "2026-03": 2,
+      "2026-02": 2,
+      "2026-01": 2,
+      "2025-12": 2,
+      "2025-11": 2
+    },
+    "Leads": 10,
+    "LeadsIds": [
+      "message_lead_28192879",
+      "message_lead_27968277",
+      "message_lead_27963062",
+      "message_lead_27937687",
+      "message_lead_27193911",
+      "message_lead_27193304",
+      "message_lead_26969671",
+      "message_lead_26756184",
+      "message_lead_26433458",
+      "message_lead_26400615"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000322",
+    "Title": "FULL SEA VIEW | PRIVATE BEACH | SPACIOUS LAYOUT",
+    "CreatedAt": "2025-11-24T13:27:49.268244113Z",
+    "Budget": 2144,
+    "BudgetByMonth": {
+      "2026-03": 765,
+      "2026-02": 765,
+      "2026-01": 72,
+      "2025-12": 470,
+      "2025-11": 72
+    },
+    "Leads": 10,
+    "LeadsIds": [
+      "message_lead_28631644",
+      "message_lead_28610293",
+      "email_lead_4721277",
+      "message_lead_28530701",
+      "message_lead_28530684",
+      "call_lead_11988252",
+      "message_lead_27892953",
+      "message_lead_27124220",
+      "message_lead_26619107",
+      "email_lead_4698176"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000325",
+    "Title": "LUXURY 1BR | OPEN VIEW | PREMIUM TOWER",
+    "CreatedAt": "2025-11-25T11:01:14.777970487Z",
+    "Budget": 425,
+    "BudgetByMonth": {
+      "2026-03": 85,
+      "2026-02": 85,
+      "2026-01": 85,
+      "2025-12": 85,
+      "2025-11": 85
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "message_lead_28069913",
+      "message_lead_26622718",
+      "message_lead_26220084"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000326",
+    "Title": "THE CHEAPEST PRICE | BIG LAY OUT | HIGH FLOOR",
+    "CreatedAt": "2025-11-26T08:55:26.118904282Z",
+    "Budget": 185,
+    "BudgetByMonth": {
+      "2026-03": 37,
+      "2026-02": 37,
+      "2026-01": 37,
+      "2025-12": 37,
+      "2025-11": 37
+    },
+    "Leads": 9,
+    "LeadsIds": [
+      "message_lead_28313725",
+      "message_lead_28047734",
+      "message_lead_27982782",
+      "message_lead_27946810",
+      "message_lead_27612101",
+      "message_lead_27272272",
+      "call_lead_11793237",
+      "message_lead_26455860",
+      "message_lead_26340004"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000328",
+    "Title": "STUDIO RESIDENCE | READY TO MOVE | FULLY FURNISHED",
+    "CreatedAt": "2025-11-27T08:09:37.566363502Z",
+    "Budget": 10,
+    "BudgetByMonth": {
+      "2026-03": 2,
+      "2026-02": 2,
+      "2026-01": 2,
+      "2025-12": 2,
+      "2025-11": 2
+    },
+    "Leads": 4,
+    "LeadsIds": [
+      "message_lead_28352356",
+      "message_lead_27092368",
+      "message_lead_26275091",
+      "message_lead_26192807"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000335",
+    "Title": "MOTIVATED SELLER | 4BR TOWNHOUSE | BEST PRICE",
+    "CreatedAt": "2025-11-28T10:49:23.150405169Z",
+    "Budget": 45,
+    "BudgetByMonth": {
+      "2026-03": 9,
+      "2026-02": 9,
+      "2026-01": 9,
+      "2025-12": 9,
+      "2025-11": 9
+    },
+    "Leads": 7,
+    "LeadsIds": [
+      "message_lead_28245051",
+      "message_lead_28078359",
+      "message_lead_27964212",
+      "message_lead_27923974",
+      "message_lead_27623778",
+      "message_lead_27402375",
+      "message_lead_26873381"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000339",
+    "Title": "LUXURY 1BR | PRIVATE BEACH ACCESS | NAKHEEL",
+    "CreatedAt": "2025-12-01T15:00:02.298427576Z",
+    "Budget": 450,
+    "BudgetByMonth": {
+      "2026-04": 90,
+      "2026-03": 90,
+      "2026-02": 90,
+      "2026-01": 90,
+      "2025-12": 90
+    },
+    "Leads": 4,
+    "LeadsIds": [
+      "message_lead_28069911",
+      "message_lead_26731469",
+      "message_lead_26622622",
+      "message_lead_26220003"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000342",
+    "Title": "LUXURY 1BR | INFINITY POOL | ITALIAN DESIGN",
+    "CreatedAt": "2025-12-03T09:14:04.292022722Z",
+    "Budget": 35,
+    "BudgetByMonth": {
+      "2026-04": 7,
+      "2026-03": 7,
+      "2026-02": 7,
+      "2026-01": 7,
+      "2025-12": 7
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000343",
+    "Title": "HIGH ROI | WELL FURNISHED | SMART HOME",
+    "CreatedAt": "2025-12-03T09:31:12.770857604Z",
+    "Budget": 10,
+    "BudgetByMonth": {
+      "2026-04": 2,
+      "2026-03": 2,
+      "2026-02": 2,
+      "2026-01": 2,
+      "2025-12": 2
+    },
+    "Leads": 8,
+    "LeadsIds": [
+      "message_lead_28566679",
+      "message_lead_28566635",
+      "call_lead_11978147",
+      "call_lead_11869741",
+      "call_lead_11868966",
+      "message_lead_26548597",
+      "message_lead_26381175",
+      "message_lead_26305263"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000344",
+    "Title": "PREMIUM APARTMENTS | ROOFTOP POOL | SMART HOME",
+    "CreatedAt": "2025-12-03T12:55:10.792355446Z",
+    "Budget": 3254,
+    "BudgetByMonth": {
+      "2026-04": 3,
+      "2026-03": 2556,
+      "2026-02": 689,
+      "2026-01": 3,
+      "2025-12": 3
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_27804756"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000345",
+    "Title": "READY 1BR | PRIME LOCATION | FULLY FURNISHED",
+    "CreatedAt": "2025-12-03T13:24:10.146321391Z",
+    "Budget": 2224,
+    "BudgetByMonth": {
+      "2026-03": 873,
+      "2026-02": 875,
+      "2026-01": 3,
+      "2025-12": 473
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_28700188",
+      "email_lead_4698209"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000347",
+    "Title": "SPACIOUS 2BR | EXCELLENT VALUE | READY TO MOVE",
+    "CreatedAt": "2025-12-04T09:59:37.439593316Z",
+    "Budget": 35,
+    "BudgetByMonth": {
+      "2026-04": 7,
+      "2026-03": 7,
+      "2026-02": 7,
+      "2026-01": 7,
+      "2025-12": 7
+    },
+    "Leads": 17,
+    "LeadsIds": [
+      "message_lead_28653120",
+      "message_lead_28236948",
+      "message_lead_28229600",
+      "message_lead_28011998",
+      "message_lead_27974508",
+      "message_lead_27966115",
+      "call_lead_11880391",
+      "message_lead_27498572",
+      "message_lead_27469335",
+      "message_lead_27284951",
+      "message_lead_27273406",
+      "message_lead_27154856",
+      "message_lead_26826535",
+      "message_lead_26750987",
+      "message_lead_26735205",
+      "message_lead_26684065",
+      "message_lead_26246493"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "12789772",
+    "Title": "STUNNING LAKE VIEW | WITH BALCONY | SPACIOUS",
+    "CreatedAt": "2025-12-04T10:20:41.263085594Z",
+    "Budget": 210,
+    "BudgetByMonth": {
+      "2026-04": 42,
+      "2026-03": 42,
+      "2026-02": 42,
+      "2026-01": 42,
+      "2025-12": 42
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_28551208",
+      "message_lead_27617252"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000348",
+    "Title": "OP PRICE | GARDENS VIEW | FULLY FURNISHED",
+    "CreatedAt": "2025-12-06T13:09:36.8542821Z",
+    "Budget": 25,
+    "BudgetByMonth": {
+      "2026-04": 5,
+      "2026-03": 5,
+      "2026-02": 5,
+      "2026-01": 5,
+      "2025-12": 5
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_27692354",
+      "message_lead_26773564"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000349",
+    "Title": "HIGH FLOOR | FURNISHED | WITH BALCONY",
+    "CreatedAt": "2025-12-07T09:19:29.523633059Z",
+    "Budget": 5,
+    "BudgetByMonth": {
+      "2026-04": 1,
+      "2026-03": 1,
+      "2026-02": 1,
+      "2026-01": 1,
+      "2025-12": 1
+    },
+    "Leads": 14,
+    "LeadsIds": [
+      "call_lead_12006090",
+      "call_lead_11959437",
+      "message_lead_27988768",
+      "call_lead_11907785",
+      "call_lead_11907702",
+      "message_lead_27738789",
+      "message_lead_27627818",
+      "message_lead_27605577",
+      "message_lead_27466392",
+      "message_lead_27437325",
+      "message_lead_27243510",
+      "message_lead_26985236",
+      "message_lead_26529372",
+      "message_lead_26371184"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000351",
+    "Title": "LUXURY OFF-PLAN | CANAL & DOWNTOWN VIEWS",
+    "CreatedAt": "2025-12-08T08:13:14.999935514Z",
+    "Budget": 195,
+    "BudgetByMonth": {
+      "2026-04": 39,
+      "2026-03": 39,
+      "2026-02": 39,
+      "2026-01": 39,
+      "2025-12": 39
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000353",
+    "Title": "UPGRADED 1BR | TENANTED UNIT | GREAT FOR INVESTORS",
+    "CreatedAt": "2025-12-08T14:45:16.673626872Z",
+    "Budget": 785,
+    "BudgetByMonth": {
+      "2026-03": 2,
+      "2026-02": 427,
+      "2026-01": 2,
+      "2025-12": 354
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "message_lead_28208963",
+      "message_lead_28204923",
+      "message_lead_27659077"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "01KC96VDHDA1S4DB47GKGPF1AQ",
+    "Title": "WATER VIEW | HANDOVER 2026 | HIGH FLOOR",
+    "CreatedAt": "2025-12-12T11:58:59.143212936Z",
+    "Budget": 5,
+    "BudgetByMonth": {
+      "2026-04": 1,
+      "2026-03": 1,
+      "2026-02": 1,
+      "2026-01": 1,
+      "2025-12": 1
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "01KC987JFSZW8V5DHSF30DRFNX",
+    "Title": "BURJ KHALIFA AND CANAL VIEW | LARGE 1BR",
+    "CreatedAt": "2025-12-12T12:23:05.985985022Z",
+    "Budget": 420,
+    "BudgetByMonth": {
+      "2026-04": 60,
+      "2026-03": 60,
+      "2026-02": 60,
+      "2026-01": 60,
+      "2025-12": 180
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "01KC99TPNNQ4MS53WR5ESPF391",
+    "Title": "LAGOON VIEW | LARGE 2BR | MIDDLE FLOOR",
+    "CreatedAt": "2025-12-12T12:51:01.44527417Z",
+    "Budget": 6,
+    "BudgetByMonth": {
+      "2026-04": 1,
+      "2026-03": 1,
+      "2026-02": 1,
+      "2026-01": 1,
+      "2025-12": 2
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000366",
+    "Title": "PREMIUM 3BR | WATER VIEWS | BEACHFRONT COMMUNITY",
+    "CreatedAt": "2025-12-12T13:11:43.944661044Z",
+    "Budget": 3366,
+    "BudgetByMonth": {
+      "2026-03": 1127,
+      "2026-02": 1054,
+      "2026-01": 104,
+      "2025-12": 1081
+    },
+    "Leads": 6,
+    "LeadsIds": [
+      "message_lead_28227041",
+      "message_lead_28010237",
+      "message_lead_27872483",
+      "message_lead_27779590",
+      "message_lead_27730828",
+      "call_lead_11869772"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000372",
+    "Title": "FULLY FURNISHED STUDIO | PROFESSIONAL DESIGN",
+    "CreatedAt": "2025-12-15T13:58:32.271543176Z",
+    "Budget": 8,
+    "BudgetByMonth": {
+      "2026-03": 2,
+      "2026-02": 2,
+      "2026-01": 2,
+      "2025-12": 2
+    },
+    "Leads": 17,
+    "LeadsIds": [
+      "message_lead_28678350",
+      "message_lead_28572211",
+      "email_lead_4717678",
+      "message_lead_28079592",
+      "message_lead_28061574",
+      "message_lead_28044124",
+      "message_lead_27891584",
+      "message_lead_27614028",
+      "message_lead_27526273",
+      "message_lead_27299240",
+      "message_lead_27297739",
+      "message_lead_27297446",
+      "message_lead_27224643",
+      "message_lead_26682383",
+      "message_lead_26650093",
+      "message_lead_26622569",
+      "message_lead_26472353"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000373",
+    "Title": "SEA VIEW | HIGH FLOOR | VACANT",
+    "CreatedAt": "2025-12-16T15:53:18.81909947Z",
+    "Budget": 24,
+    "BudgetByMonth": {
+      "2026-03": 6,
+      "2026-02": 6,
+      "2026-01": 6,
+      "2025-12": 6
+    },
+    "Leads": 7,
+    "LeadsIds": [
+      "message_lead_27655050",
+      "message_lead_27638472",
+      "message_lead_27165845",
+      "message_lead_27089351",
+      "message_lead_26993546",
+      "message_lead_26611819",
+      "message_lead_26406637"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "2",
+    "Title": "PARK VIEW | 1ST FLOOR | RENTED",
+    "CreatedAt": "2025-12-18T09:36:29.619757069Z",
+    "Budget": 8,
+    "BudgetByMonth": {
+      "2026-03": 2,
+      "2026-02": 2,
+      "2026-01": 2,
+      "2025-12": 2
+    },
+    "Leads": 7,
+    "LeadsIds": [
+      "message_lead_28583200",
+      "message_lead_28280603",
+      "message_lead_28031930",
+      "message_lead_27676148",
+      "call_lead_11876219",
+      "call_lead_11875882",
+      "email_lead_4698486"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "0000037",
+    "Title": "ICONIC BRAND COLLAB | PRIVATE POOL | SMART HOME",
+    "CreatedAt": "2025-12-18T15:27:25.588631725Z",
+    "Budget": 1024,
+    "BudgetByMonth": {
+      "2026-03": 256,
+      "2026-02": 256,
+      "2026-01": 256,
+      "2025-12": 256
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "message_lead_27773539",
+      "message_lead_27608544",
+      "message_lead_26601654"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000391",
+    "Title": "EXCLUSIVE 4BR | PRIVATE LOBBY | INDOOR GARDEN",
+    "CreatedAt": "2025-12-19T09:05:11.450968534Z",
+    "Budget": 788,
+    "BudgetByMonth": {
+      "2026-03": 197,
+      "2026-02": 197,
+      "2026-01": 197,
+      "2025-12": 197
+    },
+    "Leads": 7,
+    "LeadsIds": [
+      "call_lead_12033134",
+      "message_lead_28565184",
+      "message_lead_28526940",
+      "message_lead_28260207",
+      "message_lead_26547954",
+      "message_lead_26384467",
+      "message_lead_26257805"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000397",
+    "Title": "BURJ KHALIFA VIEW | PREMIUM QUALITY | MODERN",
+    "CreatedAt": "2025-12-19T13:45:11.746588547Z",
+    "Budget": 124,
+    "BudgetByMonth": {
+      "2026-04": 21,
+      "2026-03": 21,
+      "2026-02": 21,
+      "2026-01": 23,
+      "2025-12": 38
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "call_lead_11826626",
+      "message_lead_27239538",
+      "message_lead_26488344"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000390",
+    "Title": "PRIME LOCATION | HIGH QUALITY | LUXURY LIVING",
+    "CreatedAt": "2025-12-19T17:38:39.239804635Z",
+    "Budget": 12,
+    "BudgetByMonth": {
+      "2026-03": 3,
+      "2026-02": 3,
+      "2026-01": 3,
+      "2025-12": 3
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_26673489"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000393",
+    "Title": "HIGH QUALITY | SPACIOUS | NEAR METRO | MODERN",
+    "CreatedAt": "2025-12-21T08:05:48.40654438Z",
+    "Budget": 22,
+    "BudgetByMonth": {
+      "2026-03": 5,
+      "2026-02": 5,
+      "2026-01": 6,
+      "2025-12": 6
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "message_lead_28727695",
+      "message_lead_27754367",
+      "message_lead_27187924"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000012",
+    "Title": "HIGH QUALITY | FULLY FURNISHED | PARK VIEW",
+    "CreatedAt": "2025-12-24T08:03:05.511801002Z",
+    "Budget": 4,
+    "BudgetByMonth": {
+      "2026-03": 1,
+      "2026-02": 1,
+      "2026-01": 1,
+      "2025-12": 1
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000405",
+    "Title": "PRIVATE BEACH | LARGE PLOT | LUXURY LIVING",
+    "CreatedAt": "2025-12-25T07:34:06.393696001Z",
+    "Budget": 969,
+    "BudgetByMonth": {
+      "2026-03": 456,
+      "2026-02": 453,
+      "2026-01": 20,
+      "2025-12": 40
+    },
+    "Leads": 5,
+    "LeadsIds": [
+      "message_lead_28076333",
+      "message_lead_27659758",
+      "call_lead_11748486",
+      "message_lead_26507901",
+      "message_lead_26403529"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000407",
+    "Title": "BRANDED 1BR | MIDDLE FLOOR | WELLNESS LIFESTYLE",
+    "CreatedAt": "2025-12-26T10:06:31.070303147Z",
+    "Budget": 1265,
+    "BudgetByMonth": {
+      "2026-03": 46,
+      "2026-02": 1127,
+      "2026-01": 46,
+      "2025-12": 46
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_28204416",
+      "message_lead_27786990"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000408",
+    "Title": "HIGH FLOOR STUDIO | GENUINE RESALE | INFINITY POOL",
+    "CreatedAt": "2025-12-26T10:50:46.441631422Z",
+    "Budget": 1450,
+    "BudgetByMonth": {
+      "2026-03": 690,
+      "2026-02": 684,
+      "2026-01": 38,
+      "2025-12": 38
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000410",
+    "Title": "HIGH-FLOOR | MODERN COMFORT | BREATHTAKING VIEWS",
+    "CreatedAt": "2025-12-26T14:00:38.316646258Z",
+    "Budget": 224,
+    "BudgetByMonth": {
+      "2026-03": 56,
+      "2026-02": 56,
+      "2026-01": 56,
+      "2025-12": 56
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000411",
+    "Title": "LUXURY 2BR | HOLISTIC WELLNESS | INFINITY POOL",
+    "CreatedAt": "2025-12-26T14:59:38.003678578Z",
+    "Budget": 240,
+    "BudgetByMonth": {
+      "2026-03": 60,
+      "2026-02": 60,
+      "2026-01": 60,
+      "2025-12": 60
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000503",
+    "Title": "HIGH FLOOR | PALM AND MARINA VIEW | BEACH ACCESS",
+    "CreatedAt": "2026-03-26T09:30:56.602738205Z",
+    "Budget": 80,
+    "BudgetByMonth": {
+      "2026-03": 80
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "Z0000369",
+    "Title": "FULLY FURNISHED | LAKES VIEW | LUXURY AMENITIES",
+    "CreatedAt": "2026-02-28T07:19:42.073909798Z",
+    "Budget": 68,
+    "BudgetByMonth": {
+      "2026-03": 34,
+      "2026-02": 34
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "message_lead_28342961",
+      "message_lead_28279093",
+      "message_lead_28193901"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000519",
+    "Title": "FULL MARINA VIEW | SMART HOME | LUXURY FURNISHINGS",
+    "CreatedAt": "2026-04-07T08:37:12.960786811Z",
+    "Budget": 146,
+    "BudgetByMonth": {
+      "2026-04": 146
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "message_lead_28681959",
+      "message_lead_28681810",
+      "message_lead_28655912"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "Z0000367",
+    "Title": "LUXURY AMENITIES | FULLY FURNISHED | LAKES VIEW",
+    "CreatedAt": "2026-02-28T07:21:28.793018866Z",
+    "Budget": 68,
+    "BudgetByMonth": {
+      "2026-03": 34,
+      "2026-02": 34
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000488",
+    "Title": "FURNISHED | STRONG INVESTMENT | PRIME LOCATION",
+    "CreatedAt": "2026-03-16T14:26:11.59226683Z",
+    "Budget": 326,
+    "BudgetByMonth": {
+      "2026-03": 326
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_28401964"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000489",
+    "Title": "FULLY RENOVATED | FULLY FURNISHED | MOVE-IN READY",
+    "CreatedAt": "2026-03-17T13:16:20.96007625Z",
+    "Budget": 6,
+    "BudgetByMonth": {
+      "2026-03": 6
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000416",
+    "Title": "ICONIC LOCATION | FULL MARINA VIEW",
+    "CreatedAt": "2025-12-29T09:56:07.706300441Z",
+    "Budget": 320,
+    "BudgetByMonth": {
+      "2026-03": 80,
+      "2026-02": 80,
+      "2026-01": 80,
+      "2025-12": 80
+    },
+    "Leads": 6,
+    "LeadsIds": [
+      "message_lead_28623255",
+      "message_lead_28526372",
+      "message_lead_27080746",
+      "call_lead_11746781",
+      "message_lead_26437246",
+      "message_lead_26314981"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000448",
+    "Title": "MID FLOOR | PRIME LOCATION | MODERN",
+    "CreatedAt": "2026-01-23T10:29:47.557607178Z",
+    "Budget": 57,
+    "BudgetByMonth": {
+      "2026-03": 19,
+      "2026-02": 19,
+      "2026-01": 19
+    },
+    "Leads": 5,
+    "LeadsIds": [
+      "call_lead_11935898",
+      "message_lead_27734738",
+      "message_lead_27342631",
+      "message_lead_27142392",
+      "message_lead_27055414"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "11113",
+    "Title": "FIRST COASTLINE | LAGOON VIEW | PREMIUM FINISHING",
+    "CreatedAt": "2026-03-20T11:07:10.241069595Z",
+    "Budget": 4330,
+    "BudgetByMonth": {
+      "2026-03": 1624,
+      "2025-12": 48,
+      "2025-11": 2616,
+      "2025-10": 42
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_28381554"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "0000426",
+    "Title": "PRIME LAGOON VIEW| BEST INVESTMENT | HIGH FLOOR",
+    "CreatedAt": "2026-01-11T06:59:54.458592174Z",
+    "Budget": 4,
+    "BudgetByMonth": {
+      "2026-04": 1,
+      "2026-03": 1,
+      "2026-02": 1,
+      "2026-01": 1
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_27105906",
+      "message_lead_26676566"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000518",
+    "Title": "GOLF VIEW | MID FLOOR | PRIME LOCATION",
+    "CreatedAt": "2026-04-05T12:15:25.838733557Z",
+    "Budget": 59,
+    "BudgetByMonth": {
+      "2026-04": 59
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "1111123",
+    "Title": "HANDOVER Q3 2026 | INVESTORS | NEAR TO THE BEACH",
+    "CreatedAt": "2026-02-12T12:58:27.470420719Z",
+    "Budget": 9,
+    "BudgetByMonth": {
+      "2026-04": 3,
+      "2026-03": 3,
+      "2026-02": 3
+    },
+    "Leads": 9,
+    "LeadsIds": [
+      "message_lead_28662261",
+      "message_lead_28597861",
+      "call_lead_11988083",
+      "message_lead_28210894",
+      "message_lead_28159857",
+      "message_lead_28144051",
+      "message_lead_27877493",
+      "message_lead_27637990",
+      "message_lead_27628693"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000494",
+    "Title": "SEA VIEW | PRIVATE BALCONY | LUXURY BEACH CLUB",
+    "CreatedAt": "2026-03-18T11:20:05.691825609Z",
+    "Budget": 80,
+    "BudgetByMonth": {
+      "2026-03": 80
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "111120",
+    "Title": "PREMIUM 4BR | ECO-LIVING | MANGROVE LANDSCAPES",
+    "CreatedAt": "2026-03-26T09:16:56.19716291Z",
+    "Budget": 192,
+    "BudgetByMonth": {
+      "2026-03": 48,
+      "2026-01": 48,
+      "2025-12": 48,
+      "2025-11": 48
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_26430897"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000421",
+    "Title": "RESALE | READY TO MOVE | HIGH FLOOR",
+    "CreatedAt": "2026-01-06T14:34:00.271758889Z",
+    "Budget": 56,
+    "BudgetByMonth": {
+      "2026-04": 14,
+      "2026-03": 14,
+      "2026-02": 14,
+      "2026-01": 14
+    },
+    "Leads": 6,
+    "LeadsIds": [
+      "message_lead_28348426",
+      "message_lead_27690649",
+      "message_lead_27631872",
+      "call_lead_11877316",
+      "call_lead_11839194",
+      "message_lead_27263489"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "1111127",
+    "Title": "FULL SEA VIEW | PRIVATE BEACH | GUGGENHEIM VIEWS",
+    "CreatedAt": "2026-02-28T11:39:51.139347471Z",
+    "Budget": 198,
+    "BudgetByMonth": {
+      "2026-03": 99,
+      "2026-02": 99
+    },
+    "Leads": 5,
+    "LeadsIds": [
+      "message_lead_28623448",
+      "message_lead_28397067",
+      "message_lead_28250256",
+      "message_lead_28131908",
+      "message_lead_28105983"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000512",
+    "Title": "PANORAMIC VIEWS | HIGH FLOOR | TURNKEY UNIT",
+    "CreatedAt": "2026-03-31T13:15:13.018885649Z",
+    "Budget": 3,
+    "BudgetByMonth": {
+      "2026-03": 3
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000468",
+    "Title": "PRIVATE BEACH ACCESS | INFINITY POOL | MAIDS ROOM",
+    "CreatedAt": "2026-02-19T13:49:14.843221018Z",
+    "Budget": 16,
+    "BudgetByMonth": {
+      "2026-03": 8,
+      "2026-02": 8
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_28099692",
+      "message_lead_27892068"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "4TG3TGAFPD7G5AAANFP6A1MQ88",
+    "Title": "The Highest floor | Dubai Marina View | Q4 2026",
+    "CreatedAt": "2026-02-23T15:48:57.550047229Z",
+    "Budget": 6,
+    "BudgetByMonth": {
+      "2026-03": 3,
+      "2026-02": 3
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000460",
+    "Title": "3BR DUPLEX | VACANT ON TRANSFER | GOLF CLUB VIEWS",
+    "CreatedAt": "2026-02-10T11:04:07.270784959Z",
+    "Budget": 3,
+    "BudgetByMonth": {
+      "2026-04": 1,
+      "2026-03": 1,
+      "2026-02": 1
+    },
+    "Leads": 9,
+    "LeadsIds": [
+      "message_lead_28694135",
+      "email_lead_4720940",
+      "message_lead_28298393",
+      "message_lead_28166417",
+      "call_lead_11951990",
+      "call_lead_11941596",
+      "call_lead_11940416",
+      "message_lead_27780337",
+      "message_lead_27692927"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000443",
+    "Title": "PALM VIEW STUDIO | INVESTMENT | FULLY FURNISHED",
+    "CreatedAt": "2026-01-22T08:54:47.892258423Z",
+    "Budget": 192,
+    "BudgetByMonth": {
+      "2026-03": 64,
+      "2026-02": 64,
+      "2026-01": 64
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "message_lead_27792784",
+      "message_lead_27438075",
+      "message_lead_27066452"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000490",
+    "Title": "FULLY FURNISHED | HIGH FLOOR | PRIME LOCATION",
+    "CreatedAt": "2026-03-17T13:36:29.509117558Z",
+    "Budget": 76,
+    "BudgetByMonth": {
+      "2026-03": 76
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "message_lead_28737132",
+      "message_lead_28442263",
+      "message_lead_28355116"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "7FM8R09SVNSAKPC7EB8PRVBNC0",
+    "Title": "Payment plan | Open view | The largest layout",
+    "CreatedAt": "2026-02-12T06:38:08.305942416Z",
+    "Budget": 171,
+    "BudgetByMonth": {
+      "2026-04": 57,
+      "2026-03": 57,
+      "2026-02": 57
+    },
+    "Leads": 17,
+    "LeadsIds": [
+      "message_lead_28591609",
+      "message_lead_28433995",
+      "message_lead_28401377",
+      "message_lead_28339798",
+      "message_lead_28264950",
+      "message_lead_28208156",
+      "message_lead_28192242",
+      "message_lead_28133564",
+      "message_lead_28025884",
+      "message_lead_27879910",
+      "message_lead_27869463",
+      "message_lead_27795525",
+      "message_lead_27746663",
+      "message_lead_27716659",
+      "message_lead_27701084",
+      "message_lead_27687761",
+      "message_lead_27638608"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000467",
+    "Title": "PRIVATE BALCONY | GYM AND WELLNESS | OPEN KITCHEN",
+    "CreatedAt": "2026-02-19T13:34:07.490437644Z",
+    "Budget": 16,
+    "BudgetByMonth": {
+      "2026-03": 8,
+      "2026-02": 8
+    },
+    "Leads": 6,
+    "LeadsIds": [
+      "message_lead_28553219",
+      "message_lead_28505227",
+      "message_lead_27962114",
+      "call_lead_11922207",
+      "message_lead_27859951",
+      "message_lead_27821238"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000514",
+    "Title": "BEST PRICE | FULLY FURNISHED | PARK VIEW",
+    "CreatedAt": "2026-04-01T11:25:27.930540161Z",
+    "Budget": 36,
+    "BudgetByMonth": {
+      "2026-04": 36
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "message_lead_28624030",
+      "message_lead_28584666",
+      "message_lead_28557772"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000491",
+    "Title": "OPEN SEA VIEW | HIGH FLOOR | BEACHFRONT LIVING",
+    "CreatedAt": "2026-03-17T13:57:59.052285116Z",
+    "Budget": 1,
+    "BudgetByMonth": {
+      "2026-03": 1
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "VS13",
+    "Title": "High floor | Close to OP | Handover Soon",
+    "CreatedAt": "2026-03-06T14:22:38.095403032Z",
+    "Budget": 4,
+    "BudgetByMonth": {
+      "2026-03": 4
+    },
+    "Leads": 12,
+    "LeadsIds": [
+      "message_lead_28685905",
+      "message_lead_28678783",
+      "message_lead_28671333",
+      "message_lead_28641663",
+      "message_lead_28522972",
+      "message_lead_28518740",
+      "message_lead_28437484",
+      "message_lead_28431738",
+      "message_lead_28263379",
+      "message_lead_28231329",
+      "message_lead_28227945",
+      "message_lead_28184605"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000466",
+    "Title": "PREMIUM FINISHES | INFINITY POOL | 24H SECURITY",
+    "CreatedAt": "2026-02-19T13:11:59.500860797Z",
+    "Budget": 14,
+    "BudgetByMonth": {
+      "2026-03": 7,
+      "2026-02": 7
+    },
+    "Leads": 6,
+    "LeadsIds": [
+      "call_lead_11997421",
+      "message_lead_28352589",
+      "message_lead_28341370",
+      "message_lead_28332721",
+      "message_lead_28222900",
+      "message_lead_28101056"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "Z0000271",
+    "Title": "LUXURY LIVING | PRIME LOCATION | HIGH QUALITY",
+    "CreatedAt": "2026-03-31T11:12:47.853079572Z",
+    "Budget": 3,
+    "BudgetByMonth": {
+      "2026-03": 3
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000473",
+    "Title": "HOT DEAL | MARINA AND SEA VIEWS | PREMIUM LOCATION",
+    "CreatedAt": "2026-03-05T14:45:42.115173337Z",
+    "Budget": 250,
+    "BudgetByMonth": {
+      "2026-04": 125,
+      "2026-03": 125
+    },
+    "Leads": 8,
+    "LeadsIds": [
+      "call_lead_12029694",
+      "message_lead_28635253",
+      "message_lead_28554851",
+      "call_lead_12009104",
+      "call_lead_11964747",
+      "message_lead_28157835",
+      "message_lead_28140769",
+      "message_lead_28134400"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000474",
+    "Title": "PRIME LOCATION | 24H SECURITY | FITNESS STUDIOS",
+    "CreatedAt": "2026-03-05T15:55:19.828703377Z",
+    "Budget": 690,
+    "BudgetByMonth": {
+      "2026-03": 690
+    },
+    "Leads": 5,
+    "LeadsIds": [
+      "message_lead_28563814",
+      "message_lead_28544553",
+      "call_lead_12008334",
+      "message_lead_28165986",
+      "message_lead_28141091"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000469",
+    "Title": "PREMIUM 1BR | FULLY FURNISHED | OPEN VIEW",
+    "CreatedAt": "2026-02-20T09:45:37.644721581Z",
+    "Budget": 28,
+    "BudgetByMonth": {
+      "2026-03": 14,
+      "2026-02": 14
+    },
+    "Leads": 4,
+    "LeadsIds": [
+      "message_lead_28437218",
+      "message_lead_28346663",
+      "message_lead_28082408",
+      "message_lead_27929741"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "1111124",
+    "Title": "SPACIOUS 3BR+MAID | CORNER BALCONY | OFFICE",
+    "CreatedAt": "2026-02-16T13:11:31.034878795Z",
+    "Budget": 198,
+    "BudgetByMonth": {
+      "2026-03": 99,
+      "2026-02": 99
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "VS21",
+    "Title": "Rented | High Floor | Community View",
+    "CreatedAt": "2026-03-30T06:50:40.769458508Z",
+    "Budget": 23,
+    "BudgetByMonth": {
+      "2026-03": 23
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-13258601",
+    "Title": "BEST DEAL | EXCLUSIVE UNIT | ROYAL SUITE",
+    "CreatedAt": "2026-02-14T09:09:07.840725791Z",
+    "Budget": 4722,
+    "BudgetByMonth": {
+      "2026-04": 3,
+      "2026-03": 3,
+      "2026-02": 2960,
+      "2026-01": 3,
+      "2025-12": 3,
+      "2025-11": 6,
+      "2025-10": 6,
+      "2025-09": 6,
+      "2025-08": 894,
+      "2025-07": 6,
+      "2025-06": 829,
+      "2025-05": 1,
+      "2025-04": 1,
+      "2025-03": 1
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_28133261",
+      "message_lead_28089917"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "VS12",
+    "Title": "Vacant | Fully Furnished | Best Price",
+    "CreatedAt": "2026-03-06T13:07:38.934610646Z",
+    "Budget": 4,
+    "BudgetByMonth": {
+      "2026-04": 2,
+      "2026-03": 2
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "VS22",
+    "Title": "Rented | Middle Floor | Pool View",
+    "CreatedAt": "2026-03-30T07:04:57.902824863Z",
+    "Budget": 38,
+    "BudgetByMonth": {
+      "2026-03": 38
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000500",
+    "Title": "FULLY RENOVATED | PANORAMIC VIEW | VACANT",
+    "CreatedAt": "2026-03-19T13:18:42.753343844Z",
+    "Budget": 163,
+    "BudgetByMonth": {
+      "2026-03": 163
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_28610298",
+      "message_lead_28530725"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "1111128",
+    "Title": "HIGH FLOOR | BIG LAYOUT | BOULEVARD VIEW",
+    "CreatedAt": "2026-03-09T12:28:22.127839077Z",
+    "Budget": 60,
+    "BudgetByMonth": {
+      "2026-04": 30,
+      "2026-03": 30
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_28348822",
+      "message_lead_28194367"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "VS19",
+    "Title": "Vacant | Fully Furnished | High Floor",
+    "CreatedAt": "2026-03-23T08:51:38.6865973Z",
+    "Budget": 2,
+    "BudgetByMonth": {
+      "2026-03": 2
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "message_lead_28699428",
+      "message_lead_28593116",
+      "message_lead_28444180"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "VS-17",
+    "Title": "Pool View | Middle Floor | Best Price",
+    "CreatedAt": "2026-03-16T07:24:30.992785189Z",
+    "Budget": 4,
+    "BudgetByMonth": {
+      "2026-03": 4
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_28356067"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000428",
+    "Title": "INFINITY POOL | PREMIUM AMENITIES | COASTAL DESIGN",
+    "CreatedAt": "2026-01-12T10:28:37.212169146Z",
+    "Budget": 832,
+    "BudgetByMonth": {
+      "2026-04": 208,
+      "2026-03": 208,
+      "2026-02": 208,
+      "2026-01": 208
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_27428507"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000520",
+    "Title": "FULLY FURNISHED | HIGH FLOOR | BURJ VIEW",
+    "CreatedAt": "2026-04-07T10:28:42.414397727Z",
+    "Budget": 35,
+    "BudgetByMonth": {
+      "2026-04": 35
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_28731009",
+      "message_lead_28676183"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "Z00000273",
+    "Title": "HIGH FLOOR | WELL MAINTAINED | MARINA VIEW",
+    "CreatedAt": "2026-02-28T07:23:54.213147548Z",
+    "Budget": 126,
+    "BudgetByMonth": {
+      "2026-03": 63,
+      "2026-02": 63
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000509",
+    "Title": "BEST PRICED BURJ VIEW | TOP FLOOR | CLOSE TO OP",
+    "CreatedAt": "2026-03-28T12:38:59.030810863Z",
+    "Budget": 206,
+    "BudgetByMonth": {
+      "2026-03": 206
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "Z00000227",
+    "Title": "GOLF COURSE VIEW | SPACIOUS | HIGH QUALITY",
+    "CreatedAt": "2026-02-28T07:27:09.557144604Z",
+    "Budget": 4,
+    "BudgetByMonth": {
+      "2026-03": 2,
+      "2026-02": 2
+    },
+    "Leads": 5,
+    "LeadsIds": [
+      "message_lead_28644408",
+      "message_lead_28209643",
+      "message_lead_28122526",
+      "message_lead_28094321",
+      "message_lead_28085614"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "R00000258",
+    "Title": "PREMIER STUDIO | SKYLINE VIEW | MOTIVATED SELLER",
+    "CreatedAt": "2026-02-16T10:39:02.230129178Z",
+    "Budget": 2771,
+    "BudgetByMonth": {
+      "2026-03": 787,
+      "2026-02": 1984
+    },
+    "Leads": 7,
+    "LeadsIds": [
+      "message_lead_28590552",
+      "message_lead_28069961",
+      "message_lead_28066440",
+      "message_lead_27958785",
+      "email_lead_4715994",
+      "message_lead_27811006",
+      "message_lead_27799350"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000516",
+    "Title": "BEST PRICE | MOTIVATED SELLER | SEA VIEW",
+    "CreatedAt": "2026-04-02T14:46:04.038720218Z",
+    "Budget": 1,
+    "BudgetByMonth": {
+      "2026-04": 1
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "1111122",
+    "Title": "NEAR TO THE BEACH | HANDOVER Q3 2026 | INVESTORS",
+    "CreatedAt": "2026-02-09T12:12:44.288408677Z",
+    "Budget": 9,
+    "BudgetByMonth": {
+      "2026-04": 3,
+      "2026-03": 3,
+      "2026-02": 3
+    },
+    "Leads": 4,
+    "LeadsIds": [
+      "message_lead_28662373",
+      "call_lead_11874917",
+      "message_lead_27545718",
+      "message_lead_27541706"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "VS20",
+    "Title": "Mid Floor | Community View | Close To OP",
+    "CreatedAt": "2026-03-30T06:38:35.982954531Z",
+    "Budget": 2,
+    "BudgetByMonth": {
+      "2026-03": 2
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_28564582"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000446",
+    "Title": "LUXURY VILLA | CLUBHOUSE AND SPA | SINGLE ROW",
+    "CreatedAt": "2026-01-22T13:04:08.919832201Z",
+    "Budget": 280,
+    "BudgetByMonth": {
+      "2026-03": 70,
+      "2026-02": 70,
+      "2026-01": 140
+    },
+    "Leads": 8,
+    "LeadsIds": [
+      "message_lead_28518581",
+      "message_lead_28245636",
+      "message_lead_27836497",
+      "message_lead_27767770",
+      "message_lead_27678322",
+      "message_lead_27430133",
+      "message_lead_27209227",
+      "message_lead_27064750"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000515",
+    "Title": "BEST PRICE | PARTIAL SEA VIEW | FULLY FURNISHED",
+    "CreatedAt": "2026-04-01T13:19:52.062381615Z",
+    "Budget": 54,
+    "BudgetByMonth": {
+      "2026-04": 54
+    },
+    "Leads": 12,
+    "LeadsIds": [
+      "message_lead_28719285",
+      "message_lead_28706308",
+      "call_lead_12032180",
+      "message_lead_28693116",
+      "message_lead_28690964",
+      "message_lead_28666785",
+      "message_lead_28662179",
+      "message_lead_28647391",
+      "message_lead_28642555",
+      "message_lead_28638485",
+      "message_lead_28590587",
+      "message_lead_28554211"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000485",
+    "Title": "HIGH ROI | PREMIUM AMENITIES | PRIVATE BALCONY",
+    "CreatedAt": "2026-03-13T10:43:11.882998926Z",
+    "Budget": 655,
+    "BudgetByMonth": {
+      "2026-03": 655
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_28601623"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000438",
+    "Title": "BEACHFRONT | WELLNESS SPA | LANDSCAPED GARDENS",
+    "CreatedAt": "2026-01-19T10:22:13.078831161Z",
+    "Budget": 312,
+    "BudgetByMonth": {
+      "2026-03": 104,
+      "2026-02": 104,
+      "2026-01": 104
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_27798217"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000477",
+    "Title": "HIGHEST FLOOR | VIEW OF BURJ KHALIFA | PARKING",
+    "CreatedAt": "2026-03-09T11:48:00.88750203Z",
+    "Budget": 112,
+    "BudgetByMonth": {
+      "2026-04": 56,
+      "2026-03": 56
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000455",
+    "Title": "READY TO MOVE | FAMILY COMMUNITY | LAGOON VIEW",
+    "CreatedAt": "2026-02-05T15:11:01.990016267Z",
+    "Budget": 3,
+    "BudgetByMonth": {
+      "2026-04": 1,
+      "2026-03": 1,
+      "2026-02": 1
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "email_lead_4716792",
+      "message_lead_27676428"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000412",
+    "Title": "UPGRATED 1BR TO 2BR | HIGH FLOOR | FULLY FURNISHED",
+    "CreatedAt": "2025-12-27T08:32:24.032668952Z",
+    "Budget": 220,
+    "BudgetByMonth": {
+      "2026-04": 44,
+      "2026-03": 44,
+      "2026-02": 44,
+      "2026-01": 44,
+      "2025-12": 44
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "call_lead_11845986",
+      "call_lead_11833485",
+      "message_lead_27250248"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000452",
+    "Title": "BEST INVESTMENT | STRONG ROI | BUYBACK OPTION",
+    "CreatedAt": "2026-01-31T13:23:47.826035647Z",
+    "Budget": 186,
+    "BudgetByMonth": {
+      "2026-03": 60,
+      "2026-02": 125,
+      "2026-01": 1
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "call_lead_11965765",
+      "call_lead_11851319"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000331",
+    "Title": "BURJ KHALIFA VIEW | LUXURY TOWNHOUSE | BEST PRICE",
+    "CreatedAt": "2026-03-13T09:25:10.318840944Z",
+    "Budget": 718,
+    "BudgetByMonth": {
+      "2026-03": 10,
+      "2026-02": 10,
+      "2026-01": 10,
+      "2025-12": 10,
+      "2025-11": 678
+    },
+    "Leads": 8,
+    "LeadsIds": [
+      "message_lead_28660131",
+      "message_lead_27735138",
+      "message_lead_27683561",
+      "message_lead_27659705",
+      "message_lead_27638420",
+      "message_lead_27494506",
+      "message_lead_26838786",
+      "message_lead_26308033"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000480",
+    "Title": "CORNER UNIT | HIGH FLOOR | PRIME AREA",
+    "CreatedAt": "2026-03-10T14:07:36.521220238Z",
+    "Budget": 132,
+    "BudgetByMonth": {
+      "2026-04": 66,
+      "2026-03": 66
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000415",
+    "Title": "GENUINE RESALE | ICONIC LOCATION | MARINA VIEW",
+    "CreatedAt": "2025-12-29T09:44:41.349967854Z",
+    "Budget": 304,
+    "BudgetByMonth": {
+      "2026-03": 76,
+      "2026-02": 76,
+      "2026-01": 76,
+      "2025-12": 76
+    },
+    "Leads": 24,
+    "LeadsIds": [
+      "message_lead_28651014",
+      "message_lead_28618105",
+      "message_lead_28526400",
+      "message_lead_28198397",
+      "message_lead_27583791",
+      "message_lead_27317454",
+      "message_lead_27317447",
+      "message_lead_27273731",
+      "message_lead_27246563",
+      "message_lead_27078427",
+      "call_lead_11782959",
+      "call_lead_11779037",
+      "message_lead_26922805",
+      "message_lead_26824210",
+      "message_lead_26803766",
+      "message_lead_26750393",
+      "message_lead_26739791",
+      "message_lead_26696448",
+      "message_lead_26657223",
+      "message_lead_26616501",
+      "message_lead_26550509",
+      "message_lead_26402834",
+      "message_lead_26363484",
+      "message_lead_26319546"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "111129",
+    "Title": "PRIVATE BALCONY | LANDSCAPED GARDENS | BEACHFRONT",
+    "CreatedAt": "2026-03-26T14:23:56.316177135Z",
+    "Budget": 42,
+    "BudgetByMonth": {
+      "2026-03": 42
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000483",
+    "Title": "BRAND NEW | FULLY FURNISHED | BURJ KHALIFA VIEW",
+    "CreatedAt": "2026-03-12T12:49:48.151937735Z",
+    "Budget": 88,
+    "BudgetByMonth": {
+      "2026-04": 44,
+      "2026-03": 44
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "call_lead_11984861",
+      "call_lead_11980688"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "VS14",
+    "Title": "High Floor | Opus View | Payment Plan",
+    "CreatedAt": "2026-03-09T12:58:54.670446515Z",
+    "Budget": 84,
+    "BudgetByMonth": {
+      "2026-04": 42,
+      "2026-03": 42
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "1111130",
+    "Title": "1BR RESIDENCE | PANORAMIC SEA VIEWS | YAS ISLAND",
+    "CreatedAt": "2026-04-08T08:54:18.957978466Z",
+    "Budget": 14,
+    "BudgetByMonth": {
+      "2026-04": 14
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000420",
+    "Title": "TOP FLOOR | FULLY FURNISHED | NEXT TO ROOFTOP POOL",
+    "CreatedAt": "2026-01-06T10:51:45.436600021Z",
+    "Budget": 8,
+    "BudgetByMonth": {
+      "2026-04": 2,
+      "2026-03": 2,
+      "2026-02": 2,
+      "2026-01": 2
+    },
+    "Leads": 9,
+    "LeadsIds": [
+      "message_lead_28073803",
+      "message_lead_27633665",
+      "message_lead_27177869",
+      "message_lead_27131151",
+      "message_lead_26654896",
+      "message_lead_26634284",
+      "message_lead_26606930",
+      "message_lead_26586252",
+      "message_lead_26559579"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "0000070",
+    "Title": "BEACHFRONT | HIGH FLOOR | HIGH ROI",
+    "CreatedAt": "2026-01-21T12:40:38.616393991Z",
+    "Budget": 3551,
+    "BudgetByMonth": {
+      "2026-03": 827,
+      "2026-02": 346,
+      "2026-01": 2,
+      "2025-12": 386,
+      "2025-11": 1,
+      "2025-10": 789,
+      "2025-09": 238,
+      "2025-08": 497,
+      "2025-07": 260,
+      "2025-06": 205
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "message_lead_28590556",
+      "message_lead_28030604",
+      "email_lead_4698199"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "VS09",
+    "Title": "Mid floor | Water and Creek view | Payment Plan",
+    "CreatedAt": "2026-02-22T13:42:02.449357379Z",
+    "Budget": 42,
+    "BudgetByMonth": {
+      "2026-03": 21,
+      "2026-02": 21
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000442",
+    "Title": "OPEN AIR CINEMA | SMART HOME | PREMIUM LIVING",
+    "CreatedAt": "2026-01-21T11:48:07.68066658Z",
+    "Budget": 1849,
+    "BudgetByMonth": {
+      "2026-04": 138,
+      "2026-03": 139,
+      "2026-02": 952,
+      "2026-01": 620
+    },
+    "Leads": 8,
+    "LeadsIds": [
+      "message_lead_28170356",
+      "message_lead_28125581",
+      "message_lead_28002573",
+      "message_lead_27659964",
+      "message_lead_27454559",
+      "message_lead_27293047",
+      "message_lead_27259032",
+      "message_lead_26994934"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000478",
+    "Title": "HIGH FLOOR | LAGOONS VIEW | PRIVATE BALCONY",
+    "CreatedAt": "2026-03-09T12:14:42.687443854Z",
+    "Budget": 341,
+    "BudgetByMonth": {
+      "2026-03": 341
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_28471404",
+      "message_lead_28340382"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000440",
+    "Title": "HIGH ROI | MARINA SKYLINE VIEW | BEST INVESTMENT",
+    "CreatedAt": "2026-01-20T11:18:57.864939125Z",
+    "Budget": 1052,
+    "BudgetByMonth": {
+      "2026-03": 634,
+      "2026-02": 3,
+      "2026-01": 415
+    },
+    "Leads": 10,
+    "LeadsIds": [
+      "message_lead_28601885",
+      "message_lead_27522357",
+      "message_lead_27304952",
+      "message_lead_27303087",
+      "call_lead_11825774",
+      "message_lead_27194371",
+      "message_lead_27160146",
+      "message_lead_27154350",
+      "message_lead_27062804",
+      "message_lead_27060693"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000484",
+    "Title": "FULLY FURNISHED | VACANT ON TRANSFER | OPEN VIEW",
+    "CreatedAt": "2026-03-13T08:53:18.115956456Z",
+    "Budget": 4,
+    "BudgetByMonth": {
+      "2026-03": 4
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000501",
+    "Title": "COVERED PARKING | PRIME LOCATION | PRIVATE BEACH",
+    "CreatedAt": "2026-03-20T08:12:58.891729199Z",
+    "Budget": 85,
+    "BudgetByMonth": {
+      "2026-03": 85
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000479",
+    "Title": "BRAND NEW | LOW RISE BUILDING | 1BR + STUDY ROOM",
+    "CreatedAt": "2026-03-10T13:11:29.970451819Z",
+    "Budget": 4,
+    "BudgetByMonth": {
+      "2026-04": 2,
+      "2026-03": 2
+    },
+    "Leads": 5,
+    "LeadsIds": [
+      "message_lead_28540553",
+      "message_lead_28530612",
+      "message_lead_28217414",
+      "message_lead_28211811",
+      "message_lead_28211735"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "1111121",
+    "Title": "PREMIUM FINISHES | LUXURY LIVING | PRIME LOCATION",
+    "CreatedAt": "2026-01-28T08:03:46.576763165Z",
+    "Budget": 117,
+    "BudgetByMonth": {
+      "2026-03": 39,
+      "2026-02": 39,
+      "2026-01": 39
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_28177370",
+      "message_lead_27848641"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000517",
+    "Title": "URGENT SALE | HIGH FLOOR | BIG LAYOUT",
+    "CreatedAt": "2026-04-04T06:52:12.972945394Z",
+    "Budget": 52,
+    "BudgetByMonth": {
+      "2026-04": 52
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_28618130"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000441",
+    "Title": "DIRECT SEA VIEWS | SMART HOME | BEACH ACCESS",
+    "CreatedAt": "2026-01-21T11:05:20.011911398Z",
+    "Budget": 969,
+    "BudgetByMonth": {
+      "2026-03": 360,
+      "2026-02": 360,
+      "2026-01": 249
+    },
+    "Leads": 5,
+    "LeadsIds": [
+      "message_lead_27659793",
+      "message_lead_27382000",
+      "call_lead_11827430",
+      "message_lead_27010108",
+      "message_lead_26991173"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000433",
+    "Title": "BELOW OP | MOTIVATED SELLER | SPASIOUS",
+    "CreatedAt": "2026-01-14T14:05:27.552970439Z",
+    "Budget": 1849,
+    "BudgetByMonth": {
+      "2026-03": 676,
+      "2026-02": 689,
+      "2026-01": 484
+    },
+    "Leads": 4,
+    "LeadsIds": [
+      "email_lead_4716886",
+      "message_lead_27822973",
+      "message_lead_27500247",
+      "message_lead_27437556"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "000000357",
+    "Title": "STUDIO APARTMENT | LAKESIDE LIVING | FURNISHED",
+    "CreatedAt": "2026-04-02T06:40:34.439116164Z",
+    "Budget": 34,
+    "BudgetByMonth": {
+      "2026-04": 34
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_28651178"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000523",
+    "Title": "FULLY FURNISHED | POOL VIEW | BEST PRICE ON MARKET",
+    "CreatedAt": "2026-04-09T12:24:56.496053833Z",
+    "Budget": 35,
+    "BudgetByMonth": {
+      "2026-04": 35
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_28676164"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000510",
+    "Title": "FULLY FURNISHED | LOWEST PRICE | VACANT",
+    "CreatedAt": "2026-03-31T10:08:42.07910011Z",
+    "Budget": 52,
+    "BudgetByMonth": {
+      "2026-03": 52
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "VS06",
+    "Title": "Highest floor | Payment plan | Close to OP | Large",
+    "CreatedAt": "2026-02-09T13:50:56.713500206Z",
+    "Budget": 138,
+    "BudgetByMonth": {
+      "2026-04": 46,
+      "2026-03": 46,
+      "2026-02": 46
+    },
+    "Leads": 12,
+    "LeadsIds": [
+      "message_lead_28307884",
+      "message_lead_28264864",
+      "message_lead_28258533",
+      "message_lead_28165132",
+      "message_lead_28159288",
+      "call_lead_11945469",
+      "call_lead_11945293",
+      "message_lead_27838914",
+      "message_lead_27729827",
+      "message_lead_27661645",
+      "message_lead_27544648",
+      "message_lead_27544096"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000487",
+    "Title": "OPEN-PLAN LIVING | MODERN KITCHEN | FURNISHED",
+    "CreatedAt": "2026-03-16T12:49:55.607866211Z",
+    "Budget": 778,
+    "BudgetByMonth": {
+      "2026-03": 778
+    },
+    "Leads": 4,
+    "LeadsIds": [
+      "call_lead_11999628",
+      "message_lead_28469695",
+      "message_lead_28451165",
+      "message_lead_28313106"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-8473105",
+    "Title": "Khalifa View |Fully Furnished |Prime Location",
+    "CreatedAt": "2025-03-13T23:26:39.725085881Z",
+    "Budget": 495,
+    "BudgetByMonth": {
+      "2024-12": 69,
+      "2024-11": 72,
+      "2024-10": 77,
+      "2024-09": 66,
+      "2024-08": 68,
+      "2024-07": 71,
+      "2024-05": 72
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-9044167",
+    "Title": "1.5 bedroom | Original price | Handover 2025",
+    "CreatedAt": "2025-03-13T23:26:40.327880776Z",
+    "Budget": 2,
+    "BudgetByMonth": {
+      "2024-07": 1,
+      "2024-06": 1
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-9963224",
+    "Title": "PRIVATE POOL | HIGH FLOOR | FULLU FURNISHED",
+    "CreatedAt": "2025-03-13T23:26:41.705764737Z",
+    "Budget": 6,
+    "BudgetByMonth": {
+      "2024-12": 1,
+      "2024-11": 1,
+      "2024-10": 1,
+      "2024-09": 2,
+      "2024-08": 1
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-9962443",
+    "Title": "45 floor | With Study | Ras-Al Khor and Creek view",
+    "CreatedAt": "2025-03-13T23:26:42.005975445Z",
+    "Budget": 753,
+    "BudgetByMonth": {
+      "2024-10": 83,
+      "2024-09": 104,
+      "2024-08": 566
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "Foryou20222",
+    "Title": "HIGH FLOOR | PEYMENT PLAN | SUNSET VIEW",
+    "CreatedAt": "2025-03-13T23:26:42.571634644Z",
+    "Budget": 124,
+    "BudgetByMonth": {
+      "2024-11": 45,
+      "2024-10": 38,
+      "2024-09": 41
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-11115992",
+    "Title": "DISTRESS DEAL | FULL SEA VIEW | BIG LAYOUT 2 BR",
+    "CreatedAt": "2025-03-13T23:26:43.793140816Z",
+    "Budget": 112,
+    "BudgetByMonth": {
+      "2024-10": 112
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-12188790",
+    "Title": "HIGH ROI | SPACIOUS LAYOUT | PRIME LOCATION",
+    "CreatedAt": "2025-04-07T11:11:47.063963148Z",
+    "Budget": 423,
+    "BudgetByMonth": {
+      "2025-10": 47,
+      "2025-09": 45,
+      "2025-08": 41,
+      "2025-07": 39,
+      "2025-06": 42,
+      "2025-05": 38,
+      "2025-04": 39,
+      "2025-03": 42,
+      "2025-02": 45,
+      "2025-01": 45
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-12877380",
+    "Title": "MULTIPLE OPTIONS | GREAT VALUE | POST HANDOVER",
+    "CreatedAt": "2025-04-19T09:36:28.892060678Z",
+    "Budget": 521,
+    "BudgetByMonth": {
+      "2025-10": 71,
+      "2025-09": 71,
+      "2025-08": 68,
+      "2025-07": 61,
+      "2025-06": 59,
+      "2025-05": 52,
+      "2025-04": 47,
+      "2025-03": 48,
+      "2025-02": 44
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-13056108",
+    "Title": "BURJ KHALIFA VIEW | BRAND NEW STUDIO| MOTIVATED SELLER",
+    "CreatedAt": "2025-04-23T08:31:48.027363657Z",
+    "Budget": 573,
+    "BudgetByMonth": {
+      "2025-04": 533,
+      "2025-03": 40
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-12440242",
+    "Title": "LUXURY STUDIO | PRIME LOCATION | CANAL VIEW",
+    "CreatedAt": "2025-04-23T09:37:20.121130458Z",
+    "Budget": 1037,
+    "BudgetByMonth": {
+      "2025-08": 37,
+      "2025-05": 431,
+      "2025-04": 452,
+      "2025-03": 35,
+      "2025-02": 40,
+      "2025-01": 42
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-10854378",
+    "Title": "HANDOVER ALERT | LUXURY| BEACHFRONT LIVING |",
+    "CreatedAt": "2025-04-25T08:46:00.105790927Z",
+    "Budget": 3499,
+    "BudgetByMonth": {
+      "2025-09": 260,
+      "2025-08": 252,
+      "2025-07": 243,
+      "2025-06": 233,
+      "2025-05": 299,
+      "2025-04": 299,
+      "2025-03": 314,
+      "2025-02": 353,
+      "2025-01": 379,
+      "2024-12": 298,
+      "2024-11": 313,
+      "2024-10": 256
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-13491092",
+    "Title": "Single Row | Park Facing | Motivated Seller",
+    "CreatedAt": "2025-04-27T14:40:07.947111742Z",
+    "Budget": 263,
+    "BudgetByMonth": {
+      "2025-05": 262,
+      "2025-04": 1
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-12435861",
+    "Title": "1BHK + STUDY | PRIME LOCATION | INVESTORS DEAL",
+    "CreatedAt": "2025-04-30T18:24:35.971486731Z",
+    "Budget": 739,
+    "BudgetByMonth": {
+      "2026-01": 5,
+      "2025-12": 5,
+      "2025-11": 5,
+      "2025-10": 7,
+      "2025-08": 5,
+      "2025-07": 5,
+      "2025-06": 593,
+      "2025-05": 110,
+      "2025-04": 1,
+      "2025-03": 1,
+      "2025-02": 1,
+      "2025-01": 1
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-11174965",
+    "Title": "HUGE TERRACE | DISTRESS DEAL OP PRICE | GOLF VIEW",
+    "CreatedAt": "2025-05-01T14:56:18.971044395Z",
+    "Budget": 708,
+    "BudgetByMonth": {
+      "2025-10": 65,
+      "2025-09": 57,
+      "2025-08": 58,
+      "2025-07": 53,
+      "2025-06": 29,
+      "2025-05": 50,
+      "2025-04": 50,
+      "2025-03": 52,
+      "2025-02": 57,
+      "2025-01": 61,
+      "2024-12": 65,
+      "2024-11": 60,
+      "2024-10": 51
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-13441968",
+    "Title": "MODERN | NVESTORS DEAL | PRIME LOCATION",
+    "CreatedAt": "2025-05-03T11:39:40.983117133Z",
+    "Budget": 2,
+    "BudgetByMonth": {
+      "2025-05": 1,
+      "2025-04": 1
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-12228087",
+    "Title": "PRIME LOCATION | SPACIOUS | LOTS OF AMENITIES",
+    "CreatedAt": "2025-05-03T13:03:47.365002425Z",
+    "Budget": 20,
+    "BudgetByMonth": {
+      "2025-11": 4,
+      "2025-10": 4,
+      "2025-09": 4,
+      "2025-08": 1,
+      "2025-07": 1,
+      "2025-06": 1,
+      "2025-05": 1,
+      "2025-04": 1,
+      "2025-03": 1,
+      "2025-02": 1,
+      "2025-01": 1
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-12955550",
+    "Title": "SPACIOUS | TERRACE ON THE ROOF |BEST LIVING",
+    "CreatedAt": "2025-05-04T07:47:33.435931896Z",
+    "Budget": 228,
+    "BudgetByMonth": {
+      "2026-02": 11,
+      "2026-01": 11,
+      "2025-12": 11,
+      "2025-11": 15,
+      "2025-10": 15,
+      "2025-09": 11,
+      "2025-08": 11,
+      "2025-07": 10,
+      "2025-06": 9,
+      "2025-05": 6,
+      "2025-04": 106,
+      "2025-03": 6,
+      "2025-02": 6
+    },
+    "Leads": 6,
+    "LeadsIds": [
+      "message_lead_27900430",
+      "message_lead_27876579",
+      "message_lead_27535428",
+      "call_lead_11774070",
+      "message_lead_26474671",
+      "message_lead_26278461"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-11575028",
+    "Title": "PALM AND SEA VIEW | SPACIOUS LAYUT | FURNISHED",
+    "CreatedAt": "2025-05-04T13:21:23.782861277Z",
+    "Budget": 1846,
+    "BudgetByMonth": {
+      "2025-11": 78,
+      "2025-10": 78,
+      "2025-09": 68,
+      "2025-08": 69,
+      "2025-07": 62,
+      "2025-06": 69,
+      "2025-04": 1039,
+      "2025-03": 67,
+      "2025-02": 74,
+      "2025-01": 74,
+      "2024-12": 82,
+      "2024-11": 86
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-11739869",
+    "Title": "LUXURY NEW BRANDED | SPACIOUS LAYOUT | PRIME LOCATION",
+    "CreatedAt": "2025-05-04T13:21:23.845040132Z",
+    "Budget": 322,
+    "BudgetByMonth": {
+      "2025-11": 78,
+      "2025-04": 54,
+      "2025-03": 56,
+      "2025-01": 65,
+      "2024-12": 69
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "for-you-real-estate-6729706",
+    "Title": "INVESTOR DEAL | FULL FLOOR | BURJ VIEW",
+    "CreatedAt": "2025-05-16T02:36:36.459975338Z",
+    "Budget": 3,
+    "BudgetByMonth": {
+      "2025-08": 1,
+      "2024-01": 1,
+      "2023-11": 1
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "0000027",
+    "Title": "DUBAI MARINA VIEW | HIGH FLOOR | FULLY UPGRADED",
+    "CreatedAt": "2025-05-24T10:47:03.504815231Z",
+    "Budget": 708,
+    "BudgetByMonth": {
+      "2025-08": 156,
+      "2025-07": 148,
+      "2025-06": 138,
+      "2025-05": 266
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "0000030",
+    "Title": "LUXURY | PRIME LOCATION | VIEW OF LANDMARK",
+    "CreatedAt": "2025-05-26T14:33:08.262207619Z",
+    "Budget": 311,
+    "BudgetByMonth": {
+      "2025-09": 6,
+      "2025-08": 302,
+      "2025-07": 1,
+      "2025-06": 1,
+      "2025-05": 1
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "0000047",
+    "Title": "LUXURY 1BR | MID FLOOR | ICONIC PARK | CANAL VIEW",
+    "CreatedAt": "2025-06-08T09:33:17.534745085Z",
+    "Budget": 7,
+    "BudgetByMonth": {
+      "2025-12": 1,
+      "2025-11": 1,
+      "2025-10": 1,
+      "2025-09": 1,
+      "2025-08": 1,
+      "2025-07": 1,
+      "2025-06": 1
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_26380708"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "0000062",
+    "Title": "MODERN 1BR | HIGH QUALITY | PRIME LOCATION",
+    "CreatedAt": "2025-06-16T06:46:04.356220212Z",
+    "Budget": 21,
+    "BudgetByMonth": {
+      "2025-12": 2,
+      "2025-11": 2,
+      "2025-09": 8,
+      "2025-08": 3,
+      "2025-07": 3,
+      "2025-06": 3
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000137",
+    "Title": "PRIME LOCATION | HIGH ROI | SPACIOUS STUDIO",
+    "CreatedAt": "2025-07-31T13:15:07.098620721Z",
+    "Budget": 19,
+    "BudgetByMonth": {
+      "2025-12": 4,
+      "2025-11": 4,
+      "2025-10": 4,
+      "2025-09": 3,
+      "2025-08": 3,
+      "2025-07": 1
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_26297706"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000154",
+    "Title": "PRIME LOCATION | BEST PRICE | STUNNING 1BR",
+    "CreatedAt": "2025-08-08T13:12:51.725725864Z",
+    "Budget": 47,
+    "BudgetByMonth": {
+      "2026-01": 10,
+      "2025-12": 10,
+      "2025-11": 10,
+      "2025-10": 10,
+      "2025-09": 6,
+      "2025-08": 1
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000161",
+    "Title": "PRIVATE POOL | CENTRAL DUBAI | PREMIUM LIVING ",
+    "CreatedAt": "2025-08-12T13:02:22.454230494Z",
+    "Budget": 179,
+    "BudgetByMonth": {
+      "2025-09": 11,
+      "2025-08": 168
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000162",
+    "Title": "LUXURY LIVING | SPACIOUS TOWNHOUSE | PRIVATE POOL",
+    "CreatedAt": "2025-08-13T14:22:36.73654536Z",
+    "Budget": 2,
+    "BudgetByMonth": {
+      "2025-09": 1,
+      "2025-08": 1
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000167",
+    "Title": "FULLY FURNISHED | PRIME LOCATION | VACANT",
+    "CreatedAt": "2025-08-21T13:37:18.998204661Z",
+    "Budget": 1912,
+    "BudgetByMonth": {
+      "2025-12": 63,
+      "2025-11": 78,
+      "2025-10": 78,
+      "2025-09": 78,
+      "2025-08": 1615
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000188",
+    "Title": "SKYLINE VIEW | BRAND NEW | HIGH QUALITY | HIGH ROI",
+    "CreatedAt": "2025-09-03T14:09:32.818470905Z",
+    "Budget": 3,
+    "BudgetByMonth": {
+      "2025-09": 3
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000193",
+    "Title": "BURJ KHALIFA VIEW | HIGH FLOOR | LUXURY LIVING",
+    "CreatedAt": "2025-09-06T09:57:24.955824892Z",
+    "Budget": 430,
+    "BudgetByMonth": {
+      "2025-12": 98,
+      "2025-11": 122,
+      "2025-10": 107,
+      "2025-09": 103
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000199",
+    "Title": "URGENT SALE | FULLY FURNISHED | STYLISH  1BR",
+    "CreatedAt": "2025-09-10T14:49:14.433370164Z",
+    "Budget": 2189,
+    "BudgetByMonth": {
+      "2026-01": 2,
+      "2025-12": 2,
+      "2025-11": 4,
+      "2025-10": 1040,
+      "2025-09": 1141
+    },
+    "Leads": 11,
+    "LeadsIds": [
+      "message_lead_27137336",
+      "message_lead_27123006",
+      "message_lead_26534856",
+      "message_lead_26493161",
+      "message_lead_26453109",
+      "message_lead_26381191",
+      "message_lead_26297818",
+      "message_lead_26294462",
+      "message_lead_26266577",
+      "message_lead_26209975",
+      "message_lead_26174990"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000203",
+    "Title": "URGENT RESALE | PP| LUXURY LIVING | PRIME LOCATION",
+    "CreatedAt": "2025-09-11T14:34:09.781986072Z",
+    "Budget": 758,
+    "BudgetByMonth": {
+      "2025-11": 733,
+      "2025-10": 9,
+      "2025-09": 16
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000213",
+    "Title": "RARE CORNER UNIT | EXCLUSIVE | STUDY ROOM",
+    "CreatedAt": "2025-09-16T11:47:02.389452579Z",
+    "Budget": 705,
+    "BudgetByMonth": {
+      "2025-09": 705
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000216",
+    "Title": "NEW COMMUNITY | HIGH QUALITY | PRIME LOCATION",
+    "CreatedAt": "2025-09-17T09:50:32.730968668Z",
+    "Budget": 1312,
+    "BudgetByMonth": {
+      "2025-12": 14,
+      "2025-11": 34,
+      "2025-10": 632,
+      "2025-09": 632
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000229",
+    "Title": "HIGH ROI | BEACH ACCESS | BREATHTAKING VIEW",
+    "CreatedAt": "2025-09-26T08:48:23.126084878Z",
+    "Budget": 773,
+    "BudgetByMonth": {
+      "2025-12": 7,
+      "2025-11": 755,
+      "2025-10": 7,
+      "2025-09": 4
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_26385416",
+      "message_lead_26344086"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000231",
+    "Title": "LUXURIOUS 1 BR | CORNER UNIT | HANDOVER SOON",
+    "CreatedAt": "2025-09-28T15:06:57.002030876Z",
+    "Budget": 1385,
+    "BudgetByMonth": {
+      "2025-10": 608,
+      "2025-09": 777
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "111115",
+    "Title": "PREMIUM FINISHES | LUXURY LIVING | PRIME LOCATION",
+    "CreatedAt": "2025-10-11T11:08:16.129346563Z",
+    "Budget": 156,
+    "BudgetByMonth": {
+      "2025-12": 78,
+      "2025-11": 39,
+      "2025-10": 39
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000277",
+    "Title": "EXCLUSIVE STUDIO | GARANTEE ROI | MOTIVATED SELLER",
+    "CreatedAt": "2025-10-27T08:34:11.143201998Z",
+    "Budget": 10,
+    "BudgetByMonth": {
+      "2025-12": 2,
+      "2025-11": 4,
+      "2025-10": 4
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000281",
+    "Title": "Pool view | Big 1br | Own office | Middle floor",
+    "CreatedAt": "2025-10-31T08:17:45.088975242Z",
+    "Budget": 21,
+    "BudgetByMonth": {
+      "2026-02": 3,
+      "2026-01": 3,
+      "2025-12": 3,
+      "2025-11": 6,
+      "2025-10": 6
+    },
+    "Leads": 11,
+    "LeadsIds": [
+      "call_lead_11932568",
+      "message_lead_27808070",
+      "message_lead_27754245",
+      "message_lead_27564765",
+      "message_lead_27563497",
+      "message_lead_27557224",
+      "message_lead_27530979",
+      "call_lead_11862383",
+      "call_lead_11767058",
+      "message_lead_26715000",
+      "message_lead_26202647"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "111116",
+    "Title": "LOWEST PRICE | INVESTOR DEAL | PERFECT LIVING",
+    "CreatedAt": "2025-11-01T08:40:27.202169017Z",
+    "Budget": 69,
+    "BudgetByMonth": {
+      "2025-12": 23,
+      "2025-11": 46
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "111117",
+    "Title": "SPACIOUS 3BR+MAID | CORNER BALCONY | OFFICE",
+    "CreatedAt": "2025-11-03T12:14:26.25964667Z",
+    "Budget": 297,
+    "BudgetByMonth": {
+      "2025-12": 99,
+      "2025-11": 198
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "111118",
+    "Title": "FULL SEA VIEW | PRIVATE BEACH | GUGGENHEIM VIEWS",
+    "CreatedAt": "2025-11-07T10:05:58.124618611Z",
+    "Budget": 3051,
+    "BudgetByMonth": {
+      "2025-11": 3051
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000293",
+    "Title": "EXCLUSIVE 1BR | BURJ KHALIFA VIEW | THE PLAZA",
+    "CreatedAt": "2025-11-07T15:36:28.743249135Z",
+    "Budget": 287,
+    "BudgetByMonth": {
+      "2026-04": 46,
+      "2026-03": 46,
+      "2026-02": 46,
+      "2026-01": 46,
+      "2025-12": 46,
+      "2025-11": 57
+    },
+    "Leads": 40,
+    "LeadsIds": [
+      "call_lead_11952145",
+      "message_lead_28074365",
+      "message_lead_28004120",
+      "message_lead_27966918",
+      "call_lead_11931355",
+      "message_lead_27837754",
+      "message_lead_27809617",
+      "message_lead_27769949",
+      "message_lead_27675432",
+      "message_lead_27626459",
+      "message_lead_27619130",
+      "message_lead_27585401",
+      "message_lead_27534807",
+      "message_lead_27461059",
+      "message_lead_27445219",
+      "message_lead_27440900",
+      "message_lead_27424371",
+      "message_lead_27421294",
+      "message_lead_27399368",
+      "message_lead_27392259",
+      "message_lead_27383780",
+      "message_lead_27337149",
+      "message_lead_27269685",
+      "message_lead_27243282",
+      "message_lead_27235913",
+      "message_lead_27234817",
+      "message_lead_27213240",
+      "call_lead_11814309",
+      "message_lead_27154957",
+      "message_lead_27140170",
+      "message_lead_27127872",
+      "message_lead_27079846",
+      "message_lead_26961034",
+      "message_lead_26940389",
+      "message_lead_26872614",
+      "message_lead_26728817",
+      "message_lead_26638452",
+      "message_lead_26562101",
+      "message_lead_26549007",
+      "message_lead_26282698"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000294",
+    "Title": "EXCLUSIVE 1BR | BURJ KHALIFA VIEW | THE PLAZA",
+    "CreatedAt": "2025-11-07T16:08:44.196998872Z",
+    "Budget": 287,
+    "BudgetByMonth": {
+      "2026-04": 46,
+      "2026-03": 46,
+      "2026-02": 46,
+      "2026-01": 46,
+      "2025-12": 46,
+      "2025-11": 57
+    },
+    "Leads": 26,
+    "LeadsIds": [
+      "message_lead_28450319",
+      "message_lead_28051739",
+      "message_lead_28042494",
+      "message_lead_27837733",
+      "message_lead_27832807",
+      "message_lead_27832575",
+      "message_lead_27745342",
+      "message_lead_27619139",
+      "message_lead_27585396",
+      "call_lead_11878644",
+      "message_lead_27576831",
+      "message_lead_27561112",
+      "message_lead_27438149",
+      "message_lead_27425241",
+      "message_lead_27413314",
+      "message_lead_27383772",
+      "message_lead_27360125",
+      "message_lead_27341766",
+      "message_lead_27255121",
+      "message_lead_27242345",
+      "message_lead_27087393",
+      "message_lead_27052569",
+      "message_lead_26974677",
+      "message_lead_26728836",
+      "message_lead_26638451",
+      "message_lead_26562087"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000320",
+    "Title": "BURJ KHALIFA VIEW |  LUXURY LIVING | SPACIOUS",
+    "CreatedAt": "2025-11-23T15:20:39.49590172Z",
+    "Budget": 176,
+    "BudgetByMonth": {
+      "2026-03": 44,
+      "2026-02": 44,
+      "2026-01": 44,
+      "2025-11": 44
+    },
+    "Leads": 9,
+    "LeadsIds": [
+      "message_lead_27711463",
+      "message_lead_27563882",
+      "message_lead_27440786",
+      "message_lead_27410386",
+      "call_lead_11847558",
+      "message_lead_27378068",
+      "message_lead_27366025",
+      "message_lead_26897558",
+      "message_lead_26792175"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "000000321",
+    "Title": "READY | STUNNING 1BR | SPACIOUS BALCONY",
+    "CreatedAt": "2025-11-24T12:22:00.999566044Z",
+    "Budget": 1024,
+    "BudgetByMonth": {
+      "2026-01": 46,
+      "2025-12": 932,
+      "2025-11": 46
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "email_lead_4697932"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000336",
+    "Title": "BEST PRICE IN TOWER | HIGH FLOOR | VIEW",
+    "CreatedAt": "2025-11-29T07:53:37.864864071Z",
+    "Budget": 56,
+    "BudgetByMonth": {
+      "2025-11": 56
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000354",
+    "Title": "CORNER UNIT | FIRST ROW | PRIME LOCATION | LUXURY",
+    "CreatedAt": "2025-12-09T11:27:29.191481137Z",
+    "Budget": 171,
+    "BudgetByMonth": {
+      "2025-12": 171
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "message_lead_26288856",
+      "message_lead_26238746",
+      "message_lead_26199179"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000360",
+    "Title": "MID FLOOR | SPACIOUS | RESORT-STYLE POOL",
+    "CreatedAt": "2025-12-10T12:35:37.602444495Z",
+    "Budget": 156,
+    "BudgetByMonth": {
+      "2026-03": 39,
+      "2026-02": 39,
+      "2026-01": 39,
+      "2025-12": 39
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000371",
+    "Title": "EXCLUSIVE OFFER | PRIME LOCATION | CANAL VIEWS",
+    "CreatedAt": "2025-12-15T13:29:45.803977375Z",
+    "Budget": 189,
+    "BudgetByMonth": {
+      "2026-02": 63,
+      "2026-01": 63,
+      "2025-12": 63
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000375",
+    "Title": "EXCLUSIVE PLOT | PRIME COMMUNITY",
+    "CreatedAt": "2025-12-17T10:26:08.527094166Z",
+    "Budget": 10,
+    "BudgetByMonth": {
+      "2026-01": 5,
+      "2025-12": 5
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000",
+    "Title": "Full sea view | Big Terrace | Just delivered",
+    "CreatedAt": "2025-12-23T09:06:27.042807289Z",
+    "Budget": 624,
+    "BudgetByMonth": {
+      "2026-02": 208,
+      "2026-01": 208,
+      "2025-12": 208
+    },
+    "Leads": 5,
+    "LeadsIds": [
+      "message_lead_28268275",
+      "message_lead_28232559",
+      "message_lead_28110523",
+      "message_lead_27735118",
+      "message_lead_26481751"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "01KDA8NSXSKGVXY36VTA6J7T1X",
+    "Title": "MODERN STUDIO | SPLASH PARK & MINI GOLF",
+    "CreatedAt": "2025-12-25T08:05:48.607898716Z",
+    "Budget": 9,
+    "BudgetByMonth": {
+      "2026-02": 3,
+      "2026-01": 3,
+      "2025-12": 3
+    },
+    "Leads": 6,
+    "LeadsIds": [
+      "call_lead_11955174",
+      "message_lead_28005049",
+      "message_lead_27793835",
+      "message_lead_27271263",
+      "message_lead_27126373",
+      "message_lead_26229197"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000437",
+    "Title": "PRIVATE BALCONY | STRONG ROI | SWIMMING POOL",
+    "CreatedAt": "2026-01-19T09:59:24.763785241Z",
+    "Budget": 2,
+    "BudgetByMonth": {
+      "2026-01": 2
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_27326754"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "34W5D7Z4PVG6EYNHN9W7CHZ1PG",
+    "Title": "Vastu | Private pool | Big plot | Handover soon",
+    "CreatedAt": "2026-01-04T14:50:19.419678399Z",
+    "Budget": 844,
+    "BudgetByMonth": {
+      "2026-02": 56,
+      "2026-01": 788
+    },
+    "Leads": 7,
+    "LeadsIds": [
+      "message_lead_27762249",
+      "message_lead_27591224",
+      "message_lead_27480969",
+      "message_lead_27162355",
+      "message_lead_27015054",
+      "message_lead_26880307",
+      "message_lead_26777500"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000457",
+    "Title": "LUXURY 2BR | FULL SEA AND AIN VIEW | HIGH FLOOR",
+    "CreatedAt": "2026-02-09T08:35:27.574354136Z",
+    "Budget": 624,
+    "BudgetByMonth": {
+      "2026-04": 208,
+      "2026-03": 208,
+      "2026-02": 208
+    },
+    "Leads": 5,
+    "LeadsIds": [
+      "message_lead_28640749",
+      "message_lead_28446966",
+      "message_lead_28323354",
+      "message_lead_28195361",
+      "call_lead_11923810"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "VS01",
+    "Title": "High floor | Just delivered | Vacant",
+    "CreatedAt": "2026-01-06T14:18:31.093621825Z",
+    "Budget": 14,
+    "BudgetByMonth": {
+      "2026-02": 7,
+      "2026-01": 7
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "message_lead_27480045",
+      "message_lead_26736591",
+      "message_lead_26548276"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "Z0000187",
+    "Title": "SEA VIEW | PREMIUM QUALITY | STANDOUT INVESTMENT",
+    "CreatedAt": "2026-02-28T07:31:32.936289762Z",
+    "Budget": 71,
+    "BudgetByMonth": {
+      "2026-02": 71
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_28135220"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "00000435",
+    "Title": "HIGH FLOOR | SPACIOUS LAYOUT | HANDOVER",
+    "CreatedAt": "2026-01-16T10:08:22.780634007Z",
+    "Budget": 129,
+    "BudgetByMonth": {
+      "2026-03": 43,
+      "2026-02": 43,
+      "2026-01": 43
+    },
+    "Leads": 103,
+    "LeadsIds": [
+      "message_lead_28692424",
+      "call_lead_12027089",
+      "message_lead_28623086",
+      "message_lead_28505661",
+      "message_lead_28488437",
+      "message_lead_28484882",
+      "message_lead_28456895",
+      "message_lead_28264845",
+      "message_lead_28241137",
+      "message_lead_28222670",
+      "message_lead_28216688",
+      "message_lead_28198095",
+      "message_lead_28193477",
+      "message_lead_28192122",
+      "message_lead_28165782",
+      "message_lead_28165187",
+      "message_lead_28165005",
+      "message_lead_28159297",
+      "call_lead_11958778",
+      "message_lead_28144522",
+      "message_lead_28087308",
+      "message_lead_28074961",
+      "message_lead_28002938",
+      "message_lead_27995780",
+      "call_lead_11936600",
+      "message_lead_27944801",
+      "message_lead_27927298",
+      "message_lead_27886781",
+      "message_lead_27834918",
+      "message_lead_27784112",
+      "call_lead_11906817",
+      "message_lead_27762806",
+      "message_lead_27762771",
+      "message_lead_27732966",
+      "call_lead_11900862",
+      "message_lead_27707502",
+      "message_lead_27699985",
+      "message_lead_27659227",
+      "email_lead_4712111",
+      "message_lead_27618796",
+      "message_lead_27613753",
+      "message_lead_27598104",
+      "message_lead_27593976",
+      "message_lead_27552219",
+      "message_lead_27544067",
+      "call_lead_11870684",
+      "message_lead_27514788",
+      "message_lead_27509695",
+      "message_lead_27476228",
+      "call_lead_11855359",
+      "message_lead_27401968",
+      "message_lead_27388543",
+      "message_lead_27378800",
+      "call_lead_11845405",
+      "message_lead_27358219",
+      "call_lead_11844672",
+      "message_lead_27350252",
+      "message_lead_27347712",
+      "message_lead_27323700",
+      "email_lead_4710092",
+      "call_lead_11830195",
+      "message_lead_27220420",
+      "message_lead_27199429",
+      "message_lead_27189017",
+      "message_lead_27163032",
+      "message_lead_27159646",
+      "message_lead_27156713",
+      "message_lead_27153529",
+      "message_lead_27142419",
+      "message_lead_27135871",
+      "message_lead_27133180",
+      "message_lead_27118040",
+      "message_lead_27089013",
+      "message_lead_27078373",
+      "message_lead_27072503",
+      "call_lead_11800496",
+      "message_lead_27051447",
+      "message_lead_27035669",
+      "message_lead_27019280",
+      "message_lead_27005643",
+      "call_lead_11790634",
+      "message_lead_27004372",
+      "call_lead_11790309",
+      "message_lead_26996413",
+      "message_lead_26989944",
+      "message_lead_26975690",
+      "message_lead_26971318",
+      "message_lead_26953865",
+      "message_lead_26947286",
+      "message_lead_26941026",
+      "message_lead_26920756",
+      "message_lead_26912982",
+      "message_lead_26907045",
+      "message_lead_26889354",
+      "message_lead_26883018",
+      "call_lead_11772265",
+      "call_lead_11772264",
+      "message_lead_26874417",
+      "message_lead_26872621",
+      "message_lead_26868679",
+      "call_lead_11771526",
+      "email_lead_4704782",
+      "message_lead_26840353"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "1111125",
+    "Title": "1BR RESIDENCE | PANORAMIC SEA VIEWS | YAS ISLAND",
+    "CreatedAt": "2026-02-17T07:44:59.001415564Z",
+    "Budget": 28,
+    "BudgetByMonth": {
+      "2026-03": 14,
+      "2026-02": 14
+    },
+    "Leads": 7,
+    "LeadsIds": [
+      "message_lead_28295674",
+      "message_lead_28124724",
+      "message_lead_27971602",
+      "message_lead_27966822",
+      "message_lead_27939658",
+      "message_lead_27910908",
+      "message_lead_27882658"
+    ]
+  },
+  {
+    "Category": "Sell",
+    "Reference": "1111126",
+    "Title": "PREMIUM 4BR | INVESTMENT | BEACHFRONT LOCATION",
+    "CreatedAt": "2026-02-18T14:12:48.249107685Z",
+    "Budget": 6,
+    "BudgetByMonth": {
+      "2026-03": 3,
+      "2026-02": 3
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Rent",
+    "Reference": "for-you-real-estate-12298292",
+    "Title": "STUNNING MARINA VIEW| VACANT | FURNISHED",
+    "CreatedAt": "2025-04-14T09:11:37.510269505Z",
+    "Budget": 312,
+    "BudgetByMonth": {
+      "2026-04": 18,
+      "2026-03": 18,
+      "2026-02": 18,
+      "2026-01": 18,
+      "2025-12": 18,
+      "2025-11": 29,
+      "2025-10": 29,
+      "2025-09": 26,
+      "2025-08": 23,
+      "2025-07": 20,
+      "2025-06": 20,
+      "2025-05": 14,
+      "2025-04": 14,
+      "2025-03": 14,
+      "2025-02": 16,
+      "2025-01": 17
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000122",
+    "Title": "FULLY FURNISHED | LUXURY LIVING | HIGH FLOOR",
+    "CreatedAt": "2025-07-15T07:20:10.715512591Z",
+    "Budget": 31,
+    "BudgetByMonth": {
+      "2026-04": 2,
+      "2026-03": 2,
+      "2026-02": 2,
+      "2026-01": 2,
+      "2025-12": 2,
+      "2025-11": 6,
+      "2025-10": 6,
+      "2025-09": 4,
+      "2025-08": 4,
+      "2025-07": 1
+    },
+    "Leads": 9,
+    "LeadsIds": [
+      "message_lead_28278426",
+      "message_lead_28263610",
+      "message_lead_27192475",
+      "message_lead_26784888",
+      "message_lead_26755975",
+      "message_lead_26629142",
+      "message_lead_26425235",
+      "message_lead_26375463",
+      "message_lead_26362768"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000126",
+    "Title": "HIGHEST FLOOR | MULTIPLE CHEQUES | PRIVATE BEACH",
+    "CreatedAt": "2025-07-18T13:29:10.623105353Z",
+    "Budget": 834,
+    "BudgetByMonth": {
+      "2026-04": 20,
+      "2026-03": 20,
+      "2026-01": 40,
+      "2025-12": 20,
+      "2025-11": 33,
+      "2025-10": 33,
+      "2025-09": 29,
+      "2025-08": 23,
+      "2025-07": 616
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "message_lead_26713672",
+      "message_lead_26553878",
+      "message_lead_26483531"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000156",
+    "Title": "MODERN 1BR | READY TO MOVE | BRAND NEW ",
+    "CreatedAt": "2025-08-08T14:49:12.933507671Z",
+    "Budget": 139,
+    "BudgetByMonth": {
+      "2026-04": 12,
+      "2026-03": 12,
+      "2026-02": 12,
+      "2026-01": 12,
+      "2025-12": 12,
+      "2025-11": 23,
+      "2025-10": 23,
+      "2025-09": 18,
+      "2025-08": 15
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000160",
+    "Title": "SPACIOUS 2BR | SEPARATE STUDY | PARK VIEW",
+    "CreatedAt": "2025-08-08T16:05:02.54198357Z",
+    "Budget": 277,
+    "BudgetByMonth": {
+      "2026-03": 2,
+      "2026-02": 2,
+      "2026-01": 2,
+      "2025-12": 251,
+      "2025-11": 7,
+      "2025-10": 7,
+      "2025-09": 5,
+      "2025-08": 1
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "call_lead_11957858"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000172",
+    "Title": "SPACIOUS | FULLY FURNISHED | VACANT NOW ",
+    "CreatedAt": "2025-08-27T15:05:28.471840972Z",
+    "Budget": 24,
+    "BudgetByMonth": {
+      "2026-04": 2,
+      "2026-03": 2,
+      "2026-02": 2,
+      "2026-01": 2,
+      "2025-12": 2,
+      "2025-11": 4,
+      "2025-10": 4,
+      "2025-09": 3,
+      "2025-08": 3
+    },
+    "Leads": 8,
+    "LeadsIds": [
+      "message_lead_27432649",
+      "message_lead_26771315",
+      "message_lead_26711548",
+      "message_lead_26690509",
+      "message_lead_26655708",
+      "message_lead_26633028",
+      "message_lead_26524668",
+      "message_lead_26303811"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000175",
+    "Title": "12 CHEQUES | BRAND NEW | FULLY FURNISHED",
+    "CreatedAt": "2025-08-28T13:50:38.06849272Z",
+    "Budget": 10,
+    "BudgetByMonth": {
+      "2026-04": 2,
+      "2025-09": 4,
+      "2025-08": 4
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_28704798"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000222",
+    "Title": "SPACIOUS | FULLY FURNISHED | PRIME LOCATION",
+    "CreatedAt": "2025-09-19T06:32:52.559576327Z",
+    "Budget": 10,
+    "BudgetByMonth": {
+      "2026-04": 2,
+      "2025-10": 4,
+      "2025-09": 4
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000288",
+    "Title": "LUXURY 2BR | MARINA SKYLINE VIEWS | ROYAL OCEANIC",
+    "CreatedAt": "2025-11-06T11:27:32.941579184Z",
+    "Budget": 351,
+    "BudgetByMonth": {
+      "2026-04": 14,
+      "2026-03": 14,
+      "2026-02": 14,
+      "2026-01": 269,
+      "2025-12": 15,
+      "2025-11": 25
+    },
+    "Leads": 23,
+    "LeadsIds": [
+      "message_lead_28048448",
+      "message_lead_28016843",
+      "message_lead_27862567",
+      "message_lead_27742139",
+      "message_lead_27729091",
+      "message_lead_27695856",
+      "message_lead_27582989",
+      "message_lead_27464404",
+      "message_lead_27351735",
+      "message_lead_27351241",
+      "message_lead_27005777",
+      "message_lead_26997986",
+      "message_lead_26978295",
+      "message_lead_26959679",
+      "message_lead_26957766",
+      "message_lead_26864832",
+      "message_lead_26844692",
+      "message_lead_26808530",
+      "message_lead_26778873",
+      "message_lead_26693084",
+      "call_lead_11734404",
+      "call_lead_11733133",
+      "message_lead_26538559"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000297",
+    "Title": "SEA VIEW | 2-BDR | FULLY FURNISHED",
+    "CreatedAt": "2025-11-11T13:00:00.380139614Z",
+    "Budget": 17,
+    "BudgetByMonth": {
+      "2026-03": 2,
+      "2026-02": 2,
+      "2026-01": 4,
+      "2025-12": 2,
+      "2025-11": 7
+    },
+    "Leads": 5,
+    "LeadsIds": [
+      "message_lead_28528387",
+      "message_lead_28528381",
+      "message_lead_28528372",
+      "message_lead_27682086",
+      "message_lead_26315120"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000301",
+    "Title": "STUDIO RESIDENCE | PRIVATE BALCONY | AL FURJAN",
+    "CreatedAt": "2025-11-14T13:07:27.766818271Z",
+    "Budget": 10,
+    "BudgetByMonth": {
+      "2026-03": 2,
+      "2026-02": 2,
+      "2026-01": 2,
+      "2025-12": 2,
+      "2025-11": 2
+    },
+    "Leads": 14,
+    "LeadsIds": [
+      "message_lead_27780245",
+      "message_lead_27645098",
+      "message_lead_26884315",
+      "message_lead_26812786",
+      "message_lead_26666207",
+      "message_lead_26601443",
+      "message_lead_26412617",
+      "message_lead_26388293",
+      "message_lead_26387737",
+      "message_lead_26368947",
+      "message_lead_26368869",
+      "message_lead_26368828",
+      "message_lead_26345825",
+      "message_lead_26256300"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000312",
+    "Title": "SEA VIEW | HUGE BALCONY |  BEACH ACCESS",
+    "CreatedAt": "2025-11-20T12:25:18.508530356Z",
+    "Budget": 10,
+    "BudgetByMonth": {
+      "2026-03": 2,
+      "2026-02": 2,
+      "2026-01": 2,
+      "2025-12": 2,
+      "2025-11": 2
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000315",
+    "Title": "PREMIUM 1BR | BURJ ROYALE | DOWNTOWN DUBAI",
+    "CreatedAt": "2025-11-21T08:08:20.35270946Z",
+    "Budget": 55,
+    "BudgetByMonth": {
+      "2026-04": 11,
+      "2026-02": 11,
+      "2026-01": 11,
+      "2025-12": 11,
+      "2025-11": 11
+    },
+    "Leads": 35,
+    "LeadsIds": [
+      "message_lead_28126202",
+      "message_lead_28058387",
+      "message_lead_28036043",
+      "message_lead_27952335",
+      "call_lead_11930358",
+      "message_lead_27938952",
+      "message_lead_27932101",
+      "message_lead_27920602",
+      "message_lead_27905202",
+      "message_lead_27843050",
+      "message_lead_27831453",
+      "call_lead_11910827",
+      "message_lead_27753756",
+      "message_lead_27512417",
+      "call_lead_11867563",
+      "message_lead_27368566",
+      "call_lead_11802469",
+      "message_lead_27078707",
+      "message_lead_26975678",
+      "message_lead_26810007",
+      "message_lead_26799228",
+      "message_lead_26749416",
+      "message_lead_26721901",
+      "message_lead_26706362",
+      "message_lead_26683574",
+      "call_lead_11726600",
+      "message_lead_26543400",
+      "message_lead_26541578",
+      "message_lead_26466290",
+      "message_lead_26445229",
+      "message_lead_26409734",
+      "message_lead_26366130",
+      "message_lead_26347407",
+      "message_lead_26282223",
+      "message_lead_26281935"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000332",
+    "Title": "HIGH QUALITY | PRIME LOCATION | MODERN",
+    "CreatedAt": "2025-11-27T17:18:28.680648347Z",
+    "Budget": 1060,
+    "BudgetByMonth": {
+      "2026-03": 91,
+      "2026-02": 100,
+      "2026-01": 80,
+      "2025-12": 12,
+      "2025-11": 777
+    },
+    "Leads": 8,
+    "LeadsIds": [
+      "message_lead_28122013",
+      "message_lead_27707477",
+      "message_lead_27579292",
+      "message_lead_26985661",
+      "message_lead_26967149",
+      "message_lead_26957097",
+      "message_lead_26893516",
+      "message_lead_26860542"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000333",
+    "Title": "LUXURY 2BR | PRIVATE JACUZZI | BUSINESS BAY",
+    "CreatedAt": "2025-11-28T08:23:09.371170841Z",
+    "Budget": 80,
+    "BudgetByMonth": {
+      "2026-03": 16,
+      "2026-02": 16,
+      "2026-01": 16,
+      "2025-12": 16,
+      "2025-11": 16
+    },
+    "Leads": 5,
+    "LeadsIds": [
+      "call_lead_11942689",
+      "message_lead_27172969",
+      "message_lead_26935420",
+      "message_lead_26566265",
+      "message_lead_26427542"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000346",
+    "Title": "FAMILY 2BR | GYM | POOL ACCESS",
+    "CreatedAt": "2025-12-04T08:25:44.690848468Z",
+    "Budget": 101,
+    "BudgetByMonth": {
+      "2026-03": 10,
+      "2026-02": 10,
+      "2026-01": 10,
+      "2025-12": 71
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_26359402"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000361",
+    "Title": "PRIVATE BALCONY VIEWS | POOL AND GYM | URBAN OASIS",
+    "CreatedAt": "2025-12-10T13:35:53.651631664Z",
+    "Budget": 45,
+    "BudgetByMonth": {
+      "2026-04": 9,
+      "2026-03": 9,
+      "2026-02": 9,
+      "2026-01": 9,
+      "2025-12": 9
+    },
+    "Leads": 10,
+    "LeadsIds": [
+      "message_lead_28359681",
+      "message_lead_28105265",
+      "call_lead_11896456",
+      "message_lead_27689929",
+      "message_lead_27416601",
+      "message_lead_27326157",
+      "message_lead_27301678",
+      "message_lead_27179128",
+      "message_lead_26901823",
+      "message_lead_26807851"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000362",
+    "Title": "READY 4BR | HIGH-END FINISHES | PRIME LOCATION",
+    "CreatedAt": "2025-12-10T14:13:39.523271982Z",
+    "Budget": 10,
+    "BudgetByMonth": {
+      "2026-04": 2,
+      "2026-03": 2,
+      "2026-02": 2,
+      "2026-01": 2,
+      "2025-12": 2
+    },
+    "Leads": 7,
+    "LeadsIds": [
+      "message_lead_27857340",
+      "message_lead_27795953",
+      "message_lead_27262380",
+      "message_lead_27241207",
+      "message_lead_27166876",
+      "message_lead_27108247",
+      "message_lead_26322970"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000365",
+    "Title": "BRAND NEW | READY TO MOVE IN | FULLY FURNISHED",
+    "CreatedAt": "2025-12-11T13:53:20.139931689Z",
+    "Budget": 60,
+    "BudgetByMonth": {
+      "2026-04": 12,
+      "2026-03": 12,
+      "2026-02": 12,
+      "2026-01": 12,
+      "2025-12": 12
+    },
+    "Leads": 10,
+    "LeadsIds": [
+      "message_lead_28634543",
+      "message_lead_27933468",
+      "message_lead_27673425",
+      "message_lead_27441093",
+      "call_lead_11844299",
+      "message_lead_27224545",
+      "message_lead_27216829",
+      "message_lead_26811181",
+      "message_lead_26734454",
+      "message_lead_26590468"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000376",
+    "Title": "BEAUTIFUL 1BR | FULLY FURNISHED | FAMILY-FRIENDLY",
+    "CreatedAt": "2025-12-17T11:55:00.56502229Z",
+    "Budget": 361,
+    "BudgetByMonth": {
+      "2026-03": 2,
+      "2026-02": 195,
+      "2026-01": 2,
+      "2025-12": 162
+    },
+    "Leads": 4,
+    "LeadsIds": [
+      "message_lead_27683529",
+      "call_lead_11882886",
+      "message_lead_26433118",
+      "message_lead_26253789"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000394",
+    "Title": "MODERN 1 BR | BRANDED RESIDENCE | BUSINESS BAY",
+    "CreatedAt": "2025-12-21T09:34:28.663102455Z",
+    "Budget": 40,
+    "BudgetByMonth": {
+      "2026-03": 10,
+      "2026-02": 10,
+      "2026-01": 10,
+      "2025-12": 10
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Rent",
+    "Reference": "01KD04Q3G7YAEJSZ0X70KNYQJS",
+    "Title": "LUXURY LIVING | MARRIOTT RESIDENCES | BUSINESS BAY",
+    "CreatedAt": "2025-12-21T09:46:19.952229934Z",
+    "Budget": 40,
+    "BudgetByMonth": {
+      "2026-03": 10,
+      "2026-02": 10,
+      "2026-01": 10,
+      "2025-12": 10
+    },
+    "Leads": 8,
+    "LeadsIds": [
+      "message_lead_27247498",
+      "message_lead_27081103",
+      "message_lead_26724296",
+      "message_lead_26673745",
+      "message_lead_26314075",
+      "message_lead_26299083",
+      "message_lead_26238286",
+      "message_lead_26238023"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "VS15",
+    "Title": "Vacant | Park View | Unfurnished",
+    "CreatedAt": "2026-03-09T13:26:32.691712903Z",
+    "Budget": 4,
+    "BudgetByMonth": {
+      "2026-04": 2,
+      "2026-03": 2
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "message_lead_28385893",
+      "message_lead_28322381",
+      "message_lead_28306760"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000418",
+    "Title": "SPACIOUS 2BR | POOL AND GYM | TERRACE",
+    "CreatedAt": "2026-01-05T15:09:59.022778513Z",
+    "Budget": 36,
+    "BudgetByMonth": {
+      "2026-04": 9,
+      "2026-03": 9,
+      "2026-02": 9,
+      "2026-01": 9
+    },
+    "Leads": 15,
+    "LeadsIds": [
+      "message_lead_28264364",
+      "call_lead_11895366",
+      "message_lead_27685976",
+      "call_lead_11892446",
+      "call_lead_11892417",
+      "message_lead_27658709",
+      "message_lead_27582074",
+      "message_lead_27573583",
+      "message_lead_27334814",
+      "message_lead_27154281",
+      "call_lead_11807974",
+      "message_lead_27119206",
+      "message_lead_26697214",
+      "message_lead_26541733",
+      "message_lead_26540558"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000476",
+    "Title": "MARINA AND SEA VIEW | UPGRATED | 4 CHEQUES",
+    "CreatedAt": "2026-03-07T13:54:27.906121963Z",
+    "Budget": 431,
+    "BudgetByMonth": {
+      "2026-04": 2,
+      "2026-03": 429
+    },
+    "Leads": 4,
+    "LeadsIds": [
+      "message_lead_28641862",
+      "message_lead_28570966",
+      "message_lead_28322810",
+      "message_lead_28177118"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000497",
+    "Title": "SPACIOUS LAYOUT | GARDEN VIEW | TENNIS COURT",
+    "CreatedAt": "2026-03-18T14:29:22.784403359Z",
+    "Budget": 12,
+    "BudgetByMonth": {
+      "2026-03": 12
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_28711158",
+      "message_lead_28654167"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000496",
+    "Title": "PRIVATE BALCONY | MODERN KITCHEN | 24H SECURITY",
+    "CreatedAt": "2026-03-18T13:40:24.538546383Z",
+    "Budget": 11,
+    "BudgetByMonth": {
+      "2026-03": 11
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "message_lead_28516821",
+      "message_lead_28369598",
+      "call_lead_11985166"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000499",
+    "Title": "BRAND NEW | COVERED PARKING | CITY VIEWS",
+    "CreatedAt": "2026-03-19T10:57:35.493094732Z",
+    "Budget": 11,
+    "BudgetByMonth": {
+      "2026-03": 11
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_28605631",
+      "message_lead_28604368"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000465",
+    "Title": "MODERN STUDIO | PRIVATE BALCONY | OPEN-PLAN LAYOUT",
+    "CreatedAt": "2026-02-19T12:34:08.39540278Z",
+    "Budget": 4,
+    "BudgetByMonth": {
+      "2026-03": 2,
+      "2026-02": 2
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_28344334",
+      "message_lead_28205012"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000502",
+    "Title": "FULLY FURNISHED | MODERN KITCHEN | UP TO 6 CHEQUES",
+    "CreatedAt": "2026-03-23T08:44:44.614847269Z",
+    "Budget": 193,
+    "BudgetByMonth": {
+      "2026-03": 193
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "message_lead_28607200",
+      "email_lead_4721643",
+      "call_lead_12010729"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000505",
+    "Title": "BALCONY | FULLY FURNISHED | HIGH FLOOR",
+    "CreatedAt": "2026-03-26T11:23:21.209726797Z",
+    "Budget": 19,
+    "BudgetByMonth": {
+      "2026-03": 19
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000513",
+    "Title": "FULLY FURNISHED | BALCONY | POOL VIEW",
+    "CreatedAt": "2026-04-01T09:41:17.902035606Z",
+    "Budget": 12,
+    "BudgetByMonth": {
+      "2026-04": 12
+    },
+    "Leads": 8,
+    "LeadsIds": [
+      "message_lead_28736559",
+      "message_lead_28706520",
+      "message_lead_28706483",
+      "call_lead_12022648",
+      "message_lead_28625150",
+      "message_lead_28560602",
+      "message_lead_28547805",
+      "message_lead_28547377"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000498",
+    "Title": "PRIVATE BEACH ACCESS | TENNIS COURT | SEA VIEWS",
+    "CreatedAt": "2026-03-19T08:49:06.053248218Z",
+    "Budget": 12,
+    "BudgetByMonth": {
+      "2026-03": 12
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "message_lead_28582496",
+      "message_lead_28553631",
+      "message_lead_28352817"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000432",
+    "Title": "ROOFTOP INFINITY POOL | PRIME ISLAND LOCATION",
+    "CreatedAt": "2026-01-14T07:24:56.401423029Z",
+    "Budget": 36,
+    "BudgetByMonth": {
+      "2026-03": 12,
+      "2026-02": 12,
+      "2026-01": 12
+    },
+    "Leads": 11,
+    "LeadsIds": [
+      "message_lead_28077008",
+      "message_lead_27928517",
+      "message_lead_27866108",
+      "message_lead_27847081",
+      "call_lead_11909826",
+      "message_lead_27777893",
+      "message_lead_27755015",
+      "message_lead_27711063",
+      "message_lead_27145413",
+      "message_lead_27122891",
+      "message_lead_26828033"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000486",
+    "Title": "BRAND NEW | POOL VIEW | READY TO MOVE",
+    "CreatedAt": "2026-03-16T08:23:02.106964478Z",
+    "Budget": 21,
+    "BudgetByMonth": {
+      "2026-03": 21
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000449",
+    "Title": "FULLY FURNISHED | SMART HOME | MULTIPLE CHEQUES",
+    "CreatedAt": "2026-01-26T12:21:04.848266187Z",
+    "Budget": 6,
+    "BudgetByMonth": {
+      "2026-03": 2,
+      "2026-02": 2,
+      "2026-01": 2
+    },
+    "Leads": 4,
+    "LeadsIds": [
+      "call_lead_11882893",
+      "call_lead_11817532",
+      "message_lead_27165297",
+      "message_lead_27144644"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000482",
+    "Title": "OPEN-PLAN KITCHEN | BALCONY | READY TO MOVE",
+    "CreatedAt": "2026-03-11T11:04:55.581899915Z",
+    "Budget": 4,
+    "BudgetByMonth": {
+      "2026-04": 2,
+      "2026-03": 2
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000511",
+    "Title": "FULLY FURNISHED | BALCONY | COMFORTABLE LIVING",
+    "CreatedAt": "2026-03-31T09:40:15.104698034Z",
+    "Budget": 10,
+    "BudgetByMonth": {
+      "2026-03": 10
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_28590022",
+      "message_lead_28581284"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000444",
+    "Title": "LUXURY STUDIO | INFINITY POOL | HIGH FLOOR",
+    "CreatedAt": "2026-01-22T09:27:46.672337887Z",
+    "Budget": 30,
+    "BudgetByMonth": {
+      "2026-03": 10,
+      "2026-02": 10,
+      "2026-01": 10
+    },
+    "Leads": 6,
+    "LeadsIds": [
+      "message_lead_28303859",
+      "call_lead_11977737",
+      "message_lead_28212345",
+      "message_lead_28125755",
+      "message_lead_27508283",
+      "message_lead_27375590"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000471",
+    "Title": "ATLANTIS VIEW | MODERN KITCHEN | PRIVATE BALCONY",
+    "CreatedAt": "2026-02-26T14:13:42.427366557Z",
+    "Budget": 4,
+    "BudgetByMonth": {
+      "2026-03": 2,
+      "2026-02": 2
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_28105589",
+      "call_lead_11953046"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "VS-0011",
+    "Title": "Fully Furnished | Highest Floor | Study with Windo",
+    "CreatedAt": "2026-02-06T08:06:01.844823757Z",
+    "Budget": 3,
+    "BudgetByMonth": {
+      "2026-04": 1,
+      "2026-03": 1,
+      "2026-02": 1
+    },
+    "Leads": 6,
+    "LeadsIds": [
+      "message_lead_27984509",
+      "call_lead_11927566",
+      "message_lead_27772262",
+      "message_lead_27634084",
+      "message_lead_27541087",
+      "message_lead_27527591"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "VS03",
+    "Title": "Highest floor | Burj Khalifa view | Corner | Maids",
+    "CreatedAt": "2026-01-20T13:06:46.495309933Z",
+    "Budget": 29,
+    "BudgetByMonth": {
+      "2026-03": 1,
+      "2026-02": 1,
+      "2026-01": 27
+    },
+    "Leads": 14,
+    "LeadsIds": [
+      "call_lead_12017432",
+      "message_lead_28497974",
+      "message_lead_28493469",
+      "message_lead_28382415",
+      "message_lead_28165143",
+      "message_lead_27868391",
+      "message_lead_27863804",
+      "message_lead_27548390",
+      "message_lead_27458684",
+      "message_lead_27457245",
+      "message_lead_27438505",
+      "message_lead_27208283",
+      "message_lead_27208246",
+      "message_lead_27198069"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000364/",
+    "Title": "MODERN | GYM AND POOL | POSSIBLE DISCOUNT",
+    "CreatedAt": "2026-02-23T11:55:54.850135003Z",
+    "Budget": 33,
+    "BudgetByMonth": {
+      "2026-03": 11,
+      "2026-02": 22
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_28022809"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000521",
+    "Title": "PARTIAL MARINA VIEW | COASTAL LIVING | BRAND NEW",
+    "CreatedAt": "2026-04-07T13:02:11.547399786Z",
+    "Budget": 1,
+    "BudgetByMonth": {
+      "2026-04": 1
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000506",
+    "Title": "BALCONY | OPEN KITCHEN | BRAND NEW",
+    "CreatedAt": "2026-03-27T10:11:04.358708402Z",
+    "Budget": 9,
+    "BudgetByMonth": {
+      "2026-03": 9
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000459",
+    "Title": "BRAND NEW | 12 CHEQUES | FULLY FURNISHED",
+    "CreatedAt": "2026-03-13T09:32:49.616944057Z",
+    "Budget": 34,
+    "BudgetByMonth": {
+      "2026-03": 33,
+      "2026-02": 1
+    },
+    "Leads": 12,
+    "LeadsIds": [
+      "message_lead_28711678",
+      "message_lead_28694674",
+      "call_lead_12001227",
+      "message_lead_28389897",
+      "message_lead_28149012",
+      "message_lead_28130914",
+      "message_lead_27998195",
+      "message_lead_27932177",
+      "message_lead_27896956",
+      "message_lead_27854194",
+      "message_lead_27839827",
+      "message_lead_27809014"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000447",
+    "Title": "FULLY FURNISHED | FAMILY COMMUNITY | SKYLINE VIEW",
+    "CreatedAt": "2026-01-22T14:37:43.378053846Z",
+    "Budget": 30,
+    "BudgetByMonth": {
+      "2026-03": 10,
+      "2026-02": 10,
+      "2026-01": 10
+    },
+    "Leads": 25,
+    "LeadsIds": [
+      "message_lead_28654010",
+      "message_lead_28597541",
+      "message_lead_28235469",
+      "message_lead_28194313",
+      "message_lead_28160128",
+      "message_lead_28042140",
+      "message_lead_27962384",
+      "message_lead_27928502",
+      "message_lead_27864727",
+      "message_lead_27858493",
+      "call_lead_11914451",
+      "message_lead_27817585",
+      "message_lead_27728796",
+      "message_lead_27675737",
+      "message_lead_27641231",
+      "message_lead_27610813",
+      "message_lead_27592947",
+      "message_lead_27511203",
+      "message_lead_27466637",
+      "message_lead_27255389",
+      "message_lead_27117390",
+      "message_lead_27050616",
+      "message_lead_27032334",
+      "message_lead_27025084",
+      "message_lead_27023291"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000507",
+    "Title": "BEST PRICE | FULLY FURNISHED| 2 BALCONIES",
+    "CreatedAt": "2026-03-27T14:42:50.201647025Z",
+    "Budget": 11,
+    "BudgetByMonth": {
+      "2026-03": 11
+    },
+    "Leads": 10,
+    "LeadsIds": [
+      "message_lead_28676215",
+      "message_lead_28583338",
+      "message_lead_28561925",
+      "message_lead_28535587",
+      "message_lead_28505682",
+      "message_lead_28490385",
+      "message_lead_28485523",
+      "message_lead_28480449",
+      "message_lead_28480148",
+      "message_lead_28475296"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "VS05",
+    "Title": "Highest floor | Sea view | Negotiable | Corner",
+    "CreatedAt": "2026-01-21T11:58:32.143375264Z",
+    "Budget": 58,
+    "BudgetByMonth": {
+      "2026-03": 18,
+      "2026-02": 20,
+      "2026-01": 20
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "call_lead_11847637",
+      "message_lead_27379383"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000417",
+    "Title": "FULLY FURNISHED STUDIO | PREMIUM AMENITIES",
+    "CreatedAt": "2025-12-29T16:11:59.429770171Z",
+    "Budget": 40,
+    "BudgetByMonth": {
+      "2026-03": 10,
+      "2026-02": 10,
+      "2026-01": 10,
+      "2025-12": 10
+    },
+    "Leads": 7,
+    "LeadsIds": [
+      "message_lead_28230766",
+      "message_lead_28059763",
+      "call_lead_11845370",
+      "message_lead_27043110",
+      "message_lead_26873868",
+      "message_lead_26872277",
+      "message_lead_26446423"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000431",
+    "Title": "HIGH FLOOR 1BR | DUAL BALCONIES | SMART HOME",
+    "CreatedAt": "2026-01-13T13:43:57.233715849Z",
+    "Budget": 6,
+    "BudgetByMonth": {
+      "2026-03": 2,
+      "2026-02": 2,
+      "2026-01": 2
+    },
+    "Leads": 3,
+    "LeadsIds": [
+      "message_lead_26937076",
+      "message_lead_26868751",
+      "message_lead_26746613"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "for-you-real-estate-13395097",
+    "Title": "FULLY FURNISHED | PRIME LOCATION | READY TO MOVE",
+    "CreatedAt": "2026-03-23T07:43:07.960526054Z",
+    "Budget": 275,
+    "BudgetByMonth": {
+      "2026-03": 216,
+      "2025-10": 22,
+      "2025-09": 19,
+      "2025-03": 18
+    },
+    "Leads": 2,
+    "LeadsIds": [
+      "message_lead_28482960",
+      "message_lead_28480058"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000522",
+    "Title": "LUXURY 1BR | HIGH FLOOR | PANORAMIC SEA VIEWS",
+    "CreatedAt": "2026-04-08T10:58:52.814413469Z",
+    "Budget": 2,
+    "BudgetByMonth": {
+      "2026-04": 2
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_28702404"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000462",
+    "Title": "MODERN 2BR | PRIVATE BALCONY | READY TO MOVE",
+    "CreatedAt": "2026-02-17T14:08:13.227610612Z",
+    "Budget": 30,
+    "BudgetByMonth": {
+      "2026-03": 15,
+      "2026-02": 15
+    },
+    "Leads": 10,
+    "LeadsIds": [
+      "message_lead_28568386",
+      "message_lead_28161230",
+      "message_lead_28161204",
+      "message_lead_28161203",
+      "message_lead_28158640",
+      "message_lead_28084393",
+      "message_lead_28018769",
+      "message_lead_27976767",
+      "call_lead_11934203",
+      "message_lead_27892111"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000461",
+    "Title": "HIGH FLOOR | LARGE WINDOWS | PRESTIGE LOCATION",
+    "CreatedAt": "2026-02-16T09:36:47.736988672Z",
+    "Budget": 30,
+    "BudgetByMonth": {
+      "2026-03": 15,
+      "2026-02": 15
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Rent",
+    "Reference": "13549456",
+    "Title": "BURJ KHALIFA VIEW | FULLY FURNISHED | VACANT",
+    "CreatedAt": "2026-01-10T14:11:08.181855646Z",
+    "Budget": 40,
+    "BudgetByMonth": {
+      "2026-04": 10,
+      "2026-03": 10,
+      "2026-02": 10,
+      "2026-01": 10
+    },
+    "Leads": 21,
+    "LeadsIds": [
+      "message_lead_28724942",
+      "message_lead_28324298",
+      "message_lead_28052955",
+      "message_lead_27838224",
+      "message_lead_27807028",
+      "call_lead_11902366",
+      "message_lead_27735253",
+      "message_lead_27400717",
+      "message_lead_27390983",
+      "message_lead_27242127",
+      "message_lead_27008043",
+      "call_lead_11791464",
+      "message_lead_26975358",
+      "message_lead_26821859",
+      "message_lead_26818903",
+      "message_lead_26775236",
+      "call_lead_11755581",
+      "message_lead_26764349",
+      "message_lead_26761347",
+      "message_lead_26685958",
+      "message_lead_26657512"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000424",
+    "Title": "FULLY UPGRADED VILLA | OUTDOOR KITCHEN | GARDEN",
+    "CreatedAt": "2026-01-09T10:29:37.039077606Z",
+    "Budget": 100,
+    "BudgetByMonth": {
+      "2026-04": 25,
+      "2026-03": 25,
+      "2026-02": 25,
+      "2026-01": 25
+    },
+    "Leads": 12,
+    "LeadsIds": [
+      "message_lead_28481740",
+      "message_lead_28472963",
+      "message_lead_28472941",
+      "message_lead_28380228",
+      "message_lead_28047541",
+      "message_lead_27424933",
+      "message_lead_27244816",
+      "message_lead_27054973",
+      "message_lead_26916296",
+      "message_lead_26668774",
+      "message_lead_26632310",
+      "message_lead_26626706"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000456",
+    "Title": "SPACIOUS | MODERN LAYOUT | GREAT COMMUNITY",
+    "CreatedAt": "2026-02-08T05:44:18.347306092Z",
+    "Budget": 6,
+    "BudgetByMonth": {
+      "2026-04": 2,
+      "2026-03": 2,
+      "2026-02": 2
+    },
+    "Leads": 17,
+    "LeadsIds": [
+      "message_lead_28405645",
+      "message_lead_28388259",
+      "message_lead_28275048",
+      "message_lead_28263560",
+      "message_lead_28251555",
+      "message_lead_28251531",
+      "message_lead_28096395",
+      "message_lead_28025966",
+      "message_lead_27865753",
+      "message_lead_27842428",
+      "message_lead_27831092",
+      "message_lead_27794318",
+      "call_lead_11910273",
+      "message_lead_27728747",
+      "message_lead_27604078",
+      "message_lead_27581932",
+      "message_lead_27554260"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "VS04",
+    "Title": "Burj Khalifa view | 2br + maids | Highest floor",
+    "CreatedAt": "2026-01-20T13:45:27.247898651Z",
+    "Budget": 29,
+    "BudgetByMonth": {
+      "2026-03": 1,
+      "2026-02": 1,
+      "2026-01": 27
+    },
+    "Leads": 9,
+    "LeadsIds": [
+      "call_lead_12017428",
+      "message_lead_28165141",
+      "message_lead_27868371",
+      "message_lead_27669253",
+      "message_lead_27457212",
+      "message_lead_27208274",
+      "message_lead_27208235",
+      "message_lead_27157684",
+      "message_lead_27147327"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000168",
+    "Title": "FULLY FURNISHED | READY TO MOVE-IN | SPACIOUS 2BR",
+    "CreatedAt": "2025-08-21T18:16:26.189016662Z",
+    "Budget": 831,
+    "BudgetByMonth": {
+      "2025-08": 831
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000316",
+    "Title": "SPACIOUS 3BR VILLA | PRIVATE GARDEN | BLISS",
+    "CreatedAt": "2025-11-21T08:19:12.763569451Z",
+    "Budget": 5,
+    "BudgetByMonth": {
+      "2026-03": 1,
+      "2026-02": 1,
+      "2026-01": 1,
+      "2025-12": 1,
+      "2025-11": 1
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000327",
+    "Title": "MODERN STUDIO | FULLY FURNISHED | READY TO MOVE IN",
+    "CreatedAt": "2025-11-26T15:06:32.903925424Z",
+    "Budget": 9,
+    "BudgetByMonth": {
+      "2025-11": 9
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000352",
+    "Title": "COMFORTABLE 1BR | POOL VIEW | 2 BALCONIES",
+    "CreatedAt": "2025-12-08T11:41:57.101761501Z",
+    "Budget": 2,
+    "BudgetByMonth": {
+      "2025-12": 2
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000374",
+    "Title": "FULLY FURNISHED | 2 POOLS AND GYM | MOVE-IN READY",
+    "CreatedAt": "2025-12-17T09:01:33.879805653Z",
+    "Budget": 69,
+    "BudgetByMonth": {
+      "2026-02": 2,
+      "2026-01": 2,
+      "2025-12": 65
+    },
+    "Leads": 4,
+    "LeadsIds": [
+      "message_lead_27118473",
+      "message_lead_27118110",
+      "message_lead_26209743",
+      "message_lead_26199574"
+    ]
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000399",
+    "Title": "SPACIOUS 3BR TOWNHOUSE | MAID'S ROOM | GARDEN",
+    "CreatedAt": "2025-12-22T09:17:33.922763995Z",
+    "Budget": 2,
+    "BudgetByMonth": {
+      "2025-12": 2
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Rent",
+    "Reference": "BF2D5WHYQ8AM50CTZGJTPRKG7R",
+    "Title": "SPACIOUS 3BR | MIDDLE FLOOR | LUXURY COMFORT",
+    "CreatedAt": "2026-02-16T07:21:16.310642883Z",
+    "Budget": 17,
+    "BudgetByMonth": {
+      "2026-02": 17
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Rent",
+    "Reference": "00000464",
+    "Title": "MODERN 1BR | LANDSCAPED AREAS | READY TO MOVE",
+    "CreatedAt": "2026-02-18T13:28:09.279992143Z",
+    "Budget": 4,
+    "BudgetByMonth": {
+      "2026-03": 2,
+      "2026-02": 2
+    },
+    "Leads": 1,
+    "LeadsIds": [
+      "message_lead_28367866"
+    ]
+  },
+  {
+    "Category": "Commercial Sell",
+    "Reference": "for-you-real-estate-13651513",
+    "Title": "GARANTED 10% ROI | CHEAPEST PRICE | MOTIVATED SELLER",
+    "CreatedAt": "2025-05-03T12:46:55.633467136Z",
+    "Budget": 91,
+    "BudgetByMonth": {
+      "2026-03": 1,
+      "2026-02": 1,
+      "2026-01": 1,
+      "2025-12": 1,
+      "2025-11": 1,
+      "2025-10": 1,
+      "2025-09": 1,
+      "2025-08": 1,
+      "2025-07": 1,
+      "2025-06": 80,
+      "2025-05": 1,
+      "2025-04": 1
+    },
+    "Leads": 6,
+    "LeadsIds": [
+      "message_lead_28702891",
+      "message_lead_27090886",
+      "message_lead_26721271",
+      "message_lead_26581772",
+      "email_lead_4700465",
+      "message_lead_26175079"
+    ]
+  },
+  {
+    "Category": "Commercial Sell",
+    "Reference": "VS-10",
+    "Title": "NEXT TO MAIN ENTRANCE | SHELL AND CORE",
+    "CreatedAt": "2026-02-28T08:34:27.63832663Z",
+    "Budget": 20,
+    "BudgetByMonth": {
+      "2026-03": 10,
+      "2026-02": 10
+    },
+    "Leads": 0,
+    "LeadsIds": []
+  },
+  {
+    "Category": "Commercial Rent",
+    "Reference": "VS02",
+    "Title": "Retail | Shell and Core | Brand New",
+    "CreatedAt": "2026-01-18T14:30:33.124479517Z",
+    "Budget": 6,
+    "BudgetByMonth": {
+      "2026-03": 2,
+      "2026-02": 2,
+      "2026-01": 2
+    },
+    "Leads": 7,
+    "LeadsIds": [
+      "message_lead_27952142",
+      "call_lead_11834472",
+      "message_lead_27015552",
+      "message_lead_26996562",
+      "message_lead_26971827",
+      "call_lead_11785485",
+      "message_lead_26939860"
+    ]
+  }
+]

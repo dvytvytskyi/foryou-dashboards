@@ -1,0 +1,47 @@
+name: Data Sync
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Every hour
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Create secrets directory
+        run: mkdir -p secrets
+
+      - name: Save BigQuery Key
+        run: echo '${{ secrets.GOOGLE_AUTH_JSON }}' > secrets/crypto-world-epta-2db29829d55d.json
+
+      - name: Save AMO Tokens
+        run: echo '${{ secrets.AMO_TOKENS_JSON }}' > secrets/amo_tokens.json
+
+      - name: Sync RED leads
+        run: node scripts/sync/sync_red_to_bq.mjs
+        env:
+          AMO_DOMAIN: ${{ secrets.AMO_DOMAIN }}
+          AMO_CLIENT_ID: ${{ secrets.AMO_CLIENT_ID }}
+          AMO_CLIENT_SECRET: ${{ secrets.AMO_CLIENT_SECRET }}
+
+      - name: Sync Klykov leads
+        run: node scripts/sync/sync_klykov_to_bq.mjs
+        env:
+          AMO_DOMAIN: ${{ secrets.AMO_DOMAIN }}
+          AMO_CLIENT_ID: ${{ secrets.AMO_CLIENT_ID }}
+          AMO_CLIENT_SECRET: ${{ secrets.AMO_CLIENT_SECRET }}
+
+      - name: Sync Unified Master Leads
+        run: node scripts/sync/sync_unified_leads.mjs

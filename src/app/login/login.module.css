@@ -1,0 +1,142 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.glow {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+  top: -100px;
+  right: -100px;
+  filter: blur(40px);
+}
+
+.glow2 {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.03) 0%, transparent 70%);
+  bottom: -50px;
+  left: -50px;
+  filter: blur(40px);
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  border: 1px solid #eef2f6;
+  border-radius: 20px;
+  padding: 48px 40px;
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.04);
+  z-index: 10;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  color: #64748b;
+  font-size: 14px;
+  margin-bottom: 32px;
+}
+
+.inputGroup {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #475569;
+  margin-bottom: 8px;
+}
+
+.input {
+  width: 100%;
+  background: #fcfdfe;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  height: 48px;
+  padding: 0 16px;
+  color: #1e293b;
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.08);
+}
+
+.button {
+  width: 100%;
+  height: 48px;
+  background: #0f172a;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  background: #1e293b;
+  transform: translateY(-1px);
+}
+
+.button:active {
+  transform: translateY(0);
+}
+
+.button:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.error {
+  background: #fef2f2;
+  border: 1px solid #fee2e2;
+  color: #b91c1c;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  margin-bottom: 24px;
+}
+
+.footer {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.footer a {
+  color: #475569;
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+.footer a:hover {
+  color: #000;
+}

@@ -1,46 +1,36 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import { Suspense } from "react";
-import "./globals.css";
-import { Sidebar } from "@/components/Sidebar";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import type { Metadata } from 'next';
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: "Success Path Dashboards",
-  description: "Advanced analytics for Real Estate",
+  title: 'Marketing Dashboard | ForYou',
+  description: 'Marketing channel performance analysis and KPIs',
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Suspense fallback={null}>
-          <div className="flex">
-            <Sidebar />
-            <main className="flex-1 pl-80 min-h-screen bg-[#FDFDFD]">
-              <div className="p-12 md:p-24">
-                <div className="max-w-7xl mx-auto">
-                  {children}
-                </div>
-              </div>
-            </main>
-          </div>
-        </Suspense>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('dashboard-theme');
+                  if (theme === 'night' || theme === 'light') {
+                    document.documentElement.setAttribute('data-dashboard-theme', theme);
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body>
+        <main>{children}</main>
       </body>
     </html>
   );

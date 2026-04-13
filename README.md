@@ -1,4 +1,15 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏢 For You Dashboards - Analytics Engine
+
+Проект для візуалізації та управління даними For You Real Estate.
+
+### 🚀 Sales Dashboard V2 (NEW)
+Ми оновили структуру відділу продажів. Основні артефакти:
+1. **[SALES_DASHBOARD_V2.md](file:///Users/vytvytskyi/foryou-dashboards/SALES_DASHBOARD_V2.md)** - Текстовий опис та таблиця структури.
+2. **UI Preview**: Перегляньте живий план у проекті за адресою `/sales-dashboard/v2`.
+
+---
+
+This is a [Next.js](https://nextjs.org) project...
 
 ## Getting Started
 
