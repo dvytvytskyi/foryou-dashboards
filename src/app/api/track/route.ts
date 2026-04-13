@@ -25,7 +25,6 @@ export async function POST(req: Request) {
     if (!cid) return NextResponse.json({ error: 'Missing CID' }, { status: 400 });
 
     try {
-        const table = bq.dataset(DATASET_ID).table('marketing_visitor_mapping');
         
         // 1. Check if we already know this CID or if we have a new lead_id to link
         let [mappingRows] = await bq.query({
