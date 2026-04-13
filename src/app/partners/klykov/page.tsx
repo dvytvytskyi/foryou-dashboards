@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { DashboardPage } from '../../marketing/page';
+import DashboardPage from '@/components/DashboardPage';
 import styles from './kanban.module.css';
 import LeadSidebar from './LeadSidebar';
 

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { DashboardPage } from '../marketing/page';
+import DashboardPage from '@/components/DashboardPage';
 import { SalesScoreboard, ProfitBarChart, BrokerKpiTable } from './OverviewUI';
 import styles from './sales.module.css';
 

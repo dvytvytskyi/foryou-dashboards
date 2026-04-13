@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { DashboardPage } from '../marketing/page';
+import DashboardPage from '@/components/DashboardPage';
 
 const PF_COLUMNS = [
   { key: 'channel', label: 'Listings' },

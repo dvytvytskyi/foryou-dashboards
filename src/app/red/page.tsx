@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Scoreboard, { ScoreboardData } from './Scoreboard';
-import { DashboardPage, RED_COLUMNS_MAIN, RED_COLUMNS_GEO } from '../marketing/page';
+import DashboardPage, { RED_COLUMNS_MAIN, RED_COLUMNS_GEO } from '@/components/DashboardPage';
 
 const mockScoreboard: ScoreboardData = {
   leads: 1200,

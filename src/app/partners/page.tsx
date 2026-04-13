@@ -2,7 +2,7 @@
 'use client';
 
 import React from 'react';
-import { DashboardPage } from '../marketing/page';
+import DashboardPage from '@/components/DashboardPage';
 import styles from './partners.module.css';
 import { User, ShieldCheck, Zap } from 'lucide-react';
 

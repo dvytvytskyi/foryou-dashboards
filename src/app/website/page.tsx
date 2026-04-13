@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { DashboardPage, WEBSITE_COLUMNS } from '../marketing/page';
+import DashboardPage, { WEBSITE_COLUMNS } from '@/components/DashboardPage';
 
 export default function WebsitePage() {
   const [syncTheme, setSyncTheme] = useState<'light' | 'night' | null>(null);
