@@ -8,9 +8,14 @@ const SERVICE_ACCOUNT_FILE = path.resolve('./secrets/crypto-world-epta-2db29829d
 const BOT_TOKEN = '8745230277:AAGhKq1wNjt-RU_MWfO_dU2bCiay5xoUVXE';
 const CHAT_ID = '-5190606289';
 
+const bqCredentials = process.env.GOOGLE_AUTH_JSON 
+  ? JSON.parse(process.env.GOOGLE_AUTH_JSON)
+  : undefined;
+
 const bq = new BigQuery({
-    projectId: PROJECT_ID,
-    keyFilename: SERVICE_ACCOUNT_FILE
+  projectId: PROJECT_ID,
+  credentials: bqCredentials,
+  keyFilename: !bqCredentials ? SERVICE_ACCOUNT_FILE : undefined
 });
 
 export async function POST(req: Request) {
