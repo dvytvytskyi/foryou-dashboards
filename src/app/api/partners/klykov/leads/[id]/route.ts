@@ -13,9 +13,10 @@ async function safeJson(res: Response, fallback: any = {}) {
     }
 }
 
-export async function GET(request: Request, props: { params: Promise<{ id: string }> }) {
+export async function GET(_request: Request, props: { params: Promise<{ id: string }> }) {
     try {
         const params = await props.params;
+        const leadId = params.id;
         const tokensPath = path.join(process.cwd(), 'secrets/amo_tokens.json');
         let tokens;
         if (process.env.AMO_TOKENS_JSON) {
