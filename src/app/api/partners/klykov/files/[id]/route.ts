@@ -2,7 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 
-export async function GET(request: Request, props: { params: Promise<{ id: string }> }) {
+export async function GET(_request: Request, props: { params: Promise<{ id: string }> }) {
     try {
         const params = await props.params;
         const fileId = params.id;
