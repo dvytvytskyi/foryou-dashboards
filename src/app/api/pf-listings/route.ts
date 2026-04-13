@@ -6,9 +6,14 @@ import { BigQuery } from '@google-cloud/bigquery';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
+const bqCredentials = process.env.GOOGLE_AUTH_JSON 
+  ? JSON.parse(process.env.GOOGLE_AUTH_JSON)
+  : undefined;
+
 const bq = new BigQuery({
   projectId: 'crypto-world-epta',
-  keyFilename: path.resolve(process.cwd(), 'secrets/crypto-world-epta-2db29829d55d.json')
+  credentials: bqCredentials,
+  keyFilename: !bqCredentials ? path.resolve(process.cwd(), 'secrets/crypto-world-epta-2db29829d55d.json') : undefined
 });
 
 export async function GET() {
