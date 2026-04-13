@@ -28,7 +28,7 @@ import {
   X,
 } from 'lucide-react';
 import Select from 'react-select';
-import styles from './marketing.module.css';
+import styles from './DashboardPage.module.css';
 
 type Currency = 'aed' | 'usd';
 type ThemeMode = 'night' | 'light';
