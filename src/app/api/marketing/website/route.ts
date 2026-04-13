@@ -1,10 +1,7 @@
 
 import { NextResponse } from 'next/server';
 
-export async function GET(request: Request) {
-    const { searchParams } = new URL(request.url);
-    const startDate = searchParams.get('startDate');
-    const endDate = searchParams.get('endDate');
+export async function GET() {
 
     // Mock data for Website dashboard
     // In real scenario, this would fetch from Google Analytics + amoCRM
