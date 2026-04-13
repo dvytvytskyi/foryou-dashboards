@@ -16,14 +16,22 @@ async function safeJson(res: Response, fallback: any = {}) {
 export async function GET(request: Request, props: { params: Promise<{ id: string }> }) {
     try {
         const params = await props.params;
-        const leadId = params.id;
         const tokensPath = path.join(process.cwd(), 'secrets/amo_tokens.json');
-        const tokens = JSON.parse(fs.readFileSync(tokensPath, 'utf8'));
+        let tokens;
+        if (process.env.AMO_TOKENS_JSON) {
+            tokens = JSON.parse(process.env.AMO_TOKENS_JSON);
+        } else {
+            tokens = JSON.parse(fs.readFileSync(tokensPath, 'utf8'));
+        }
 
-        const headers = { 'Authorization': 'Bearer ' + tokens.access_token };
+        const domain = process.env.AMO_DOMAIN || 'reforyou.amocrm.ru';
+        const headers = { 
+            'Authorization': 'Bearer ' + tokens.access_token,
+            'Content-Type': 'application/json'
+        };
 
         // 1. Fetch Lead
-        const leadRes = await fetch('https://reforyou.amocrm.ru/api/v4/leads/' + leadId + '?with=contacts,companies', { headers });
+        const leadRes = await fetch(`https://${domain}/api/v4/leads/` + leadId + '?with=contacts,companies', { headers });
         if (!leadRes.ok) {
             const errText = await leadRes.text();
             return NextResponse.json({ success: false, error: 'Lead not found: ' + errText }, { status: leadRes.status });
@@ -34,7 +42,7 @@ export async function GET(request: Request, props: { params: Promise<{ id: strin
         let contactsData = [];
         if (leadData._embedded?.contacts) {
             for (const c of leadData._embedded.contacts) {
-                const cRes = await fetch('https://reforyou.amocrm.ru/api/v4/contacts/' + c.id, { headers });
+                const cRes = await fetch(`https://${domain}/api/v4/contacts/` + c.id, { headers });
                 const cJson = await safeJson(cRes, null);
                 if (cJson) contactsData.push(cJson);
             }

@@ -10,7 +10,14 @@ export async function POST(request: Request, props: { params: Promise<{ id: stri
         const { responsible_user_id } = await request.json();
 
         const tokensPath = path.join(process.cwd(), 'secrets/amo_tokens.json');
-        const tokens = JSON.parse(fs.readFileSync(tokensPath, 'utf8'));
+        let tokens;
+        if (process.env.AMO_TOKENS_JSON) {
+            tokens = JSON.parse(process.env.AMO_TOKENS_JSON);
+        } else {
+            tokens = JSON.parse(fs.readFileSync(tokensPath, 'utf8'));
+        }
+
+        const domain = process.env.AMO_DOMAIN || 'reforyou.amocrm.ru';
         const headers = { 
             'Authorization': 'Bearer ' + tokens.access_token,
             'Content-Type': 'application/json'
@@ -30,7 +37,7 @@ export async function POST(request: Request, props: { params: Promise<{ id: stri
             }
         ];
 
-        const res = await fetch('https://reforyou.amocrm.ru/api/v4/tasks', {
+        const res = await fetch(`https://${domain}/api/v4/tasks`, {
             method: 'POST',
             headers,
             body: JSON.stringify(payload)
