@@ -12,7 +12,11 @@
     "LeadsIds": [
       "message_lead_28467214",
       "call_lead_11997976"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -52,7 +56,12 @@
       "message_lead_27438159",
       "message_lead_27360118",
       "message_lead_26638446"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_color": "FF00FF00",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -83,7 +92,12 @@
       "message_lead_27392641",
       "message_lead_26560299",
       "message_lead_26212905"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_color": "FF00FF00",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -108,7 +122,12 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_27302761"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_color": "FF00FF00",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -139,7 +158,12 @@
       "message_lead_27605997",
       "message_lead_27567615",
       "message_lead_26935573"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_color": "FF00FF00",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -166,7 +190,12 @@
       "message_lead_27901685",
       "message_lead_27681745",
       "message_lead_27015211"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_color": "FFFFFF00",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -190,7 +219,12 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_27362322"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_color": "FF00FF00",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -217,7 +251,12 @@
     "LeadsIds": [
       "message_lead_28167630",
       "message_lead_26520552"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_color": "FFFFFF00",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -244,7 +283,12 @@
       "message_lead_27371535",
       "message_lead_26552274",
       "message_lead_26256519"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_color": "FFFFFF00",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -283,7 +327,12 @@
       "call_lead_11755022",
       "message_lead_26519786",
       "message_lead_26216670"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_color": "FF00FF00",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -311,7 +360,12 @@
     "LeadsIds": [
       "message_lead_27915702",
       "message_lead_26446028"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_color": "FF00FF00",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -343,7 +397,12 @@
       "message_lead_27298079",
       "call_lead_11797489",
       "message_lead_26454625"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_color": "FF00FF00",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -365,7 +424,12 @@
       "2025-05": 709
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_color": "FF00FF00",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -390,7 +454,11 @@
     "LeadsIds": [
       "message_lead_28520470",
       "call_lead_11986777"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -414,7 +482,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_26597079"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -435,7 +507,11 @@
       "2025-05": 51
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -466,7 +542,11 @@
       "message_lead_27528587",
       "call_lead_11857927",
       "message_lead_26860319"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -499,7 +579,11 @@
       "message_lead_27073513",
       "message_lead_26648410",
       "message_lead_26369505"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -521,7 +605,11 @@
       "2025-05": 83
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -543,7 +631,11 @@
       "2025-06": 1
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -565,7 +657,11 @@
       "2025-06": 1
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -587,7 +683,11 @@
       "2025-06": 1
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -605,7 +705,11 @@
       "2025-06": 1469
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -639,7 +743,11 @@
       "message_lead_26496300",
       "message_lead_26401724",
       "message_lead_26198413"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -678,7 +786,11 @@
       "message_lead_26973464",
       "call_lead_11740085",
       "message_lead_26296195"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -697,7 +809,11 @@
       "2025-07": 3
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -730,7 +846,11 @@
       "message_lead_27038764",
       "message_lead_26828065",
       "message_lead_26403647"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -752,7 +872,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_28026315"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -774,7 +898,11 @@
     "LeadsIds": [
       "message_lead_28401587",
       "message_lead_27632259"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -803,7 +931,11 @@
       "call_lead_11851214",
       "message_lead_27227132",
       "message_lead_27140033"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -823,7 +955,11 @@
       "2025-08": 68
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -852,7 +988,11 @@
       "message_lead_27176575",
       "message_lead_27129900",
       "message_lead_26791315"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -899,7 +1039,11 @@
       "message_lead_27641524",
       "message_lead_26352925",
       "message_lead_26256132"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -918,7 +1062,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_28565025"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -937,7 +1085,11 @@
       "2025-09": 56
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -959,7 +1111,11 @@
       "message_lead_28656890",
       "message_lead_28047475",
       "message_lead_26520718"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -984,7 +1140,11 @@
       "message_lead_27159098",
       "message_lead_27103291",
       "message_lead_26676518"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1006,7 +1166,11 @@
     "LeadsIds": [
       "message_lead_28124364",
       "message_lead_26537925"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1095,7 +1259,11 @@
       "message_lead_26371882",
       "message_lead_26353194",
       "message_lead_26303464"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1118,7 +1286,11 @@
       "message_lead_28027682",
       "call_lead_11932758",
       "message_lead_26204469"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1142,7 +1314,11 @@
       "message_lead_27710399",
       "message_lead_27536692",
       "message_lead_27511365"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1160,7 +1336,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_28395736"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1179,7 +1359,11 @@
       "2025-09": 75
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1200,7 +1384,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_26349382"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1287,7 +1475,11 @@
       "message_lead_26231540",
       "message_lead_26198031",
       "message_lead_26190067"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1306,7 +1498,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_27573831"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1327,7 +1523,11 @@
     "LeadsIds": [
       "message_lead_28435621",
       "message_lead_27767804"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1342,7 +1542,11 @@
       "2025-10": 68
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1360,7 +1564,11 @@
       "2025-10": 1
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1380,7 +1588,11 @@
     "LeadsIds": [
       "message_lead_27336776",
       "message_lead_27324449"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1404,7 +1616,11 @@
       "message_lead_27930536",
       "call_lead_11762354",
       "message_lead_26292410"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1426,7 +1642,11 @@
       "message_lead_28526369",
       "message_lead_28440667",
       "message_lead_26831224"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1451,7 +1671,11 @@
       "message_lead_27401600",
       "message_lead_26953913",
       "message_lead_26838375"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1476,7 +1700,11 @@
       "call_lead_11775591",
       "message_lead_26627753",
       "message_lead_26455336"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1496,7 +1724,11 @@
     "LeadsIds": [
       "message_lead_27681525",
       "message_lead_26437926"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1514,7 +1746,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_27801305"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1540,7 +1776,11 @@
       "message_lead_26827871",
       "call_lead_11749938",
       "message_lead_26595990"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1560,7 +1800,11 @@
     "LeadsIds": [
       "message_lead_26732799",
       "message_lead_26219236"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1589,7 +1833,11 @@
       "message_lead_27617186",
       "message_lead_27617168",
       "message_lead_27592281"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1610,7 +1858,11 @@
       "message_lead_28206136",
       "message_lead_26730555",
       "message_lead_26459306"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1637,7 +1889,11 @@
       "message_lead_26329454",
       "email_lead_4697681",
       "message_lead_26202793"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1661,7 +1917,11 @@
       "message_lead_27257890",
       "message_lead_26714267",
       "message_lead_26273964"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1674,7 +1934,11 @@
       "2025-11": 2860
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1691,7 +1955,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_28621930"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1710,7 +1978,11 @@
     "LeadsIds": [
       "message_lead_27921927",
       "call_lead_11911339"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1737,7 +2009,11 @@
       "message_lead_26756184",
       "message_lead_26433458",
       "message_lead_26400615"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1764,7 +2040,11 @@
       "message_lead_27124220",
       "message_lead_26619107",
       "email_lead_4698176"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1784,7 +2064,11 @@
       "message_lead_28069913",
       "message_lead_26622718",
       "message_lead_26220084"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1810,7 +2094,11 @@
       "call_lead_11793237",
       "message_lead_26455860",
       "message_lead_26340004"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1831,7 +2119,11 @@
       "message_lead_27092368",
       "message_lead_26275091",
       "message_lead_26192807"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1855,7 +2147,11 @@
       "message_lead_27623778",
       "message_lead_27402375",
       "message_lead_26873381"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1876,7 +2172,11 @@
       "message_lead_26731469",
       "message_lead_26622622",
       "message_lead_26220003"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1892,7 +2192,11 @@
       "2025-12": 7
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1917,7 +2221,11 @@
       "message_lead_26548597",
       "message_lead_26381175",
       "message_lead_26305263"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1935,7 +2243,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_27804756"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1953,7 +2265,11 @@
     "LeadsIds": [
       "message_lead_28700188",
       "email_lead_4698209"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -1987,7 +2303,11 @@
       "message_lead_26735205",
       "message_lead_26684065",
       "message_lead_26246493"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2006,7 +2326,12 @@
     "LeadsIds": [
       "message_lead_28551208",
       "message_lead_27617252"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_color": "FF00FF00",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2025,7 +2350,11 @@
     "LeadsIds": [
       "message_lead_27692354",
       "message_lead_26773564"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2056,7 +2385,11 @@
       "message_lead_26985236",
       "message_lead_26529372",
       "message_lead_26371184"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2072,7 +2405,11 @@
       "2025-12": 39
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2091,7 +2428,11 @@
       "message_lead_28208963",
       "message_lead_28204923",
       "message_lead_27659077"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2107,7 +2448,10 @@
       "2025-12": 1
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2123,7 +2467,10 @@
       "2025-12": 180
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2139,7 +2486,10 @@
       "2025-12": 2
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2161,7 +2511,11 @@
       "message_lead_27779590",
       "message_lead_27730828",
       "call_lead_11869772"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2194,7 +2548,11 @@
       "message_lead_26650093",
       "message_lead_26622569",
       "message_lead_26472353"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2217,7 +2575,11 @@
       "message_lead_26993546",
       "message_lead_26611819",
       "message_lead_26406637"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2240,7 +2602,10 @@
       "call_lead_11876219",
       "call_lead_11875882",
       "email_lead_4698486"
-    ]
+    ],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2259,7 +2624,11 @@
       "message_lead_27773539",
       "message_lead_27608544",
       "message_lead_26601654"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2282,7 +2651,11 @@
       "message_lead_26547954",
       "message_lead_26384467",
       "message_lead_26257805"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2302,7 +2675,11 @@
       "call_lead_11826626",
       "message_lead_27239538",
       "message_lead_26488344"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2319,7 +2696,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_26673489"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2338,7 +2719,11 @@
       "message_lead_28727695",
       "message_lead_27754367",
       "message_lead_27187924"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2353,7 +2738,11 @@
       "2025-12": 1
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2374,7 +2763,11 @@
       "call_lead_11748486",
       "message_lead_26507901",
       "message_lead_26403529"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2392,7 +2785,11 @@
     "LeadsIds": [
       "message_lead_28204416",
       "message_lead_27786990"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2407,7 +2804,11 @@
       "2025-12": 38
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2422,7 +2823,11 @@
       "2025-12": 56
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2437,7 +2842,11 @@
       "2025-12": 60
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2449,7 +2858,11 @@
       "2026-03": 80
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2466,7 +2879,10 @@
       "message_lead_28342961",
       "message_lead_28279093",
       "message_lead_28193901"
-    ]
+    ],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2482,7 +2898,11 @@
       "message_lead_28681959",
       "message_lead_28681810",
       "message_lead_28655912"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2495,7 +2915,10 @@
       "2026-02": 34
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2509,7 +2932,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_28401964"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2521,7 +2948,11 @@
       "2026-03": 6
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2543,7 +2974,11 @@
       "call_lead_11746781",
       "message_lead_26437246",
       "message_lead_26314981"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2563,7 +2998,11 @@
       "message_lead_27342631",
       "message_lead_27142392",
       "message_lead_27055414"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2580,7 +3019,12 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_28381554"
-    ]
+    ],
+    "category": "Abu Dhabi",
+    "group": "Our",
+    "sheet_color": "FF00FFFF",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2598,7 +3042,10 @@
     "LeadsIds": [
       "message_lead_27105906",
       "message_lead_26676566"
-    ]
+    ],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2610,7 +3057,11 @@
       "2026-04": 59
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2634,7 +3085,11 @@
       "message_lead_27877493",
       "message_lead_27637990",
       "message_lead_27628693"
-    ]
+    ],
+    "category": "Abu Dhabi",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2646,7 +3101,11 @@
       "2026-03": 80
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2663,7 +3122,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_26430897"
-    ]
+    ],
+    "category": "Abu Dhabi",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2685,7 +3148,11 @@
       "call_lead_11877316",
       "call_lead_11839194",
       "message_lead_27263489"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2704,7 +3171,10 @@
       "message_lead_28250256",
       "message_lead_28131908",
       "message_lead_28105983"
-    ]
+    ],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2716,7 +3186,11 @@
       "2026-03": 3
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2732,7 +3206,11 @@
     "LeadsIds": [
       "message_lead_28099692",
       "message_lead_27892068"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2745,7 +3223,10 @@
       "2026-02": 3
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2769,7 +3250,11 @@
       "call_lead_11940416",
       "message_lead_27780337",
       "message_lead_27692927"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2787,7 +3272,11 @@
       "message_lead_27792784",
       "message_lead_27438075",
       "message_lead_27066452"
-    ]
+    ],
+    "category": "Holiday Homes",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2803,7 +3292,11 @@
       "message_lead_28737132",
       "message_lead_28442263",
       "message_lead_28355116"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2835,7 +3328,10 @@
       "message_lead_27701084",
       "message_lead_27687761",
       "message_lead_27638608"
-    ]
+    ],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2855,7 +3351,11 @@
       "call_lead_11922207",
       "message_lead_27859951",
       "message_lead_27821238"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2871,7 +3371,11 @@
       "message_lead_28624030",
       "message_lead_28584666",
       "message_lead_28557772"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2883,7 +3387,11 @@
       "2026-03": 1
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2908,7 +3416,10 @@
       "message_lead_28231329",
       "message_lead_28227945",
       "message_lead_28184605"
-    ]
+    ],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2928,7 +3439,11 @@
       "message_lead_28332721",
       "message_lead_28222900",
       "message_lead_28101056"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2940,7 +3455,10 @@
       "2026-03": 3
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2962,7 +3480,11 @@
       "message_lead_28157835",
       "message_lead_28140769",
       "message_lead_28134400"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2980,7 +3502,11 @@
       "call_lead_12008334",
       "message_lead_28165986",
       "message_lead_28141091"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -2998,7 +3524,11 @@
       "message_lead_28346663",
       "message_lead_28082408",
       "message_lead_27929741"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3011,7 +3541,11 @@
       "2026-02": 99
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Abu Dhabi",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3023,7 +3557,10 @@
       "2026-03": 23
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3051,7 +3588,12 @@
     "LeadsIds": [
       "message_lead_28133261",
       "message_lead_28089917"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_color": "FFFFFF00",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3064,7 +3606,10 @@
       "2026-03": 2
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3076,7 +3621,10 @@
       "2026-03": 38
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3091,7 +3639,11 @@
     "LeadsIds": [
       "message_lead_28610298",
       "message_lead_28530725"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3107,7 +3659,12 @@
     "LeadsIds": [
       "message_lead_28348822",
       "message_lead_28194367"
-    ]
+    ],
+    "category": "Abu Dhabi",
+    "group": "Our",
+    "sheet_color": "FF00FFFF",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3123,7 +3680,10 @@
       "message_lead_28699428",
       "message_lead_28593116",
       "message_lead_28444180"
-    ]
+    ],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3137,7 +3697,10 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_28356067"
-    ]
+    ],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3154,7 +3717,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_27428507"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3169,7 +3736,11 @@
     "LeadsIds": [
       "message_lead_28731009",
       "message_lead_28676183"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3182,7 +3753,11 @@
       "2026-02": 63
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3194,7 +3769,11 @@
       "2026-03": 206
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3213,7 +3792,11 @@
       "message_lead_28122526",
       "message_lead_28094321",
       "message_lead_28085614"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3234,7 +3817,11 @@
       "email_lead_4715994",
       "message_lead_27811006",
       "message_lead_27799350"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3246,7 +3833,11 @@
       "2026-04": 1
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3265,7 +3856,11 @@
       "call_lead_11874917",
       "message_lead_27545718",
       "message_lead_27541706"
-    ]
+    ],
+    "category": "Abu Dhabi",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3279,7 +3874,10 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_28564582"
-    ]
+    ],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3302,7 +3900,11 @@
       "message_lead_27430133",
       "message_lead_27209227",
       "message_lead_27064750"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3327,7 +3929,11 @@
       "message_lead_28638485",
       "message_lead_28590587",
       "message_lead_28554211"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3341,7 +3947,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_28601623"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3357,7 +3967,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_27798217"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3370,7 +3984,11 @@
       "2026-03": 56
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3387,7 +4005,11 @@
     "LeadsIds": [
       "email_lead_4716792",
       "message_lead_27676428"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3407,7 +4029,11 @@
       "call_lead_11845986",
       "call_lead_11833485",
       "message_lead_27250248"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3424,7 +4050,11 @@
     "LeadsIds": [
       "call_lead_11965765",
       "call_lead_11851319"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3449,7 +4079,11 @@
       "message_lead_27494506",
       "message_lead_26838786",
       "message_lead_26308033"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3462,7 +4096,11 @@
       "2026-03": 66
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3502,7 +4140,11 @@
       "message_lead_26402834",
       "message_lead_26363484",
       "message_lead_26319546"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3514,7 +4156,10 @@
       "2026-03": 42
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3530,7 +4175,11 @@
     "LeadsIds": [
       "call_lead_11984861",
       "call_lead_11980688"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3543,7 +4192,10 @@
       "2026-03": 42
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3555,7 +4207,12 @@
       "2026-04": 14
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Abu Dhabi",
+    "group": "Our",
+    "sheet_color": "FF00FFFF",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3580,7 +4237,11 @@
       "message_lead_26606930",
       "message_lead_26586252",
       "message_lead_26559579"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3605,7 +4266,11 @@
       "message_lead_28590556",
       "message_lead_28030604",
       "email_lead_4698199"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3618,7 +4283,10 @@
       "2026-02": 21
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3642,7 +4310,11 @@
       "message_lead_27293047",
       "message_lead_27259032",
       "message_lead_26994934"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3657,7 +4329,11 @@
     "LeadsIds": [
       "message_lead_28471404",
       "message_lead_28340382"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3682,7 +4358,11 @@
       "message_lead_27154350",
       "message_lead_27062804",
       "message_lead_27060693"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3694,7 +4374,11 @@
       "2026-03": 4
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3706,7 +4390,11 @@
       "2026-03": 85
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3725,7 +4413,11 @@
       "message_lead_28217414",
       "message_lead_28211811",
       "message_lead_28211735"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3742,7 +4434,12 @@
     "LeadsIds": [
       "message_lead_28177370",
       "message_lead_27848641"
-    ]
+    ],
+    "category": "Abu Dhabi",
+    "group": "Our",
+    "sheet_color": "FF00FFFF",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3756,7 +4453,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_28618130"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3776,7 +4477,11 @@
       "call_lead_11827430",
       "message_lead_27010108",
       "message_lead_26991173"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3795,7 +4500,11 @@
       "message_lead_27822973",
       "message_lead_27500247",
       "message_lead_27437556"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3809,7 +4518,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_28651178"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3823,7 +4536,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_28676164"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3835,7 +4552,11 @@
       "2026-03": 52
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3862,7 +4583,10 @@
       "message_lead_27661645",
       "message_lead_27544648",
       "message_lead_27544096"
-    ]
+    ],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3879,7 +4603,11 @@
       "message_lead_28469695",
       "message_lead_28451165",
       "message_lead_28313106"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3897,7 +4625,10 @@
       "2024-05": 72
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3910,7 +4641,10 @@
       "2024-06": 1
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3926,7 +4660,10 @@
       "2024-08": 1
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3940,7 +4677,10 @@
       "2024-08": 566
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3954,7 +4694,10 @@
       "2024-09": 41
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3966,7 +4709,10 @@
       "2024-10": 112
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -3987,7 +4733,12 @@
       "2025-01": 45
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_color": "FFFFFF00",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -4007,7 +4758,12 @@
       "2025-02": 44
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_color": "FFFF0000",
+    "sheet_source": "kris",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4020,7 +4776,12 @@
       "2025-03": 40
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_color": "FF00FF00",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -4037,7 +4798,10 @@
       "2025-01": 42
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -4060,7 +4824,10 @@
       "2024-10": 256
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -4073,7 +4840,12 @@
       "2025-04": 1
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_color": "FFFF0000",
+    "sheet_source": "yana",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4096,7 +4868,12 @@
       "2025-01": 1
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_color": "FFFF0000",
+    "sheet_source": "kris",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4120,7 +4897,12 @@
       "2024-10": 51
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_color": "FFFFFF00",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -4133,7 +4915,12 @@
       "2025-04": 1
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_color": "FFFF0000",
+    "sheet_source": "yana",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4155,7 +4942,12 @@
       "2025-01": 1
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_color": "FFFF0000",
+    "sheet_source": "kris",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4186,7 +4978,12 @@
       "call_lead_11774070",
       "message_lead_26474671",
       "message_lead_26278461"
-    ]
+    ],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_color": "FFFF0000",
+    "sheet_source": "kris",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4209,7 +5006,12 @@
       "2024-11": 86
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_color": "FFFFFF00",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -4225,7 +5027,10 @@
       "2024-12": 69
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -4239,7 +5044,10 @@
       "2023-11": 1
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -4254,7 +5062,11 @@
       "2025-05": 266
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4270,7 +5082,11 @@
       "2025-05": 1
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4290,7 +5106,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_26380708"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -4307,7 +5127,11 @@
       "2025-06": 3
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4326,7 +5150,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_26297706"
-    ]
+    ],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4343,7 +5171,11 @@
       "2025-08": 1
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4356,7 +5188,11 @@
       "2025-08": 168
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4369,7 +5205,11 @@
       "2025-08": 1
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4385,7 +5225,11 @@
       "2025-08": 1615
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4397,7 +5241,11 @@
       "2025-09": 3
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4412,7 +5260,11 @@
       "2025-09": 103
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4440,7 +5292,11 @@
       "message_lead_26266577",
       "message_lead_26209975",
       "message_lead_26174990"
-    ]
+    ],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4454,7 +5310,11 @@
       "2025-09": 16
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4466,7 +5326,11 @@
       "2025-09": 705
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4481,7 +5345,11 @@
       "2025-09": 632
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4499,7 +5367,11 @@
     "LeadsIds": [
       "message_lead_26385416",
       "message_lead_26344086"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -4512,7 +5384,11 @@
       "2025-09": 777
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4526,7 +5402,12 @@
       "2025-10": 39
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_color": "FFFF0000",
+    "sheet_source": "kris",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4540,7 +5421,11 @@
       "2025-10": 4
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4568,7 +5453,11 @@
       "call_lead_11767058",
       "message_lead_26715000",
       "message_lead_26202647"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -4581,7 +5470,10 @@
       "2025-11": 46
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -4594,7 +5486,12 @@
       "2025-11": 198
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_color": "FFFF0000",
+    "sheet_source": "kris",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4606,7 +5503,12 @@
       "2025-11": 3051
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_color": "FFFF0000",
+    "sheet_source": "kris",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4664,7 +5566,11 @@
       "message_lead_26562101",
       "message_lead_26549007",
       "message_lead_26282698"
-    ]
+    ],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4708,7 +5614,11 @@
       "message_lead_26728836",
       "message_lead_26638451",
       "message_lead_26562087"
-    ]
+    ],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4733,7 +5643,11 @@
       "message_lead_27366025",
       "message_lead_26897558",
       "message_lead_26792175"
-    ]
+    ],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4749,7 +5663,11 @@
     "Leads": 1,
     "LeadsIds": [
       "email_lead_4697932"
-    ]
+    ],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4761,7 +5679,11 @@
       "2025-11": 56
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4777,7 +5699,11 @@
       "message_lead_26288856",
       "message_lead_26238746",
       "message_lead_26199179"
-    ]
+    ],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4792,7 +5718,11 @@
       "2025-12": 39
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -4806,7 +5736,11 @@
       "2025-12": 63
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -4819,7 +5753,11 @@
       "2025-12": 5
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4839,7 +5777,11 @@
       "message_lead_28110523",
       "message_lead_27735118",
       "message_lead_26481751"
-    ]
+    ],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Archive"
   },
   {
     "Category": "Sell",
@@ -4860,7 +5802,12 @@
       "message_lead_27271263",
       "message_lead_27126373",
       "message_lead_26229197"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_color": "FF00FF00",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -4874,7 +5821,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_27326754"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -4895,7 +5846,10 @@
       "message_lead_27015054",
       "message_lead_26880307",
       "message_lead_26777500"
-    ]
+    ],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -4915,7 +5869,11 @@
       "message_lead_28323354",
       "message_lead_28195361",
       "call_lead_11923810"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -4932,7 +5890,10 @@
       "message_lead_27480045",
       "message_lead_26736591",
       "message_lead_26548276"
-    ]
+    ],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -4946,7 +5907,10 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_28135220"
-    ]
+    ],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -5064,7 +6028,11 @@
       "call_lead_11771526",
       "email_lead_4704782",
       "message_lead_26840353"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -5085,7 +6053,11 @@
       "message_lead_27939658",
       "message_lead_27910908",
       "message_lead_27882658"
-    ]
+    ],
+    "category": "Abu Dhabi",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Sell",
@@ -5098,7 +6070,11 @@
       "2026-02": 3
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Abu Dhabi",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5125,7 +6101,12 @@
       "2025-01": 17
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_color": "FF00FF00",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5156,7 +6137,11 @@
       "message_lead_26425235",
       "message_lead_26375463",
       "message_lead_26362768"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5180,7 +6165,11 @@
       "message_lead_26713672",
       "message_lead_26553878",
       "message_lead_26483531"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5200,7 +6189,11 @@
       "2025-08": 15
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5221,7 +6214,11 @@
     "Leads": 1,
     "LeadsIds": [
       "call_lead_11957858"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5250,7 +6247,11 @@
       "message_lead_26633028",
       "message_lead_26524668",
       "message_lead_26303811"
-    ]
+    ],
+    "category": "Holiday Homes",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5266,7 +6267,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_28704798"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5280,7 +6285,11 @@
       "2025-09": 4
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5321,7 +6330,11 @@
       "call_lead_11734404",
       "call_lead_11733133",
       "message_lead_26538559"
-    ]
+    ],
+    "category": "Holiday Homes",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5343,7 +6356,11 @@
       "message_lead_28528372",
       "message_lead_27682086",
       "message_lead_26315120"
-    ]
+    ],
+    "category": "Holiday Homes",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5374,7 +6391,11 @@
       "message_lead_26368828",
       "message_lead_26345825",
       "message_lead_26256300"
-    ]
+    ],
+    "category": "Holiday Homes",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5390,7 +6411,11 @@
       "2025-11": 2
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5442,7 +6467,11 @@
       "message_lead_26347407",
       "message_lead_26282223",
       "message_lead_26281935"
-    ]
+    ],
+    "category": "Holiday Homes",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5467,7 +6496,11 @@
       "message_lead_26957097",
       "message_lead_26893516",
       "message_lead_26860542"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5489,7 +6522,11 @@
       "message_lead_26935420",
       "message_lead_26566265",
       "message_lead_26427542"
-    ]
+    ],
+    "category": "Holiday Homes",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5506,7 +6543,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_26359402"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5533,7 +6574,11 @@
       "message_lead_27179128",
       "message_lead_26901823",
       "message_lead_26807851"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5557,7 +6602,11 @@
       "message_lead_27166876",
       "message_lead_27108247",
       "message_lead_26322970"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5584,7 +6633,11 @@
       "message_lead_26811181",
       "message_lead_26734454",
       "message_lead_26590468"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5604,7 +6657,11 @@
       "call_lead_11882886",
       "message_lead_26433118",
       "message_lead_26253789"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5619,7 +6676,11 @@
       "2025-12": 10
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5643,7 +6704,12 @@
       "message_lead_26299083",
       "message_lead_26238286",
       "message_lead_26238023"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_color": "FF00FF00",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5660,7 +6726,10 @@
       "message_lead_28385893",
       "message_lead_28322381",
       "message_lead_28306760"
-    ]
+    ],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5691,7 +6760,11 @@
       "message_lead_26697214",
       "message_lead_26541733",
       "message_lead_26540558"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5709,7 +6782,11 @@
       "message_lead_28570966",
       "message_lead_28322810",
       "message_lead_28177118"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5724,7 +6801,11 @@
     "LeadsIds": [
       "message_lead_28711158",
       "message_lead_28654167"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5740,7 +6821,11 @@
       "message_lead_28516821",
       "message_lead_28369598",
       "call_lead_11985166"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5755,7 +6840,11 @@
     "LeadsIds": [
       "message_lead_28605631",
       "message_lead_28604368"
-    ]
+    ],
+    "category": "Holiday Homes",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5771,7 +6860,11 @@
     "LeadsIds": [
       "message_lead_28344334",
       "message_lead_28205012"
-    ]
+    ],
+    "category": "Holiday Homes",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5787,7 +6880,11 @@
       "message_lead_28607200",
       "email_lead_4721643",
       "call_lead_12010729"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5799,7 +6896,11 @@
       "2026-03": 19
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5820,7 +6921,11 @@
       "message_lead_28560602",
       "message_lead_28547805",
       "message_lead_28547377"
-    ]
+    ],
+    "category": "Holiday Homes",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5836,7 +6941,11 @@
       "message_lead_28582496",
       "message_lead_28553631",
       "message_lead_28352817"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5862,7 +6971,11 @@
       "message_lead_27145413",
       "message_lead_27122891",
       "message_lead_26828033"
-    ]
+    ],
+    "category": "Holiday Homes",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5874,7 +6987,11 @@
       "2026-03": 21
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5893,7 +7010,12 @@
       "call_lead_11817532",
       "message_lead_27165297",
       "message_lead_27144644"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_color": "NONE",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5906,7 +7028,11 @@
       "2026-03": 2
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5921,7 +7047,11 @@
     "LeadsIds": [
       "message_lead_28590022",
       "message_lead_28581284"
-    ]
+    ],
+    "category": "Holiday Homes",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5942,7 +7072,11 @@
       "message_lead_28125755",
       "message_lead_27508283",
       "message_lead_27375590"
-    ]
+    ],
+    "category": "Holiday Homes",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5958,7 +7092,11 @@
     "LeadsIds": [
       "message_lead_28105589",
       "call_lead_11953046"
-    ]
+    ],
+    "category": "Holiday Homes",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -5979,7 +7117,10 @@
       "message_lead_27634084",
       "message_lead_27541087",
       "message_lead_27527591"
-    ]
+    ],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6008,7 +7149,10 @@
       "message_lead_27208283",
       "message_lead_27208246",
       "message_lead_27198069"
-    ]
+    ],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6023,7 +7167,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_28022809"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_color": "FF00FF00",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6035,7 +7183,11 @@
       "2026-04": 1
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6047,7 +7199,11 @@
       "2026-03": 9
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6073,7 +7229,11 @@
       "message_lead_27854194",
       "message_lead_27839827",
       "message_lead_27809014"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6113,7 +7273,11 @@
       "message_lead_27032334",
       "message_lead_27025084",
       "message_lead_27023291"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6136,7 +7300,11 @@
       "message_lead_28480449",
       "message_lead_28480148",
       "message_lead_28475296"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6153,7 +7321,10 @@
     "LeadsIds": [
       "call_lead_11847637",
       "message_lead_27379383"
-    ]
+    ],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6176,7 +7347,11 @@
       "message_lead_26873868",
       "message_lead_26872277",
       "message_lead_26446423"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6194,7 +7369,11 @@
       "message_lead_26937076",
       "message_lead_26868751",
       "message_lead_26746613"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6212,7 +7391,12 @@
     "LeadsIds": [
       "message_lead_28482960",
       "message_lead_28480058"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_color": "FFFFFF00",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6226,7 +7410,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_28702404"
-    ]
+    ],
+    "category": "Holiday Homes",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6250,7 +7438,11 @@
       "message_lead_27976767",
       "call_lead_11934203",
       "message_lead_27892111"
-    ]
+    ],
+    "category": "Holiday Homes",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6263,7 +7455,11 @@
       "2026-02": 15
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Holiday Homes",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6300,7 +7496,12 @@
       "message_lead_26761347",
       "message_lead_26685958",
       "message_lead_26657512"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_color": "FF00FF00",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6328,7 +7529,11 @@
       "message_lead_26668774",
       "message_lead_26632310",
       "message_lead_26626706"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6360,7 +7565,11 @@
       "message_lead_27604078",
       "message_lead_27581932",
       "message_lead_27554260"
-    ]
+    ],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6384,7 +7593,10 @@
       "message_lead_27208235",
       "message_lead_27157684",
       "message_lead_27147327"
-    ]
+    ],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6396,7 +7608,11 @@
       "2025-08": 831
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "kris",
+    "status": "Archive"
   },
   {
     "Category": "Rent",
@@ -6412,7 +7628,11 @@
       "2025-11": 1
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6424,7 +7644,11 @@
       "2025-11": 9
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Unpublished",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Archive"
   },
   {
     "Category": "Rent",
@@ -6436,7 +7660,11 @@
       "2025-12": 2
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6455,7 +7683,11 @@
       "message_lead_27118110",
       "message_lead_26209743",
       "message_lead_26199574"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6467,7 +7699,11 @@
       "2025-12": 2
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6479,7 +7715,12 @@
       "2026-02": 17
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Partner",
+    "group": "Partner",
+    "sheet_color": "FF00FF00",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Rent",
@@ -6494,7 +7735,11 @@
     "Leads": 1,
     "LeadsIds": [
       "message_lead_28367866"
-    ]
+    ],
+    "category": "Holiday Homes",
+    "group": "Partner",
+    "sheet_source": "yana",
+    "status": "Active"
   },
   {
     "Category": "Commercial Sell",
@@ -6524,7 +7769,12 @@
       "message_lead_26581772",
       "email_lead_4700465",
       "message_lead_26175079"
-    ]
+    ],
+    "category": "Our Broker",
+    "group": "Our",
+    "sheet_color": "FFFFFF00",
+    "sheet_source": "kris",
+    "status": "Active"
   },
   {
     "Category": "Commercial Sell",
@@ -6537,7 +7787,10 @@
       "2026-02": 10
     },
     "Leads": 0,
-    "LeadsIds": []
+    "LeadsIds": [],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   },
   {
     "Category": "Commercial Rent",
@@ -6559,6 +7812,9 @@
       "message_lead_26971827",
       "call_lead_11785485",
       "message_lead_26939860"
-    ]
+    ],
+    "category": "Other",
+    "group": "Other",
+    "status": "Active"
   }
 ]

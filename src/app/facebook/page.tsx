@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Scoreboard, { ScoreboardData } from '../red/Scoreboard';
-import DashboardPage, { RED_COLUMNS_MAIN, RED_COLUMNS_GEO } from '@/components/DashboardPage';
+import DashboardPage, { RED_COLUMNS_MAIN } from '@/components/DashboardPage';
 const mockScoreboard: ScoreboardData = {
   leads: 0,
   ql: 0,
@@ -11,7 +11,7 @@ const mockScoreboard: ScoreboardData = {
   revenue: 'AED 0',
 };
 
-const mockUAEData: any[] = [];
+
 
 
 export default function FacebookPage() {

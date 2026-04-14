@@ -87,6 +87,7 @@ type Row = {
   avg_duration?: number;
   leads_crm?: number;
   leads_wa?: number;
+  status?: string;
 };
 
 const CHANNELS = ['RED', 'Facebook', 'Klykov', 'Partners leads', 'OKK', 'Own leads'] as const;
@@ -95,13 +96,7 @@ type ChannelName = (typeof CHANNELS)[number];
 type SourceFilter = 'all' | Exclude<ChannelName, 'TOTAL'>;
 const SOURCE_CHANNELS = CHANNELS.filter((channel) => channel !== 'TOTAL') as Exclude<ChannelName, 'TOTAL'>[];
 
-const RED_DRILLDOWN_GROUPS: Array<{ id: 'level_1' | 'level_2' | 'level_3'; label: string }> = [
-  { id: 'level_1', label: 'название РК' },
-  { id: 'level_2', label: 'название campaign' },
-  { id: 'level_3', label: 'название креатива' },
-];
 
-const SPECIAL_DRILLDOWN_CHANNELS = new Set<ChannelName>(['RED', 'Facebook / Target Point']);
 
 const SIDEBAR_SECTIONS = [
   {
@@ -232,6 +227,7 @@ const EMPTY_ROW = (channel: string, sort_order: number): Row => ({
   avg_duration: 0,
   leads_crm: 0,
   leads_wa: 0,
+  status: '',
 });
 
 function addMetrics(target: Row, cur: Row) {
@@ -250,6 +246,7 @@ function addMetrics(target: Row, cur: Row) {
   target.sessions = (target.sessions || 0) + (Number(cur.sessions) || 0);
   target.leads_crm = (target.leads_crm || 0) + (Number(cur.leads_crm) || 0);
   target.leads_wa = (target.leads_wa || 0) + (Number(cur.leads_wa) || 0);
+  if (cur.status) target.status = cur.status;
   
   // Weights for averages (simplified)
   if (cur.sessions) {
@@ -295,27 +292,7 @@ function levelLabel(value: string | null, fallback = 'Other') {
   return normalized || fallback;
 }
 
-function pickRedRowsByLevel(groupId: 'level_1' | 'level_2' | 'level_3', rows: Row[]) {
-  const hasL1 = (r: Row) => !!r.level_1?.trim();
-  const hasL2 = (r: Row) => !!r.level_2?.trim();
-  const hasL3 = (r: Row) => !!r.level_3?.trim();
 
-  if (groupId === 'level_1') {
-    const preferred = rows.filter((r) => hasL1(r) && !hasL2(r) && !hasL3(r));
-    if (preferred.length > 0) return preferred;
-    return rows.filter((r) => hasL1(r));
-  }
-
-  if (groupId === 'level_2') {
-    const preferred = rows.filter((r) => hasL2(r) && !hasL3(r));
-    if (preferred.length > 0) return preferred;
-    return rows.filter((r) => hasL2(r));
-  }
-
-  const preferred = rows.filter((r) => hasL3(r));
-  if (preferred.length > 0) return preferred;
-  return rows;
-}
 
 function money(value: number, currency: Currency) {
   const symbol = currency === 'usd' ? '$' : 'AED';
@@ -754,7 +731,8 @@ export default function DashboardPage({
         channels: activeChannels.join(','),
       });
 
-      const res = await fetch(`${apiUrl}?${qs.toString()}`, { cache: 'no-store' });
+      const connector = apiUrl.includes('?') ? '&' : '?';
+      const res = await fetch(`${apiUrl}${connector}${qs.toString()}`, { cache: 'no-store' });
       const json = await res.json();
       if (!json.success) throw new Error(json.error || 'Request failed');
 
@@ -864,56 +842,7 @@ export default function DashboardPage({
       if (!expanded[channel]) return;
       if (!hasAnyLevelData) return;
 
-      if (SPECIAL_DRILLDOWN_CHANNELS.has(channel as ChannelName)) {
-        for (const group of RED_DRILLDOWN_GROUPS) {
-          const sourceRows = pickRedRowsByLevel(group.id, grouped);
-          const detailMap = new Map<string, Row[]>();
-          sourceRows.forEach((r) => {
-            const raw = group.id === 'level_1' ? r.level_1 : group.id === 'level_2' ? r.level_2 : r.level_3;
-            const key = (raw || '').trim();
-            if (!key) return;
-            if (!detailMap.has(key)) detailMap.set(key, []);
-            detailMap.get(key)!.push(r);
-          });
 
-          const groupRows = sourceRows;
-          const groupKey = `${channel}|${group.id}`;
-
-          out.push({
-            type: 'detail',
-            row: aggregateRows(groupRows, channel, index + 1),
-            key: `detail-${groupKey}`,
-            label: group.label,
-            detailDepth: 1,
-            detailKey: groupKey,
-            hasChildren: detailMap.size > 0,
-          });
-
-          if (!expandedDetails[groupKey]) continue;
-
-          // Sort detail items by leads descending
-          const sortedDetailEntries = Array.from(detailMap.entries()).sort((a, b) => {
-            const tA = aggregateRows(a[1], channel, 0);
-            const tB = aggregateRows(b[1], channel, 0);
-            return tB.leads - tA.leads || tB.no_answer_spam - tA.no_answer_spam || a[0].localeCompare(b[0]);
-          });
-
-          for (const [itemLabel, itemRows] of sortedDetailEntries) {
-            const itemKey = `${groupKey}|${itemLabel}`;
-            out.push({
-              type: 'detail',
-              row: aggregateRows(itemRows, channel, index + 1),
-              key: `detail-${itemKey}`,
-              label: itemLabel,
-              detailDepth: 2,
-              detailKey: itemKey,
-              hasChildren: false,
-            });
-          }
-        }
-
-        return;
-      }
 
       const level1Map = new Map<string, Row[]>();
       grouped.forEach((r) => {
@@ -1485,7 +1414,10 @@ export default function DashboardPage({
                           ) : (
                             <span className={styles.arrow} />
                           )}
-                          <div className={styles.channelLabel}>
+                          <div 
+                            className={styles.channelLabel}
+                            style={(row.status === 'Archive' && type === 'detail' && detailDepth === 2) ? { color: '#ef4444', opacity: 0.8 } : {}}
+                          >
                             {showTableSkeletons ? <span className={styles.skeletonText} /> : type === 'channel' ? row.channel : label}
                           </div>
                         </div>

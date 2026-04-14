@@ -46,19 +46,35 @@ const PROJECT_COLUMNS = [
 export default function PropertyFinderPage() {
   return (
     <DashboardPage 
-      title="Property Finder Listings Performance"
+      title="Property Finder Listings Performance - Our"
       initialSourceFilter="all" 
       hideSourceFilter={true}
       hideTotal={true}
       firstColumnLabel="Listings"
       customColumns={PF_COLUMNS}
-      apiUrl="/api/pf-listings"
+      apiUrl="/api/pf-listings?group=Our"
       maxDrilldownLevel={3}
       initialExpanded={['Property Finder']}
       tableMinWidth="0px"
       defaultChannelWidth={400}
     >
-      <div style={{ marginTop: '40px' }}>
+      <div style={{ marginTop: '60px' }}>
+        <DashboardPage 
+          title="Property Finder Listings Performance - Partner"
+          isNested={true}
+          hideFilters={true}
+          hideTotal={true}
+          firstColumnLabel="Listings"
+          customColumns={PF_COLUMNS}
+          apiUrl="/api/pf-listings?group=Partner"
+          maxDrilldownLevel={3}
+          initialExpanded={['Property Finder']}
+          tableMinWidth="0px"
+          defaultChannelWidth={400}
+        />
+      </div>
+
+      <div style={{ marginTop: '60px' }}>
         <DashboardPage 
           title="Property Finder Primary Plus (By Districts)"
           isNested={true}

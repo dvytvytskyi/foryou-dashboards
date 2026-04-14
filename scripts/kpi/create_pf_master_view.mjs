@@ -79,7 +79,7 @@ async function createPFView() {
             IF(p.pf_type LIKE '%call%', 1, 0) as is_call,
             COALESCE(a_m.price, a_n.price) as potential_value
         FROM pf_raw p
-        LEFT JOIN amo_phones m ON p.clean_phone = m.phone
+        LEFT JOIN amo_phones m ON RIGHT(p.clean_phone, 9) = RIGHT(m.phone, 9)
         LEFT JOIN amo_leads a_m ON m.lead_id = a_m.lead_id
         
         -- Fuzzy Name Match (if phone didn't match and name is long enough)

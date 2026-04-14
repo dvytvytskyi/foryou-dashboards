@@ -1,0 +1,2551 @@
+{
+  "kris": [
+    {
+      "id": 8292,
+      "project": "La Residencia DEL MAR",
+      "color": "FF00FF00"
+    },
+    {
+      "id": 7380,
+      "project": "Seven City JLT(3BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 9688,
+      "project": "Jumeirah gate tower 1 ADDRESS ( 1BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 2822,
+      "project": "CRESTMARK (3BR off)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": 3606,
+      "project": "CREEK CRESCENT (1br)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": 9235,
+      "project": "JASMINE LANE (3br)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 5031,
+      "project": "Palace beach residence (2BR off)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 9519,
+      "project": "Seascape (2BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 5872,
+      "project": "Park Horizon (1BR off)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 5587,
+      "project": "LAMAA 1",
+      "color": "FF00FF00"
+    },
+    {
+      "id": 40026,
+      "project": "AZIZI Riviera Azure(studio)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 9667,
+      "project": "Paragon (studio)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000048/",
+      "project": "AYKON City 3(3bd)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": 8790,
+      "project": "Bayz101",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": 7251,
+      "project": "Design Quarter Tower B",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": 4965,
+      "project": "Golf Grand Hills estate",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": 5028,
+      "project": "TRIDENT Residence",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": 7613,
+      "project": "Elitz by Danube (studio off)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 6468,
+      "project": "Millenium place TFG ONE Hotel (studio)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 8087,
+      "project": "SEAGATE (2 BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 5550,
+      "project": "DAMAC hills, Victoria 2 , (Town, 3br)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 6108,
+      "project": "PARAGON (studio Off)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": 5861,
+      "project": "48 PARKSIDE (1br)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 9772,
+      "project": "ME DO RE2 ( studio)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": 1913,
+      "project": "CENTURY (studio)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 6669,
+      "project": "CHIC Tower (studio)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 8601,
+      "project": "Binghatti Phantom (1br)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": 5717,
+      "project": "SADAF 7 (1bd)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": 2188,
+      "project": "MURJAN 6 (3br)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 8800,
+      "project": "SEAPOINT Tower 2 (2BR)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": 4965,
+      "project": "Golf Grand (Dubai hills, 2BR)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": 3559,
+      "project": "Design Quarter tower A (2BR)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": 1513,
+      "project": "COTE D'AZUR - M (hotel room)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": 6685,
+      "project": " Thyme (1 BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 5652,
+      "project": "Marina Living 1BR",
+      "color": "FF00FF00"
+    },
+    {
+      "id": 7294,
+      "project": "Azizi Riviera 44 (studio)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": 5710,
+      "project": "STONEHENGE 2, JVC, ( 1br)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": 3278,
+      "project": "The COVE 2 (1BR)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": 9352,
+      "project": "Peninsula Four Plaza 1801",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "0000027/",
+      "project": "Bahar 1 (2BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000032/",
+      "project": "Azizi Mirage 1 (1BR)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "0000047/",
+      "project": "DAMAC CITY TOWER B (1BR)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "0000058/",
+      "project": "GEMINI SPLENDOR (2BR) sobha hartland",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000059/",
+      "project": "Opulent Residences (Rixos) 1br ",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000061/",
+      "project": "Upper House EAST( JLT, 2BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000062/",
+      "project": "Ozone 1 Residence (1BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000065/",
+      "project": "MARINA STAR (1BR)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000066/",
+      "project": "Jomana 7 (1BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "JULY",
+      "project": null,
+      "color": "FFFFFFFF"
+    },
+    {
+      "id": "00000117/",
+      "project": "Azizi Riviera Beachfront",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000122/",
+      "project": "Binghatti House (1BR) JVC",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "0026/",
+      "project": "AZIZI Riviera Azure(studio)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000135/",
+      "project": "Elysee III by Pantheon (studio)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000137/",
+      "project": "Azizi Riviera Beachfront (Studio)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "August",
+      "project": null,
+      "color": "NONE"
+    },
+    {
+      "id": "00000154/",
+      "project": "One Za'abeel (1BR) 5902",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000155/",
+      "project": "One Za'abeel (1BR) 5903",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000156/",
+      "project": "Sobha Hartland Crest (1BR)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000161/",
+      "project": "SAMANA PARK VIEWS (2BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000165/",
+      "project": "California by SD ( Studio)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000166/",
+      "project": "The Crest, Sobha Hartland (1BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000167/",
+      "project": "Sterling West House (2BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000168/",
+      "project": "ELITE Residence(2br)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000175/",
+      "project": "PEARL HOUSE I BY IMTIAZ (1BR)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000176/",
+      "project": "Silicon Heights (1BR)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000177/",
+      "project": "STERLING EAST HOUSE ",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000181/",
+      "project": "Elitz by Danube (1BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "September",
+      "project": null,
+      "color": "NONE"
+    },
+    {
+      "id": "00000185/",
+      "project": "Uptown Tower (1BR)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000195/ ",
+      "project": "The EDGE (1br)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000199/",
+      "project": "Elitz 2 By Danube (1BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000209/",
+      "project": "Mama Shelter (Luxury family) 1BR ",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000215/",
+      "project": "SEVEN PALM (1br) hotel ap",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000216/",
+      "project": "Sobha Hartland - The Crest Tower B (1br)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0/",
+      "project": "SAFA TWO, AYKON CITY 3 - TOWER D",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000226/",
+      "project": "Regalia (studio)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000229/",
+      "project": "Creek Beach - Canopy -Moor Building 3",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000236/",
+      "project": "Town Square Jenna 1 (2BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000237/",
+      "project": "Paragon by Igo (Studio)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "October",
+      "project": null,
+      "color": "FFFFFFFF"
+    },
+    {
+      "id": "00000240/",
+      "project": "Vida Dubai Mall (2BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000241/",
+      "project": "MARINA STAR (1 BR) 703",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000243/",
+      "project": "NEW DUBAI GATE2",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 11113,
+      "project": "Saadiyat Lagoons Phase 2, 4br villa",
+      "color": "FF00FFFF"
+    },
+    {
+      "id": "00000247/",
+      "project": "Aeternitas Tower",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000248/",
+      "project": "Oceanz 2 By Danube (3BR)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": 111115,
+      "project": "The Source Residences (2BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000258/",
+      "project": "Peninsula Four (B-1004) studio",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000259/",
+      "project": "Peninsula Four (B-1003) studio ",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000261/",
+      "project": "LIV Marina (studio) ",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000273/",
+      "project": "THE RESIDENCES AT MARINA GATE 1, 4208, 1BR",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000275/",
+      "project": "THE RESIDENCES AT MARINA GATE 1, 4010, 2BR",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000277/",
+      "project": "AVALON TOWER (studio)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000279/",
+      "project": "Peninsula One (Studio)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "0000281/",
+      "project": "Pearl House Imtiaz (1BR)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000284/",
+      "project": "Pearl House (1BR) 902",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000283/",
+      "project": "Palm Beach Towers - 2",
+      "color": "FF00FF00"
+    },
+    {
+      "id": 111117,
+      "project": "The Arthouse, 3BR",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000285/",
+      "project": "Binghatti Heights (2br)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "November",
+      "project": null,
+      "color": "NONE"
+    },
+    {
+      "id": "00000286/",
+      "project": "Golf Grand (1BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000288/",
+      "project": "Royal Oceanic 1 (2BR)",
+      "color": "FFD5A6BD"
+    },
+    {
+      "id": "00000289/",
+      "project": "Opera Grand (3br)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000290/",
+      "project": "BURJ VISTA Tower 1 (3BR)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000291/",
+      "project": "LIV LUX (1BR)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000292/",
+      "project": "ELEGANCE TOWER (2BR)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": 111118,
+      "project": "NOBU Residences (2br)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000293/",
+      "project": "Peninsula Four (B-101)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000294/",
+      "project": "Peninsula Four (B-402)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000295/",
+      "project": "Peninsula Five - 3 (2br)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000296/",
+      "project": "Peninsula one/ 710 (Studio)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000297/",
+      "project": "Beach Isle Tower 2 ( 2BR)",
+      "color": "FFD5A6BD"
+    },
+    {
+      "id": "00000298/",
+      "project": "UH EAST BY ELLINGTON (1BR)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": 111119,
+      "project": "The Bay Residence 11 (1BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000303/",
+      "project": "The Paragon By IGO",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000304/",
+      "project": "Sidra 3 (4BR VILLA)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000305/",
+      "project": "MAG 330 (studio)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000310/",
+      "project": "DAMAC LAGOONS - VENICE (1) 6br villa",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000311/",
+      "project": "Cove Living Residence By Imtiaz (Studio)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": 2023,
+      "project": "ZADA TOWER (1318)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000312/",
+      "project": "Palace beach Residences T2 (2BR)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000315/",
+      "project": "BURJ Royal (1BR)",
+      "color": "FFD5A6BD"
+    },
+    {
+      "id": "00000316/",
+      "project": "Bliss V250 (arabian ranches) villa",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000317/",
+      "project": "Wadi Al Safa 5 (4BR Villa)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000322/",
+      "project": "DAMAC BAY Tower C (1BR)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000323/",
+      "project": "Pear House (1BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000324/",
+      "project": "Jasmine Lane ( 3br villa)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000326/",
+      "project": "Mamashelter (Luxury family) studio",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000328/",
+      "project": "Al Serh Residences 11 By Asak, unit 410",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000333/",
+      "project": "Trillionaire Residences (2 BR)",
+      "color": "FFD5A6BD"
+    },
+    {
+      "id": "00000334/",
+      "project": "LAKE TERRACE (STUDIO)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000336/",
+      "project": "THE CRESTMARK (2br)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000337/",
+      "project": "THE CRESTMARK (1br)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "December",
+      "project": null,
+      "color": "NONE"
+    },
+    {
+      "id": "00000341/",
+      "project": "Park Heights I (3BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000342/",
+      "project": "TRUSSARDI RESIDENCES, Unit 412",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000343/",
+      "project": "Binghatti Emerald (1br)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000345/",
+      "project": "CONCEPT 7 RESIDENCES (1br)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000344/",
+      "project": "Pearl House II (1BR)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000348/",
+      "project": "SPARKLZ by Danube - TOWER A (studio)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000349/",
+      "project": "SPIRIT tower (STUDIO)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "JTPRKG7R",
+      "project": "PARK RIDGE (3br)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000356/",
+      "project": "AL GHURAIR Residense (1BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000359/",
+      "project": "Solitaire Casa (4BR) villa",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000361/",
+      "project": "Peninsula One (studio)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000362/",
+      "project": "Sandoval Lane (4 BR)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000364/",
+      "project": "Socio Tower 1",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000365/",
+      "project": "Peninsula one (1br)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000366/",
+      "project": "GRANDEUR RESIDENCES (3br)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000372/",
+      "project": "Empire Residence (studio)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000387/",
+      "project": "Park Horizon - Tower 2 (1BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000399/",
+      "project": "Ruba 3 (3br) villa",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000401/",
+      "project": "SLS AT PALM JUMEIRAH (2BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000407/",
+      "project": "CHIC TOWER (1BR)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000408/",
+      "project": "CHIC TOWER (studio)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000409/",
+      "project": "Oxford Gardens (1BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000412/",
+      "project": "Dubai Star (1br)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000413/",
+      "project": "Luxur Tower By Imtiaz (2404) 1BR",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000414/",
+      "project": "Luxur Tower By Imtiaz (2405) 1 BR",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000415/",
+      "project": "Palace Beach Residence (2BR) #3704",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000416/",
+      "project": "Palace Beach Residence (2BR)#2203",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "0000417/",
+      "project": "Botanica Tower 1 (studio)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "January 2026",
+      "project": null,
+      "color": "NONE"
+    },
+    {
+      "id": "00000422/",
+      "project": "51 Business Bay (office)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000426/",
+      "project": "330 Riverside Crescent (1BR)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000428/",
+      "project": "Ocean House (3br)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000435/",
+      "project": "ELLINGTON HOUSE II (1BR)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000438/",
+      "project": "Ellington Beach House (2BR)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000439/",
+      "project": "ADDRESS HARBOUR POINT TOWER 2 (3BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000440/",
+      "project": "KYOTO BY ORO24 (Studio)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000448/",
+      "project": "Thr Highbury (1BR)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000450/",
+      "project": "Park Horizon - Tower 2, 1606 (1br)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000451/",
+      "project": "Westwood Grande (",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 1111121,
+      "project": "The Source Residences (2BR)",
+      "color": "FF00FFFF"
+    },
+    {
+      "id": "0000452/",
+      "project": "COTE D'AZUR - N (studio)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "February",
+      "project": null,
+      "color": "NONE"
+    },
+    {
+      "id": "00000453/",
+      "project": "Peninsula 5 (2BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000454/",
+      "project": "COTE D'AZUR - C (studio)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000455/",
+      "project": "Azizi Mirage 1 (studio)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000457/",
+      "project": "Jumeirah Gate Tower 2",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000458/",
+      "project": "The PAD (1BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000459/",
+      "project": "Condor Golf Links 18 (Studio)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000461/",
+      "project": "Al Jazi 4 (1BR)802",
+      "color": "FFD5A6BD"
+    },
+    {
+      "id": "1111123/",
+      "project": "Abu Dhabi City, Ghadeer Al Tayr, Al Jarf",
+      "color": "FF00FFFF"
+    },
+    {
+      "id": "1111124/",
+      "project": "The Arthouse, 3BR",
+      "color": "FF00FFFF"
+    },
+    {
+      "id": "1111125/",
+      "project": "The Bay Residence 11 (1BR)",
+      "color": "FF00FFFF"
+    },
+    {
+      "id": "00000462/",
+      "project": "Park ridge (2BR)",
+      "color": "FFD5A6BD"
+    },
+    {
+      "id": "1111126/",
+      "project": "Al Jurf Gardens",
+      "color": "FF00FFFF"
+    },
+    {
+      "id": 1111128,
+      "project": "Sea La Vie ",
+      "color": "FF00FFFF"
+    },
+    {
+      "id": "00000470/",
+      "project": "Peninsula Four, A -1905 (studio)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000472/",
+      "project": "NEVA RESIDENCES (1BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "MARCH",
+      "project": null,
+      "color": "FFFFFFFF"
+    },
+    {
+      "id": 11111127,
+      "project": "NOBU Residences (2br)",
+      "color": "FF00FFFF"
+    },
+    {
+      "id": "00000473/",
+      "project": "Shams 2 (2BR)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000474/",
+      "project": "ELLINGTON HOUSE II",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000475/",
+      "project": "Azizi Riviera Azure ",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000477/",
+      "project": "THE CRESTMARK (1BR)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000478/",
+      "project": "CLAYDON HOUSE BY ELLINGTON (1)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000479/",
+      "project": "The Residence By Prestige One (1br)",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000480/",
+      "project": "UH WEST BY ELLINGTON (2BR)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000481/",
+      "project": "Luma22 (studio)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "111120/",
+      "project": "Saadiyat Lagoons Phase 2 (4+maid)",
+      "color": "FF00FFFF"
+    },
+    {
+      "id": "00000503/",
+      "project": "Palace Beach Residence Tower 2",
+      "color": "FF00FF00"
+    },
+    {
+      "id": 1111129,
+      "project": "Mamsha gardens B (2BR)",
+      "color": "FF00FFFF"
+    },
+    {
+      "id": "00000506/",
+      "project": "CENTURY (studio)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000507/",
+      "project": "Sparkle tower (1BR)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000511/",
+      "project": "SOBHA HARTLAND GREENS - PHASE III - 2",
+      "color": "FFD5A6BD"
+    },
+    {
+      "id": "April",
+      "project": null,
+      "color": "FFFFFFFF"
+    },
+    {
+      "id": "00000513/",
+      "project": "Socio Tower 2, 1205 (2BR)",
+      "color": "FFD5A6BD"
+    },
+    {
+      "id": "00000514/",
+      "project": "PRIVE RESIDENCE - DUBAI HILLS ",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000517/",
+      "project": "Peninsula Four/ A-3104 (1BR)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000518/",
+      "project": "ELLINGTON HOUSE IV",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "1111130/",
+      "project": "The Bay Residence 11 (1BR)",
+      "color": "FF00FFFF"
+    },
+    {
+      "id": "00000522/",
+      "project": "Grand Bleu Tower interiors by Elie Saab Tower 1",
+      "color": "FFD5A6BD"
+    },
+    {
+      "id": "00000523/",
+      "project": "ZADA TOWER/ 617 ",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000525/",
+      "project": "Skyhills Residences 3 - TOWER B (1BR)",
+      "color": "FFFFFF00"
+    }
+  ],
+  "yana": [
+    {
+      "id": 9674,
+      "project": "Azizi Aura Residences",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 30371,
+      "project": "Dolphin Tower",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 8439,
+      "project": "Binghatti Emerald",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 4011,
+      "project": "BLOOM TOWERS A",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 5097,
+      "project": "PRIVE RESIDENCE - DUBAI HILLS ",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": 4160,
+      "project": "Peninsula One Jadeel 2, (1BR) madinat jumeirah living ",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 9343,
+      "project": "Pearl House 2 от IMTIAZ 215 (1BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 13441968,
+      "project": "Address Residences Zabeel Tower 4",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 4280,
+      "project": "Azizi Riviera 5 retail - 02",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "april",
+      "project": null,
+      "color": "NONE"
+    },
+    {
+      "id": 13440835,
+      "project": "Pearl House 2 от IMTIAZ 303",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 13463629,
+      "project": "Peninsula Four",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 13491092,
+      "project": "Nima The Valley (4BR) ",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 13483005,
+      "project": "Silverene Towers A",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 13552350,
+      "project": "Peninsula Four",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 13549456,
+      "project": "Peninsula Five 3",
+      "color": "FF00FF00"
+    },
+    {
+      "id": 13608874,
+      "project": "Viewz 2 By Danube",
+      "color": "FF00FF00"
+    },
+    {
+      "id": 13621549,
+      "project": "La Vie",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 13656497,
+      "project": "BELGRAVIA 2",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 13658530,
+      "project": "DAMAC LAGOONS - MARBELLA",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 13663520,
+      "project": "Upper House WEST BY ELLINGTON",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 13740204,
+      "project": "Binghatti Phoenix 525",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 13741413,
+      "project": "Binghatti Phoenix 536",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 13724927,
+      "project": "Al Jazi 3",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 13731427,
+      "project": "Binghatti Venus",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 13770667,
+      "project": "La Cote",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 1752,
+      "project": "Sparkle Tower 2",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "may",
+      "project": null,
+      "color": "FFFFFFFF"
+    },
+    {
+      "id": 13805287,
+      "project": "Ellington Beach House",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 13812309,
+      "project": "Ellington Beach House",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000004/",
+      "project": "SOBHA CREEK VISTAS - TOWER B",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000001/",
+      "project": "Peninsula five  - 3 / 1606",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000002/",
+      "project": "Creek Palace  (1BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000003/",
+      "project": "Lotus at Creek Beach Building 3",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000006/",
+      "project": "Peninsula five  - 3 / 2bd",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000007/",
+      "project": "Peninsula five  - 3 / 1bd",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000011/",
+      "project": "Maimoon Gardens Tower B",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000012/",
+      "project": "Design Quarter - Tower A",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "0000016/",
+      "project": "Canal Crown 1 studio",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "0000018/",
+      "project": "Canal Crown 1 (1bd)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "0000019/",
+      "project": "THE EDGE",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "0000015/",
+      "project": "THE V TOWER",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000017/",
+      "project": "The Community",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000020/",
+      "project": "Stella Maris ",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000021/",
+      "project": "Peninsula Four B 509",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000024/",
+      "project": "Thyme (city walk)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": 13809632,
+      "project": "VIDA (1BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000008/",
+      "project": "Jumeirah Gate Tower 1",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000009/",
+      "project": "Sobha Creek Vi",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000022/",
+      "project": "Binghatti Emerald",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000025/",
+      "project": "Luma21",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 13828117,
+      "project": "The EDGE",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "0000023/",
+      "project": "Greenside Residence, Dubai hills",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000026/",
+      "project": "Palm Beach Towers - 2",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "0000030/",
+      "project": "One Za'abeel The Residences",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000033/",
+      "project": "CONCEPT 7 RESIDENCES",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "June",
+      "project": null,
+      "color": "FFFFFFFF"
+    },
+    {
+      "id": "0000035/",
+      "project": "The Orchard Place",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "0000034/",
+      "project": "Palace Residence",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000064/",
+      "project": "WEST FIVE BUSINESS BAY RESIDENCES",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000039/",
+      "project": "Kempinski",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000049/",
+      "project": " JLT studio golf views ",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000050/",
+      "project": "Golf Views  JLT 1bd",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000046/",
+      "project": "THE FIFTH TOWER",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "0000055/",
+      "project": "AZIZI RIVIERA REVE TOWER-3",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "0000078/",
+      "project": "MED 94",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000070/",
+      "project": "Bay grove",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "0000069/",
+      "project": "Binghatti Amber",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000071/",
+      "project": "Azizi Riviera 20",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000073/",
+      "project": "Farhad Azizi Residence Creek Views",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000072/",
+      "project": "Westwood grande By Imtiaz",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000074/",
+      "project": "Kempinski Residences The Creek - Tower 1",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000097/",
+      "project": "STELLA MARIS",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "0000075/",
+      "project": "Court Business Bay",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000076/",
+      "project": " JLT",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000096/",
+      "project": "Port De La Mer - La Voile",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000095/",
+      "project": "Peninsula Five 1601",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000098/",
+      "project": "Westwood By Imtiaz",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "July",
+      "project": null,
+      "color": "FFFFFFFF"
+    },
+    {
+      "id": "0000105/",
+      "project": "MOG 204",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000108/",
+      "project": "Sobha Creek Vistas Reserve",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000109/",
+      "project": "MAG 505",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000111/",
+      "project": "THE V TOWER",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "0000112/",
+      "project": " Prime Residency 3 437 unit",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000113/",
+      "project": "City walk Residential Building 1",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "0000115/",
+      "project": "Azizi Riviera 13",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000118/",
+      "project": "Marquise Square Tower",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000119/",
+      "project": "MAG 505",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000120/",
+      "project": "Verdana Residence",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000123/",
+      "project": "CONDOR GOLF LINKS 18",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000125/",
+      "project": "Seascape - Building 1",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000126/",
+      "project": "Ellington Beachhouse / Beach house",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000129/",
+      "project": "Parkside Hills",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000131/",
+      "project": "PARAGON by IGO",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000132/",
+      "project": "Creek Crescent (1br)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000133/",
+      "project": "Creek Palace /unit 309 1br",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 13433370,
+      "project": "Opal gardens",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 12566077,
+      "project": "THE PALM TOWER",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "August",
+      "project": null,
+      "color": "NONE"
+    },
+    {
+      "id": "00000142/",
+      "project": "ELITE DOWNTOWN RESIDENCE 515",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000140/",
+      "project": "One Zaabeel The Residences",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000149/",
+      "project": "ELITE DOWNTOWN RESIDENCE 515",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000159/",
+      "project": "Azizi Riviera 48",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000151/",
+      "project": "STELLA MARIS",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000157/",
+      "project": "Sobha Creek Vista Heights",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000152/",
+      "project": "SLS DUBAI",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000160/",
+      "project": "Hadley Heights (2BR) JVC",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000158/",
+      "project": "THE BELVEDERE",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000162/",
+      "project": "Paradise Hills 96A",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000163/",
+      "project": "Paradise Hills - 6a",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000164/",
+      "project": "TULIP OASIS 9",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000169/",
+      "project": "SESLIA TOWER",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000170/",
+      "project": "Sobha Hartland - The Crest Tower C",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000171/",
+      "project": "Franck Muller Vanguard",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000178/",
+      "project": "Rukan 3 , Wadi Al Safa 7 Villa H41",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000172/",
+      "project": "PEARL HOUSE I BY IMTIAZ",
+      "color": "FFD5A6BD"
+    },
+    {
+      "id": "00000180/",
+      "project": "SEVEN HOTEL & APARTMENTS The Palm A",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "September",
+      "project": null,
+      "color": "FFFFFFFF"
+    },
+    {
+      "id": "00000183/",
+      "project": "Peninsula Four B 902",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000184/",
+      "project": "Binghatti Tulip",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000186/",
+      "project": "NOBLES",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000187/",
+      "project": "LIV LUX",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000188/",
+      "project": "Binghatti Corner",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000189/",
+      "project": "VIRIDIS D",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000190/",
+      "project": "10 OXFORD by IMAN studio",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000193/",
+      "project": "Opulent Residences / Rixos Financial Center Road Dubai Residences",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000194/",
+      "project": "JASMINE LANE Villa TH39",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000202/",
+      "project": "CLAREN TOWER 2",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000203/",
+      "project": "Sportz By Danube",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000204/",
+      "project": "Sadaf 1",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000205/",
+      "project": "AYKON CITY-TOWER B",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000211/",
+      "project": "DAMAC TOWERS BY PARAMOUNT (C)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000213/",
+      "project": "Westwood Grande 2, unit 402",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000217/",
+      "project": "ACT ONE | ACT TWO",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000219/",
+      "project": "MARINA DIAMOND 6 (A)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000222/",
+      "project": "Hamilton House",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000221/",
+      "project": "O 2, Al Barsha South Fourth",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000227/",
+      "project": "DAMAC HILLS - ARTESIA TOWER D",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "Z00000223/",
+      "project": "Binghatti house",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000225/",
+      "project": "The Community Motor City, unit 471",
+      "color": "FFFF0000"
+    },
+    {
+      "id": 13417915,
+      "project": "Sobha Creek Vista Heights - Tower A,1008",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000228/",
+      "project": "DAMAC CITY TOWER B ",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000231/",
+      "project": "ELLINGTON HOUSE II",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000233/",
+      "project": "Sobha Hartland - The Crest Tower A, A0205",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "October",
+      "project": null,
+      "color": "FFFFFFFF"
+    },
+    {
+      "id": "00000235/",
+      "project": "MBL Signature",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000239/",
+      "project": "JVC, V34 Townhouse ",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000244/",
+      "project": "DAMAC LAGOONS - MOROCCO 1",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000245/",
+      "project": "GRANDUER RESIDENCES-MAURYA",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000249/",
+      "project": "THE EDGE\n",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000250/",
+      "project": "Peninsula Four",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000253/",
+      "project": "Stella Maris (1BR)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000254/",
+      "project": "Beach Walk Residences 3 by Imtiaz",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000255/",
+      "project": "Palace Beach Residence Tower 2",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000256/",
+      "project": "K14, Wadi Al Safa 7\n",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000257/",
+      "project": "Lotus at Creek Beach Building 4",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000263/",
+      "project": "Samana Park Views",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000264/",
+      "project": "Grande",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000266/",
+      "project": "Symphony on the park 313",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000265/",
+      "project": "BEACH MANSION - TOWER 1, P302",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000267/",
+      "project": "Binghatti Amber ",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000268/",
+      "project": "Grand Bleu Tower interiors by Elie Saab Tower 1",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000270/",
+      "project": "THE HEART OF EUROPE 2,  COTE D'AZUR - S\n\n",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000269/",
+      "project": "Sidra 3, 4bedroom villa",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "Z00000271/",
+      "project": "Weybridge Gardens, unit 415\n",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000272/",
+      "project": "CREEK EDGE Tower 2",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000274/",
+      "project": "Sobha One - D",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000276/",
+      "project": "Verde by Sobha, 3211 unit",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000280/",
+      "project": "Binghatti Corner (1br)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000282/",
+      "project": "ME DO RE 2",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000300/",
+      "project": "Rukan 3, B14",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "November",
+      "project": null,
+      "color": "FFFFFFFF"
+    },
+    {
+      "id": "00000301/",
+      "project": "Prime Residency 3/ 741",
+      "color": "FFC27BA0"
+    },
+    {
+      "id": "00000306/",
+      "project": "LIV MARINA",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000307/",
+      "project": "Elite Residences 4",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000308/",
+      "project": "Elite Residences 4",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000309/",
+      "project": "The Community (1bd)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000319/",
+      "project": "Samana Hills",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000321/ ",
+      "project": "ROYAL REGENCY (1BR)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000320/",
+      "project": "Peninsula Three, 43-05",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000325/",
+      "project": "Palm Beach Towers - 2, 22-010",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000327/",
+      "project": "SAFEER TOWER 1",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000329/",
+      "project": "PEAR HOUSE II BY IMTIAZ",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000330/",
+      "project": "CHIC TOWER",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000331/",
+      "project": "The Grand TH14",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000332/",
+      "project": "Sobha Creek Vistas Reserve",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000335/",
+      "project": "Damac Islands Townhouse (4br)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "December",
+      "project": null,
+      "color": "FFFFFFFF"
+    },
+    {
+      "id": "00000338/",
+      "project": "MAG 980, Unit 304",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000339/",
+      "project": "PALM BEACH TOWERS- 3, 3712 unit",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000340/",
+      "project": "Town Square Jenna 2, Unit 329",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000347/",
+      "project": "ARAS HEIGHTS",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000346/",
+      "project": "Town Square Jenna 2, Unit 329",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000351/",
+      "project": "Binghatti Skyrise - TOWER A, A1812",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000352/",
+      "project": "Summer 2",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000353/",
+      "project": "Emirates Gardens 1 - G1",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000354/",
+      "project": "DAMAC HILLS (2) - VICTORIA 2",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000355/",
+      "project": "DAMAC HILLS (2) - VICTORIA 2",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "000000357/",
+      "project": "Seven City JLT/A25 06",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000360/",
+      "project": "Binghatti Skyrise - TOWER B, B1910\n",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000363/",
+      "project": "Adhara Star/1301",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "Z00000367/",
+      "project": "Seven City JLT, B28 06",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "Z00000369/",
+      "project": "Seven City JLT, C24 06\n",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000371/",
+      "project": "WEST FIVE BUSINESSBAY RESIDENCE, Unit 807",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000375/",
+      "project": "Saih Shuaib 1 (LAND)",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000373/",
+      "project": "La Sirene 5",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000374/",
+      "project": "Azizi Riviera 48",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000376/",
+      "project": "PEARL HOUSE I BY IMTIAZ",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000377/",
+      "project": "THE BINARY BY OMNIYAT",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000391/",
+      "project": "Rimal 1 (4BR)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "0000037/",
+      "project": "Mercedes-Benz Places/Binghatti, Unit 2702",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000397/",
+      "project": "Sobha Creek Vista Heights",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "000//",
+      "project": "URBAN OASIS, 3103A\n",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000392/",
+      "project": "WEST FIVE BUSINESSBAY RESIDENCE 807",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000390/",
+      "project": "Damac Hills - Golf Gate 2, unit 305",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000393/",
+      "project": "SAMANA California 2, unit 809",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000394/",
+      "project": "WEST FIVE BUSINESSBAY RESIDENCE 809",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "KNYQJS",
+      "project": "WEST FIVE BUSINESSBAY RESIDENCE 808",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000398/",
+      "project": "Lotus at Creek Beach Building 1 306",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "6J7T1X",
+      "project": "Serene Gardens 2 By Prescott, unit 717",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000405/",
+      "project": "Palm Jebel Ali - Frond L",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000403/",
+      "project": "Sobha Creek Vista Heights - Tower A",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000410/",
+      "project": "Aykon City Tower D",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000411/",
+      "project": "CHIC TOWER",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "January 2026",
+      "project": null,
+      "color": "NONE"
+    },
+    {
+      "id": "00000418/",
+      "project": "Mudon Views 4",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000419/",
+      "project": "Sobha Hartland - The Crest Tower C/C1805",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000420/",
+      "project": "PEAR HOUSE II BY IMTIAZ/ unit 1102",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000421/",
+      "project": "Sobha Hartland - The Crest Tower B (1BR)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000423/",
+      "project": "Emirates Gardens 1 - R2 unit 308",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000424/",
+      "project": "Sidra 3 (4BR VILLA)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000425/",
+      "project": "Sobha Hartland Waves Grande 1107",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000427/",
+      "project": "ELLINGTON HOUSE II, unit 418",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000429/",
+      "project": "Azizi Riviera Beachfront - Tower A",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000430/",
+      "project": "COVE LIVING RESIDENCE BY IMTIAZ",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000431/",
+      "project": "PEARL HOUSE I BY IMTIAZ",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000432/",
+      "project": "SEVEN HOTEL & APARTMENTS THE PALM - A",
+      "color": "FFD5A6BD"
+    },
+    {
+      "id": "00000433/",
+      "project": "The First Collection at Dubai Sports City / 1719",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000434/",
+      "project": "Murjan 6, unit 502",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000436/",
+      "project": "ELANO BY ORO24, unit 123",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000437/",
+      "project": "VITALITY RESIDENCE",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000441/",
+      "project": "Azura Residences",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000442/",
+      "project": "One Beverly",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000443/",
+      "project": "SAMAR 4 / 112B\n",
+      "color": "FFEAD1DC"
+    },
+    {
+      "id": "00000444/",
+      "project": "Trillionaire Residences by Binghatti",
+      "color": "FFEAD1DC"
+    },
+    {
+      "id": "00000445/",
+      "project": "Park Horizon - Tower 1",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000446/",
+      "project": "DAMAC LAGOONS - VENICE (1)",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000447/",
+      "project": "CLOUD B",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000449/",
+      "project": "PEARL HOUSE I BY IMTIAZ, unit 717",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "Feb",
+      "project": null,
+      "color": "FFFFFFFF"
+    },
+    {
+      "id": "00000456/",
+      "project": "Luma22 - East Tower, Unit 426",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "1111122/",
+      "project": "Ghadeer Al Tayr, Community\nAl Jarf, plot 707",
+      "color": "FF00FFFF"
+    },
+    {
+      "id": "00000460/",
+      "project": "GR PANORAMA",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000463/",
+      "project": "Al Quoz 2",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000464/",
+      "project": "Belgravia III B",
+      "color": "FFD5A6BD"
+    },
+    {
+      "id": "00000465/",
+      "project": "HANOVER SQUARE",
+      "color": "FFD5A6BD"
+    },
+    {
+      "id": "00000466/",
+      "project": "Palace Residences - North, unit 1801",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000467/",
+      "project": "Palace Residences - North, unit 1803",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "March",
+      "project": null,
+      "color": "FFFFFFFF"
+    },
+    {
+      "id": "00000468/",
+      "project": "Palace Residences - North, unit 1807",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000469/",
+      "project": "Sobha Creek Vistas Reserve",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000471/",
+      "project": "Marina Vista Tower 2",
+      "color": "FFD5A6BD"
+    },
+    {
+      "id": "00000476/",
+      "project": "BEACH MANSION - TOWER 2, unit 103",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000482/",
+      "project": "Palace Residences",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000483/",
+      "project": "Peninsula One",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000484/",
+      "project": "CLOUD A",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000485/",
+      "project": "10 OXFORD by IMAN",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000487/",
+      "project": "Sobha Creek Vista Heights - Tower A, Unit 201",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000486/",
+      "project": "Jadeel 1",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000488/",
+      "project": "Cove Edition Residence 3 by Imtiaz, unit 316",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000489/",
+      "project": "AL RAMTH 37, unit 105",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000491/",
+      "project": "Edgewater Residences 3 - Building B, B1010",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000494/",
+      "project": "DAMAC BAY - TOWER C, 1108",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000490/",
+      "project": "Grande, unit 3202",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000495/",
+      "project": "LUMA PARK VIEWS, unit 727",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000496/",
+      "project": "Collective Tower 1, 1409",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000497/",
+      "project": "GRANDUER RESIDENCES-MAURYA",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000498/",
+      "project": "GRANDUER RESIDENCES-MUGHAL",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000499/",
+      "project": "Peninsula Three",
+      "color": "FFD5A6BD"
+    },
+    {
+      "id": "00000500/",
+      "project": "Sadaf 4, unit 2102",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000501/",
+      "project": "SEAPOINT Tower 1, 2606",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000502/",
+      "project": "Azizi Riviera 32",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000504/",
+      "project": "Sobha Creek Vistas Reserve",
+      "color": "FFFF0000"
+    },
+    {
+      "id": "00000505/",
+      "project": "Jumeirah Gate Tower 1",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000509/",
+      "project": "Jumeirah Living Business Bay/27-03",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000510/",
+      "project": "Jumeirah Living Business Bay, 27-03",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000512/",
+      "project": "Binghatti Onyx 1br",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "April",
+      "project": null,
+      "color": "FFFFFFFF"
+    },
+    {
+      "id": "00000515/",
+      "project": "Grand Bleu Tower interiors by Elie Saab Tower 1/ M06\n",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000516/",
+      "project": "Beach Residences Dubai Islands - B3",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000519/",
+      "project": "Murjan 6, 502",
+      "color": "FF00FF00"
+    },
+    {
+      "id": "00000520/",
+      "project": "ZADA TOWER, 2605",
+      "color": "FFFFFF00"
+    },
+    {
+      "id": "00000521/",
+      "project": "Seagate building 1, unit 208",
+      "color": "FF00FF00"
+    }
+  ]
+}

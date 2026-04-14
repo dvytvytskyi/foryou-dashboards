@@ -16,13 +16,26 @@ const bq = new BigQuery({
   keyFilename: !bqCredentials ? path.resolve(process.cwd(), 'secrets/crypto-world-epta-2db29829d55d.json') : undefined
 });
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const targetGroup = searchParams.get('group'); // 'Our' or 'Partner'
+
     const jsonPath = path.resolve(process.cwd(), 'pf_listings_report.json');
     const fileContent = await fs.readFile(jsonPath, 'utf8');
     const rawData = JSON.parse(fileContent);
 
-    // Fetch CRM stats from BQ
+    const startDate = searchParams.get('startDate');
+    const endDate = searchParams.get('endDate');
+
+    // Fetch CRM stats from BQ with date filtering
+    const dateFilter = (startDate && endDate) 
+      ? `AND created_at BETWEEN '${startDate}' AND '${endDate}'`
+      : '';
+    const pfMasterDateFilter = (startDate && endDate)
+      ? `AND pf_created_at BETWEEN '${startDate}' AND '${endDate}'`
+      : '';
+
     const crmQuery = `
       WITH matched AS (
         SELECT 
@@ -37,6 +50,7 @@ export async function GET() {
           SUM(potential_value) as potential_revenue_sum,
           COUNT(*) as matched_leads
         FROM \`crypto-world-epta.foryou_analytics.pf_efficacy_master\`
+        WHERE 1=1 ${pfMasterDateFilter}
         GROUP BY 1, 2
       ),
       totals AS (
@@ -50,7 +64,7 @@ export async function GET() {
           SUM(price) as total_potential_revenue,
           COUNT(*) as total_pf_leads
         FROM \`crypto-world-epta.foryou_analytics.amo_channel_leads_raw\`
-        WHERE source_label LIKE '%Property%'
+        WHERE source_label LIKE '%Property%' ${dateFilter}
       )
       SELECT * FROM matched CROSS JOIN totals
     `;
@@ -122,23 +136,39 @@ export async function GET() {
 
     const formattedRows: any[] = [];
 
-    const categoryOrder: Record<string, number> = {
-      'Sell': 1,
-      'Rent': 2,
-      'Commercial Sell': 3,
-      'Commercial Rent': 4
+    const normalizeRef = (ref: string) => {
+      if (!ref) return '';
+      const match = ref.match(/\d+$/);
+      return match ? match[0].replace(/^0+/, '') : ref;
     };
 
-    rawData.forEach((l: any) => {
-      const listingLabel = `${l.Reference} | ${l.Title || 'No Title'}`;
-      const sort_order = categoryOrder[l.Category] || 99;
-      const listingSpam = listingSpamMap[l.Reference] || 0;
-      const listingQualified = listingQualifiedMap[l.Reference] || 0;
-      const listingQLActual = listingQLActualMap[l.Reference] || 0;
-      const listingMeetings = listingMeetingsMap[l.Reference] || 0;
-      const listingDeals = listingDealsMap[l.Reference] || 0;
-      const listingRevenue = listingRevenueMap[l.Reference] || 0;
-      const listingCompRevenue = listingCompRevenueMap[l.Reference] || 0;
+    const crmStats: any = {};
+    bqRows.forEach((r: any) => {
+      if (r.listing_ref) {
+        const type = r.pf_deal_type === 'Sale' ? 'Sell' : r.pf_deal_type;
+        const key = `${normalizeRef(r.listing_ref)}_${type}`;
+        crmStats[key] = r;
+      }
+    });
+
+    const filteredData = targetGroup 
+      ? rawData.filter((l: any) => l.group === targetGroup)
+      : rawData;
+
+    filteredData.forEach((l: any) => {
+      const normRef = normalizeRef(l.Reference);
+      const stats = crmStats[`${normRef}_${l.Category}`] || {};
+      const listingLeads = Number(stats.matched_leads || 0);
+      const listingSpam = Number(stats.spam_count || 0);
+      const listingQualified = Number(stats.qualified_count || 0);
+      const listingQLActual = Number(stats.ql_actual_count || 0);
+      const listingMeetings = Number(stats.meetings_count || 0);
+      const listingDeals = Number(stats.deals_count || 0);
+      const listingRevenue = Number(stats.revenue_sum || 0);
+      const listingCompRevenue = Number(l.CompanyRevenue || 0);
+      
+      const listingLabel = l.Title && l.Title.length > 30 ? `${l.Title.slice(0, 30)}...` : (l.Title || l.Reference);
+      const sort_order = l.Category === 'Sell' ? 1 : l.Category === 'Rent' ? 2 : 3;
 
       const budgetByMonth = l.BudgetByMonth || {};
       const months = Object.keys(budgetByMonth);
@@ -146,14 +176,14 @@ export async function GET() {
       if (months.length > 0) {
         const sortedMonths = [...months].sort((a,b)=>b.localeCompare(a));
         months.forEach(month => {
-          const isLatest = month === sortedMonths[0];
+          const isLatest = month === sortedMonths[0]; // ONLY LATEST MONTH GETS LEADS
           formattedRows.push({
             channel: 'Property Finder',
             level_1: l.Category,
             level_2: listingLabel,
             level_3: month,
             budget: Number(budgetByMonth[month] || 0),
-            leads: isLatest ? Number(l.Leads || 0) : 0,
+            leads: isLatest ? listingLeads : 0,
             no_answer_spam: isLatest ? listingSpam : 0,
             qualified_leads: isLatest ? listingQualified : 0,
             ql_actual: isLatest ? listingQLActual : 0,
@@ -163,7 +193,8 @@ export async function GET() {
             company_revenue: isLatest ? listingCompRevenue : 0,
             date: month,
             cpl: 0,
-            sort_order: sort_order
+            sort_order: sort_order,
+            status: l.status || 'Active'
           });
         });
       } else {
@@ -173,7 +204,7 @@ export async function GET() {
           level_2: listingLabel,
           level_3: null,
           budget: Number(l.Budget || 0),
-          leads: Number(l.Leads || 0),
+          leads: listingLeads,
           no_answer_spam: listingSpam,
           qualified_leads: listingQualified,
           ql_actual: listingQLActual,
@@ -183,35 +214,45 @@ export async function GET() {
           company_revenue: listingCompRevenue,
           date: l.CreatedAt ? l.CreatedAt.slice(0, 10) : '-',
           cpl: 0,
-          sort_order: sort_order
+          sort_order: sort_order,
+          status: l.status || 'Active'
         });
       }
     });
 
-    // Додаємо ліди, які не прив'язані до конкретних лістингів
-    if (unattributedSpam > 0 || unattributedQualified > 0 || unattributedQLActual > 0 || unattributedMeetings > 0 || unattributedDeals > 0 || unattributedRevenue > 0) {
+    /*
+    // Add group-specific unattributed leads
+    const targetBucket = (targetGroup === 'Partner' || targetGroup === 'Our') ? targetGroup : 'Our';
+    const groupUnattributed = unattributedByGroup[targetBucket];
+
+    if (groupUnattributed && groupUnattributed.leads > 0) {
       formattedRows.push({
         channel: 'Property Finder',
-        level_1: 'Sell', 
+        level_1: 'TOTAL',
         level_2: 'Unattributed CRM Leads (No Ref Match)',
         level_3: null,
         budget: 0,
-        leads: unattributedSpam + unattributedQualified, 
-        no_answer_spam: unattributedSpam,
-        qualified_leads: unattributedQualified,
-        ql_actual: unattributedQLActual,
-        meetings: unattributedMeetings,
-        deals: unattributedDeals,
-        revenue: unattributedRevenue,
-        company_revenue: unattributedCompRevenue,
+        leads: groupUnattributed.leads,
+        no_answer_spam: groupUnattributed.spam,
+        qualified_leads: groupUnattributed.qualified,
+        ql_actual: groupUnattributed.ql_actual,
+        meetings: groupUnattributed.meetings,
+        deals: groupUnattributed.deals,
+        revenue: groupUnattributed.revenue,
+        company_revenue: 0,
         date: '-',
         cpl: 0,
-        sort_order: 1
+        sort_order: 99
       });
     }
+    */
 
-    // Sorting by category, then by level_2 title, then by month (level_3) desc
+    // Sorting by status (Active first, Archive last), then by category, then by title
     formattedRows.sort((a, b) => {
+      // Archive goes last
+      if (a.status === 'Archive' && b.status !== 'Archive') return 1;
+      if (a.status !== 'Archive' && b.status === 'Archive') return -1;
+      
       if (a.sort_order !== b.sort_order) return a.sort_order - b.sort_order;
       if (a.level_2 !== b.level_2) return a.level_2.localeCompare(b.level_2);
       if (a.level_3 && b.level_3) return b.level_3.localeCompare(a.level_3);
