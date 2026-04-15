@@ -58,6 +58,8 @@ jobs:
           AMO_REDIRECT_URI=${{ secrets.AMO_REDIRECT_URI }}
           AUTH_SECRET=${{ secrets.AUTH_SECRET }}
           EOF_ENV
+          # Remove YAML indentation spaces from env file keys/values.
+          sed -i 's/^[[:space:]]*//' .env
 
           if docker compose version >/dev/null 2>&1; then
             docker compose build app
