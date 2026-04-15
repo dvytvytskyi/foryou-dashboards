@@ -2,13 +2,25 @@
 
 import React, { useEffect, useState } from 'react';
 import DashboardPage from '@/components/DashboardPage';
-import { SalesScoreboard, ProfitBarChart, BrokerKpiTable } from './OverviewUI';
+import { 
+  SalesScoreboard, 
+  ProfitBarChart, 
+  BrokerKpiTable, 
+  DealTypeStackedBar, 
+  DepartmentBreakdown, 
+  SupportSection, 
+  PartnersTable,
+  DealsModal,
+  SalesDashboardSkeleton
+} from './OverviewUI';
 import styles from './sales.module.css';
 
 export default function SalesOverviewPage() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeMetric, setActiveMetric] = useState<string | null>(null);
   const [dateRange, setDateRange] = useState({ 
     startDate: '2024-01-01', 
     endDate: new Date().toISOString().split('T')[0] 
@@ -47,18 +59,44 @@ export default function SalesOverviewPage() {
       onDateChange={handleDateChange}
     >
       <div className={styles.container}>
-        {loading && !data ? (
-          <div className={styles.loading}>Загрузка данных по продажам...</div>
+        {loading ? (
+          <SalesDashboardSkeleton />
         ) : error ? (
           <div className={styles.error}>Ошибка: {error}</div>
         ) : data ? (
           <>
-            <SalesScoreboard data={data.scoreboard} />
+            <SalesScoreboard 
+              data={data.scoreboard} 
+              onClick={(metric) => {
+                setActiveMetric(metric);
+                setIsModalOpen(true);
+              }} 
+            />
             
-            <div className={styles.topGrid}>
+            {/* Ряд 1: Распределение + Сопровождение */}
+            <div className={styles.visualsGrid}>
+              <DealTypeStackedBar data={data.types} />
+              <SupportSection data={data.support} />
+            </div>
+
+            {/* Ряд 2: Доходность по источникам + Топ брокеров */}
+            <div className={styles.visualsGrid}>
+              <DepartmentBreakdown data={data.departments} />
               <ProfitBarChart brokers={data.brokers} />
+            </div>
+
+            {/* Ряд 3: Партнеры + KPI брокеров */}
+            <div className={styles.topGrid}>
+              <PartnersTable partners={data.partners} />
               <BrokerKpiTable brokers={data.brokers} />
             </div>
+
+            <DealsModal 
+              isOpen={isModalOpen} 
+              onClose={() => setIsModalOpen(false)} 
+              deals={data.deals || []} 
+              highlightMetric={activeMetric}
+            />
           </>
         ) : null}
       </div>

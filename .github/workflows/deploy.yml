@@ -1,0 +1,69 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 135.181.201.185 >> ~/.ssh/known_hosts
+
+      - name: Sync files to server
+        run: |
+          rsync -avz --exclude-from=.rsync-exclude ./ root@135.181.201.185:/root/foryou-dashboards-prod/
+
+      - name: Update Environment and Restart
+        run: |
+          ssh root@135.181.201.185 'bash -se' <<EOF_REMOTE
+          set -euo pipefail
+          cd /root/foryou-dashboards-prod
+          mkdir -p secrets
+
+          cat > secrets/crypto-world-epta-2db29829d55d.json <<'EOF_GOOGLE_AUTH_JSON'
+          ${{ secrets.GOOGLE_AUTH_JSON }}
+          EOF_GOOGLE_AUTH_JSON
+
+          cat > secrets/amo_tokens.json <<'EOF_AMO_TOKENS_JSON'
+          ${{ secrets.AMO_TOKENS_JSON }}
+          EOF_AMO_TOKENS_JSON
+
+          GOOGLE_AUTH_JSON_COMPACT=$(tr -d '\n\r' < secrets/crypto-world-epta-2db29829d55d.json)
+          AMO_TOKENS_JSON_COMPACT=$(tr -d '\n\r' < secrets/amo_tokens.json)
+
+          cat > .env <<EOF_ENV
+          NODE_ENV=production
+          PORT=3000
+          HOSTNAME=0.0.0.0
+          GOOGLE_AUTH_JSON=$GOOGLE_AUTH_JSON_COMPACT
+          GOOGLE_SHEETS_KEY_FILE=$GOOGLE_AUTH_JSON_COMPACT
+          AMO_TOKENS_JSON=$AMO_TOKENS_JSON_COMPACT
+          AMO_CLIENT_ID=${{ secrets.AMO_CLIENT_ID }}
+          AMO_CLIENT_SECRET=${{ secrets.AMO_CLIENT_SECRET }}
+          AMO_DOMAIN=${{ secrets.AMO_DOMAIN }}
+          AMO_REDIRECT_URI=${{ secrets.AMO_REDIRECT_URI }}
+          AUTH_SECRET=${{ secrets.AUTH_SECRET }}
+          EOF_ENV
+
+          if docker compose version >/dev/null 2>&1; then
+            docker compose build app
+            docker compose up -d --force-recreate app
+          else
+            docker-compose build app
+            docker-compose up -d --force-recreate app
+          fi
+          EOF_REMOTE

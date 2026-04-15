@@ -5,7 +5,7 @@ import path from 'path';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-const KNOWN_CHANNELS = ['RED', 'Facebook', 'Klykov', 'Website', 'Own leads', 'Partners leads', 'Old leads', 'OKK', 'ETC', 'TOTAL'];
+const KNOWN_CHANNELS = ['RED', 'Facebook', 'Klykov', 'Website', 'Own leads', 'Partners leads', 'Old leads', 'OKK', 'ETC', 'TOTAL', 'Property Finder'];
 const RED_FIXED_CPL_USD = 58;
 const RED_FIXED_CPL_AED = 238;
 const AED_PER_USD = 3.6725;
@@ -95,7 +95,7 @@ export async function GET(request: NextRequest) {
         roi,
         ${companyRevExpr} as company_revenue,
         sort_order
-      FROM \`crypto-world-epta.foryou_analytics.marketing_v2_leads\`
+      FROM \`crypto-world-epta.foryou_analytics.marketing_channel_drilldown_daily\`
       WHERE report_date BETWEEN @startDate AND @endDate
         AND channel IN UNNEST(@channels)
       ORDER BY sort_order ASC, report_date DESC

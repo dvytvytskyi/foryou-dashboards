@@ -23,9 +23,13 @@ import {
   Building2,
   Tags,
   Globe,
-  Facebook,
   Zap,
+  Facebook,
+  Target,
+  Facebook as FacebookIcon,
   X,
+  Calendar,
+  User,
 } from 'lucide-react';
 import Select from 'react-select';
 import styles from './DashboardPage.module.css';
@@ -87,16 +91,23 @@ type Row = {
   avg_duration?: number;
   leads_crm?: number;
   leads_wa?: number;
-  status?: string;
 };
 
-const CHANNELS = ['RED', 'Facebook', 'Klykov', 'Partners leads', 'OKK', 'Own leads'] as const;
+const CHANNELS = ['RED', 'Facebook', 'Klykov', 'Partners leads', 'OKK', 'Own leads', 'Property Finder'] as const;
 
 type ChannelName = (typeof CHANNELS)[number];
 type SourceFilter = 'all' | Exclude<ChannelName, 'TOTAL'>;
 const SOURCE_CHANNELS = CHANNELS.filter((channel) => channel !== 'TOTAL') as Exclude<ChannelName, 'TOTAL'>[];
 
+const RED_DRILLDOWN_GROUPS: Array<{ id: 'level_1' | 'level_2' | 'level_3'; label: string }> = [
+  { id: 'level_1', label: 'название РК' },
+  { id: 'level_2', label: 'название campaign' },
+  { id: 'level_3', label: 'название креатива' },
+];
 
+const SPECIAL_DRILLDOWN_CHANNELS = new Set<ChannelName>(['Facebook / Target Point'] as any[]);
+const OTHER_FALLBACK_LABEL = 'Без названия сделки';
+const OTHER_FALLBACK_HINT = 'Записи без заполненного названия сделки (level_1)';
 
 const SIDEBAR_SECTIONS = [
   {
@@ -107,6 +118,15 @@ const SIDEBAR_SECTIONS = [
       { label: 'Facebook_Target point', icon: Facebook, href: '/facebook' },
       { label: 'Website', icon: Globe, href: '/website' },
       { label: 'Property Finder', icon: FileText, href: '/property-finder' },
+    ],
+  },
+  {
+    title: 'Отдел продаж',
+    items: [
+      { label: 'Обзор', icon: BarChart3, href: '/sales' },
+      { label: 'Направления', icon: Compass, href: '/sales/directions' },
+      { label: 'План/Факт', icon: Target, href: '/sales/plan-fact' },
+      { label: 'Брокеры', icon: User, href: '/sales/brokers' },
     ],
   },
   {
@@ -227,7 +247,6 @@ const EMPTY_ROW = (channel: string, sort_order: number): Row => ({
   avg_duration: 0,
   leads_crm: 0,
   leads_wa: 0,
-  status: '',
 });
 
 function addMetrics(target: Row, cur: Row) {
@@ -246,7 +265,6 @@ function addMetrics(target: Row, cur: Row) {
   target.sessions = (target.sessions || 0) + (Number(cur.sessions) || 0);
   target.leads_crm = (target.leads_crm || 0) + (Number(cur.leads_crm) || 0);
   target.leads_wa = (target.leads_wa || 0) + (Number(cur.leads_wa) || 0);
-  if (cur.status) target.status = cur.status;
   
   // Weights for averages (simplified)
   if (cur.sessions) {
@@ -287,12 +305,32 @@ function aggregateRows(items: Row[], channel: string, sortOrder: number): Row {
   return total;
 }
 
-function levelLabel(value: string | null, fallback = 'Other') {
+function levelLabel(value: string | null, fallback = OTHER_FALLBACK_LABEL) {
   const normalized = (value || '').trim();
   return normalized || fallback;
 }
 
+function pickRedRowsByLevel(groupId: 'level_1' | 'level_2' | 'level_3', rows: Row[]) {
+  const hasL1 = (r: Row) => !!r.level_1?.trim();
+  const hasL2 = (r: Row) => !!r.level_2?.trim();
+  const hasL3 = (r: Row) => !!r.level_3?.trim();
 
+  if (groupId === 'level_1') {
+    const preferred = rows.filter((r) => hasL1(r) && !hasL2(r) && !hasL3(r));
+    if (preferred.length > 0) return preferred;
+    return rows.filter((r) => hasL1(r));
+  }
+
+  if (groupId === 'level_2') {
+    const preferred = rows.filter((r) => hasL2(r) && !hasL3(r));
+    if (preferred.length > 0) return preferred;
+    return rows.filter((r) => hasL2(r));
+  }
+
+  const preferred = rows.filter((r) => hasL3(r));
+  if (preferred.length > 0) return preferred;
+  return rows;
+}
 
 function money(value: number, currency: Currency) {
   const symbol = currency === 'usd' ? '$' : 'AED';
@@ -377,6 +415,8 @@ export default function DashboardPage({
   hideTotal = false,
   hideTable = false,
   hideFilters = false,
+  hideCurrency = false,
+  customFilterContent = null,
   customColumns,
   onDateChange,
 }: { 
@@ -399,6 +439,8 @@ export default function DashboardPage({
   hideTotal?: boolean,
   hideTable?: boolean,
   hideFilters?: boolean,
+  hideCurrency?: boolean,
+  customFilterContent?: React.ReactNode,
   customColumns?: Array<{ key: string; label: string }>;
   onDateChange?: (start: string, end: string) => void;
 }) {
@@ -455,25 +497,35 @@ export default function DashboardPage({
   const [stickyHeaderWidth, setStickyHeaderWidth] = useState(0);
   const [tablePixelWidth, setTablePixelWidth] = useState(0);
   const [user, setUser] = useState<{ role: string; partnerId?: string } | null>(null);
+  const [authChecked, setAuthChecked] = useState(isNested);
 
   useEffect(() => {
     if (isNested) return;
+    setAuthChecked(false);
     fetch('/api/auth/session')
       .then(res => res.json())
       .then(data => {
-        if (data.success) {
-            setUser(data.user);
-            // Route protection: if partner tries to access root marketing or other pages
-            if (data.user.role === 'partner') {
-                const pId = data.user.partnerId || 'klykov';
-                const path = window.location.pathname;
-                if (!path.includes(`/partners/${pId}`)) {
-                    window.location.href = `/partners/${pId}`;
-                }
+        if (!data.success) {
+            window.location.replace('/login');
+            return;
+        }
+
+        setUser(data.user);
+        setAuthChecked(true);
+
+        // Route protection: if partner tries to access root marketing or other pages
+        if (data.user.role === 'partner') {
+            const pId = data.user.partnerId || 'klykov';
+            const path = window.location.pathname;
+            if (!path.includes(`/partners/${pId}`)) {
+                window.location.href = `/partners/${pId}`;
             }
         }
       })
-      .catch(err => console.error('Session fetch failed', err));
+      .catch(err => {
+        console.error('Session fetch failed', err);
+        window.location.replace('/login');
+      });
   }, [isNested]);
 
   const filteredSidebarSections = useMemo(() => {
@@ -565,13 +617,16 @@ export default function DashboardPage({
   const selectPortalTarget = typeof window !== 'undefined' ? document.body : null;
 
   useEffect(() => {
+    if (!isNested && !authChecked) return;
+    if (!isNested && !user) return;
+
     if (initialRows) {
       setRows(initialRows);
       setLoading(false);
     } else {
       load();
     }
-  }, [sourceFilter, startDate, endDate, currency, initialRows, apiUrl]);
+  }, [sourceFilter, startDate, endDate, currency, initialRows, apiUrl, isNested, authChecked, user]);
 
   useEffect(() => {
     if (isNested) return;
@@ -731,8 +786,14 @@ export default function DashboardPage({
         channels: activeChannels.join(','),
       });
 
-      const connector = apiUrl.includes('?') ? '&' : '?';
-      const res = await fetch(`${apiUrl}${connector}${qs.toString()}`, { cache: 'no-store' });
+      const separator = apiUrl.includes('?') ? '&' : '?';
+      const res = await fetch(`${apiUrl}${separator}${qs.toString()}`, { cache: 'no-store' });
+
+      if (res.status === 401) {
+        window.location.replace('/login');
+        return;
+      }
+
       const json = await res.json();
       if (!json.success) throw new Error(json.error || 'Request failed');
 
@@ -755,6 +816,7 @@ export default function DashboardPage({
     const nextEndDate = draftEndDate;
     setStartDate(nextStartDate);
     setEndDate(nextEndDate);
+    onDateChange?.(nextStartDate, nextEndDate);
     setOpenDateDropdown(null);
     await load({ startDate: nextStartDate, endDate: nextEndDate });
   }
@@ -842,7 +904,7 @@ export default function DashboardPage({
       if (!expanded[channel]) return;
       if (!hasAnyLevelData) return;
 
-
+      // Standard hierarchical drilldown for all channels
 
       const level1Map = new Map<string, Row[]>();
       grouped.forEach((r) => {
@@ -1023,249 +1085,253 @@ export default function DashboardPage({
 
           <div className={styles.shell}>
         {!isNested && (
-          <div className={styles.topRail}>
-            <div className={styles.headerSearch}>
-              <label className={styles.searchField}>
-                <Search size={14} />
-                <input
-                  type="search"
-                  value={searchQuery}
-                  onChange={(event) => setSearchQuery(event.target.value)}
-                  className={styles.searchInput}
-                  placeholder="Search campaigns, channels, creatives..."
-                  aria-label="Search dashboard rows"
-                />
-              </label>
-            </div>
-            <div className={styles.headerSwitchWrap}>
-              <span className={styles.themeSwitchLabel}>{themeMode === 'night' ? 'Night' : 'Light'}</span>
-              <button
-                type="button"
-                className={`${styles.themeSwitch} ${themeMode === 'light' ? styles.themeSwitchLight : ''}`}
-                onClick={() => setThemeMode((prev) => (prev === 'night' ? 'light' : 'night'))}
-                aria-label={themeMode === 'night' ? 'Switch to light theme' : 'Switch to dark theme'}
-                title={themeMode === 'night' ? 'Switch to light theme' : 'Switch to dark theme'}
-              >
-                <span className={styles.themeSwitchTrack}>
-                  <span className={styles.themeSwitchIcon}>
-                    {themeMode === 'night' ? <Moon size={13} /> : <Sun size={13} />}
+          <div className={styles.stickyHeaderContent}>
+            <div className={styles.topRail}>
+              <div className={styles.headerSearch}>
+                <label className={styles.searchField}>
+                  <Search size={14} />
+                  <input
+                    type="search"
+                    value={searchQuery}
+                    onChange={(event) => setSearchQuery(event.target.value)}
+                    className={styles.searchInput}
+                    placeholder="Search campaigns, channels, creatives..."
+                    aria-label="Search dashboard rows"
+                  />
+                </label>
+              </div>
+              <div className={styles.headerSwitchWrap}>
+                <span className={styles.themeSwitchLabel}>{themeMode === 'night' ? 'Night' : 'Light'}</span>
+                <button
+                  type="button"
+                  className={`${styles.themeSwitch} ${themeMode === 'light' ? styles.themeSwitchLight : ''}`}
+                  onClick={() => setThemeMode((prev) => (prev === 'night' ? 'light' : 'night'))}
+                  aria-label={themeMode === 'night' ? 'Switch to light theme' : 'Switch to dark theme'}
+                  title={themeMode === 'night' ? 'Switch to light theme' : 'Switch to dark theme'}
+                >
+                  <span className={styles.themeSwitchTrack}>
+                    <span className={styles.themeSwitchIcon}>
+                      {themeMode === 'night' ? <Moon size={13} /> : <Sun size={13} />}
+                    </span>
                   </span>
-                </span>
-              </button>
-            </div>
-          </div>
-        )}
-
-        {!isNested && extraContent}
-
-        {!isNested && !hideFilters && (
-          <section className={styles.filterBar}>
-            <div className={styles.filtersLeft}>
-              {!hideSourceFilter && (
-                <div className={styles.channels}>
-                  <button
-                    className={`${styles.channelChip} ${sourceFilter === 'all' ? styles.channelChipActive : ''}`}
-                    onClick={() => setSourceFilter('all')}
-                  >
-                    Все источники
-                  </button>
-                  {SOURCE_CHANNELS.map((ch) => (
-                    <button
-                      key={ch}
-                      className={`${styles.channelChip} ${sourceFilter === ch ? styles.channelChipActive : ''}`}
-                      onClick={() => setSourceFilter(ch)}
-                    >
-                      {ch}
-                    </button>
-                  ))}
-                </div>
-              )}
-
-              <div className={styles.controlsRow}>
-                <div className={styles.dateGroups} ref={dateDropdownsRef}>
-                  <div className={styles.dateDropdown}>
-                    <div className={styles.dateDropdownHeader}>
-                      <button
-                        type="button"
-                        className={styles.dateDropdownTrigger}
-                        onClick={() => toggleDateDropdown('from')}
-                      >
-                        <span className={styles.dateDropdownLabel}>From</span>
-                        <span className={styles.dateDropdownValue}>{`${draftStartParts.day}.${draftStartParts.month}.${draftStartParts.year}`}</span>
-                        <span className={styles.dateDropdownArrow}>{openDateDropdown === 'from' ? '▴' : '▾'}</span>
-                      </button>
-                    </div>
-                    {openDateDropdown === 'from' ? (
-                      <div className={styles.dateDropdownMenu}>
-                        <div className={styles.dateSelects}>
-                          <Select
-                            instanceId="start-day"
-                            inputId="start-day"
-                            isSearchable={false}
-                            menuPortalTarget={selectPortalTarget}
-                            menuPosition="fixed"
-                            options={DAY_OPTIONS}
-                            styles={selectStyles}
-                            value={DAY_OPTIONS.find((d) => d.value === draftStartParts.day)}
-                            onChange={(option) => {
-                              if (!option) return;
-                              setDraftStartDate(mergeDate({ ...draftStartParts, day: option.value }));
-                            }}
-                          />
-                          <Select
-                            instanceId="start-month"
-                            inputId="start-month"
-                            isSearchable={false}
-                            menuPortalTarget={selectPortalTarget}
-                            menuPosition="fixed"
-                            options={MONTH_OPTIONS}
-                            styles={selectStyles}
-                            value={MONTH_OPTIONS.find((m) => m.value === draftStartParts.month)}
-                            onChange={(option) => {
-                              if (!option) return;
-                              setDraftStartDate(mergeDate({ ...draftStartParts, month: option.value }));
-                            }}
-                          />
-                          <Select
-                            instanceId="start-year"
-                            inputId="start-year"
-                            isSearchable={false}
-                            menuPortalTarget={selectPortalTarget}
-                            menuPosition="fixed"
-                            options={YEAR_OPTIONS}
-                            styles={selectStyles}
-                            value={YEAR_OPTIONS.find((y) => y.value === draftStartParts.year)}
-                            onChange={(option) => {
-                              if (!option) return;
-                              setDraftStartDate(mergeDate({ ...draftStartParts, year: option.value }));
-                            }}
-                          />
-                        </div>
-                        <div className={styles.dateSelectHints}>
-                          <span className={styles.dateSelectHint}>day</span>
-                          <span className={styles.dateSelectHint}>month</span>
-                          <span className={styles.dateSelectHint}>year</span>
-                        </div>
-                      </div>
-                    ) : null}
-                  </div>
-
-                  <div className={styles.dateDropdown}>
-                    <div className={styles.dateDropdownHeader}>
-                      <button
-                        type="button"
-                        className={styles.dateDropdownTrigger}
-                        onClick={() => toggleDateDropdown('to')}
-                      >
-                        <span className={styles.dateDropdownLabel}>To</span>
-                        <span className={styles.dateDropdownValue}>{`${draftEndParts.day}.${draftEndParts.month}.${draftEndParts.year}`}</span>
-                        <span className={styles.dateDropdownArrow}>{openDateDropdown === 'to' ? '▴' : '▾'}</span>
-                      </button>
-                      {isDateRangeDirty ? (
-                        <button
-                          type="button"
-                          className={styles.dateApplyBtn}
-                          aria-label="Apply date range"
-                          onClick={() => void applyDateRangeDraft()}
-                        >
-                          <Check size={14} />
-                        </button>
-                      ) : null}
-                      {(startDate !== '2024-01-01' || endDate !== today) && (
-                        <button
-                          type="button"
-                          className={styles.dateApplyBtn}
-                          style={{ background: '#f1f5f9', color: '#64748b', borderColor: '#e2e8f0', boxShadow: 'none' }}
-                          onClick={() => {
-                            setStartDate('2024-01-01');
-                            setEndDate(today);
-                            setDraftStartDate('2024-01-01');
-                            setDraftEndDate(today);
-                          }}
-                          title="Сбросить фильтр"
-                        >
-                          <X size={14} />
-                        </button>
-                      )}
-                    </div>
-                    {openDateDropdown === 'to' ? (
-                      <div className={styles.dateDropdownMenu}>
-                        <div className={styles.dateSelects}>
-                          <Select
-                            instanceId="end-day"
-                            inputId="end-day"
-                            isSearchable={false}
-                            menuPortalTarget={selectPortalTarget}
-                            menuPosition="fixed"
-                            options={DAY_OPTIONS}
-                            styles={selectStyles}
-                            value={DAY_OPTIONS.find((d) => d.value === draftEndParts.day)}
-                            onChange={(option) => {
-                              if (!option) return;
-                              setDraftEndDate(mergeDate({ ...draftEndParts, day: option.value }));
-                            }}
-                          />
-                          <Select
-                            instanceId="end-month"
-                            inputId="end-month"
-                            isSearchable={false}
-                            menuPortalTarget={selectPortalTarget}
-                            menuPosition="fixed"
-                            options={MONTH_OPTIONS}
-                            styles={selectStyles}
-                            value={MONTH_OPTIONS.find((m) => m.value === draftEndParts.month)}
-                            onChange={(option) => {
-                              if (!option) return;
-                              setDraftEndDate(mergeDate({ ...draftEndParts, month: option.value }));
-                            }}
-                          />
-                          <Select
-                            instanceId="end-year"
-                            inputId="end-year"
-                            isSearchable={false}
-                            menuPortalTarget={selectPortalTarget}
-                            menuPosition="fixed"
-                            options={YEAR_OPTIONS}
-                            styles={selectStyles}
-                            value={YEAR_OPTIONS.find((y) => y.value === draftEndParts.year)}
-                            onChange={(option) => {
-                              if (!option) return;
-                              setDraftEndDate(mergeDate({ ...draftEndParts, year: option.value }));
-                            }}
-                          />
-                        </div>
-                        <div className={styles.dateSelectHints}>
-                          <span className={styles.dateSelectHint}>day</span>
-                          <span className={styles.dateSelectHint}>month</span>
-                          <span className={styles.dateSelectHint}>year</span>
-                        </div>
-                      </div>
-                    ) : null}
-                  </div>
-                </div>
-
-                <div className={styles.currencyBlock}>
-                  <div className={styles.currencySwitch}>
-                    <button
-                      className={`${styles.currencyBtn} ${currency === 'aed' ? styles.currencyActive : ''}`}
-                      onClick={() => setCurrency('aed')}
-                    >
-                      AED
-                    </button>
-                    <button
-                      className={`${styles.currencyBtn} ${currency === 'usd' ? styles.currencyActive : ''}`}
-                      onClick={() => setCurrency('usd')}
-                    >
-                      USD
-                    </button>
-                  </div>
-                </div>
+                </button>
               </div>
             </div>
 
-            {error ? <div className={styles.error}>{error}</div> : null}
-          </section>
+            {!hideFilters && (
+              <section className={styles.filterBar}>
+                <div className={styles.filtersLeft}>
+                  {!hideSourceFilter && (
+                    <div className={styles.channels}>
+                      <button
+                        className={`${styles.channelChip} ${sourceFilter === 'all' ? styles.channelChipActive : ''}`}
+                        onClick={() => setSourceFilter('all')}
+                      >
+                        Все источники
+                      </button>
+                      {SOURCE_CHANNELS.map((ch) => (
+                        <button
+                          key={ch}
+                          className={`${styles.channelChip} ${sourceFilter === ch ? styles.channelChipActive : ''}`}
+                          onClick={() => setSourceFilter(ch)}
+                        >
+                          {ch}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className={styles.controlsRow} style={{ marginLeft: hideSourceFilter ? 'auto' : '0' }}>
+                    {customFilterContent}
+                    <div className={styles.dateGroups} ref={dateDropdownsRef}>
+                      <div className={styles.dateDropdown}>
+                        <div className={styles.dateDropdownHeader}>
+                          <button
+                            type="button"
+                            className={styles.dateDropdownTrigger}
+                            onClick={() => toggleDateDropdown('from')}
+                          >
+                            <span className={styles.dateDropdownLabel}>From</span>
+                            <span className={styles.dateDropdownValue}>{`${draftStartParts.day}.${draftStartParts.month}.${draftStartParts.year}`}</span>
+                            <span className={styles.dateDropdownArrow}>{openDateDropdown === 'from' ? '▴' : '▾'}</span>
+                          </button>
+                        </div>
+                        {openDateDropdown === 'from' ? (
+                          <div className={styles.dateDropdownMenu}>
+                            <div className={styles.dateSelects}>
+                              <Select
+                                instanceId="start-day"
+                                inputId="start-day"
+                                isSearchable={false}
+                                menuPortalTarget={selectPortalTarget}
+                                menuPosition="fixed"
+                                options={DAY_OPTIONS}
+                                styles={selectStyles}
+                                value={DAY_OPTIONS.find((d) => d.value === draftStartParts.day)}
+                                onChange={(option) => {
+                                  if (!option) return;
+                                  setDraftStartDate(mergeDate({ ...draftStartParts, day: option.value }));
+                                }}
+                              />
+                              <Select
+                                instanceId="start-month"
+                                inputId="start-month"
+                                isSearchable={false}
+                                menuPortalTarget={selectPortalTarget}
+                                menuPosition="fixed"
+                                options={MONTH_OPTIONS}
+                                styles={selectStyles}
+                                value={MONTH_OPTIONS.find((m) => m.value === draftStartParts.month)}
+                                onChange={(option) => {
+                                  if (!option) return;
+                                  setDraftStartDate(mergeDate({ ...draftStartParts, month: option.value }));
+                                }}
+                              />
+                              <Select
+                                instanceId="start-year"
+                                inputId="start-year"
+                                isSearchable={false}
+                                menuPortalTarget={selectPortalTarget}
+                                menuPosition="fixed"
+                                options={YEAR_OPTIONS}
+                                styles={selectStyles}
+                                value={YEAR_OPTIONS.find((y) => y.value === draftStartParts.year)}
+                                onChange={(option) => {
+                                  if (!option) return;
+                                  setDraftStartDate(mergeDate({ ...draftStartParts, year: option.value }));
+                                }}
+                              />
+                            </div>
+                            <div className={styles.dateSelectHints}>
+                              <span className={styles.dateSelectHint}>day</span>
+                              <span className={styles.dateSelectHint}>month</span>
+                              <span className={styles.dateSelectHint}>year</span>
+                            </div>
+                          </div>
+                        ) : null}
+                      </div>
+
+                      <div className={styles.dateDropdown}>
+                        <div className={styles.dateDropdownHeader}>
+                          <button
+                            type="button"
+                            className={styles.dateDropdownTrigger}
+                            onClick={() => toggleDateDropdown('to')}
+                          >
+                            <span className={styles.dateDropdownLabel}>To</span>
+                            <span className={styles.dateDropdownValue}>{`${draftEndParts.day}.${draftEndParts.month}.${draftEndParts.year}`}</span>
+                            <span className={styles.dateDropdownArrow}>{openDateDropdown === 'to' ? '▴' : '▾'}</span>
+                          </button>
+                          {isDateRangeDirty ? (
+                            <button
+                              type="button"
+                              className={styles.dateApplyBtn}
+                              onClick={() => void applyDateRangeDraft()}
+                            >
+                              <Check size={14} />
+                            </button>
+                          ) : null}
+                          {(startDate !== '2024-01-01' || endDate !== today) && (
+                            <button
+                              type="button"
+                              className={styles.dateApplyBtn}
+                              style={{ background: '#f1f5f9', color: '#64748b', borderColor: '#e2e8f0', boxShadow: 'none' }}
+                              onClick={() => {
+                                setStartDate('2024-01-01');
+                                setEndDate(today);
+                                setDraftStartDate('2024-01-01');
+                                setDraftEndDate(today);
+                                onDateChange?.('2024-01-01', today);
+                              }}
+                              title="Сбросить фильтр"
+                            >
+                              <X size={14} />
+                            </button>
+                          )}
+                        </div>
+                        {openDateDropdown === 'to' ? (
+                          <div className={styles.dateDropdownMenu}>
+                            <div className={styles.dateSelects}>
+                              <Select
+                                instanceId="end-day"
+                                inputId="end-day"
+                                isSearchable={false}
+                                menuPortalTarget={selectPortalTarget}
+                                menuPosition="fixed"
+                                options={DAY_OPTIONS}
+                                styles={selectStyles}
+                                value={DAY_OPTIONS.find((d) => d.value === draftEndParts.day)}
+                                onChange={(option) => {
+                                  if (!option) return;
+                                  setDraftEndDate(mergeDate({ ...draftEndParts, day: option.value }));
+                                }}
+                              />
+                              <Select
+                                instanceId="end-month"
+                                inputId="end-month"
+                                isSearchable={false}
+                                menuPortalTarget={selectPortalTarget}
+                                menuPosition="fixed"
+                                options={MONTH_OPTIONS}
+                                styles={selectStyles}
+                                value={MONTH_OPTIONS.find((m) => m.value === draftEndParts.month)}
+                                onChange={(option) => {
+                                  if (!option) return;
+                                  setDraftEndDate(mergeDate({ ...draftEndParts, month: option.value }));
+                                }}
+                              />
+                              <Select
+                                instanceId="end-year"
+                                inputId="end-year"
+                                isSearchable={false}
+                                menuPortalTarget={selectPortalTarget}
+                                menuPosition="fixed"
+                                options={YEAR_OPTIONS}
+                                styles={selectStyles}
+                                value={YEAR_OPTIONS.find((y) => y.value === draftEndParts.year)}
+                                onChange={(option) => {
+                                  if (!option) return;
+                                  setDraftEndDate(mergeDate({ ...draftEndParts, year: option.value }));
+                                }}
+                              />
+                            </div>
+                            <div className={styles.dateSelectHints}>
+                              <span className={styles.dateSelectHint}>day</span>
+                              <span className={styles.dateSelectHint}>month</span>
+                              <span className={styles.dateSelectHint}>year</span>
+                            </div>
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
+
+                    {!hideCurrency && (
+                      <div className={styles.currencyBlock}>
+                        <div className={styles.currencySwitch}>
+                          <button
+                            className={`${styles.currencyBtn} ${currency === 'aed' ? styles.currencyActive : ''}`}
+                            onClick={() => setCurrency('aed')}
+                          >
+                            AED
+                          </button>
+                          <button
+                            className={`${styles.currencyBtn} ${currency === 'usd' ? styles.currencyActive : ''}`}
+                            onClick={() => setCurrency('usd')}
+                          >
+                            USD
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </section>
+            )}
+          </div>
         )}
+
+        {error ? <div className={styles.error}>{error}</div> : null}
+        {!isNested && extraContent}
 
         {!hideTable && (
           <>
@@ -1414,9 +1480,9 @@ export default function DashboardPage({
                           ) : (
                             <span className={styles.arrow} />
                           )}
-                          <div 
+                          <div
                             className={styles.channelLabel}
-                            style={(row.status === 'Archive' && type === 'detail' && detailDepth === 2) ? { color: '#ef4444', opacity: 0.8 } : {}}
+                            title={!showTableSkeletons && type === 'detail' && label === OTHER_FALLBACK_LABEL ? OTHER_FALLBACK_HINT : undefined}
                           >
                             {showTableSkeletons ? <span className={styles.skeletonText} /> : type === 'channel' ? row.channel : label}
                           </div>
@@ -1454,6 +1520,8 @@ export default function DashboardPage({
   );
 
   if (isNested) return dashboardContent;
+
+  if (!authChecked) return null;
 
   return (
     <div className={styles.page} data-theme={themeMode}>

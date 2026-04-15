@@ -1,0 +1,170 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 8px;
+  color: var(--white-soft);
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.kpiCard {
+  background: var(--surface-input);
+  border: 1px solid var(--white-faint);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.kpiTitle {
+  font-size: 0.85rem;
+  color: var(--white-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.kpiMainValue {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.actualValue {
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.planValue {
+  font-size: 1rem;
+  color: var(--white-muted);
+}
+
+.progressContainer {
+  height: 6px;
+  background: var(--white-faint);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.progressBar {
+  height: 100%;
+  background: var(--white-soft);
+  transition: width 0.3s ease;
+}
+
+.percentLabel {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.section {
+  background: var(--surface-input);
+  border: 1px solid var(--white-faint);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.sectionHeader {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--white-faint);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.table th {
+  background: var(--surface-card);
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 500;
+  color: var(--white-muted);
+  border-bottom: 1px solid var(--white-faint);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--white-faint);
+  color: var(--white-soft);
+}
+
+.table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.brokerName {
+  font-weight: 500;
+  color: var(--white-soft);
+}
+
+.positive {
+  color: #10b981;
+}
+
+.negative {
+  color: #ef4444;
+}
+
+.neutral {
+  color: var(--white-muted);
+}
+
+.groupHeader {
+  background: var(--white-faint) !important;
+  text-align: center !important;
+  font-weight: 600 !important;
+  color: var(--white-soft) !important;
+}
+
+.drillDownLink {
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 4px;
+}
+
+.drillDownLink:hover {
+  color: #fff;
+}
+
+.tag {
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--white-faint);
+  font-size: 0.75rem;
+  color: var(--white-muted);
+}
+
+/* Custom Column Widths */
+.colName { min-width: 200px; position: sticky; left: 0; background: var(--surface-input); z-index: 5; }
+.colStat { min-width: 100px; text-align: right; }
+.colPercent { min-width: 80px; text-align: right; }

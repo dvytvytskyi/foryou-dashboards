@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import DashboardPage from '@/components/DashboardPage';
 
 const PF_COLUMNS = [
@@ -44,6 +44,21 @@ const PROJECT_COLUMNS = [
 ];
 
 export default function PropertyFinderPage() {
+  const [dateRange, setDateRange] = useState(() => {
+    const today = new Date().toISOString().slice(0, 10);
+    return { startDate: '2024-01-01', endDate: today };
+  });
+
+  const nestedPartnerApiUrl = useMemo(
+    () => `/api/pf-listings?group=Partner&startDate=${encodeURIComponent(dateRange.startDate)}&endDate=${encodeURIComponent(dateRange.endDate)}`,
+    [dateRange.startDate, dateRange.endDate],
+  );
+
+  const nestedProjectsApiUrl = useMemo(
+    () => `/api/pf-projects?startDate=${encodeURIComponent(dateRange.startDate)}&endDate=${encodeURIComponent(dateRange.endDate)}`,
+    [dateRange.startDate, dateRange.endDate],
+  );
+
   return (
     <DashboardPage 
       title="Property Finder Listings Performance - Our"
@@ -57,6 +72,7 @@ export default function PropertyFinderPage() {
       initialExpanded={['Property Finder']}
       tableMinWidth="0px"
       defaultChannelWidth={400}
+      onDateChange={(start, end) => setDateRange({ startDate: start, endDate: end })}
     >
       <div style={{ marginTop: '60px' }}>
         <DashboardPage 
@@ -66,7 +82,7 @@ export default function PropertyFinderPage() {
           hideTotal={true}
           firstColumnLabel="Listings"
           customColumns={PF_COLUMNS}
-          apiUrl="/api/pf-listings?group=Partner"
+          apiUrl={nestedPartnerApiUrl}
           maxDrilldownLevel={3}
           initialExpanded={['Property Finder']}
           tableMinWidth="0px"
@@ -82,7 +98,7 @@ export default function PropertyFinderPage() {
           hideTotal={false}
           firstColumnLabel="Primary Plus leads"
           customColumns={PROJECT_COLUMNS}
-          apiUrl="/api/pf-projects"
+          apiUrl={nestedProjectsApiUrl}
           maxDrilldownLevel={3}
           initialExpanded={['Primary Plus leads']}
           tableMinWidth="0px"

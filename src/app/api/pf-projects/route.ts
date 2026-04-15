@@ -16,13 +16,35 @@ const bq = new BigQuery({
   keyFilename: !bqCredentials ? path.resolve(process.cwd(), 'secrets/crypto-world-epta-2db29829d55d.json') : undefined
 });
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const startDate = searchParams.get('startDate');
+    const endDate = searchParams.get('endDate');
+
+    const monthInRange = (monthKey: string) => {
+      if (!startDate || !endDate) return true;
+      if (!monthKey || monthKey.length < 7) return true;
+      const monthStart = `${monthKey.slice(0, 7)}-01`;
+      return monthStart >= startDate && monthStart <= endDate;
+    };
+
+    const dateInRange = (dateString?: string | null) => {
+      if (!startDate || !endDate) return true;
+      if (!dateString) return true;
+      const normalized = dateString.slice(0, 10);
+      return normalized >= startDate && normalized <= endDate;
+    };
+
     const jsonPath = path.resolve(process.cwd(), 'pf_projects_report.json');
     const fileContent = await fs.readFile(jsonPath, 'utf8');
     const projects = JSON.parse(fileContent);
 
     // Fetch CRM stats from BQ (similar to listings)
+    const dateFilter = (startDate && endDate)
+      ? `AND pf_created_at BETWEEN '${startDate}' AND '${endDate}'`
+      : '';
+
     const crmQuery = `
       SELECT 
         listing_ref, 
@@ -34,6 +56,7 @@ export async function GET() {
         SUM(IF(crm_status_id = 142, potential_value, 0)) as revenue_sum
       FROM \`crypto-world-epta.foryou_analytics.pf_efficacy_master\`
       WHERE pf_deal_type = 'project' OR listing_ref NOT LIKE '0%'
+      ${dateFilter}
       GROUP BY 1
     `;
     const [bqRows] = await bq.query(crmQuery);
@@ -72,8 +95,13 @@ export async function GET() {
       const projectRevenue = projectRevenueMap[p.Reference] || 0;
 
       if (months.length > 0) {
-        const sortedMonths = [...months].sort((a,b)=>b.localeCompare(a));
-        months.forEach(month => {
+        const filteredMonths = months.filter((m) => monthInRange(m));
+        if (filteredMonths.length === 0) {
+          return;
+        }
+
+        const sortedMonths = [...filteredMonths].sort((a,b)=>b.localeCompare(a));
+        filteredMonths.forEach(month => {
           const isLatest = month === sortedMonths[0];
           formattedRows.push({
             channel: 'Primary Plus leads',
@@ -94,6 +122,9 @@ export async function GET() {
           });
         });
       } else {
+        if (!dateInRange(p.CreatedAt || null)) {
+          return;
+        }
         formattedRows.push({
           channel: 'Primary Plus leads',
           level_1: p.District || 'Other',

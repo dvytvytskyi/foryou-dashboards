@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "sync:plan-fact:bq": "node scripts/sync/sync_plan_fact_bq.mjs",
+    "sync:brokers:bq": "node scripts/sync/sync_brokers_bq.mjs"
   },
   "dependencies": {
     "@google-cloud/bigquery": "^8.1.1",

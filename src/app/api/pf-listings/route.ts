@@ -28,6 +28,20 @@ export async function GET(request: Request) {
     const startDate = searchParams.get('startDate');
     const endDate = searchParams.get('endDate');
 
+    const monthInRange = (monthKey: string) => {
+      if (!startDate || !endDate) return true;
+      if (!monthKey || monthKey.length < 7) return true;
+      const monthStart = `${monthKey.slice(0, 7)}-01`;
+      return monthStart >= startDate && monthStart <= endDate;
+    };
+
+    const dateInRange = (dateString?: string | null) => {
+      if (!startDate || !endDate) return true;
+      if (!dateString) return true;
+      const normalized = dateString.slice(0, 10);
+      return normalized >= startDate && normalized <= endDate;
+    };
+
     // Fetch CRM stats from BQ with date filtering
     const dateFilter = (startDate && endDate) 
       ? `AND created_at BETWEEN '${startDate}' AND '${endDate}'`
@@ -174,8 +188,13 @@ export async function GET(request: Request) {
       const months = Object.keys(budgetByMonth);
 
       if (months.length > 0) {
-        const sortedMonths = [...months].sort((a,b)=>b.localeCompare(a));
-        months.forEach(month => {
+        const filteredMonths = months.filter((m) => monthInRange(m));
+        if (filteredMonths.length === 0) {
+          return;
+        }
+
+        const sortedMonths = [...filteredMonths].sort((a,b)=>b.localeCompare(a));
+        filteredMonths.forEach(month => {
           const isLatest = month === sortedMonths[0]; // ONLY LATEST MONTH GETS LEADS
           formattedRows.push({
             channel: 'Property Finder',
@@ -198,6 +217,9 @@ export async function GET(request: Request) {
           });
         });
       } else {
+        if (!dateInRange(l.CreatedAt || null)) {
+          return;
+        }
         formattedRows.push({
           channel: 'Property Finder',
           level_1: l.Category,

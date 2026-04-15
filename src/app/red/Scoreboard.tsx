@@ -1,40 +1,39 @@
 import React from 'react';
 import styles from './Scoreboard.module.css';
-import { Info, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { Info } from 'lucide-react';
 
 export type ScoreboardData = {
-  leads: string | number;
-  ql: string | number;
-  cpql: string | number;
-  spend: string | number;
-  revenue: string | number;
+  ql: number;
+  cpql: number;
+  spend: number;
+  revenue: number;
+  qlDeltaUnits: number;
+  cpqlDeltaPct: number;
+  spendDeltaPct: number;
+  revenueDeltaPct: number;
 };
+
+function formatMoney(value: number) {
+  return `AED ${Math.round(value || 0).toLocaleString('en-US')}`;
+}
 
 export default function Scoreboard({ data }: { data: ScoreboardData }) {
   const cards = [
     {
       label: 'QL всего',
       value: data.ql,
-      comparison: '+3 units',
-      trend: 'up',
     },
     {
       label: 'CPQL (за период)',
-      value: data.cpql,
-      comparison: '9%',
-      trend: 'up',
+      value: formatMoney(data.cpql),
     },
     {
       label: 'Расход (за период)',
-      value: data.spend,
-      comparison: '7%',
-      trend: 'up',
+      value: formatMoney(data.spend),
     },
     {
       label: 'Выручка (за период)',
-      value: data.revenue,
-      comparison: '5%',
-      trend: 'up',
+      value: formatMoney(data.revenue),
     },
   ];
 
@@ -48,14 +47,6 @@ export default function Scoreboard({ data }: { data: ScoreboardData }) {
           </div>
           
           <div className={styles.scoreboardValue}>{card.value}</div>
-          
-          <div className={styles.cardFooter}>
-            <span className={styles.comparisonText}>vs last month</span>
-            <div className={`${styles.badge} ${card.trend === 'up' ? styles.badgeSuccess : styles.badgeWarning}`}>
-              {card.trend === 'up' ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}
-              {card.comparison}
-            </div>
-          </div>
         </div>
       ))}
     </div>
