@@ -1,0 +1,10 @@
+#!/usr/bin/expect -f
+set password (PROD_SSH_PASSWORD)
+spawn ssh -o StrictHostKeyChecking=no root@135.181.201.185 "cat /root/foryou-dashboards-prod/Dockerfile"
+expect {
+  "password:" {
+    send "$password\r"
+    exp_continue
+  }
+}
+interact

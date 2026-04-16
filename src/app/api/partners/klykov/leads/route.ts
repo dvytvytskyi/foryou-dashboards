@@ -1,28 +1,12 @@
 
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { amoFetch } from '@/lib/amo';
 
 export async function GET() {
   try {
     const pipelineId = '10776450';
-    const tokensPath = path.join(process.cwd(), 'secrets/amo_tokens.json');
-    let tokens;
-    if (process.env.AMO_TOKENS_JSON) {
-        tokens = JSON.parse(process.env.AMO_TOKENS_JSON);
-    } else {
-        tokens = JSON.parse(fs.readFileSync(tokensPath, 'utf8'));
-    }
-
-    const baseUrl = 'https://reforyou.amocrm.ru/api/v4/leads';
-    const query = '?filter[pipeline_id]=' + pipelineId + '&limit=250&with=contacts';
-    const fullUrl = baseUrl + query;
-
-    const res = await fetch(fullUrl, {
-      headers: { 
-        'Authorization': 'Bearer ' + tokens.access_token 
-      }
-    });
+    const query = `/api/v4/leads?filter[pipeline_id]=${pipelineId}&limit=250&with=contacts`;
+    const res = await amoFetch(query);
 
     if (!res.ok) {
         const err = await res.text();

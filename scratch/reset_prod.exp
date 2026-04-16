@@ -1,0 +1,10 @@
+#!/usr/bin/expect -f
+set password (PROD_SSH_PASSWORD)
+spawn ssh -o StrictHostKeyChecking=no root@135.181.201.185 "cd /root/foryou-dashboards-prod && docker-compose down && docker-compose up -d app"
+expect {
+  "password:" {
+    send "$password\r"
+    exp_continue
+  }
+}
+interact

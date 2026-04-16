@@ -1,0 +1,97 @@
+.topRail {
+  position: sticky;
+  top: 0;
+  z-index: 110;
+  margin-top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 56px;
+  gap: 16px;
+  padding: 0 18px 0 32px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+
+.headerSearch {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.searchField {
+  width: min(440px, 100%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 34px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 999px;
+  background: var(--surface-input);
+  color: var(--muted);
+}
+
+.searchInput {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--white-soft);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.searchInput::placeholder {
+  color: var(--muted);
+}
+
+.headerSwitchWrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex: 0 0 auto;
+}
+
+.themeSwitchLabel {
+  color: var(--white-soft);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.themeSwitch {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.themeSwitchTrack {
+  width: 52px;
+  height: 28px;
+  padding: 2px;
+  border-radius: 999px;
+  border: none;
+  background: var(--surface-input);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  transition: background 0.18s ease, border-color 0.18s ease, justify-content 0.18s ease;
+}
+
+.themeSwitchLight .themeSwitchTrack {
+  justify-content: flex-end;
+  background: var(--chip-active-bg);
+}
+
+.themeSwitchIcon {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--panel);
+  color: var(--white-soft);
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
+}

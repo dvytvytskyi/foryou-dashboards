@@ -1,0 +1,48 @@
+FAILED: sync_plan_fact_bq TypeError: fetch failed
+    at node:internal/deps/undici/undici:13484:13
+    at async doRequest (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:99:17)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:108:13)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:126:18)
+    at async Promise.all (index 1)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:184:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:245:19) {
+  [cause]: Error: read ECONNRESET
+      at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20) {
+    errno: -54,
+    code: 'ECONNRESET',
+    syscall: 'read'
+  }
+}
+FAILED: sync_plan_fact_bq TypeError: fetch failed
+    at node:internal/deps/undici/undici:13484:13
+    at async doRequest (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:99:17)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:108:13)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:126:18)
+    at async Promise.all (index 1)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:184:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:245:19) {
+  [cause]: SocketError: other side closed
+      at TLSSocket.<anonymous> (node:internal/deps/undici/undici:6287:28)
+      at TLSSocket.emit (node:events:536:35)
+      at endReadableNT (node:internal/streams/readable:1698:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'UND_ERR_SOCKET',
+    socket: {
+      localAddress: '192.168.1.103',
+      localPort: 64703,
+      remoteAddress: '88.212.250.100',
+      remotePort: 443,
+      remoteFamily: 'IPv4',
+      timeout: undefined,
+      bytesWritten: 25735,
+      bytesRead: 4304095
+    }
+  }
+}
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:87:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:110:23)
+    at async Promise.all (index 0)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:184:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:245:19)

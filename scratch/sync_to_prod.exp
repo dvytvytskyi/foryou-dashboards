@@ -1,0 +1,6 @@
+#!/usr/bin/expect -f
+set password (PROD_SSH_PASSWORD)
+spawn rsync -avz --exclude-from=.rsync-exclude ./ root@135.181.201.185:/root/foryou-dashboards-prod/
+expect "password:"
+send "$password\r"
+interact

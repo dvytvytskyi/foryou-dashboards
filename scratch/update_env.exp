@@ -1,0 +1,22 @@
+#!/usr/bin/expect -f
+
+if {![info exists env(PROD_SSH_PASSWORD)]} {
+  puts "ERROR: PROD_SSH_PASSWORD is not set"
+  exit 1
+}
+if {![info exists env(PROD_GOOGLE_AUTH_JSON)]} {
+  puts "ERROR: PROD_GOOGLE_AUTH_JSON is not set"
+  exit 1
+}
+
+set password $env(PROD_SSH_PASSWORD)
+set env_val $env(PROD_GOOGLE_AUTH_JSON)
+
+spawn ssh -o StrictHostKeyChecking=no root@135.181.201.185 "echo GOOGLE_AUTH_JSON='$env_val' >> /root/foryou-dashboards-prod/.env.local"
+expect {
+  "password:" {
+    send "$password\r"
+    exp_continue
+  }
+}
+interact

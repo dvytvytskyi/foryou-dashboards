@@ -46,6 +46,10 @@ import {
   formatNumber,
   formatPercentRatio,
 } from '@/lib/formatters';
+import Sidebar from '@/components/dashboard/Sidebar';
+import Header from '@/components/dashboard/Header';
+import FilterBar from '@/components/dashboard/FilterBar';
+import DataTable from '@/components/dashboard/DataTable';
 import styles from './DashboardPage.module.css';
 
 export {
@@ -956,37 +960,6 @@ export default function DashboardPage({
     });
   }, [displayRows, normalizedSearchQuery]);
 
-  const renderTableHeader = (interactive: boolean) => (
-    <tr>
-      {activeColumns.map((col, i) => (
-        <th
-          key={col.key}
-          onClick={interactive ? () => requestSort(col.key) : undefined}
-          className={`${styles.sortableHead} ${sortKey === col.key ? styles.sortableHeadActive : ''} ${
-            col.key === 'channel' ? styles.leftHead : ''
-          }`}
-        >
-          <div className={col.key === 'channel' ? styles.leftHeadInner : undefined}>
-            <span>{col.label}</span>
-            {col.key === 'channel' ? null : (
-              <span className={styles.sortMark}>
-                {sortKey === col.key ? (sortDirection === 'asc' ? ' ↑' : ' ↓') : ' ↕'}
-              </span>
-            )}
-            {col.key === 'channel' ? (
-              <button
-                type="button"
-                className={styles.colResizeHandle}
-                aria-label="Resize channel column"
-                onMouseDown={interactive ? startChannelResize : undefined}
-                tabIndex={interactive ? 0 : -1}
-              />
-            ) : null}
-          </div>
-        </th>
-      ))}
-    </tr>
-  );
 
   function toggleExpanded(ch: string) {
     setExpanded((s) => ({ ...s, [ch]: !s[ch] }));
@@ -1042,246 +1015,49 @@ export default function DashboardPage({
           <div className={styles.shell}>
         {!isNested && (
           <div className={styles.stickyHeaderContent}>
-            <div className={styles.topRail}>
-              <div className={styles.headerSearch}>
-                <label className={styles.searchField}>
-                  <Search size={14} />
-                  <input
-                    type="search"
-                    value={searchQuery}
-                    onChange={(event) => setSearchQuery(event.target.value)}
-                    className={styles.searchInput}
-                    placeholder="Search campaigns, channels, creatives..."
-                    aria-label="Search dashboard rows"
-                  />
-                </label>
-              </div>
-              <div className={styles.headerSwitchWrap}>
-                <span className={styles.themeSwitchLabel}>{themeMode === 'night' ? 'Night' : 'Light'}</span>
-                <button
-                  type="button"
-                  className={`${styles.themeSwitch} ${themeMode === 'light' ? styles.themeSwitchLight : ''}`}
-                  onClick={() => setThemeMode((prev) => (prev === 'night' ? 'light' : 'night'))}
-                  aria-label={themeMode === 'night' ? 'Switch to light theme' : 'Switch to dark theme'}
-                  title={themeMode === 'night' ? 'Switch to light theme' : 'Switch to dark theme'}
-                >
-                  <span className={styles.themeSwitchTrack}>
-                    <span className={styles.themeSwitchIcon}>
-                      {themeMode === 'night' ? <Moon size={13} /> : <Sun size={13} />}
-                    </span>
-                  </span>
-                </button>
-              </div>
-            </div>
+            <Header 
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              themeMode={themeMode}
+              setThemeMode={setThemeMode}
+            />
 
             {!hideFilters && (
-              <section className={styles.filterBar}>
-                <div className={styles.filtersLeft}>
-                  {!hideSourceFilter && (
-                    <div className={styles.channels}>
-                      <button
-                        className={`${styles.channelChip} ${sourceFilter === 'all' ? styles.channelChipActive : ''}`}
-                        onClick={() => setSourceFilter('all')}
-                      >
-                        Все источники
-                      </button>
-                      {SOURCE_CHANNELS.map((ch) => (
-                        <button
-                          key={ch}
-                          className={`${styles.channelChip} ${sourceFilter === ch ? styles.channelChipActive : ''}`}
-                          onClick={() => setSourceFilter(ch)}
-                        >
-                          {ch}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-
-                  <div className={styles.controlsRow} style={{ marginLeft: hideSourceFilter ? 'auto' : '0' }}>
-                    {customFilterContent}
-                    <div className={styles.dateGroups} ref={dateDropdownsRef}>
-                      <div className={styles.dateDropdown}>
-                        <div className={styles.dateDropdownHeader}>
-                          <button
-                            type="button"
-                            className={styles.dateDropdownTrigger}
-                            onClick={() => toggleDateDropdown('from')}
-                          >
-                            <span className={styles.dateDropdownLabel}>From</span>
-                            <span className={styles.dateDropdownValue}>{`${draftStartParts.day}.${draftStartParts.month}.${draftStartParts.year}`}</span>
-                            <span className={styles.dateDropdownArrow}>{openDateDropdown === 'from' ? '▴' : '▾'}</span>
-                          </button>
-                        </div>
-                        {openDateDropdown === 'from' ? (
-                          <div className={styles.dateDropdownMenu}>
-                            <div className={styles.dateSelects}>
-                              <Select
-                                instanceId="start-day"
-                                inputId="start-day"
-                                isSearchable={false}
-                                menuPortalTarget={selectPortalTarget}
-                                menuPosition="fixed"
-                                options={DAY_OPTIONS}
-                                styles={selectStyles}
-                                value={DAY_OPTIONS.find((d) => d.value === draftStartParts.day)}
-                                onChange={(option) => {
-                                  if (!option) return;
-                                  setDraftStartDate(mergeDate({ ...draftStartParts, day: option.value }));
-                                }}
-                              />
-                              <Select
-                                instanceId="start-month"
-                                inputId="start-month"
-                                isSearchable={false}
-                                menuPortalTarget={selectPortalTarget}
-                                menuPosition="fixed"
-                                options={MONTH_OPTIONS}
-                                styles={selectStyles}
-                                value={MONTH_OPTIONS.find((m) => m.value === draftStartParts.month)}
-                                onChange={(option) => {
-                                  if (!option) return;
-                                  setDraftStartDate(mergeDate({ ...draftStartParts, month: option.value }));
-                                }}
-                              />
-                              <Select
-                                instanceId="start-year"
-                                inputId="start-year"
-                                isSearchable={false}
-                                menuPortalTarget={selectPortalTarget}
-                                menuPosition="fixed"
-                                options={YEAR_OPTIONS}
-                                styles={selectStyles}
-                                value={YEAR_OPTIONS.find((y) => y.value === draftStartParts.year)}
-                                onChange={(option) => {
-                                  if (!option) return;
-                                  setDraftStartDate(mergeDate({ ...draftStartParts, year: option.value }));
-                                }}
-                              />
-                            </div>
-                            <div className={styles.dateSelectHints}>
-                              <span className={styles.dateSelectHint}>day</span>
-                              <span className={styles.dateSelectHint}>month</span>
-                              <span className={styles.dateSelectHint}>year</span>
-                            </div>
-                          </div>
-                        ) : null}
-                      </div>
-
-                      <div className={styles.dateDropdown}>
-                        <div className={styles.dateDropdownHeader}>
-                          <button
-                            type="button"
-                            className={styles.dateDropdownTrigger}
-                            onClick={() => toggleDateDropdown('to')}
-                          >
-                            <span className={styles.dateDropdownLabel}>To</span>
-                            <span className={styles.dateDropdownValue}>{`${draftEndParts.day}.${draftEndParts.month}.${draftEndParts.year}`}</span>
-                            <span className={styles.dateDropdownArrow}>{openDateDropdown === 'to' ? '▴' : '▾'}</span>
-                          </button>
-                          {isDateRangeDirty ? (
-                            <button
-                              type="button"
-                              className={styles.dateApplyBtn}
-                              onClick={() => void applyDateRangeDraft()}
-                            >
-                              <Check size={14} />
-                            </button>
-                          ) : null}
-                          {(startDate !== '2024-01-01' || endDate !== today) && (
-                            <button
-                              type="button"
-                              className={styles.dateApplyBtn}
-                              style={{ background: '#f1f5f9', color: '#64748b', borderColor: '#e2e8f0', boxShadow: 'none' }}
-                              onClick={() => {
-                                setStartDate('2024-01-01');
-                                setEndDate(today);
-                                setDraftStartDate('2024-01-01');
-                                setDraftEndDate(today);
-                                onDateChange?.('2024-01-01', today);
-                              }}
-                              title="Сбросить фильтр"
-                            >
-                              <X size={14} />
-                            </button>
-                          )}
-                        </div>
-                        {openDateDropdown === 'to' ? (
-                          <div className={styles.dateDropdownMenu}>
-                            <div className={styles.dateSelects}>
-                              <Select
-                                instanceId="end-day"
-                                inputId="end-day"
-                                isSearchable={false}
-                                menuPortalTarget={selectPortalTarget}
-                                menuPosition="fixed"
-                                options={DAY_OPTIONS}
-                                styles={selectStyles}
-                                value={DAY_OPTIONS.find((d) => d.value === draftEndParts.day)}
-                                onChange={(option) => {
-                                  if (!option) return;
-                                  setDraftEndDate(mergeDate({ ...draftEndParts, day: option.value }));
-                                }}
-                              />
-                              <Select
-                                instanceId="end-month"
-                                inputId="end-month"
-                                isSearchable={false}
-                                menuPortalTarget={selectPortalTarget}
-                                menuPosition="fixed"
-                                options={MONTH_OPTIONS}
-                                styles={selectStyles}
-                                value={MONTH_OPTIONS.find((m) => m.value === draftEndParts.month)}
-                                onChange={(option) => {
-                                  if (!option) return;
-                                  setDraftEndDate(mergeDate({ ...draftEndParts, month: option.value }));
-                                }}
-                              />
-                              <Select
-                                instanceId="end-year"
-                                inputId="end-year"
-                                isSearchable={false}
-                                menuPortalTarget={selectPortalTarget}
-                                menuPosition="fixed"
-                                options={YEAR_OPTIONS}
-                                styles={selectStyles}
-                                value={YEAR_OPTIONS.find((y) => y.value === draftEndParts.year)}
-                                onChange={(option) => {
-                                  if (!option) return;
-                                  setDraftEndDate(mergeDate({ ...draftEndParts, year: option.value }));
-                                }}
-                              />
-                            </div>
-                            <div className={styles.dateSelectHints}>
-                              <span className={styles.dateSelectHint}>day</span>
-                              <span className={styles.dateSelectHint}>month</span>
-                              <span className={styles.dateSelectHint}>year</span>
-                            </div>
-                          </div>
-                        ) : null}
-                      </div>
-                    </div>
-
-                    {!hideCurrency && (
-                      <div className={styles.currencyBlock}>
-                        <div className={styles.currencySwitch}>
-                          <button
-                            className={`${styles.currencyBtn} ${currency === 'aed' ? styles.currencyActive : ''}`}
-                            onClick={() => setCurrency('aed')}
-                          >
-                            AED
-                          </button>
-                          <button
-                            className={`${styles.currencyBtn} ${currency === 'usd' ? styles.currencyActive : ''}`}
-                            onClick={() => setCurrency('usd')}
-                          >
-                            USD
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </section>
+              <FilterBar 
+                hideSourceFilter={hideSourceFilter}
+                sourceFilter={sourceFilter}
+                setSourceFilter={setSourceFilter}
+                sourceChannels={SOURCE_CHANNELS as any}
+                customFilterContent={customFilterContent}
+                dateDropdownsRef={dateDropdownsRef}
+                toggleDateDropdown={toggleDateDropdown}
+                openDateDropdown={openDateDropdown}
+                draftStartParts={draftStartParts}
+                draftEndParts={draftEndParts}
+                setDraftStartDate={setDraftStartDate}
+                setDraftEndDate={setDraftEndDate}
+                isDateRangeDirty={isDateRangeDirty}
+                applyDateRangeDraft={applyDateRangeDraft}
+                startDate={startDate}
+                endDate={endDate}
+                today={today}
+                onResetFilters={() => {
+                  setStartDate('2024-01-01');
+                  setEndDate(today);
+                  setDraftStartDate('2024-01-01');
+                  setDraftEndDate(today);
+                  onDateChange?.('2024-01-01', today);
+                }}
+                hideCurrency={hideCurrency}
+                currency={currency}
+                setCurrency={setCurrency}
+                selectStyles={selectStyles}
+                selectPortalTarget={selectPortalTarget}
+                dayOptions={DAY_OPTIONS}
+                monthOptions={MONTH_OPTIONS}
+                yearOptions={YEAR_OPTIONS}
+                mergeDate={mergeDate}
+              />
             )}
           </div>
         )}
@@ -1292,182 +1068,43 @@ export default function DashboardPage({
         {!hideTable && (
           <>
             {title && <h2 className={styles.tableTitle}>{title}</h2>}
-            <section className={styles.tableWrap} ref={tableWrapRef}>
-          {stickyHeaderVisible ? (
-            <div
-              ref={stickyHeaderRef}
-              className={styles.floatingHeader}
-              style={{ left: stickyHeaderLeft, width: stickyHeaderWidth } as CSSProperties}
-            >
-              <div className={styles.floatingHeaderViewport}>
-                <table
-                  className={`${styles.table} ${styles.floatingHeaderTable}`}
-                  style={{
-                    '--channel-col-width': `${channelColWidth}px`,
-                    '--table-min-width': tableMinWidth,
-                    width: tablePixelWidth ? `${tablePixelWidth}px` : undefined,
-                    transform: `translateX(-${tableScrollLeft}px)`,
-                  } as CSSProperties}
-                >
-                  <thead>{renderTableHeader(true)}</thead>
-                </table>
-              </div>
-            </div>
-          ) : null}
-          <div
-            className={styles.scroll}
-            ref={tableScrollRef}
-            onScroll={(event) => setTableScrollLeft(event.currentTarget.scrollLeft)}
-          >
-            <table
-              ref={tableRef}
-              className={styles.table}
-              aria-busy={showTableSkeletons}
-              style={{ 
-                '--channel-col-width': `${channelColWidth}px`,
-                '--table-min-width': tableMinWidth
-              } as CSSProperties}
-            >
-              <thead>
-                {renderTableHeader(true)}
-              </thead>
-              <tbody>
-                {visibleRows.map(({ type, row, key, label, detailDepth, detailKey, hasChildren }, rowIndex) => {
-                  const total = row.channel === 'TOTAL';
-                  const hasDetails = type === 'channel' ? !!hasChildren : false;
-                  const canExpandDetail = type === 'detail' && !!hasChildren && !!detailKey;
-                  const isDetailExpanded = detailKey ? !!expandedDetails[detailKey] : false;
-                  const isHierarchyActive =
-                    (type === 'channel' && hasDetails && !!expanded[row.channel]) ||
-                    (type === 'detail' && canExpandDetail && isDetailExpanded);
-                  const rowClass = total
-                    ? styles.rowTotal
-                    : type === 'channel'
-                      ? styles.rowChannel
-                      : styles.rowDetail;
-                  const rowValues = activeColumns.slice(1).map(col => {
-                    const val = (row as any)[col.key];
-                    if (col.key === 'budget') return renderValue(val, 'money', currency);
-                    if (col.key === 'date') return renderValue(val, 'date');
-                    if (col.key === 'leads') return renderValue(val, 'num');
-                    if (col.key === 'cpl') return renderValue(val, 'money', currency);
-                    if (col.key === 'no_answer_spam') return renderValue(val, 'num');
-                    if (col.key === 'rate_answer') {
-                      const ansVal = Number(val) || 0;
-                      return <span className={ansVal < 0.2 && ansVal > 0 ? styles.roiNegative : ''}>{renderValue(val, 'pct')}</span>;
-                    }
-                    if (col.key === 'qualified_leads') return renderValue(val, 'num');
-                    if (col.key === 'cost_per_qualified_leads') return renderValue(val, 'money', currency);
-                    if (col.key === 'cr_ql') return renderValue(val, 'pct');
-                    if (col.key === 'ql_actual') return renderValue(val, 'num');
-                    if (col.key === 'cpql_actual') return renderValue(val, 'money', currency);
-                    if (col.key === 'meetings') return renderValue(val, 'num');
-                    if (col.key === 'cp_meetings') return renderValue(val, 'money', currency);
-                    if (col.key === 'deals') return renderValue(val, 'num');
-                    if (col.key === 'cost_per_deal') return renderValue(val, 'money', currency);
-                    if (col.key === 'revenue') return renderValue(val, 'money', currency);
-                    if (col.key === 'roi') {
-                        const roiVal = Number(val) || 0;
-                        const colorClass = roiVal >= 1 ? styles.roiPositive : styles.roiNegative;
-                        const content = formatPercentRatio(val);
-                        return <span className={roiVal === 0 ? styles.dimmed : colorClass}>{content}</span>;
-                    }
-                    if (col.key === 'company_revenue') {
-                        if (val === null || val === undefined || val === 0) return <span className={styles.dimmed}>{val === 0 ? formatMoney(0, currency) : 'uncertain'}</span>;
-                        return formatMoney(val, currency);
-                    }
-                    // Website Cols
-                    if (col.key === 'impressions') return renderValue(val, 'num');
-                    if (col.key === 'clicks') return renderValue(val, 'num');
-                    if (col.key === 'ctr') return renderValue((row.clicks || 0) / (row.impressions || 1), 'pct', undefined, 2);
-                    if (col.key === 'ad_cost') return renderValue(val, 'money', currency);
-                    if (col.key === 'sessions') return renderValue(val, 'num');
-                    if (col.key === 'bounce_rate') return renderValue(val, 'pct');
-                    if (col.key === 'avg_duration') return renderValue(val, 'time');
-                    if (col.key === 'cr_lead') return renderValue(((row.leads_crm || 0) + (row.leads_wa || 0)) / (row.sessions || 1), 'pct', undefined, 2);
-                    if (col.key === 'leads_crm') return renderValue(val, 'num');
-                    if (col.key === 'leads_wa') return renderValue(val, 'num');
-                    if (col.key === 'cr_ql_web') return renderValue((row.qualified_leads || 0) / (row.leads_crm || 1), 'pct', undefined, 2);
-                    if (col.key === 'cpql_web') return renderValue((row.ad_cost || 0) / (row.qualified_leads || 1), 'money', currency);
-                    
-                    return val;
-                  });
-
-                  return (
-                    <tr
-                      key={key}
-                      className={`${rowClass} ${isHierarchyActive ? styles.rowHierarchyActive : ''}`}
-                      onClick={
-                        suppressRowToggleRef.current
-                          ? undefined
-                          :
-                        type === 'channel' && hasDetails
-                          ? () => toggleExpanded(row.channel)
-                          : canExpandDetail
-                            ? () => toggleDetail(detailKey!)
-                            : undefined
-                      }
-                    >
-                      <td>
-                        {(() => {
-                          const treeStyle =
-                            type === 'detail' && detailDepth
-                              ? ({
-                                  paddingLeft: `${detailDepth * 22}px`,
-                                  '--tree-depth': detailDepth,
-                                } as CSSProperties)
-                              : undefined;
-
-                          return (
-                        <div
-                          className={`${styles.channelCell} ${
-                            type === 'detail' && detailDepth ? styles.channelCellDetail : ''
-                          } ${type === 'detail' && detailDepth && detailDepth > 1 ? styles.channelCellDeep : ''}`}
-                          style={treeStyle}
-                        >
-                          {type === 'channel' ? (
-                            <span className={`${styles.arrow} ${hasDetails ? styles.arrowClickable : ''}`}>
-                              {hasDetails ? (expanded[row.channel] ? <ChevronDown size={14} /> : <ChevronRight size={14} />) : null}
-                            </span>
-                          ) : canExpandDetail ? (
-                            <span className={`${styles.arrow} ${styles.arrowClickable}`}>
-                              {isDetailExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-                            </span>
-                          ) : (
-                            <span className={styles.arrow} />
-                          )}
-                          <div
-                            className={styles.channelLabel}
-                            title={!showTableSkeletons && type === 'detail' && label === OTHER_FALLBACK_LABEL ? OTHER_FALLBACK_HINT : undefined}
-                          >
-                            {showTableSkeletons ? <span className={styles.skeletonText} /> : type === 'channel' ? row.channel : label}
-                          </div>
-                        </div>
-                          );
-                        })()}
-                      </td>
-                      {rowValues.map((value, colOffset) => {
-                        const colIndex = colOffset + 1;
-                        return (
-                          <td
-                            key={`${key}-col-${colIndex}`}
-                            className={selectedCells.has(`${rowIndex}:${colIndex}`) ? styles.cellSelected : ''}
-                            onMouseDown={(event) => handleCellMouseDown(event, rowIndex, colIndex)}
-                            onMouseEnter={() => handleCellMouseEnter(rowIndex, colIndex)}
-                            onMouseUp={handleCellMouseUp}
-                          >
-                            {showTableSkeletons ? <span className={styles.skeletonValue} /> : value}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </section>
-        </>
+            <DataTable 
+              activeColumns={activeColumns}
+              requestSort={requestSort}
+              sortKey={sortKey}
+              sortDirection={sortDirection}
+              startChannelResize={startChannelResize}
+              stickyHeaderVisible={stickyHeaderVisible}
+              stickyHeaderRef={stickyHeaderRef}
+              stickyHeaderLeft={stickyHeaderLeft}
+              stickyHeaderWidth={stickyHeaderWidth}
+              channelColWidth={channelColWidth}
+              tableMinWidth={tableMinWidth}
+              tablePixelWidth={tablePixelWidth}
+              tableScrollLeft={tableScrollLeft}
+              tableWrapRef={tableWrapRef}
+              tableScrollRef={tableScrollRef}
+              tableRef={tableRef}
+              onScroll={(event) => setTableScrollLeft(event.currentTarget.scrollLeft)}
+              showTableSkeletons={showTableSkeletons}
+              visibleRows={visibleRows}
+              expanded={expanded}
+              expandedDetails={expandedDetails}
+              toggleExpanded={toggleExpanded}
+              toggleDetail={toggleDetail}
+              currency={currency}
+              selectedCells={selectedCells}
+              handleCellMouseDown={handleCellMouseDown}
+              handleCellMouseEnter={handleCellMouseEnter}
+              handleCellMouseUp={handleCellMouseUp}
+              suppressRowToggleRef={suppressRowToggleRef}
+              renderValue={renderValue}
+              formatPercentRatio={formatPercentRatio}
+              formatMoney={formatMoney}
+              OTHER_FALLBACK_LABEL={OTHER_FALLBACK_LABEL}
+              OTHER_FALLBACK_HINT={OTHER_FALLBACK_HINT}
+            />
+          </>
         )}
 
         {children}
@@ -1482,70 +1119,15 @@ export default function DashboardPage({
   return (
     <div className={styles.page} data-theme={themeMode}>
       <div className={styles.layout}>
-        <aside className={`${styles.sidebar} ${sidebarCompact ? styles.sidebarCompact : ''}`}>
-          <div className={styles.sidebarTop}>
-            {!sidebarCompact ? <div className={styles.sidebarMainTitle}>Навигация</div> : null}
-            <button
-              type="button"
-              className={styles.sidebarToggle}
-              onClick={() => setSidebarCompact((prev) => !prev)}
-              aria-label={sidebarCompact ? 'Expand sidebar' : 'Collapse sidebar'}
-            >
-              {sidebarCompact ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
-            </button>
-          </div>
-
-          <nav className={styles.sidebarNav}>
-            {filteredSidebarSections.map((section) => (
-              <div key={section.title} className={styles.sidebarSection}>
-                {!sidebarCompact ? <div className={styles.sidebarSectionTitle}>{section.title}</div> : null}
-                <div className={styles.sidebarItems}>
-                    {section.items.map((item) => {
-                      const Icon = item.icon;
-                      const currentPath = typeof window !== 'undefined' ? window.location.pathname.replace(/\/$/, '') : '';
-                      const itemHref = item.href?.replace(/\/$/, '') || '';
-                      const isActive = currentPath === itemHref;
-                      const handleClick = () => {
-                        if (item.href && item.href !== '#') {
-                          window.location.href = item.href;
-                        }
-                      };
-                      return (
-                        <button
-                          key={`${section.title}-${item.label}`}
-                          type="button"
-                          title={sidebarCompact ? item.label : undefined}
-                          className={`${styles.sidebarItem} ${isActive ? styles.sidebarItemActive : ''}`}
-                          onClick={handleClick}
-                        >
-                          <span className={styles.sidebarItemIcon}>
-                            <Icon size={18} />
-                          </span>
-                          {!sidebarCompact ? <span className={styles.sidebarItemLabel}>{item.label}</span> : null}
-                        </button>
-                      );
-                    })}
-                </div>
-              </div>
-            ))}
-          </nav>
-
-          <div className={styles.sidebarBottom}>
-             <button 
-                type="button"
-                className={styles.sidebarItem}
-                onClick={async () => {
-                    await fetch('/api/auth/logout', { method: 'POST' });
-                    window.location.href = '/login';
-                }}
-             >
-                <div className={styles.sidebarItemIcon}>
-                    <Users size={18} />
-                </div>
-                {!sidebarCompact && <span className={styles.sidebarItemLabel}>Выйти</span>}
-             </button>
-          </div>
-        </aside>
+        <Sidebar 
+          sidebarCompact={sidebarCompact} 
+          setSidebarCompact={setSidebarCompact}
+          sections={filteredSidebarSections}
+          onLogout={async () => {
+              await fetch('/api/auth/logout', { method: 'POST' });
+              window.location.href = '/login';
+          }}
+        />
 
         {dashboardContent}
       </div>

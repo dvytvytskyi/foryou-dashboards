@@ -1,0 +1,371 @@
+.card {
+  margin-top: 24px;
+  margin-left: 32px;
+  margin-right: 32px;
+  background: var(--panel);
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardHeader {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.cardIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  opacity: 0.9;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--white-soft);
+  letter-spacing: -0.01em;
+}
+
+.cardBody {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+}
+
+.tableWrap {
+  margin-top: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.scroll {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
+.scroll::-webkit-scrollbar {
+  height: 6px;
+  background: transparent;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 6px;
+}
+
+.scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--field-focus);
+}
+
+.floatingHeader {
+  position: fixed;
+  top: 0;
+  z-index: 30;
+  overflow: hidden;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.floatingHeaderViewport {
+  overflow: hidden;
+}
+
+.floatingHeaderTable {
+  min-width: var(--table-min-width, 1940px);
+  will-change: transform;
+}
+
+.table {
+  --channel-col-width: 330px;
+  width: max-content;
+  min-width: var(--table-min-width, 1940px);
+  border-collapse: collapse;
+}
+
+.table thead th {
+  position: static;
+  z-index: 5;
+  border-bottom: 1px solid var(--line);
+  border-right: 0;
+  background: var(--panel);
+  color: var(--muted);
+  padding: 14px 12px;
+  text-align: right;
+  white-space: normal;
+  min-width: 60px;
+  font-size: 12px;
+  letter-spacing: 0.01em;
+  font-weight: 600;
+  text-transform: none;
+}
+
+.leftHead {
+  text-align: left !important;
+  position: sticky !important;
+  left: 0;
+  z-index: 6 !important;
+  min-width: var(--channel-col-width);
+  width: var(--channel-col-width);
+  max-width: var(--channel-col-width);
+  background: var(--panel) !important;
+  box-shadow: 1px 0 0 var(--line);
+}
+
+.leftHeadInner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
+  padding-right: 12px;
+}
+
+.colResizeHandle {
+  position: absolute;
+  top: -14px;
+  right: -10px;
+  bottom: -14px;
+  width: 12px;
+  border: 0;
+  background: transparent;
+  cursor: col-resize;
+}
+
+.colResizeHandle::after {
+  content: '';
+  position: absolute;
+  top: 14px;
+  bottom: 14px;
+  left: 5px;
+  width: 1px;
+  background: var(--line);
+  opacity: 0;
+  transition: opacity 0.16s ease;
+}
+
+.leftHead:hover .colResizeHandle::after,
+.colResizeHandle:hover::after {
+  opacity: 1;
+}
+
+.sortableHead {
+  user-select: none;
+  cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease;
+}
+
+.sortableHead:hover {
+  background: var(--row-hover) !important;
+  color: var(--white-soft);
+}
+
+.sortableHeadActive {
+  background: var(--row-hover) !important;
+  color: var(--white-soft) !important;
+}
+
+.sortMark {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.sortableHeadActive .sortMark {
+  color: var(--white-soft);
+}
+
+.table tbody td {
+  border-bottom: 1px solid var(--line-soft);
+  border-right: 1px solid var(--line);
+  color: var(--table-body-text);
+  padding: 12px 12px;
+  text-align: right;
+  white-space: nowrap;
+  font-size: 13px;
+  min-width: 60px;
+  overflow: visible;
+}
+
+.table tbody td.cellSelected {
+  background: var(--selected-cell-bg) !important;
+  color: var(--selected-cell-text) !important;
+  box-shadow: inset 0 0 0 1px var(--selected-cell-border);
+}
+
+.table thead th:last-child,
+.table tbody td:last-child {
+  border-right: 0;
+}
+
+.table tbody td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  text-align: left;
+  min-width: var(--channel-col-width);
+  width: var(--channel-col-width);
+  max-width: var(--channel-col-width);
+  border-left: 0;
+  overflow: hidden;
+  background-clip: padding-box;
+  box-shadow: 1px 0 0 var(--line);
+}
+
+.rowChannel td {
+  background: var(--panel);
+  cursor: pointer;
+}
+
+.rowChannel:hover td {
+  background: var(--row-hover);
+}
+
+.rowDetail td {
+  background: var(--row-detail);
+  color: var(--detail-text);
+}
+
+.rowHierarchyActive td {
+  background: var(--row-hierarchy-active) !important;
+}
+
+.table tbody tr:nth-child(even):not(.rowTotal) td {
+  background: var(--row-even);
+}
+
+.table tbody tr:not(.rowTotal):hover td:not(.cellSelected) {
+  background: var(--row-hover) !important;
+}
+
+.rowTotal td {
+  background: var(--row-total-bg);
+  color: var(--row-total-text) !important;
+  font-weight: 400;
+  border-top: 1px solid var(--row-total-border);
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.channelCell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  overflow: visible;
+}
+
+.channelLabel {
+  display: block;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.skeletonText,
+.skeletonValue {
+  position: relative;
+  display: inline-block;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--skeleton-base);
+  overflow: hidden;
+}
+
+.skeletonText {
+  width: min(180px, 82%);
+}
+
+.skeletonValue {
+  width: 72%;
+  min-width: 48px;
+}
+
+.skeletonText::after,
+.skeletonValue::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, var(--skeleton-shimmer), transparent);
+  animation: skeletonSweep 1.2s ease-in-out infinite;
+}
+
+@keyframes skeletonSweep {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.channelCellDetail {
+  position: relative;
+}
+
+.channelCellDetail::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--tree-depth, 1) * 22px - 11px);
+  top: -22px;
+  bottom: -22px;
+  width: 1px;
+  background: var(--tree-line);
+}
+
+.channelCellDeep::after {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: -22px;
+  bottom: -22px;
+  width: 1px;
+  background: var(--tree-line);
+}
+
+.arrow {
+  width: 18px;
+  display: inline-flex;
+  justify-content: center;
+  position: relative;
+  color: var(--text);
+}
+
+.channelCellDetail .arrow::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  width: 8px;
+  border-top: 1px solid var(--tree-branch);
+  transform: translateY(-50%);
+}
+
+.arrowClickable {
+  cursor: pointer;
+}
+
+.roiPositive {
+  color: #10b981 !important;
+  font-weight: 600;
+}
+
+.roiNegative {
+  color: #ef4444 !important;
+  font-weight: 600;
+}
+
+.dimmed {
+  opacity: 0.25;
+}

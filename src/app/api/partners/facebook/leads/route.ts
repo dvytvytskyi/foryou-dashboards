@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { amoFetch } from '@/lib/amo';
 
 type AmoLead = {
   id: number;
@@ -15,74 +14,6 @@ type AmoLead = {
 };
 
 const RE_PIPELINE_ID = '8696950';
-const TOKENS_PATH = path.join(process.cwd(), 'secrets/amo_tokens.json');
-
-function getDomain() {
-  return process.env.AMO_DOMAIN || 'reforyou.amocrm.ru';
-}
-
-function readTokens() {
-  if (process.env.AMO_TOKENS_JSON) {
-    return { tokens: JSON.parse(process.env.AMO_TOKENS_JSON), fromEnv: true };
-  }
-  return { tokens: JSON.parse(fs.readFileSync(TOKENS_PATH, 'utf8')), fromEnv: false };
-}
-
-function writeTokensIfFile(tokens: any, fromEnv: boolean) {
-  if (fromEnv) return;
-  fs.writeFileSync(TOKENS_PATH, JSON.stringify(tokens, null, 2));
-}
-
-async function refreshAccessToken(currentTokens: any, fromEnv: boolean) {
-  const clientId = process.env.AMO_CLIENT_ID;
-  const clientSecret = process.env.AMO_CLIENT_SECRET;
-  const redirectUri = process.env.AMO_REDIRECT_URI;
-
-  if (!clientId || !clientSecret || !redirectUri || !currentTokens?.refresh_token) {
-    throw new Error('AmoCRM token expired and refresh env vars are missing');
-  }
-
-  const res = await fetch(`https://${getDomain()}/oauth2/access_token`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      client_id: clientId,
-      client_secret: clientSecret,
-      grant_type: 'refresh_token',
-      refresh_token: currentTokens.refresh_token,
-      redirect_uri: redirectUri,
-    }),
-  });
-
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`Failed to refresh AmoCRM token: ${err}`);
-  }
-
-  const refreshed = await res.json();
-  const merged = { ...currentTokens, ...refreshed };
-  writeTokensIfFile(merged, fromEnv);
-  return merged;
-}
-
-async function amoFetch(pathname: string, init?: RequestInit) {
-  const { tokens, fromEnv } = readTokens();
-  const doFetch = (accessToken: string) =>
-    fetch(`https://${getDomain()}${pathname}`, {
-      ...init,
-      headers: {
-        ...(init?.headers || {}),
-        Authorization: 'Bearer ' + accessToken,
-      },
-    });
-
-  let res = await doFetch(tokens.access_token);
-  if (res.status !== 401) return res;
-
-  const refreshed = await refreshAccessToken(tokens, fromEnv);
-  res = await doFetch(refreshed.access_token);
-  return res;
-}
 
 function isFacebookOmanLead(lead: AmoLead) {
   const tags = (lead._embedded?.tags || []).map((t) => (t.name || '').toLowerCase());

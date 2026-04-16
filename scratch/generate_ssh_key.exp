@@ -1,0 +1,10 @@
+#!/usr/bin/expect -f
+set password (PROD_SSH_PASSWORD)
+spawn ssh -o StrictHostKeyChecking=no root@135.181.201.185 "ssh-keygen -t rsa -b 4096 -f ~/.ssh/github_actions -N '' -q && cat ~/.ssh/github_actions.pub >> ~/.ssh/authorized_keys && cat ~/.ssh/github_actions && rm ~/.ssh/github_actions ~/.ssh/github_actions.pub"
+expect {
+  "password:" {
+    send "$password\r"
+    exp_continue
+  }
+}
+interact

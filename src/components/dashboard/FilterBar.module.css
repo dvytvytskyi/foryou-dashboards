@@ -1,0 +1,216 @@
+.filterBar {
+  margin-top: 8px;
+  background: transparent;
+  padding: 4px 32px 0 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.filtersLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.filterRow {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: nowrap;
+}
+
+.controlsRow {
+  margin-top: 0;
+  display: flex;
+  justify-content: flex-start;
+  gap: 12px;
+  align-items: center;
+}
+
+.channels {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 2px;
+  align-items: center;
+  background: var(--surface-input);
+  border: none;
+  border-radius: 999px;
+  padding: 4px;
+  width: fit-content;
+  flex-shrink: 0;
+}
+
+.channelChip {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--chip-text);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  height: 30px;
+  padding: 0 12px;
+  white-space: nowrap;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease, border-color 0.16s ease;
+}
+
+.channelChip:hover {
+  background: var(--chip-hover-bg);
+  color: var(--white-soft);
+  border-color: transparent;
+}
+
+.channelChipActive {
+  background: var(--white-soft);
+  color: var(--bg-0);
+  border-color: transparent;
+  font-weight: 700;
+}
+
+.dateGroups {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  flex-wrap: nowrap;
+}
+
+.dateDropdown {
+  position: relative;
+}
+
+.dateDropdownHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dateDropdownTrigger {
+  height: 32px;
+  border-radius: 999px;
+  border: none;
+  background: var(--surface-input);
+  color: var(--white-soft);
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  min-width: 140px;
+}
+
+.dateDropdownLabel {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.dateDropdownValue {
+  color: var(--white-soft);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.dateDropdownArrow {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.dateApplyBtn {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid #2e8b57;
+  background: #1f8b4c;
+  color: #f4fff8;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 0 0 1px rgba(46, 139, 87, 0.35);
+  transition: filter 0.16s ease, background 0.16s ease, transform 0.12s ease;
+}
+
+.dateApplyBtn:hover {
+  background: #23a25a;
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+
+.dateDropdownMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 20;
+  background: var(--surface-input);
+  border: none;
+  border-radius: 8px;
+  box-shadow: var(--menu-shadow);
+  padding: 10px;
+}
+
+.dateSelects {
+  display: grid;
+  grid-template-columns: 82px 96px 110px;
+  gap: 8px;
+}
+
+.dateSelectHints {
+  margin-top: 6px;
+  display: grid;
+  grid-template-columns: 82px 96px 110px;
+  gap: 8px;
+}
+
+.dateSelectHint {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 500;
+  text-align: center;
+  text-transform: lowercase;
+}
+
+.currencyBlock {
+  margin-left: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.currencySwitch {
+  display: inline-flex;
+  height: 32px;
+  border-radius: 999px;
+  border: none;
+  overflow: hidden;
+  background: var(--surface-input);
+}
+
+.currencyBtn {
+  border: 0;
+  width: 52px;
+  background: var(--surface-input);
+  color: var(--muted);
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 11px;
+  transition: background 0.16s ease, color 0.16s ease;
+}
+
+.currencyBtn:hover {
+  color: var(--white-soft);
+  background: var(--row-hover);
+}
+
+.currencyActive {
+  background: var(--white-soft);
+  color: var(--bg-0);
+  font-weight: 700;
+}

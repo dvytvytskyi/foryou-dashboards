@@ -1,0 +1,36 @@
+#!/usr/bin/expect -f
+
+set timeout 900
+set password (PROD_SSH_PASSWORD)
+set server "135.181.201.185"
+set target_dir "/root/foryou-dashboards-prod"
+
+puts "--- 🚀 Starting Deployment to PROD ($server) ---"
+
+# 1. Sync files to server
+puts "--- 📦 Syncing files... ---"
+# Exclude env files and node_modules/build artifacts
+spawn rsync -avz --exclude=.git --exclude=.next --exclude=node_modules --exclude=.DS_Store --exclude=.env* ./ root@$server:$target_dir/
+expect {
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    eof
+}
+
+# 2. Build and restart using docker-compose
+puts "--- 🛠️  Building and restarting with docker-compose... ---"
+spawn ssh -o StrictHostKeyChecking=no root@$server "cd $target_dir && \
+    docker-compose build && \
+    docker-compose up -d"
+
+expect {
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    eof
+}
+
+puts "--- ✅ PROD Deployment Complete! ---"
