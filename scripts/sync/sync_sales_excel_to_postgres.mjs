@@ -36,14 +36,31 @@ function parseDate(value) {
   if (!value) return null;
   if (value instanceof Date && !Number.isNaN(value.getTime())) return value;
   if (typeof value === 'string') {
-    const parts = value.split(/[./-]/);
-    if (parts.length === 3) {
-      const day = parseInt(parts[0], 10);
-      const month = parseInt(parts[1], 10) - 1;
-      let year = parseInt(parts[2], 10);
+    const trimmed = value.trim();
+
+    // ISO-like format: YYYY-MM-DD
+    const iso = trimmed.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+    if (iso) {
+      const year = parseInt(iso[1], 10);
+      const month = parseInt(iso[2], 10);
+      const day = parseInt(iso[3], 10);
+      if (month >= 1 && month <= 12 && day >= 1 && day <= 31) {
+        const dt = new Date(Date.UTC(year, month - 1, day));
+        if (!Number.isNaN(dt.getTime())) return dt;
+      }
+    }
+
+    // Local format: DD.MM.YYYY / DD/MM/YYYY / DD-MM-YYYY
+    const local = trimmed.match(/^(\d{1,2})[./-](\d{1,2})[./-](\d{2,4})$/);
+    if (local) {
+      const day = parseInt(local[1], 10);
+      const month = parseInt(local[2], 10);
+      let year = parseInt(local[3], 10);
       if (year < 100) year += 2000;
-      const dt = new Date(Date.UTC(year, month, day));
-      if (!Number.isNaN(dt.getTime())) return dt;
+      if (month >= 1 && month <= 12 && day >= 1 && day <= 31) {
+        const dt = new Date(Date.UTC(year, month - 1, day));
+        if (!Number.isNaN(dt.getTime())) return dt;
+      }
     }
   }
   return null;
