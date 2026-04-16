@@ -100,7 +100,7 @@ async function fetchLeadsCount(listingId, token) {
   let count = 0;
 
   while (true) {
-    const res = await fetch(`${API_URL}/leads?listingId=${listingId}&perPage=100&page=${page}`, {
+    const res = await fetch(`${API_URL}/leads?listingId=${listingId}&perPage=50&page=${page}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
