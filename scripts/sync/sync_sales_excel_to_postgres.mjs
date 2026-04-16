@@ -1,5 +1,6 @@
 import { Client } from 'pg';
-import ExcelJS from 'exceljs';
+import { createReadStream } from 'fs';
+import { createInterface } from 'readline';
 import path from 'path';
 
 function getConnectionString() {
@@ -48,51 +49,62 @@ function parseDate(value) {
   return null;
 }
 
-async function readRowsFromWorkbook(fileName, sheetSearch, mapping) {
-  const filePath = path.resolve(process.cwd(), fileName);
-  const workbook = new ExcelJS.Workbook();
-  await workbook.xlsx.readFile(filePath);
-
-  let sheet;
-  if (typeof sheetSearch === 'number') {
-    sheet = workbook.worksheets[sheetSearch];
-  } else {
-    sheet = workbook.getWorksheet(sheetSearch) || workbook.worksheets.find((s) => s.name.toLowerCase().replace(/\s/g, '') === sheetSearch.toLowerCase().replace(/\s/g, ''));
+/** Parse a single CSV line respecting double-quoted fields */
+function parseCsvLine(line) {
+  const result = [];
+  let current = '';
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') {
+      if (inQuotes && line[i + 1] === '"') { current += '"'; i++; }
+      else { inQuotes = !inQuotes; }
+    } else if (ch === ',' && !inQuotes) {
+      result.push(current.trim());
+      current = '';
+    } else {
+      current += ch;
+    }
   }
+  result.push(current.trim());
+  return result;
+}
 
-  if (!sheet) return [];
-
+async function readRowsFromCsv(fileName, mapping) {
+  const filePath = path.resolve(process.cwd(), fileName);
+  const skipRows = mapping.skipRows || 1; // skip header rows (1-based: skip first N rows)
   const rows = [];
-  sheet.eachRow((row, rowNumber) => {
-    if (rowNumber <= (mapping.skipRows || 1)) return;
+  let lineNumber = 0;
 
-    const dealDate = parseDate(row.getCell(mapping.dateCol).value);
-    const broker = String(row.getCell(mapping.brokerCol).value || '').trim() || null;
-    const partner = mapping.partnerCol ? String(row.getCell(mapping.partnerCol).value || '').trim() || null : null;
-    const sourceLabel = mapping.fixedSource
-      ? mapping.fixedSource
-      : String(row.getCell(mapping.sourceCol || 1).value || '').trim() || null;
-
-    const payload = {
-      rawDate: row.getCell(mapping.dateCol).value,
-      rowNumber,
-      fileName,
-      sheetName: sheet.name,
-    };
-
-    rows.push({
-      source_file: fileName,
-      row_number: rowNumber,
-      deal_date: dealDate ? dealDate.toISOString().slice(0, 10) : null,
-      deal_type: mapping.dealType,
-      broker,
-      partner,
-      source_label: sourceLabel,
-      gmv: parseNumeric(row.getCell(mapping.gmvCol).value),
-      gross: parseNumeric(row.getCell(mapping.grossCol).value),
-      net: parseNumeric(row.getCell(mapping.netCol).value),
-      payload,
+  await new Promise((resolve, reject) => {
+    const rl = createInterface({ input: createReadStream(filePath), crlfDelay: Infinity });
+    rl.on('line', (line) => {
+      lineNumber++;
+      if (lineNumber <= skipRows) return;
+      if (!line.trim()) return;
+      const cols = parseCsvLine(line);
+      // cols are 0-indexed; mapping uses 1-indexed colNums
+      const get = (colNum) => (colNum ? (cols[colNum - 1] || '').trim() : '');
+      const dealDate = parseDate(get(mapping.dateCol));
+      const broker = get(mapping.brokerCol) || null;
+      const partner = mapping.partnerCol ? get(mapping.partnerCol) || null : null;
+      const sourceLabel = mapping.fixedSource || get(mapping.sourceCol) || null;
+      rows.push({
+        source_file: fileName,
+        row_number: lineNumber,
+        deal_date: dealDate ? dealDate.toISOString().slice(0, 10) : null,
+        deal_type: mapping.dealType,
+        broker,
+        partner,
+        source_label: sourceLabel,
+        gmv: parseNumeric(get(mapping.gmvCol)),
+        gross: parseNumeric(get(mapping.grossCol)),
+        net: parseNumeric(get(mapping.netCol)),
+        payload: { rawLine: line, lineNumber, fileName },
+      });
     });
+    rl.on('close', resolve);
+    rl.on('error', reject);
   });
 
   return rows;
@@ -111,26 +123,26 @@ async function main() {
 
   const runStart = await client.query(
     `INSERT INTO sync_runs (job_name, status, started_at, meta) VALUES ($1,$2,NOW(),$3::jsonb) RETURNING id`,
-    ['sync_sales_excel_to_postgres', 'running', JSON.stringify({ mode: 'xlsx-import' })],
+    ['sync_sales_excel_to_postgres', 'running', JSON.stringify({ mode: 'csv-import' })],
   );
   const runId = runStart.rows[0].id;
 
   try {
     const rows = [];
 
-    rows.push(...(await readRowsFromWorkbook('offplan.xlsx', 'real estate', {
+    rows.push(...(await readRowsFromCsv('offplan.csv', {
       dealType: 'Offplan', dateCol: 2, brokerCol: 5, partnerCol: 6, gmvCol: 7, grossCol: 10, netCol: 17, sourceCol: 3,
     })));
 
-    rows.push(...(await readRowsFromWorkbook('secondary_rental.xlsx', 'Лист 1', {
+    rows.push(...(await readRowsFromCsv('secondary.csv', {
       dealType: 'Secondary', dateCol: 1, brokerCol: 3, partnerCol: 4, gmvCol: 6, grossCol: 8, netCol: 15, sourceCol: 16,
     })));
 
-    rows.push(...(await readRowsFromWorkbook('secondary_rental.xlsx', 'Лист 2', {
+    rows.push(...(await readRowsFromCsv('rental.csv', {
       dealType: 'Rental', dateCol: 1, brokerCol: 3, partnerCol: 4, gmvCol: 6, grossCol: 8, netCol: 15, sourceCol: 16, skipRows: 2,
     })));
 
-    rows.push(...(await readRowsFromWorkbook('support.xlsx', 0, {
+    rows.push(...(await readRowsFromCsv('support.csv', {
       dealType: 'Support', dateCol: 1, brokerCol: 6, partnerCol: 4, gmvCol: 7, grossCol: 9, netCol: 14, fixedSource: 'Support',
     })));
 
