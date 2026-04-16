@@ -32,7 +32,29 @@ import {
   User,
 } from 'lucide-react';
 import Select from 'react-select';
+import {
+  FACEBOOK_COLUMNS_MAIN,
+  MARKETING_COLUMNS,
+  RED_COLUMNS_GEO,
+  RED_COLUMNS_MAIN,
+  WEBSITE_COLUMNS,
+} from '@/components/dashboard/columns';
+import { NAVIGATION_SECTIONS } from '@/lib/navigation';
+import {
+  formatDurationSeconds,
+  formatMoney,
+  formatNumber,
+  formatPercentRatio,
+} from '@/lib/formatters';
 import styles from './DashboardPage.module.css';
+
+export {
+  FACEBOOK_COLUMNS_MAIN,
+  MARKETING_COLUMNS,
+  RED_COLUMNS_GEO,
+  RED_COLUMNS_MAIN,
+  WEBSITE_COLUMNS,
+} from '@/components/dashboard/columns';
 
 type Currency = 'aed' | 'usd';
 type ThemeMode = 'night' | 'light';
@@ -108,112 +130,6 @@ const RED_DRILLDOWN_GROUPS: Array<{ id: 'level_1' | 'level_2' | 'level_3'; label
 const SPECIAL_DRILLDOWN_CHANNELS = new Set<ChannelName>(['Facebook / Target Point'] as any[]);
 const OTHER_FALLBACK_LABEL = 'Без названия сделки';
 const OTHER_FALLBACK_HINT = 'Записи без заполненного названия сделки (level_1)';
-
-const SIDEBAR_SECTIONS = [
-  {
-    title: 'Маркетинг',
-    items: [
-      { label: 'Marketing', icon: Megaphone, href: '/marketing' },
-      { label: 'RED', icon: Zap, href: '/red' },
-      { label: 'Facebook_Target point', icon: Facebook, href: '/facebook' },
-      { label: 'Website', icon: Globe, href: '/website' },
-      { label: 'Property Finder', icon: FileText, href: '/property-finder' },
-    ],
-  },
-  {
-    title: 'Отдел продаж',
-    items: [
-      { label: 'Обзор', icon: BarChart3, href: '/sales' },
-      { label: 'Направления', icon: Compass, href: '/sales/directions' },
-      { label: 'План/Факт', icon: Target, href: '/sales/plan-fact' },
-      { label: 'Брокеры', icon: User, href: '/sales/brokers' },
-    ],
-  },
-  {
-    title: 'Партнеры',
-    items: [
-      { label: 'Партнеры', icon: Users, href: '/partners' },
-    ],
-  },
-] as const;
-
-export const MARKETING_COLUMNS: Array<{ key: string; label: string }> = [
-  { key: 'channel', label: 'Channel' },
-  { key: 'budget', label: 'Budget' },
-  { key: 'leads', label: 'Leads' },
-  { key: 'cpl', label: 'CPL' },
-  { key: 'no_answer_spam', label: 'No answer / Spam' },
-  { key: 'rate_answer', label: '% rate answer' },
-  { key: 'qualified_leads', label: 'Qualified Leads' },
-  { key: 'cost_per_qualified_leads', label: 'Cost PerQualified Leads' },
-  { key: 'cr_ql', label: 'CR QL' },
-  { key: 'ql_actual', label: 'QL Actual' },
-  { key: 'cpql_actual', label: 'CPQL_Actual' },
-  { key: 'meetings', label: 'Meetings' },
-  { key: 'cp_meetings', label: 'CP Meetings' },
-  { key: 'deals', label: 'Deals' },
-  { key: 'cost_per_deal', label: 'Cost Per Deal' },
-  { key: 'revenue', label: 'Revenue' },
-  { key: 'roi', label: 'ROI' },
-  { key: 'company_revenue', label: 'Company revenue' },
-];
-
-export const RED_COLUMNS_MAIN: Array<{ key: string; label: string }> = [
-  { key: 'channel', label: 'Channel' },
-  { key: 'budget', label: 'Budget' },
-  { key: 'leads', label: 'Leads' },
-  { key: 'cpl', label: 'CPL' },
-  { key: 'no_answer_spam', label: 'No answer / Spam' },
-  { key: 'rate_answer', label: '% rate answer' },
-  { key: 'qualified_leads', label: 'Qualified Leads' },
-  { key: 'cost_per_qualified_leads', label: 'Cost PerQualified Leads' },
-  { key: 'ql_actual', label: 'QL Actual' },
-  { key: 'cpql_actual', label: 'CPQL_Actual' },
-  { key: 'meetings', label: 'Meetings' },
-  { key: 'cp_meetings', label: 'CP Meetings' },
-  { key: 'deals', label: 'Deals' },
-  { key: 'cost_per_deal', label: 'Cost Per Deal' },
-  { key: 'revenue', label: 'Revenue' },
-  { key: 'roi', label: 'ROI' },
-  { key: 'company_revenue', label: 'Company revenue' },
-];
-
-export const RED_COLUMNS_GEO: Array<{ key: string; label: string }> = [
-  { key: 'channel', label: 'Источник' },
-  { key: 'leads', label: 'Leads' },
-  { key: 'no_answer_spam', label: 'No answer / Spam' },
-  { key: 'rate_answer', label: '% rate answer' },
-  { key: 'qualified_leads', label: 'Qualified Leads' },
-  { key: 'cr_ql', label: 'CR QL' },
-  { key: 'ql_actual', label: 'QL Actual' },
-  { key: 'meetings', label: 'Meetings' },
-  { key: 'deals', label: 'Deals' },
-  { key: 'revenue', label: 'Revenue' },
-];
-
-
-export const WEBSITE_COLUMNS: Array<{ key: string; label: string }> = [
-  { key: 'channel', label: 'Группировка / UTM Source / Канал' },
-  { key: 'impressions', label: 'Показы (Impressions)' },
-  { key: 'clicks', label: 'Клики (Clicks)' },
-  { key: 'ctr', label: 'CTR' },
-  { key: 'ad_cost', label: 'Стоимость РК (Ad Cost)' },
-  { key: 'sessions', label: 'Сессии (Sessions)' },
-  { key: 'bounce_rate', label: 'Показатель отказов (Bounce Rate)' },
-  { key: 'avg_duration', label: 'Средняя длительность сессии (Avg. Session Duration)' },
-  { key: 'cr_lead', label: 'Конверсия в Лид (CR Lead)' },
-  { key: 'leads_crm', label: 'Лиды CRM' },
-  { key: 'leads_wa', label: 'Лиды с WhatsApp/Формы' },
-  { key: 'no_answer_spam', label: 'No Answer / Spam' },
-  { key: 'rate_answer', label: '% Rate Answer' },
-  { key: 'qualified_leads', label: 'Квалифицированные Лиды (QL)' },
-  { key: 'cr_ql_web', label: 'CR QL (QL/Лиды CRM)' },
-  { key: 'meetings', label: 'Встречи (Meetings)' },
-  { key: 'deals', label: 'Сделки (Deals)' },
-  { key: 'cpql_web', label: 'Cost Per Qualified Lead (CPQL)' },
-  { key: 'revenue', label: 'Revenue' },
-  { key: 'roi', label: 'ROI' },
-];
 
 const EMPTY_ROW = (channel: string, sort_order: number): Row => ({
   channel,
@@ -332,31 +248,12 @@ function pickRedRowsByLevel(groupId: 'level_1' | 'level_2' | 'level_3', rows: Ro
   return rows;
 }
 
-function money(value: number, currency: Currency) {
-  const symbol = currency === 'usd' ? '$' : 'AED';
-  return `${symbol} ${Math.round(value || 0).toLocaleString('en-US')}`;
-}
-
-function num(value: number) {
-  return Math.round(value || 0).toLocaleString('en-US');
-}
-
-function pct(value: number, decimals = 1) {
-  return `${((value || 0) * 100).toFixed(decimals)}%`;
-}
-
-function time(seconds: number) {
-  const m = Math.floor(seconds / 60);
-  const s = Math.round(seconds % 60);
-  return `${m}m ${s}s`;
-}
-
 function renderValue(val: any, type: 'money' | 'num' | 'pct' | 'date' | 'time', currency?: Currency, decimals?: number) {
   const isZero = val === 0 || val === '0' || val === '0.0%' || val === '-' || val === 'AED 0' || val === '$ 0';
-  const display = type === 'money' ? money(val, currency!) : 
-                  type === 'num' ? num(val) : 
-                  type === 'pct' ? pct(val, decimals) : 
-                  type === 'time' ? time(val) : val;
+  const display = type === 'money' ? formatMoney(val, currency) : 
+                  type === 'num' ? formatNumber(val) : 
+                  type === 'pct' ? formatPercentRatio(val, decimals) : 
+                  type === 'time' ? formatDurationSeconds(val) : val;
   
   if (isZero || !val || val === 0) {
     return <span className={styles.dimmed}>{display}</span>;
@@ -456,12 +353,31 @@ export default function DashboardPage({
   const MAX_CHANNEL_WIDTH = 620;
 
   const today = new Date().toISOString().slice(0, 10);
-  const [currency, setCurrency] = useState<Currency>('aed');
-  const [startDate, setStartDate] = useState('2024-01-01');
-  const [endDate, setEndDate] = useState(today);
-  const [draftStartDate, setDraftStartDate] = useState('2024-01-01');
-  const [draftEndDate, setDraftEndDate] = useState(today);
-  const [sourceFilter, setSourceFilter] = useState<SourceFilter>(initialSourceFilter);
+
+  const [currency, setCurrency] = useState<Currency>(() => {
+    if (isNested) return 'aed';
+    try { return (localStorage.getItem('dashboard-currency') as Currency) || 'aed'; } catch { return 'aed'; }
+  });
+  const [startDate, setStartDate] = useState(() => {
+    if (isNested) return '2024-01-01';
+    try { return localStorage.getItem('dashboard-startDate') || '2024-01-01'; } catch { return '2024-01-01'; }
+  });
+  const [endDate, setEndDate] = useState(() => {
+    if (isNested) return today;
+    try { return localStorage.getItem('dashboard-endDate') || today; } catch { return today; }
+  });
+  const [draftStartDate, setDraftStartDate] = useState(() => {
+    if (isNested) return '2024-01-01';
+    try { return localStorage.getItem('dashboard-startDate') || '2024-01-01'; } catch { return '2024-01-01'; }
+  });
+  const [draftEndDate, setDraftEndDate] = useState(() => {
+    if (isNested) return today;
+    try { return localStorage.getItem('dashboard-endDate') || today; } catch { return today; }
+  });
+  const [sourceFilter, setSourceFilter] = useState<SourceFilter>(() => {
+    if (isNested) return initialSourceFilter;
+    try { return (localStorage.getItem('dashboard-sourceFilter') as SourceFilter) || initialSourceFilter; } catch { return initialSourceFilter; }
+  });
   const [expanded, setExpanded] = useState<Record<string, boolean>>(() => {
     const obj: Record<string, boolean> = {};
     if (initialExpanded && Array.isArray(initialExpanded)) {
@@ -529,12 +445,12 @@ export default function DashboardPage({
   }, [isNested]);
 
   const filteredSidebarSections = useMemo(() => {
-    if (!user) return SIDEBAR_SECTIONS;
+    if (!user) return NAVIGATION_SECTIONS;
     
     // If partner, hide Marketing and force Partners to go to their specific page
     if (user.role === 'partner') {
         const pId = user.partnerId || 'klykov';
-        return SIDEBAR_SECTIONS
+        return NAVIGATION_SECTIONS
             .filter(section => section.title !== 'Маркетинг')
             .map(section => {
                 if (section.title === 'Партнеры') {
@@ -550,7 +466,7 @@ export default function DashboardPage({
             });
     }
     
-    return SIDEBAR_SECTIONS;
+    return NAVIGATION_SECTIONS;
   }, [user]);
 
   const suppressRowToggleRef = useRef(false);
@@ -646,6 +562,24 @@ export default function DashboardPage({
 
   useEffect(() => {
     if (isNested) return;
+    try {
+      localStorage.setItem('dashboard-startDate', startDate);
+      localStorage.setItem('dashboard-endDate', endDate);
+    } catch {}
+  }, [startDate, endDate, isNested]);
+
+  useEffect(() => {
+    if (isNested) return;
+    try { localStorage.setItem('dashboard-currency', currency); } catch {}
+  }, [currency, isNested]);
+
+  useEffect(() => {
+    if (isNested) return;
+    try { localStorage.setItem('dashboard-sourceFilter', sourceFilter); } catch {}
+  }, [sourceFilter, isNested]);
+
+  useEffect(() => {
+    if (isNested) return;
     document.documentElement.setAttribute('data-dashboard-theme', themeMode);
     document.body.setAttribute('data-dashboard-theme', themeMode);
 
@@ -694,24 +628,46 @@ export default function DashboardPage({
       setSelectionAnchor(null);
       setTimeout(() => {
         suppressRowToggleRef.current = false;
-      }, 0);
+      }, 50); // Increased slightly for safer row toggle suppression
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setSelectedCells(new Set());
+        setOpenDateDropdown(null);
+      }
     };
 
     window.addEventListener('mouseup', stopSelection);
-    return () => window.removeEventListener('mouseup', stopSelection);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('mouseup', stopSelection);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   useEffect(() => {
     const onDocumentMouseDown = (event: MouseEvent) => {
-      if (!openDateDropdown) return;
       const target = event.target as Node;
-      if (dateDropdownsRef.current?.contains(target)) return;
-      setOpenDateDropdown(null);
+
+      // 1. Handle date dropdowns
+      if (openDateDropdown) {
+        if (!dateDropdownsRef.current?.contains(target)) {
+          setOpenDateDropdown(null);
+        }
+      }
+
+      // 2. Handle cell selection clearing
+      // If we are NOT clicking a cell (td or its children), clear selection
+      const isCell = (target instanceof HTMLElement && target.closest('td'));
+      if (!isCell && selectedCells.size > 0) {
+        setSelectedCells(new Set());
+      }
     };
 
     document.addEventListener('mousedown', onDocumentMouseDown);
     return () => document.removeEventListener('mousedown', onDocumentMouseDown);
-  }, [openDateDropdown]);
+  }, [openDateDropdown, selectedCells.size]);
 
   useEffect(() => {
     if (!isResizingChannel) return;
@@ -1058,7 +1014,7 @@ export default function DashboardPage({
 
   function handleCellMouseDown(event: React.MouseEvent<HTMLTableCellElement>, rowIndex: number, colIndex: number) {
     event.preventDefault();
-    event.stopPropagation();
+    // Removed stopPropagation to allow document-level click handlers (like closing dropdowns) to trigger
     suppressRowToggleRef.current = true;
     const anchor = { rowIndex, colIndex };
     setSelectionAnchor(anchor);
@@ -1413,12 +1369,12 @@ export default function DashboardPage({
                     if (col.key === 'roi') {
                         const roiVal = Number(val) || 0;
                         const colorClass = roiVal >= 1 ? styles.roiPositive : styles.roiNegative;
-                        const content = pct(val);
+                        const content = formatPercentRatio(val);
                         return <span className={roiVal === 0 ? styles.dimmed : colorClass}>{content}</span>;
                     }
                     if (col.key === 'company_revenue') {
-                        if (val === null || val === undefined || val === 0) return <span className={styles.dimmed}>{val === 0 ? money(0, currency) : 'uncertain'}</span>;
-                        return money(val, currency);
+                        if (val === null || val === undefined || val === 0) return <span className={styles.dimmed}>{val === 0 ? formatMoney(0, currency) : 'uncertain'}</span>;
+                        return formatMoney(val, currency);
                     }
                     // Website Cols
                     if (col.key === 'impressions') return renderValue(val, 'num');

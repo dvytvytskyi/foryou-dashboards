@@ -10,6 +10,7 @@ import {
   Phone,
   Loader
 } from 'lucide-react';
+import { formatCompactNumber, formatPercent } from '@/lib/formatters';
 
 interface BrokersUIProps {
   selectedBroker: { value: string; label: string; id: number } | null;
@@ -108,21 +109,10 @@ function PlanProgress({ actual, plan, label = 'ВЫПОЛНЕНИЕ' }: { actual
   );
 }
 
-function formatNumber(n: number): string {
-  if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
-  if (n >= 1000) return (n / 1000).toFixed(0) + 'K';
-  return String(Math.round(n));
-}
-
 function formatDate(unix: number): string {
   if (!unix) return '-';
   const date = new Date(unix * 1000);
   return date.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: '2-digit' });
-}
-
-function formatPercent(value: number, digits: number = 2): string {
-  if (!Number.isFinite(value)) return '-';
-  return `${value.toFixed(digits)}%`;
 }
 
 function comparisonPercent(current: number, previous: number): number {
@@ -236,7 +226,7 @@ export default function BrokersUI({ selectedBroker, startDate, endDate }: Broker
         </div>
         <div className={styles.kpiCard}>
           <div className={styles.kpiLabel}>ВЫРУЧКА (ПЛАН / ФАКТ)</div>
-          <div className={styles.kpiValue}>{formatNumber(metrics.totals.revenue)} <span style={{ color: 'var(--muted)', fontSize: '14px' }}>/ {formatNumber(metrics.plan.revenue)} AED</span></div>
+          <div className={styles.kpiValue}>{formatCompactNumber(metrics.totals.revenue)} <span style={{ color: 'var(--muted)', fontSize: '14px' }}>/ {formatCompactNumber(metrics.plan.revenue)} AED</span></div>
           <PlanProgress actual={metrics.totals.revenue} plan={metrics.plan.revenue} />
         </div>
         <div className={styles.kpiCard}>

@@ -117,10 +117,19 @@ export default function KlykovKanban() {
           return (
             <div key={col.id} className={styles.column}>
               <div className={styles.columnHeader}>
-                <div className={styles.columnTitle}>{col.name}</div>
-                <div className={styles.columnStats}>
-                  {colLeads.length + ' сделок • ' + formatPrice(totalSum)}
-                </div>
+                {loading ? (
+                  <>
+                    <div className={styles.skeletonTitle} style={{ width: '60%', height: 20, background: 'var(--line)', borderRadius: 4 }} />
+                    <div className={styles.skeletonStats} style={{ width: '40%', height: 14, background: 'var(--line)', borderRadius: 4, marginTop: 8 }} />
+                  </>
+                ) : (
+                  <>
+                    <div className={styles.columnTitle}>{col.name}</div>
+                    <div className={styles.columnStats}>
+                      {colLeads.length + ' сделок • ' + formatPrice(totalSum)}
+                    </div>
+                  </>
+                )}
               </div>
               
               <div className={styles.cardsList}>

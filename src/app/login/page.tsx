@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getPartnerHomePath } from '@/lib/partners';
 import styles from './login.module.css';
 
 export default function LoginPage() {
@@ -30,8 +31,8 @@ export default function LoginPage() {
         throw new Error(data.error || 'Login failed');
       }
 
-      if (data.user.partnerId === 'klykov') {
-        router.push('/partners/klykov');
+      if (data.user.partnerId) {
+        router.push(getPartnerHomePath(data.user.partnerId));
       } else {
         router.push('/marketing');
       }

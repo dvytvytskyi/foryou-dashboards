@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import styles from '../sales.module.css';
 import { ChevronDown, ChevronRight } from 'lucide-react';
+import { formatNumber, formatPercent } from '@/lib/formatters';
 
 type KpiRow = {
   label: string;
@@ -87,10 +88,6 @@ function PlanProgress({ actual, plan }: { actual: number; plan: number }) {
   );
 }
 
-function pct(value: number) {
-  return `${value.toFixed(1)}%`;
-}
-
 function growth(current: number, prev: number) {
   if (!prev) return current > 0 ? 100 : 0;
   return ((current - prev) / prev) * 100;
@@ -99,10 +96,6 @@ function growth(current: number, prev: number) {
 function calcRate(part: number, total: number) {
   if (!total) return 0;
   return (part / total) * 100;
-}
-
-function formatNum(n: number) {
-  return Math.round(n).toLocaleString();
 }
 
 function PlanFactSkeleton() {
@@ -196,10 +189,10 @@ export default function PlanFactUI({ startDate, endDate }: { startDate: string; 
           <div key={k.label} className={styles.kpiCard}>
             <div className={styles.kpiLabel}>{k.label}</div>
             <div className={styles.kpiValue}>
-              {formatNum(k.actual)}
+              {formatNumber(k.actual)}
               {k.suffix}
               <span style={{ color: 'var(--muted)', fontSize: '14px', marginLeft: '6px', fontWeight: 400 }}>
-                / {formatNum(k.plan)}
+                / {formatNumber(k.plan)}
                 {k.suffix}
               </span>
             </div>
@@ -304,9 +297,9 @@ export default function PlanFactUI({ startDate, endDate }: { startDate: string; 
                           <td>—</td>
                           <td>—</td>
                           <td style={{ color: 'var(--white-soft)', fontWeight: 600 }}>{b.ql}</td>
-                          <td>{pct(calcRate(b.ql, b.received))}</td>
+                          <td>{formatPercent(calcRate(b.ql, b.received))}</td>
                           <td>{b.showings}</td>
-                          <td>{pct(calcRate(b.showings, b.received))}</td>
+                          <td>{formatPercent(calcRate(b.showings, b.received))}</td>
                           <td>{b.deals}</td>
 
                           <td className={styles.group2Cell}>{b.activeTotal}</td>
@@ -324,9 +317,9 @@ export default function PlanFactUI({ startDate, endDate }: { startDate: string; 
                           <td className={styles.group3Cell} style={{ color: 'var(--white-soft)', fontWeight: 600 }}>
                             {b.allQl}
                           </td>
-                          <td className={styles.group3Cell}>{pct(calcRate(b.allQl, b.allTotal))}</td>
+                          <td className={styles.group3Cell}>{formatPercent(calcRate(b.allQl, b.allTotal))}</td>
                           <td className={styles.group3Cell}>{b.allShowings}</td>
-                          <td className={styles.group3Cell}>{pct(calcRate(b.allShowings, b.allTotal))}</td>
+                          <td className={styles.group3Cell}>{formatPercent(calcRate(b.allShowings, b.allTotal))}</td>
                           <td className={styles.group3Cell} style={{ fontWeight: 700, color: 'var(--white-soft)' }}>
                             {b.allDeals}
                           </td>
@@ -360,9 +353,9 @@ export default function PlanFactUI({ startDate, endDate }: { startDate: string; 
                                 <td>—</td>
                                 <td>—</td>
                                 <td>{s.ql}</td>
-                                <td>{pct(calcRate(s.ql, s.received))}</td>
+                                <td>{formatPercent(calcRate(s.ql, s.received))}</td>
                                 <td>{s.showings}</td>
-                                <td>{pct(calcRate(s.showings, s.received))}</td>
+                                <td>{formatPercent(calcRate(s.showings, s.received))}</td>
                                 <td>{s.deals}</td>
 
                                 <td className={styles.group2Cell}>{s.activeTotal}</td>
@@ -374,9 +367,9 @@ export default function PlanFactUI({ startDate, endDate }: { startDate: string; 
                                 <td className={styles.group3Cell}>{s.allTotal}</td>
                                 <td className={styles.group3Cell}>{s.allLost}</td>
                                 <td className={styles.group3Cell}>{s.allQl}</td>
-                                <td className={styles.group3Cell}>{pct(calcRate(s.allQl, s.allTotal))}</td>
+                                <td className={styles.group3Cell}>{formatPercent(calcRate(s.allQl, s.allTotal))}</td>
                                 <td className={styles.group3Cell}>{s.allShowings}</td>
-                                <td className={styles.group3Cell}>{pct(calcRate(s.allShowings, s.allTotal))}</td>
+                                <td className={styles.group3Cell}>{formatPercent(calcRate(s.allShowings, s.allTotal))}</td>
                                 <td className={styles.group3Cell}>{s.allDeals}</td>
                               </tr>
                             );

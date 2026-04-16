@@ -3,41 +3,8 @@
 
 import React from 'react';
 import DashboardPage from '@/components/DashboardPage';
+import { PARTNER_CARDS } from '@/lib/partners';
 import styles from './partners.module.css';
-import { User, ShieldCheck, Zap } from 'lucide-react';
-
-const PARTNERS = [
-  {
-    id: 'klykov',
-    name: 'Klykov',
-    leads: '1,245',
-    deals: '42',
-    revenue: 'AED 450,000',
-    type: 'amoCRM Integration',
-    status: 'Active',
-    icon: User
-  },
-  {
-    id: 'red',
-    name: 'RED',
-    leads: '5,824',
-    deals: '124',
-    revenue: 'AED 1,240,541',
-    type: 'External Agency',
-    status: 'Active',
-    icon: Zap
-  },
-  {
-    id: 'target-point',
-    name: 'Target Point',
-    leads: '850',
-    deals: '15',
-    revenue: 'AED 180,000',
-    type: 'Facebook / Target',
-    status: 'Active',
-    icon: ShieldCheck
-  }
-];
 
 export default function PartnersPage() {
   return (
@@ -49,17 +16,10 @@ export default function PartnersPage() {
     >
       <div className={styles.container}>
         <div className={styles.grid}>
-          {PARTNERS.map(partner => {
+          {PARTNER_CARDS.map(partner => {
             const Icon = partner.icon;
-            const handleClick = () => {
-              if (partner.id === 'klykov') {
-                window.location.href = '/partners/klykov';
-              } else {
-                alert('Coming soon...');
-              }
-            };
             return (
-              <div key={partner.id} className={styles.card} onClick={handleClick}>
+              <div key={partner.id} className={styles.card} onClick={() => { window.location.href = partner.route; }}>
                 <div className={styles.status + ' ' + styles.statusActive}>
                   {partner.status}
                 </div>

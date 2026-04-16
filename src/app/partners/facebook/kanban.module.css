@@ -1,0 +1,179 @@
+
+.scoreboard {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.scoreCard {
+  background: #ffffff;
+  border: 1px solid #eef2f6;
+  border-radius: 16px;
+  padding: 20px;
+  flex: 1;
+  box-shadow: 0 4px 20px -10px rgba(0, 0, 0, 0.04);
+}
+
+.scoreLabel {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.scoreValue {
+  color: #1e293b;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.kanbanWrapper {
+  padding: 24px;
+  overflow-x: auto;
+  height: calc(100vh - 80px);
+  display: flex;
+  gap: 8px; /* Even smaller gap between columns */
+  background: var(--bg-0);
+}
+
+.column {
+  min-width: 280px;
+  max-width: 280px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.columnHeader {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 8px; /* Tighter padding */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center text */
+  justify-content: center;
+  gap: 2px; /* Tighter gap */
+  margin-bottom: 12px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+/* Yellow lines removed as requested */
+.columnHeader::after {
+  display: none;
+}
+
+.columnTitle {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.columnStats {
+  font-size: 10px; /* Smaller stats */
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.cardsList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px; /* Even smaller gap between cards */
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 4px;
+}
+
+.cardsList::-webkit-scrollbar {
+  width: 2px;
+}
+.cardsList::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 10px;
+  opacity: 0.5;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  border-color: var(--accent);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px; /* Smaller header text */
+}
+
+.cardTime {
+  color: var(--muted);
+}
+
+.cardResponsible {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.cardTitle {
+  font-size: 13px; /* Slightly smaller title */
+  font-weight: 700;
+  color: var(--white-soft);
+  line-height: 1.3;
+}
+
+.cardMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.badge {
+  background: var(--row-total-bg);
+  color: var(--row-total-text);
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 9px;
+  font-weight: 600;
+  border: 1px solid var(--row-total-border);
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2px;
+  padding-top: 6px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.cardPhone {
+  font-size: 11px;
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+.sourceBadge {
+  font-size: 9px;
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+.skeletonCard {
+  height: 80px;
+  background: var(--skeleton-base);
+  border-radius: 10px;
+}

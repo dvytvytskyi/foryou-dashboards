@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './Scoreboard.module.css';
 import { Info } from 'lucide-react';
+import { formatMoney } from '@/lib/formatters';
 
 export type ScoreboardData = {
   ql: number;
@@ -12,10 +13,6 @@ export type ScoreboardData = {
   spendDeltaPct: number;
   revenueDeltaPct: number;
 };
-
-function formatMoney(value: number) {
-  return `AED ${Math.round(value || 0).toLocaleString('en-US')}`;
-}
 
 export default function Scoreboard({ data }: { data: ScoreboardData }) {
   const cards = [

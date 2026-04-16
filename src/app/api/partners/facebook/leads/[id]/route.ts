@@ -65,7 +65,7 @@ export async function GET(_request: Request, props: { params: Promise<{ id: stri
             fetch(`${baseUrl}/api/v4/companies/${comp.id}`, { headers }).then(r => safeJson(r, null))
         );
 
-        const [contactsDataArray, companiesDataArray] = await Promise.all([
+        const [contactsData, companiesData] = await Promise.all([
             Promise.all(contactsPromises),
             Promise.all(companiesPromises)
         ]);
@@ -80,8 +80,8 @@ export async function GET(_request: Request, props: { params: Promise<{ id: stri
             success: true, 
             data: {
                 lead: leadData,
-                contacts: contactsDataArray.filter(Boolean),
-                companies: companiesDataArray.filter(Boolean),
+                contacts: contactsData.filter(Boolean),
+                companies: companiesData.filter(Boolean),
                 files: allFiles,
                 tasks: tasksData._embedded?.tasks || [],
                 history: notesData._embedded?.notes || []
