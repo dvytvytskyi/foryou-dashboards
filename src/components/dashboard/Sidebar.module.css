@@ -1,91 +1,182 @@
 .sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 286px;
-  min-height: 100vh;
-  border: 0;
+  width: 260px;
+  height: 100vh;
+  background: var(--panel);
   border-right: 1px solid var(--line);
-  background: var(--surface-strong);
   display: flex;
   flex-direction: column;
-  z-index: 40;
-  transition: width 0.22s ease, flex-basis 0.22s ease;
+  transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-.sidebarCompact {
-  width: 78px;
-  flex-basis: 78px;
+
+/* User Profile Section */
+.sidebarProfile {
+  padding: 12px 12px 0; /* No bottom padding here */
+  margin-bottom: 0;
 }
 
-.sidebarTop {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--line);
-  padding: 10px 10px;
-  min-height: 56px;
-}
-
-.sidebarMainTitle {
-  color: var(--white-soft);
-  font-size: 12px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.sidebarToggle {
-  width: 34px;
-  height: 34px;
-  border: 1px solid var(--line);
-  background: var(--surface-strong);
-  color: var(--text);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.sidebarToggle:hover {
-  color: var(--white-soft);
-  background: var(--row-hover);
-}
-
-.sidebarNav {
-  overflow-y: auto;
-  padding: 12px 8px 14px;
-}
-
-.sidebarBottom {
-  margin-top: auto;
-  padding: 10px 8px 30px;
-}
-
-.sidebarSection {
-  margin-bottom: 18px;
-}
-
-.sidebarSectionTitle {
-  color: var(--section-title);
-  font-size: 13px;
-  line-height: 1.25;
-  margin: 0 8px 8px;
-}
-
-.sidebarItem {
-  width: 100%;
-  border: 1px solid transparent;
-  background: transparent;
-  color: var(--section-title);
-  min-height: 42px;
-  padding: 0 10px;
+.profileCard {
   display: flex;
   align-items: center;
   gap: 10px;
-  text-align: left;
+  padding: 6px 10px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
   cursor: pointer;
-  transition: color 0.2s, background-color 0.2s;
+  transition: all 0.2s;
+  height: 44px;
+}
+
+.profileCard:hover {
+  background: var(--row-hover);
+  border-color: var(--line-soft);
+}
+
+.profileAvatar {
+  width: 28px;
+  height: 28px;
+  background: var(--panel);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.profileAvatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profileInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.profileName {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--white-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.profileRole {
+  font-size: 10px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+/* Search Section */
+.sidebarSearch {
+  padding: 16px 12px 12px; /* Increased top padding to 16px */
+}
+
+.searchWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 10px;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  height: 30px;
+  padding: 0 10px 0 32px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--white-soft);
+  font-size: 12px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.searchInput:focus {
+  border-color: var(--line-soft);
+}
+
+.searchShortcut {
+  position: absolute;
+  right: 8px;
+  font-size: 9px;
+  color: var(--muted);
+  background: var(--panel);
+  padding: 1px 3px;
+  border-radius: 3px;
+  border: 1px solid var(--line);
+  pointer-events: none;
+}
+
+/* Navigation Section */
+.sidebarNav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebarSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebarSectionTitle {
+  padding: 0 10px;
+  margin-bottom: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.sidebarItems {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.sidebarItem {
+  height: 30px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.15s;
+  text-align: left;
 }
 
 .sidebarItem:hover {
@@ -94,33 +185,33 @@
 }
 
 .sidebarItemActive {
-  color: var(--white-soft) !important;
+  background: var(--panel-2);
+  color: var(--white-soft);
+  font-weight: 700;
 }
 
 .sidebarItemIcon {
-  width: 22px;
-  display: inline-flex;
-  justify-content: center;
+  display: flex;
   align-items: center;
-  color: inherit;
+  justify-content: center;
+  color: var(--muted);
+  min-width: 16px;
+}
+
+.sidebarItemActive .sidebarItemIcon {
+  color: var(--white-soft);
 }
 
 .sidebarItemLabel {
-  font-size: 16px;
-  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Compact overrides */
-.sidebarCompact .sidebarTop {
-  justify-content: center;
+/* Bottom Actions */
+.sidebarBottom {
+  padding: 12px 8px;
+  border-top: 1px solid var(--line);
+  margin-top: auto;
 }
 
-.sidebarCompact .sidebarNav {
-  padding-left: 6px;
-  padding-right: 6px;
-}
-
-.sidebarCompact .sidebarItem {
-  justify-content: center;
-  padding: 0;
-}

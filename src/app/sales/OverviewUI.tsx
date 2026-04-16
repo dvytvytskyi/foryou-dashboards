@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from './sales.module.css';
-import { ArrowUpRight, ArrowDownRight, Info, User, Search, X, Filter } from 'lucide-react';
+import { ArrowUpRight, ArrowDownRight, Info, User, Search, X, Filter, PieChart, Trophy, TrendingUp, HeartHandshake, Briefcase } from 'lucide-react';
 
 const formatNum = (v: number) => v.toLocaleString();
 const formatMoney = (v: number) => Math.round(v).toLocaleString();
@@ -124,20 +124,21 @@ export function DealsModal({ isOpen, onClose, deals, highlightMetric }: { isOpen
             <tbody>
               {filtered.map((d, i) => (
                 <tr key={d.id}>
-                  <td style={{ ...getColStyle('COUNT'), whiteSpace: 'nowrap' }}>{d.date}</td>
-                  <td style={{ ...getColStyle('COUNT'), fontWeight: 600 }}>{d.broker}</td>
+                  <td style={{ whiteSpace: 'nowrap' }}>{d.date}</td>
+                  <td style={{ fontWeight: 600 }}>{d.broker}</td>
                   <td style={{ color: 'var(--muted)', fontSize: '11px' }}>{d.info}</td>
                   <td>
                     <span className={styles.typeBadge} style={{ 
-                      backgroundColor: d.type === 'Offplan' ? 'rgba(255,255,255,0.1)' : 'rgba(128,128,128,0.1)',
+                      backgroundColor: 'var(--bg-0)',
+                      border: '1px solid var(--line)',
                       color: 'var(--white-soft)'
                     }}>
                       {d.type}
                     </span>
                   </td>
-                  <td className={styles.numCell} style={getColStyle('GMV')}>{formatMoney(d.gmv)}</td>
-                  <td className={styles.numCell} style={getColStyle('GROSS')}>{formatMoney(d.gross)}</td>
-                  <td className={styles.numCell} style={{ ...getColStyle('NET'), color: 'var(--accent)', fontWeight: 700 }}>{formatMoney(d.net)}</td>
+                  <td className={styles.numCell}>{formatMoney(d.gmv)}</td>
+                  <td className={styles.numCell}>{formatMoney(d.gross)}</td>
+                  <td className={styles.numCell} style={{ color: 'var(--accent)', fontWeight: 700 }}>{formatMoney(d.net)}</td>
                 </tr>
               ))}
             </tbody>
@@ -162,9 +163,14 @@ export function DealTypeStackedBar({ data }: { data: any[] }) {
   const totalDeals = types.reduce((acc, t) => acc + (t.rawCount || 0), 0);
 
   return (
-    <div className={styles.section}>
-      <div className={styles.sectionTitle}>Распределение по типам</div>
-      <div className={styles.distributionContainer}>
+    <div className={styles.section} style={{ padding: 0 }}>
+      <div className={styles.sectionTitle} style={{ padding: '14px 18px', borderBottom: '1px solid var(--line)', marginBottom: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <PieChart size={14} />
+          <span>Распределение по типам</span>
+        </div>
+      </div>
+      <div className={styles.distributionContainer} style={{ padding: '18px' }}>
         <div className={styles.donutWrapper}>
           <div className={styles.donut} style={{ background: `conic-gradient(${gradientParts})` }}>
             <div className={styles.donutCenter}>
@@ -196,25 +202,36 @@ export function DepartmentBreakdown({ data }: { data: any[] }) {
   const maxVal = Math.max(...depts.map(d => d.value), 1);
 
   return (
-    <div className={styles.section}>
-      <div className={styles.sectionTitle}>Доходность по источникам</div>
-      <div className={styles.deptListScroll}>
-        <div className={styles.deptList}>
-          {depts.map((d) => (
-            <div key={d.label} className={styles.barChartRow}>
-              <div className={styles.barChartHeader}>
-                <span className={styles.barChartLabel}>{d.label} <span style={{ color: 'var(--muted)', fontSize: '11px', marginLeft: '4px' }}>{d.share}%</span></span>
-                <span className={styles.barChartValue}>{formatMoney(d.value)} AED</span>
-              </div>
-              <div className={styles.barChartTrack}>
-                <div 
-                  className={styles.barChartFill} 
-                  style={{ width: `${(d.value / maxVal) * 100}%` }}
-                />
-              </div>
-            </div>
-          ))}
+    <div className={styles.section} style={{ padding: 0 }}>
+      <div className={styles.sectionTitle} style={{ padding: '14px 18px', borderBottom: '1px solid var(--line)', marginBottom: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <TrendingUp size={14} />
+          <span>Доходность по источникам</span>
         </div>
+      </div>
+      <div className={styles.deptListScroll} style={{ padding: '0 18px 18px 18px' }}>
+        <table className={styles.table} style={{ marginTop: '4px' }}>
+          <tbody>
+            {depts.map((d) => (
+              <tr key={d.label}>
+                <td style={{ border: 'none', padding: '10px 0' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                      <span className={styles.barChartLabel}>{d.label} <span style={{ color: 'var(--muted)', fontSize: '11px', marginLeft: '4px' }}>{d.share}%</span></span>
+                      <span className={styles.barChartValue}>{formatMoney(d.value)} AED</span>
+                    </div>
+                    <div className={styles.barChartTrack}>
+                      <div 
+                        className={styles.barChartFill} 
+                        style={{ width: `${(d.value / maxVal) * 100}%` }}
+                      />
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
@@ -223,9 +240,14 @@ export function DepartmentBreakdown({ data }: { data: any[] }) {
 export function SupportSection({ data }: { data: any[] }) {
   const managers = data && data.length > 0 ? data : [{ name: 'Крис', deals: 0, revenue: 0, color: '#6366f1' }, { name: 'Яна', deals: 0, revenue: 0, color: '#ec4899' }];
   return (
-    <div className={styles.section}>
-      <div className={styles.sectionTitle}>Сопровождение</div>
-      <div className={styles.supportGrid}>
+    <div className={styles.section} style={{ padding: 0 }}>
+      <div className={styles.sectionTitle} style={{ padding: '14px 18px', borderBottom: '1px solid var(--line)', marginBottom: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <HeartHandshake size={14} />
+          <span>Сопровождение</span>
+        </div>
+      </div>
+      <div className={styles.supportGrid} style={{ padding: '18px' }}>
         {managers.map((m) => (
           <div key={m.name} className={styles.supportCard}>
             <div className={styles.supportHeader}>
@@ -249,25 +271,36 @@ export function ProfitBarChart({ brokers }: { brokers: any[] }) {
   const maxProfit = Math.max(...sorted.map((b) => b.net_profit || 0), 1);
   
   return (
-    <div className={styles.section}>
-      <div className={styles.sectionTitle}>Top по чистому доходу</div>
-      <div className={styles.chartListScroll}>
-        <div className={styles.chartList}>
-          {sorted.slice(0, 15).map((b) => (
-            <div key={b.broker_name} className={styles.barChartRow}>
-              <div className={styles.barChartHeader}>
-                <span className={styles.barChartLabel}>{b.broker_name}</span>
-                <span className={styles.barChartValue}>{formatMoney(b.net_profit)} AED</span>
-              </div>
-              <div className={styles.barChartTrack}>
-                <div 
-                  className={styles.barChartFill} 
-                  style={{ width: `${(b.net_profit / maxProfit) * 100}%` }}
-                />
-              </div>
-            </div>
-          ))}
+    <div className={styles.section} style={{ padding: 0 }}>
+      <div className={styles.sectionTitle} style={{ padding: '14px 18px', borderBottom: '1px solid var(--line)', marginBottom: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Trophy size={14} />
+          <span>Top по чистому доходу</span>
         </div>
+      </div>
+      <div className={styles.chartListScroll} style={{ padding: '0 18px 18px 18px' }}>
+        <table className={styles.table} style={{ marginTop: '4px' }}>
+          <tbody>
+            {sorted.slice(0, 15).map((b) => (
+              <tr key={b.broker_name}>
+                <td style={{ border: 'none', padding: '10px 0' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                      <span className={styles.barChartLabel}>{b.broker_name}</span>
+                      <span className={styles.barChartValue}>{formatMoney(b.net_profit)} AED</span>
+                    </div>
+                    <div className={styles.barChartTrack}>
+                      <div 
+                        className={styles.barChartFill} 
+                        style={{ width: `${(b.net_profit / maxProfit) * 100}%` }}
+                      />
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
@@ -278,14 +311,18 @@ export function BrokerKpiTable({ brokers }: { brokers: any[] }) {
   const filtered = (brokers || []).filter(b => b.broker_name?.toLowerCase().includes(search.toLowerCase()));
 
   return (
-    <div className={styles.section}>
-      <div className={styles.sectionTitle}>KPI брокеров
+    <div className={styles.section} style={{ padding: 0 }}>
+      <div className={styles.sectionTitle} style={{ padding: '14px 18px', borderBottom: '1px solid var(--line)', marginBottom: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Briefcase size={14} />
+          <span>KPI брокеров</span>
+        </div>
         <div className={styles.searchWrapper}>
           <Search size={14} className={styles.searchIcon} />
           <input type="text" placeholder="Поиск брокера..." className={styles.tableSearch} value={search} onChange={(e) => setSearch(e.target.value)} />
         </div>
       </div>
-      <div className={styles.tableWrapper}>
+      <div className={styles.tableWrapper} style={{ padding: '0 18px 18px 18px' }}>
         <div className={styles.tableScroll}>
           <table className={styles.table}>
             <thead>
@@ -322,14 +359,18 @@ export function PartnersTable({ partners }: { partners: any[] }) {
   const filtered = (partners || []).filter(p => p.name?.toLowerCase().includes(search.toLowerCase())).sort((a, b) => b.revenue - a.revenue);
   
   return (
-    <div className={styles.section}>
-      <div className={styles.sectionTitle}>Рейтинг Партнеров
+    <div className={styles.section} style={{ padding: 0 }}>
+      <div className={styles.sectionTitle} style={{ padding: '14px 18px', borderBottom: '1px solid var(--line)', marginBottom: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Briefcase size={14} />
+          <span>Рейтинг Партнеров</span>
+        </div>
         <div className={styles.searchWrapper}>
           <Search size={14} className={styles.searchIcon} />
           <input type="text" placeholder="Поиск партнера..." className={styles.tableSearch} value={search} onChange={(e) => setSearch(e.target.value)} />
         </div>
       </div>
-      <div className={styles.tableWrapper}>
+      <div className={styles.tableWrapper} style={{ padding: '0 18px 18px 18px' }}>
         <div className={styles.tableScroll}>
           <table className={styles.table}>
             <thead>

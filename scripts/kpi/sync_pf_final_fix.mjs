@@ -11,8 +11,8 @@ const bq = new BigQuery({
     location: 'europe-central2' // WARSAW REGION
 });
 
-const PF_API_KEY = 'zSuEP.kGa187KLwbKnEwKYqs2tad492LNzaIag20';
-const PF_API_SECRET = 'Ecmpp6GOnlCUuKtqPfUdlovoUB73msZA';
+const PF_API_KEY = process.env.PF_API_KEY || ''; 
+const PF_API_SECRET = process.env.PF_API_SECRET || ''; 
 
 async function getPFToken() {
     const res = await fetch('https://atlas.propertyfinder.com/v1/auth/token', {

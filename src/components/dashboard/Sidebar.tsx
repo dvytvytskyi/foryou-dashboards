@@ -5,7 +5,12 @@ import {
   PanelLeftClose, 
   PanelLeftOpen, 
   Users,
-  LucideIcon 
+  Search,
+  LucideIcon,
+  ChevronDown,
+  User as UserIcon,
+  BarChart,
+  Target
 } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
@@ -21,36 +26,87 @@ interface SidebarSection {
 }
 
 interface SidebarProps {
-  sidebarCompact: boolean;
-  setSidebarCompact: (value: boolean | ((prev: boolean) => boolean)) => void;
   sections: SidebarSection[];
   onLogout?: () => void;
+  user?: any;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
-  sidebarCompact,
-  setSidebarCompact,
   sections,
-  onLogout
+  onLogout,
+  user
 }) => {
+  const [searchTerm, setSearchTerm] = React.useState('');
+
+  const getInitials = (name: string) => {
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  };
+
+  const displayName = user?.name || 'Guest User';
+  const displayRole = user?.role === 'admin' ? 'Administrator' : 'Agency Partner';
+
+  // Mapping is no longer needed since we updated the source NAVIGATION_SECTIONS directly
+  // But we still handle filter logic locally
+  const filteredSections = React.useMemo(() => {
+    return sections.map(s => ({
+      ...s,
+      items: s.items.filter(item => 
+        item.label.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    })).filter(s => s.items.length > 0);
+  }, [sections, searchTerm]);
+
   return (
-    <aside className={`${styles.sidebar} ${sidebarCompact ? styles.sidebarCompact : ''}`}>
-      <div className={styles.sidebarTop}>
-        {!sidebarCompact ? <div className={styles.sidebarMainTitle}>Навигация</div> : null}
-        <button
-          type="button"
-          className={styles.sidebarToggle}
-          onClick={() => setSidebarCompact((prev) => !prev)}
-          aria-label={sidebarCompact ? 'Expand sidebar' : 'Collapse sidebar'}
-        >
-          {sidebarCompact ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
-        </button>
+    <aside className={styles.sidebar}>
+      {/* User Profile Header */}
+      <div className={styles.sidebarProfile}>
+        <div className={styles.profileCard}>
+          <div className={styles.profileAvatar}>
+            <div 
+              style={{ 
+                width: '100%', 
+                height: '100%', 
+                background: 'var(--panel)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'var(--white-soft)',
+                fontSize: '13px',
+                fontWeight: '700'
+              }}
+            >
+              {getInitials(displayName)}
+            </div>
+          </div>
+          <div className={styles.profileInfo}>
+            <div className={styles.profileName}>{displayName}</div>
+            <div className={styles.profileRole}>{displayRole}</div>
+          </div>
+          <ChevronDown size={14} color="var(--muted)" />
+        </div>
+      </div>
+
+      {/* Search Bar */}
+      <div className={styles.sidebarSearch}>
+        <div className={styles.searchWrapper}>
+          <Search size={14} className={styles.searchIcon} />
+          <input 
+            type="text" 
+            placeholder="Search" 
+            className={styles.searchInput}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <span className={styles.searchShortcut}>⌘F</span>
+        </div>
       </div>
 
       <nav className={styles.sidebarNav}>
-        {sections.map((section) => (
+        {filteredSections.map((section) => (
           <div key={section.title} className={styles.sidebarSection}>
-            {!sidebarCompact ? <div className={styles.sidebarSectionTitle}>{section.title}</div> : null}
+            <div className={styles.sidebarSectionTitle}>
+              {section.title}
+            </div>
             <div className={styles.sidebarItems}>
               {section.items.map((item) => {
                 const Icon = item.icon;
@@ -68,14 +124,13 @@ const Sidebar: React.FC<SidebarProps> = ({
                   <button
                     key={`${section.title}-${item.label}`}
                     type="button"
-                    title={sidebarCompact ? item.label : undefined}
                     className={`${styles.sidebarItem} ${isActive ? styles.sidebarItemActive : ''}`}
                     onClick={handleClick}
                   >
                     <span className={styles.sidebarItemIcon}>
-                      <Icon size={18} />
+                      <Icon size={16} />
                     </span>
-                    {!sidebarCompact ? <span className={styles.sidebarItemLabel}>{item.label}</span> : null}
+                    <span className={styles.sidebarItemLabel}>{item.label}</span>
                   </button>
                 );
               })}
@@ -88,12 +143,23 @@ const Sidebar: React.FC<SidebarProps> = ({
         <button 
           type="button"
           className={styles.sidebarItem}
-          onClick={onLogout}
+          onClick={() => window.location.href = '/profile'}
         >
           <div className={styles.sidebarItemIcon}>
-            <Users size={18} />
+            <UserIcon size={16} />
           </div>
-          {!sidebarCompact && <span className={styles.sidebarItemLabel}>Выйти</span>}
+          <span className={styles.sidebarItemLabel}>Account</span>
+        </button>
+        <button 
+          type="button"
+          className={styles.sidebarItem}
+          style={{ color: 'var(--negative)' }}
+          onClick={onLogout}
+        >
+          <div className={styles.sidebarItemIcon} style={{ color: 'inherit' }}>
+            <Target size={16} />
+          </div>
+          <span className={styles.sidebarItemLabel}>Выйти</span>
         </button>
       </div>
     </aside>

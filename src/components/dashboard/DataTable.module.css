@@ -1,37 +1,36 @@
 .card {
-  margin-top: 24px;
+  margin-top: 8px;
   margin-left: 32px;
   margin-right: 32px;
-  background: var(--panel);
-  border-radius: 16px;
+  background: var(--panel-2);
+  border-radius: 12px;
   border: 1px solid var(--line);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: none;
   overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
 .cardHeader {
-  padding: 20px 24px;
+  padding: 16px 20px 8px 20px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  border-bottom: 1px solid var(--line);
-  background: var(--panel);
+  gap: 8px;
+  background: transparent;
 }
 
 .cardIcon {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent);
-  opacity: 0.9;
+  color: var(--muted);
+  opacity: 0.8;
 }
 
 .cardTitle {
   margin: 0;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 500;
   color: var(--white-soft);
   letter-spacing: -0.01em;
 }
@@ -39,7 +38,14 @@
 .cardBody {
   position: relative;
   width: 100%;
-  overflow: visible;
+  padding: 0 12px 12px 12px;
+}
+
+.tableContainer {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .tableWrap {
@@ -52,20 +58,12 @@
   width: 100%;
   overflow-x: auto;
   overflow-y: visible;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .scroll::-webkit-scrollbar {
-  height: 6px;
-  background: transparent;
-}
-
-.scroll::-webkit-scrollbar-thumb {
-  background: var(--line);
-  border-radius: 6px;
-}
-
-.scroll::-webkit-scrollbar-thumb:hover {
-  background: var(--field-focus);
+  display: none;
 }
 
 .floatingHeader {

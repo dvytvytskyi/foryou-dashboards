@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './Scoreboard.module.css';
 import { Info } from 'lucide-react';
 import { formatMoney } from '@/lib/formatters';
+import ScoreboardSkeleton from '@/components/dashboard/skeletons/ScoreboardSkeleton';
 
 export type ScoreboardData = {
   ql: number;
@@ -14,7 +15,9 @@ export type ScoreboardData = {
   revenueDeltaPct: number;
 };
 
-export default function Scoreboard({ data }: { data: ScoreboardData }) {
+export default function Scoreboard({ data, isLoading }: { data: ScoreboardData; isLoading?: boolean }) {
+  if (isLoading) return <ScoreboardSkeleton />;
+
   const cards = [
     {
       label: 'QL всего',
@@ -36,13 +39,11 @@ export default function Scoreboard({ data }: { data: ScoreboardData }) {
 
   return (
     <div className={styles.scoreboardWrap}>
-      {cards.map((card) => (
-        <div className={styles.scoreboardCard} key={card.label}>
+      {cards.map((card, i) => (
+        <div key={i} className={styles.scoreboardCard}>
           <div className={styles.cardHeader}>
             <span className={styles.scoreboardLabel}>{card.label}</span>
-            <Info size={14} className={styles.infoIcon} />
           </div>
-          
           <div className={styles.scoreboardValue}>{card.value}</div>
         </div>
       ))}

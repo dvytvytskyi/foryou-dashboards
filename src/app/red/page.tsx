@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Scoreboard, { ScoreboardData } from './Scoreboard';
 import DashboardPage, { RED_COLUMNS_MAIN, RED_COLUMNS_GEO } from '@/components/DashboardPage';
+import RedFilters from '@/components/dashboard/filters/RedFilters';
 
 const emptyScoreboard: ScoreboardData = {
   ql: 0,
@@ -19,6 +20,7 @@ const emptyScoreboard: ScoreboardData = {
 export default function RedPage() {
   const [syncTheme, setSyncTheme] = useState<'light' | 'night' | null>(null);
   const [scoreboard, setScoreboard] = useState<ScoreboardData>(emptyScoreboard);
+  const [scoreboardLoading, setScoreboardLoading] = useState(true);
   const [dateRange, setDateRange] = useState<{ startDate: string; endDate: string }>(() => {
     const today = new Date().toISOString().slice(0, 10);
     return { startDate: '2024-01-01', endDate: today };
@@ -28,6 +30,7 @@ export default function RedPage() {
 
   useEffect(() => {
     (async () => {
+      setScoreboardLoading(true);
       try {
         const res = await fetch(
           `/api/marketing/red-scoreboard?startDate=${encodeURIComponent(dateRange.startDate)}&endDate=${encodeURIComponent(dateRange.endDate)}`,
@@ -40,6 +43,8 @@ export default function RedPage() {
         }
       } catch (error) {
         console.error('Failed to fetch RED scoreboard:', error);
+      } finally {
+        setScoreboardLoading(false);
       }
     })();
   }, [dateRange.startDate, dateRange.endDate]);
@@ -51,10 +56,11 @@ export default function RedPage() {
       hideSourceFilter={true}
       customColumns={RED_COLUMNS_MAIN}
       firstColumnLabel="Источник / РК"
-      extraContent={<Scoreboard data={scoreboard} />}
+      extraContent={<Scoreboard data={scoreboard} isLoading={scoreboardLoading} />}
+      FilterComponent={RedFilters}
       externalThemeMode={syncTheme}
       onThemeChange={setSyncTheme}
-      initialExpanded={['RED']}
+      initialExpanded={[]}
       hideTotal={true}
       onDateChange={(start, end) => setDateRange({ startDate: start, endDate: end })}
     >
@@ -63,13 +69,13 @@ export default function RedPage() {
         isNested={true}
         apiUrl={geoApiUrl}
         hideSourceFilter={true}
+        hideFilters={true}
         customColumns={RED_COLUMNS_GEO}
         firstColumnLabel="Категория"
         externalThemeMode={syncTheme}
         maxDrilldownLevel={2}
-        defaultChannelWidth={250}
-        tableMinWidth="auto"
-        initialExpanded={[]}
+        defaultChannelWidth={350}
+        tableMinWidth="100%"
         hideTotal={true}
       />
     </DashboardPage>

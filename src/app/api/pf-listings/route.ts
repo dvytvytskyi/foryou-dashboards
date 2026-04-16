@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
 import { BigQuery } from '@google-cloud/bigquery';
+import { isPostgresConfigured, queryPostgres } from '@/lib/postgres';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -16,14 +17,69 @@ const bq = new BigQuery({
   keyFilename: !bqCredentials ? path.resolve(process.cwd(), 'secrets/crypto-world-epta-2db29829d55d.json') : undefined
 });
 
+type ListingSnapshotRow = {
+  listing_id: string;
+  reference: string | null;
+  group_name: string | null;
+  category: string | null;
+  title: string | null;
+  status: string | null;
+  budget: number | string | null;
+  budget_by_month: Record<string, number> | null;
+  source_updated_at: Date | string | null;
+  payload: Record<string, any> | null;
+};
+
+async function loadListingsFromFile() {
+  const jsonPath = path.resolve(process.cwd(), 'pf_listings_report.json');
+  const fileContent = await fs.readFile(jsonPath, 'utf8');
+  return JSON.parse(fileContent);
+}
+
+async function loadListingsFromPostgres(targetGroup: string | null) {
+  const { rows } = await queryPostgres<ListingSnapshotRow>(
+    `
+      SELECT listing_id, reference, group_name, category, title, status,
+             budget, budget_by_month, source_updated_at, payload
+      FROM pf_listings_snapshot
+      WHERE ($1::text IS NULL OR group_name = $1)
+    `,
+    [targetGroup],
+  );
+
+  return rows.map((row) => ({
+    Reference: row.reference || row.listing_id,
+    group: row.group_name || 'Our',
+    Category: row.category || 'Other',
+    Title: row.title || row.reference || row.listing_id,
+    status: row.status || 'Active',
+    Budget: Number(row.budget || 0),
+    BudgetByMonth: row.budget_by_month || {},
+    CreatedAt:
+      typeof row.source_updated_at === 'string'
+        ? row.source_updated_at
+        : row.source_updated_at instanceof Date
+          ? row.source_updated_at.toISOString()
+          : (row.payload?.createdAt ?? null),
+  }));
+}
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const targetGroup = searchParams.get('group'); // 'Our' or 'Partner'
+    let rawData: any[] = [];
 
-    const jsonPath = path.resolve(process.cwd(), 'pf_listings_report.json');
-    const fileContent = await fs.readFile(jsonPath, 'utf8');
-    const rawData = JSON.parse(fileContent);
+    if (isPostgresConfigured()) {
+      try {
+        rawData = await loadListingsFromPostgres(targetGroup);
+      } catch (pgError) {
+        console.warn('PF listings PostgreSQL read failed, fallback to JSON:', pgError);
+        rawData = await loadListingsFromFile();
+      }
+    } else {
+      rawData = await loadListingsFromFile();
+    }
 
     const startDate = searchParams.get('startDate');
     const endDate = searchParams.get('endDate');
@@ -165,7 +221,7 @@ export async function GET(request: Request) {
       }
     });
 
-    const filteredData = targetGroup 
+    const filteredData = targetGroup
       ? rawData.filter((l: any) => l.group === targetGroup)
       : rawData;
 

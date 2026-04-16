@@ -1,216 +1,222 @@
 .filterBar {
-  margin-top: 8px;
-  background: transparent;
-  padding: 4px 32px 0 32px;
+  margin-top: 4px;
+  padding: 8px 32px;
   display: flex;
-  flex-direction: column;
   gap: 12px;
 }
 
-.filtersLeft {
-  display: flex;
+.marketingVariant {
   flex-direction: column;
-  gap: 12px;
+}
+
+.redVariant {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
   width: 100%;
 }
 
-.filterRow {
-  margin-top: 8px;
+/* Marketing / 2-Row Styles */
+.topRail {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  flex-wrap: nowrap;
 }
 
-.controlsRow {
-  margin-top: 0;
+.dateRow {
   display: flex;
-  justify-content: flex-start;
-  gap: 12px;
   align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
+/* Red / Internal Styles */
+.currencyBlockRight {
+  margin-left: auto;
+}
+
+/* Common Components */
 .channels {
   display: flex;
   flex-wrap: nowrap;
   gap: 2px;
   align-items: center;
-  background: var(--surface-input);
-  border: none;
-  border-radius: 999px;
+  background: var(--panel-2);
+  border-radius: 12px;
   padding: 4px;
   width: fit-content;
-  flex-shrink: 0;
+  border: 1px solid var(--line);
 }
 
 .channelChip {
-  border: 1px solid transparent;
-  background: transparent;
-  color: var(--chip-text);
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 600;
   height: 30px;
-  padding: 0 12px;
-  white-space: nowrap;
-  line-height: 1;
+  padding: 0 16px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.16s ease, color 0.16s ease, border-color 0.16s ease;
-}
-
-.channelChip:hover {
-  background: var(--chip-hover-bg);
-  color: var(--white-soft);
-  border-color: transparent;
+  white-space: nowrap;
 }
 
 .channelChipActive {
-  background: var(--white-soft);
-  color: var(--bg-0);
-  border-color: transparent;
+  background: var(--panel);
+  color: var(--white-soft);
   font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.presetsContainer {
+  display: flex;
+  gap: 2px;
+  background: var(--panel-2);
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  width: fit-content;
+}
+
+.presetBtn {
+  height: 30px;
+  padding: 0 14px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.presetActive {
+  background: var(--panel);
+  color: var(--white-soft);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .dateGroups {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: 10px;
-  flex: 1;
-  flex-wrap: nowrap;
+  gap: 8px;
 }
 
 .dateDropdown {
   position: relative;
 }
 
-.dateDropdownHeader {
+.dateDropdownTrigger {
+  height: 38px;
+  padding: 0 14px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--white-soft);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-.dateDropdownTrigger {
-  height: 32px;
-  border-radius: 999px;
-  border: none;
-  background: var(--surface-input);
-  color: var(--white-soft);
-  padding: 0 10px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
   min-width: 140px;
 }
 
 .dateDropdownLabel {
   color: var(--muted);
-  font-size: 12px;
-  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 9px;
 }
 
 .dateDropdownValue {
-  color: var(--white-soft);
-  font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .dateDropdownArrow {
   margin-left: auto;
   color: var(--muted);
-  font-size: 12px;
+  display: flex;
+  align-items: center;
 }
 
 .dateApplyBtn {
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
-  border: 1px solid #2e8b57;
-  background: #1f8b4c;
-  color: #f4fff8;
-  display: inline-flex;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: #10b981;
+  color: white;
+  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 0 0 1px rgba(46, 139, 87, 0.35);
-  transition: filter 0.16s ease, background 0.16s ease, transform 0.12s ease;
-}
-
-.dateApplyBtn:hover {
-  background: #23a25a;
-  filter: brightness(1.05);
-  transform: translateY(-1px);
 }
 
 .dateDropdownMenu {
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
-  z-index: 20;
-  background: var(--surface-input);
-  border: none;
-  border-radius: 8px;
-  box-shadow: var(--menu-shadow);
-  padding: 10px;
+  z-index: 1000;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  min-width: 290px;
 }
 
 .dateSelects {
   display: grid;
-  grid-template-columns: 82px 96px 110px;
-  gap: 8px;
+  grid-template-columns: 65px 95px 90px;
+  gap: 10px;
 }
 
 .dateSelectHints {
   margin-top: 6px;
   display: grid;
-  grid-template-columns: 82px 96px 110px;
-  gap: 8px;
+  grid-template-columns: 65px 95px 90px;
+  gap: 10px;
 }
 
 .dateSelectHint {
+  font-size: 9px;
+  font-weight: 700;
   color: var(--muted);
-  font-size: 10px;
-  font-weight: 500;
   text-align: center;
-  text-transform: lowercase;
-}
-
-.currencyBlock {
-  margin-left: auto;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  text-transform: uppercase;
 }
 
 .currencySwitch {
-  display: inline-flex;
-  height: 32px;
-  border-radius: 999px;
-  border: none;
+  display: flex;
+  height: 38px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
   overflow: hidden;
-  background: var(--surface-input);
+  padding: 4px;
+  gap: 4px;
 }
 
 .currencyBtn {
-  border: 0;
-  width: 52px;
-  background: var(--surface-input);
+  width: 48px;
+  height: 30px;
+  border: none;
+  background: transparent;
   color: var(--muted);
-  font-weight: 600;
-  cursor: pointer;
   font-size: 11px;
-  transition: background 0.16s ease, color 0.16s ease;
-}
-
-.currencyBtn:hover {
-  color: var(--white-soft);
-  background: var(--row-hover);
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 .currencyActive {
-  background: var(--white-soft);
-  color: var(--bg-0);
-  font-weight: 700;
+  background: var(--panel);
+  color: var(--white-soft);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+.customContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }

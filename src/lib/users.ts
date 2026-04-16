@@ -22,6 +22,13 @@ export const USERS: User[] = [
     role: 'partner',
     password: 'klykov_password',
     partnerId: 'klykov'
+  },
+  {
+    email: 'facebook_boards@foryou-realestate.com',
+    name: 'Facebook Boards',
+    role: 'partner',
+    password: 'facebook_password',
+    partnerId: 'facebook'
   }
 ];
 

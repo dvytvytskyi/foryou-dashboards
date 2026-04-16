@@ -1,0 +1,189 @@
+import { Client } from 'pg';
+import ExcelJS from 'exceljs';
+import path from 'path';
+
+function getConnectionString() {
+  if (process.env.POSTGRES_URL) return process.env.POSTGRES_URL;
+
+  const host = process.env.POSTGRES_HOST;
+  const port = process.env.POSTGRES_PORT || '5432';
+  const database = process.env.POSTGRES_DB;
+  const user = process.env.POSTGRES_USER;
+  const password = process.env.POSTGRES_PASSWORD;
+  const sslMode = (process.env.POSTGRES_SSL_MODE || 'require').toLowerCase();
+
+  if (!host || !database || !user || !password) {
+    throw new Error('Missing PostgreSQL env. Set POSTGRES_URL or POSTGRES_HOST/PORT/DB/USER/PASSWORD');
+  }
+
+  const sslPart = sslMode === 'disable' ? '' : '?sslmode=require';
+  return `postgresql://${encodeURIComponent(user)}:${encodeURIComponent(password)}@${host}:${port}/${database}${sslPart}`;
+}
+
+function parseNumeric(value) {
+  if (value === null || value === undefined) return 0;
+  if (typeof value === 'number') return value;
+  if (typeof value === 'object' && value && 'result' in value) return Number(value.result || 0);
+  if (typeof value === 'string') {
+    const cleaned = value.replace(/[^\d.,-]/g, '').replace(',', '.');
+    return Number(cleaned || 0);
+  }
+  return 0;
+}
+
+function parseDate(value) {
+  if (!value) return null;
+  if (value instanceof Date && !Number.isNaN(value.getTime())) return value;
+  if (typeof value === 'string') {
+    const parts = value.split(/[./-]/);
+    if (parts.length === 3) {
+      const day = parseInt(parts[0], 10);
+      const month = parseInt(parts[1], 10) - 1;
+      let year = parseInt(parts[2], 10);
+      if (year < 100) year += 2000;
+      const dt = new Date(Date.UTC(year, month, day));
+      if (!Number.isNaN(dt.getTime())) return dt;
+    }
+  }
+  return null;
+}
+
+async function readRowsFromWorkbook(fileName, sheetSearch, mapping) {
+  const filePath = path.resolve(process.cwd(), fileName);
+  const workbook = new ExcelJS.Workbook();
+  await workbook.xlsx.readFile(filePath);
+
+  let sheet;
+  if (typeof sheetSearch === 'number') {
+    sheet = workbook.worksheets[sheetSearch];
+  } else {
+    sheet = workbook.getWorksheet(sheetSearch) || workbook.worksheets.find((s) => s.name.toLowerCase().replace(/\s/g, '') === sheetSearch.toLowerCase().replace(/\s/g, ''));
+  }
+
+  if (!sheet) return [];
+
+  const rows = [];
+  sheet.eachRow((row, rowNumber) => {
+    if (rowNumber <= (mapping.skipRows || 1)) return;
+
+    const dealDate = parseDate(row.getCell(mapping.dateCol).value);
+    const broker = String(row.getCell(mapping.brokerCol).value || '').trim() || null;
+    const partner = mapping.partnerCol ? String(row.getCell(mapping.partnerCol).value || '').trim() || null : null;
+    const sourceLabel = mapping.fixedSource
+      ? mapping.fixedSource
+      : String(row.getCell(mapping.sourceCol || 1).value || '').trim() || null;
+
+    const payload = {
+      rawDate: row.getCell(mapping.dateCol).value,
+      rowNumber,
+      fileName,
+      sheetName: sheet.name,
+    };
+
+    rows.push({
+      source_file: fileName,
+      row_number: rowNumber,
+      deal_date: dealDate ? dealDate.toISOString().slice(0, 10) : null,
+      deal_type: mapping.dealType,
+      broker,
+      partner,
+      source_label: sourceLabel,
+      gmv: parseNumeric(row.getCell(mapping.gmvCol).value),
+      gross: parseNumeric(row.getCell(mapping.grossCol).value),
+      net: parseNumeric(row.getCell(mapping.netCol).value),
+      payload,
+    });
+  });
+
+  return rows;
+}
+
+async function main() {
+  const connectionString = getConnectionString();
+  const sslMode = (process.env.POSTGRES_SSL_MODE || 'require').toLowerCase();
+
+  const client = new Client({
+    connectionString,
+    ssl: sslMode === 'disable' ? false : { rejectUnauthorized: false },
+  });
+
+  await client.connect();
+
+  const runStart = await client.query(
+    `INSERT INTO sync_runs (job_name, status, started_at, meta) VALUES ($1,$2,NOW(),$3::jsonb) RETURNING id`,
+    ['sync_sales_excel_to_postgres', 'running', JSON.stringify({ mode: 'xlsx-import' })],
+  );
+  const runId = runStart.rows[0].id;
+
+  try {
+    const rows = [];
+
+    rows.push(...(await readRowsFromWorkbook('offplan.xlsx', 'real estate', {
+      dealType: 'Offplan', dateCol: 2, brokerCol: 5, partnerCol: 6, gmvCol: 7, grossCol: 10, netCol: 17, sourceCol: 3,
+    })));
+
+    rows.push(...(await readRowsFromWorkbook('secondary_rental.xlsx', 'Лист 1', {
+      dealType: 'Secondary', dateCol: 1, brokerCol: 3, partnerCol: 4, gmvCol: 6, grossCol: 8, netCol: 15, sourceCol: 16,
+    })));
+
+    rows.push(...(await readRowsFromWorkbook('secondary_rental.xlsx', 'Лист 2', {
+      dealType: 'Rental', dateCol: 1, brokerCol: 3, partnerCol: 4, gmvCol: 6, grossCol: 8, netCol: 15, sourceCol: 16, skipRows: 2,
+    })));
+
+    rows.push(...(await readRowsFromWorkbook('support.xlsx', 0, {
+      dealType: 'Support', dateCol: 1, brokerCol: 6, partnerCol: 4, gmvCol: 7, grossCol: 9, netCol: 14, fixedSource: 'Support',
+    })));
+
+    await client.query('BEGIN');
+    await client.query(`DELETE FROM sales_deals_raw`);
+
+    const insertQuery = `
+      INSERT INTO sales_deals_raw (
+        source_file, row_number, deal_date, deal_type, broker, partner,
+        source_label, gmv, gross, net, payload, synced_at
+      ) VALUES (
+        $1,$2,$3,$4,$5,$6,
+        $7,$8,$9,$10,$11::jsonb,NOW()
+      )
+    `;
+
+    for (const row of rows) {
+      await client.query(insertQuery, [
+        row.source_file,
+        row.row_number,
+        row.deal_date,
+        row.deal_type,
+        row.broker,
+        row.partner,
+        row.source_label,
+        row.gmv,
+        row.gross,
+        row.net,
+        JSON.stringify(row.payload || {}),
+      ]);
+    }
+
+    await client.query('COMMIT');
+
+    await client.query(
+      `UPDATE sync_runs SET status='success', ended_at=NOW(), rows_processed=$1, meta = COALESCE(meta,'{}'::jsonb) || $2::jsonb WHERE id=$3`,
+      [rows.length, JSON.stringify({ importedRows: rows.length }), runId],
+    );
+
+    console.log(`SUCCESS: sync_sales_excel_to_postgres. rows=${rows.length}`);
+  } catch (error) {
+    await client.query('ROLLBACK').catch(() => {});
+    await client.query(
+      `UPDATE sync_runs SET status='failed', ended_at=NOW(), error_message=$1 WHERE id=$2`,
+      [error instanceof Error ? error.message : String(error), runId],
+    );
+    throw error;
+  } finally {
+    await client.end();
+  }
+}
+
+main().catch((error) => {
+  console.error('FAILED: sync_sales_excel_to_postgres', error.message || error);
+  process.exit(1);
+});

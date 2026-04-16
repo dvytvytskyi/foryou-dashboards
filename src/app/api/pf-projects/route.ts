@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
 import { BigQuery } from '@google-cloud/bigquery';
+import { isPostgresConfigured, queryPostgres } from '@/lib/postgres';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -15,6 +16,45 @@ const bq = new BigQuery({
   credentials: bqCredentials,
   keyFilename: !bqCredentials ? path.resolve(process.cwd(), 'secrets/crypto-world-epta-2db29829d55d.json') : undefined
 });
+
+type ProjectSnapshotRow = {
+  project_id: string;
+  reference: string | null;
+  title: string | null;
+  district: string | null;
+  leads_count: number | string | null;
+  leads_by_month: Record<string, number> | null;
+  budget: number | string | null;
+  budget_by_month: Record<string, number> | null;
+  payload: Record<string, any> | null;
+};
+
+async function loadProjectsFromFile() {
+  const jsonPath = path.resolve(process.cwd(), 'pf_projects_report.json');
+  const fileContent = await fs.readFile(jsonPath, 'utf8');
+  return JSON.parse(fileContent);
+}
+
+async function loadProjectsFromPostgres() {
+  const { rows } = await queryPostgres<ProjectSnapshotRow>(
+    `
+      SELECT project_id, reference, title, district, leads_count,
+             leads_by_month, budget, budget_by_month, payload
+      FROM pf_projects_snapshot
+    `,
+  );
+
+  return rows.map((row) => ({
+    Reference: row.reference || row.project_id,
+    Title: row.title || row.reference || row.project_id,
+    District: row.district || 'Other',
+    Leads: Number(row.leads_count || 0),
+    LeadsByMonth: row.leads_by_month || {},
+    Budget: Number(row.budget || 0),
+    BudgetByMonth: row.budget_by_month || {},
+    CreatedAt: row.payload?.createdAt || null,
+  }));
+}
 
 export async function GET(request: Request) {
   try {
@@ -36,9 +76,17 @@ export async function GET(request: Request) {
       return normalized >= startDate && normalized <= endDate;
     };
 
-    const jsonPath = path.resolve(process.cwd(), 'pf_projects_report.json');
-    const fileContent = await fs.readFile(jsonPath, 'utf8');
-    const projects = JSON.parse(fileContent);
+    let projects: any[] = [];
+    if (isPostgresConfigured()) {
+      try {
+        projects = await loadProjectsFromPostgres();
+      } catch (pgError) {
+        console.warn('PF projects PostgreSQL read failed, fallback to JSON:', pgError);
+        projects = await loadProjectsFromFile();
+      }
+    } else {
+      projects = await loadProjectsFromFile();
+    }
 
     // Fetch CRM stats from BQ (similar to listings)
     const dateFilter = (startDate && endDate)

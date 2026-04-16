@@ -50,6 +50,7 @@ import Sidebar from '@/components/dashboard/Sidebar';
 import Header from '@/components/dashboard/Header';
 import FilterBar from '@/components/dashboard/FilterBar';
 import DataTable from '@/components/dashboard/DataTable';
+import TableSkeleton from '@/components/dashboard/skeletons/TableSkeleton';
 import styles from './DashboardPage.module.css';
 
 export {
@@ -119,11 +120,12 @@ type Row = {
   leads_wa?: number;
 };
 
-const CHANNELS = ['RED', 'Facebook', 'Klykov', 'Partners leads', 'OKK', 'Own leads', 'Property Finder'] as const;
+const CHANNELS = ['RED', 'Facebook', 'Klykov', 'Website', 'Own leads', 'Partners leads', 'ETC'] as const;
 
 type ChannelName = (typeof CHANNELS)[number];
 type SourceFilter = 'all' | Exclude<ChannelName, 'TOTAL'>;
-const SOURCE_CHANNELS = CHANNELS.filter((channel) => channel !== 'TOTAL') as Exclude<ChannelName, 'TOTAL'>[];
+export const SOURCE_CHANNELS = CHANNELS.filter((channel) => channel !== 'TOTAL') as Exclude<ChannelName, 'TOTAL'>[];
+export const MARKETING_CHANNELS = SOURCE_CHANNELS.map(ch => ({ label: ch, value: ch }));
 
 const RED_DRILLDOWN_GROUPS: Array<{ id: 'level_1' | 'level_2' | 'level_3'; label: string }> = [
   { id: 'level_1', label: 'название РК' },
@@ -266,8 +268,9 @@ function renderValue(val: any, type: 'money' | 'num' | 'pct' | 'date' | 'time', 
 }
 
 function normalizeChannel(raw: string): string {
-  if (raw === 'Facebook') return 'Facebook / Target Point';
-  return raw;
+  const norm = (raw || '').trim();
+  if (norm === 'Facebook') return 'Facebook / Target Point';
+  return norm;
 }
 
 type SelectOption = { value: string; label: string };
@@ -320,6 +323,9 @@ export default function DashboardPage({
   customFilterContent = null,
   customColumns,
   onDateChange,
+  icon = <BarChart3 size={14} />,
+  FilterComponent = FilterBar,
+  customTableStyle
 }: { 
   extraContent?: React.ReactNode, 
   initialSourceFilter?: SourceFilter,
@@ -342,8 +348,11 @@ export default function DashboardPage({
   hideFilters?: boolean,
   hideCurrency?: boolean,
   customFilterContent?: React.ReactNode,
-  customColumns?: Array<{ key: string; label: string }>;
+  customColumns?: any[],
   onDateChange?: (start: string, end: string) => void;
+  icon?: React.ReactNode;
+  FilterComponent?: React.FC<any>;
+  customTableStyle?: React.CSSProperties;
 }) {
   const activeColumns = useMemo(() => {
     const base = customColumns || MARKETING_COLUMNS;
@@ -404,7 +413,6 @@ export default function DashboardPage({
     onThemeChange?.(next);
   }, [themeMode, onThemeChange]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [sidebarCompact, setSidebarCompact] = useState(false);
   const [openDateDropdown, setOpenDateDropdown] = useState<'from' | 'to' | null>(null);
   const [channelColWidth, setChannelColWidth] = useState(defaultChannelWidth);
   const [isResizingChannel, setIsResizingChannel] = useState(false);
@@ -451,23 +459,31 @@ export default function DashboardPage({
   const filteredSidebarSections = useMemo(() => {
     if (!user) return NAVIGATION_SECTIONS;
     
-    // If partner, hide Marketing and force Partners to go to their specific page
+    // If partner, hide internal boards and force Partners group to go to their specific page
     if (user.role === 'partner') {
         const pId = user.partnerId || 'klykov';
         return NAVIGATION_SECTIONS
-            .filter(section => section.title !== 'Маркетинг')
+            .filter(section => section.title !== 'Developer' && section.title !== 'Отдел продаж' && section.title !== 'Маркетинг')
             .map(section => {
-                if (section.title === 'Партнеры') {
-                    return {
-                        ...section,
-                        items: section.items.map(item => ({
-                            ...item,
-                            href: `/partners/${pId}`
-                        }))
-                    };
+                if (section.title === 'Partners') {
+                    // For Klykov, ONLY Klykov
+                    if (pId === 'klykov') {
+                        return {
+                            ...section,
+                            items: section.items.filter(item => item.label === 'Klykov')
+                        };
+                    }
+                    // For Facebook, ONLY Facebook items
+                    if (pId === 'facebook') {
+                        return {
+                            ...section,
+                            items: section.items.filter(item => item.label === 'Facebook Oman')
+                        };
+                    }
                 }
                 return section;
-            });
+            })
+            .filter(section => section.items.length > 0);
     }
     
     return NAVIGATION_SECTIONS;
@@ -490,59 +506,98 @@ export default function DashboardPage({
   const selectStyles = {
     control: (base: any) => ({
       ...base,
-      minHeight: 34,
-      height: 34,
+      minHeight: 32,
+      height: 32,
       borderRadius: 999,
-      borderColor: themeMode === 'light' ? '#d8dce5' : '#303134',
+      borderColor: themeMode === 'light' ? '#e2e8f0' : '#303134',
       backgroundColor: themeMode === 'light' ? '#ffffff' : '#17181b',
       boxShadow: 'none',
       cursor: 'pointer',
+      padding: '0 8px',
+      display: 'flex',
+      alignItems: 'center',
+      '&:hover': {
+        borderColor: themeMode === 'light' ? '#cbd5e1' : '#404144',
+      }
     }),
-    valueContainer: (base: any) => ({ ...base, padding: '0 10px', height: 34 }),
-    indicatorsContainer: (base: any) => ({ ...base, height: 34 }),
+    valueContainer: (base: any) => ({ 
+      ...base, 
+      padding: '0', 
+      height: 32,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }),
+    indicatorsContainer: (base: any) => ({ 
+      ...base, 
+      height: 32, 
+      width: 20,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }),
     indicatorSeparator: () => ({ display: 'none' }),
     singleValue: (base: any) => ({
       ...base,
-      color: themeMode === 'light' ? '#141924' : '#e6e6e6',
+      color: themeMode === 'light' ? '#1e293b' : '#f1f5f9',
       fontSize: 12,
-      fontWeight: 600,
+      fontWeight: 700,
+      textAlign: 'center',
+      margin: 0,
+      padding: 0,
+      width: '100%',
+      // Simplified centering: removed top and transform which were causing the cutoff
+      lineHeight: '32px',
     }),
     menuPortal: (base: any) => ({ ...base, zIndex: 9999 }),
     menu: (base: any) => ({
       ...base,
       zIndex: 9999,
-      backgroundColor: themeMode === 'light' ? '#ffffff' : '#17181b',
-      border: themeMode === 'light' ? '1px solid #d8dce5' : '1px solid #303134',
-      boxShadow:
-        themeMode === 'light' ? '0 12px 30px rgba(17, 24, 39, 0.12)' : '0 12px 30px rgba(0, 0, 0, 0.45)',
+      borderRadius: 12,
+      overflow: 'hidden',
+      backgroundColor: themeMode === 'light' ? '#ffffff' : '#1f2023',
+      border: themeMode === 'light' ? '1px solid #e2e8f0' : '1px solid #303134',
+      boxShadow: '0 10px 25px rgba(0, 0, 0, 0.12)',
     }),
     option: (base: any, state: any) => ({
       ...base,
       fontSize: 12,
-      fontWeight: 600,
-      backgroundColor: state.isFocused
-        ? themeMode === 'light'
-          ? '#eef2f8'
-          : '#1F2023'
-        : themeMode === 'light'
-          ? '#ffffff'
-          : '#17181b',
-      color: themeMode === 'light' ? '#141924' : '#e6e6e6',
+      fontWeight: 500,
+      textAlign: 'center',
+      backgroundColor: state.isSelected
+        ? themeMode === 'light' ? '#f1f5f9' : '#303134'
+        : state.isFocused
+          ? themeMode === 'light' ? '#f8fafc' : '#26272b'
+          : 'transparent',
+      color: themeMode === 'light' ? '#1e293b' : '#f1f5f9',
       cursor: 'pointer',
     }),
-    input: (base: any) => ({ ...base, color: themeMode === 'light' ? '#141924' : '#e6e6e6' }),
-    dropdownIndicator: (base: any) => ({ ...base, color: themeMode === 'light' ? '#64748b' : '#a8a9ad' }),
+    input: (base: any) => ({ 
+      ...base, 
+      color: themeMode === 'light' ? '#1e293b' : '#f1f5f9', 
+      textAlign: 'center', 
+      margin: 0, 
+      padding: 0,
+    }),
+    dropdownIndicator: (base: any) => ({ 
+      ...base, 
+      color: themeMode === 'light' ? '#94a3b8' : '#64748b',
+      padding: '0',
+    }),
   };
 
   const selectPortalTarget = typeof window !== 'undefined' ? document.body : null;
+
+  const isFirstMount = useRef(true);
 
   useEffect(() => {
     if (!isNested && !authChecked) return;
     if (!isNested && !user) return;
 
-    if (initialRows) {
+    if (initialRows && isFirstMount.current) {
       setRows(initialRows);
       setLoading(false);
+      isFirstMount.current = false;
     } else {
       load();
     }
@@ -730,10 +785,7 @@ export default function DashboardPage({
     setLoading(true);
     setError(null);
     try {
-      const channelsForQuery =
-        requestSourceFilter === 'all'
-          ? CHANNELS
-          : CHANNELS.filter((channel) => channel === requestSourceFilter);
+      const channelsForQuery = CHANNELS;
 
       const activeChannels = channelsForQuery.map((name) =>
         name === 'Facebook / Target Point' ? 'Facebook' : name
@@ -781,6 +833,16 @@ export default function DashboardPage({
     await load({ startDate: nextStartDate, endDate: nextEndDate });
   }
 
+  async function setExactDateRange(start: string, end: string) {
+    setDraftStartDate(start);
+    setDraftEndDate(end);
+    setStartDate(start);
+    setEndDate(end);
+    onDateChange?.(start, end);
+    setOpenDateDropdown(null);
+    await load({ startDate: start, endDate: end });
+  }
+
   function requestSort(next: SortKey) {
     if (sortKey === next) {
       setSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'));
@@ -802,21 +864,28 @@ export default function DashboardPage({
 
     const byChannel: Record<string, Row[]> = {};
     for (const r of rows) {
-      if (!byChannel[r.channel]) byChannel[r.channel] = [];
-      byChannel[r.channel].push(r);
+      const standardKey = r.channel.trim().toUpperCase();
+      if (!byChannel[standardKey]) byChannel[standardKey] = [];
+      byChannel[standardKey].push(r);
     }
 
     const channelRows: Array<{ channel: string; total: Row; index: number; grouped: Row[] }> = [];
 
-    // Calculate channels dynamically based on data
-    const dataChannels = Array.from(new Set(rows.map(r => r.channel))).filter(c => (c !== 'TOTAL' && !c.startsWith('Skeleton')));
+    // Calculate channels dynamically based on data (using standardized keys)
+    const dataChannels = Array.from(new Set(rows.map(r => r.channel.trim().toUpperCase()))).filter(c => (c !== 'TOTAL' && !c.startsWith('SKELETON')));
+    
     let displayChannels: string[] = [];
     
     // Default channels only for the main unnested marketing dashboard
     if (!isNested && apiUrl === '/api/marketing' && dataChannels.length === 0 && !loading) {
-      displayChannels = [...SOURCE_CHANNELS];
+      displayChannels = [...SOURCE_CHANNELS].map(c => c.toUpperCase());
     } else {
       displayChannels = dataChannels;
+    }
+
+    if (sourceFilter !== 'all') {
+      const match = dataChannels.find(c => c === sourceFilter.toUpperCase());
+      displayChannels = match ? [match] : [sourceFilter.toUpperCase()];
     }
     
 
@@ -1010,7 +1079,7 @@ export default function DashboardPage({
   }
 
   const dashboardContent = (
-    <div className={`${styles.mainPane} ${sidebarCompact ? styles.mainPaneCompact : isNested ? styles.nestedPane : ''}`}>
+    <div className={`${styles.mainPane} ${isNested ? styles.nestedPane : ''}`}>
 
           <div className={styles.shell}>
         {!isNested && (
@@ -1020,10 +1089,11 @@ export default function DashboardPage({
               setSearchQuery={setSearchQuery}
               themeMode={themeMode}
               setThemeMode={setThemeMode}
+              title={title}
             />
 
             {!hideFilters && (
-              <FilterBar 
+              <FilterComponent 
                 hideSourceFilter={hideSourceFilter}
                 sourceFilter={sourceFilter}
                 setSourceFilter={setSourceFilter}
@@ -1038,6 +1108,7 @@ export default function DashboardPage({
                 setDraftEndDate={setDraftEndDate}
                 isDateRangeDirty={isDateRangeDirty}
                 applyDateRangeDraft={applyDateRangeDraft}
+                setExactDateRange={setExactDateRange}
                 startDate={startDate}
                 endDate={endDate}
                 today={today}
@@ -1066,9 +1137,11 @@ export default function DashboardPage({
         {!isNested && extraContent}
 
         {!hideTable && (
-          <>
-            {title && <h2 className={styles.tableTitle}>{title}</h2>}
-            <DataTable 
+          <div style={customTableStyle}>
+            {showTableSkeletons && visibleRows.length === 0 ? (
+              <TableSkeleton cols={activeColumns.length} />
+            ) : (
+              <DataTable 
               activeColumns={activeColumns}
               requestSort={requestSort}
               sortKey={sortKey}
@@ -1103,8 +1176,11 @@ export default function DashboardPage({
               formatMoney={formatMoney}
               OTHER_FALLBACK_LABEL={OTHER_FALLBACK_LABEL}
               OTHER_FALLBACK_HINT={OTHER_FALLBACK_HINT}
+              title={title}
+              icon={icon}
             />
-          </>
+            )}
+          </div>
         )}
 
         {children}
@@ -1114,15 +1190,22 @@ export default function DashboardPage({
 
   if (isNested) return dashboardContent;
 
-  if (!authChecked) return null;
+  if (!isNested && !authChecked) {
+    return (
+      <div className={styles.page} data-theme={themeMode}>
+        <div className={styles.layout} style={{ justifyContent: 'center', alignItems: 'center' }}>
+           <div style={{ color: 'var(--muted)', fontSize: '14px' }}>Loading...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.page} data-theme={themeMode}>
       <div className={styles.layout}>
         <Sidebar 
-          sidebarCompact={sidebarCompact} 
-          setSidebarCompact={setSidebarCompact}
           sections={filteredSidebarSections}
+          user={user}
           onLogout={async () => {
               await fetch('/api/auth/logout', { method: 'POST' });
               window.location.href = '/login';

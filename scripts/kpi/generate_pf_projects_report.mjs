@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
-const PF_API_KEY = 'zSuEP.kGa187KLwbKnEwKYqs2tad492LNzaIag20';
-const PF_API_SECRET = 'Ecmpp6GOnlCUuKtqPfUdlovoUB73msZA';
+const PF_API_KEY = process.env.PF_API_KEY || '';
+const PF_API_SECRET = process.env.PF_API_SECRET || '';
 
 async function getPFToken() {
     const res = await fetch('https://atlas.propertyfinder.com/v1/auth/token', {
@@ -17,6 +17,10 @@ async function getPFToken() {
 async function fetchProjectLeads() {
     console.log('--- FETCHING PRIMARY PLUS (PROJECT) LEADS ---');
     try {
+        if (!PF_API_KEY || !PF_API_SECRET) {
+            throw new Error('Missing PF_API_KEY or PF_API_SECRET');
+        }
+
         const token = await getPFToken();
         
         // 1. Fetch leads with entityType=project

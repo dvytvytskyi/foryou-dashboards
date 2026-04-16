@@ -4,8 +4,8 @@ import fetch from 'node-fetch';
 import fs from 'fs/promises';
 
 const API_URL = 'https://atlas.propertyfinder.com/v1';
-const apiKey = 'zSuEP.kGa187KLwbKnEwKYqs2tad492LNzaIag20';
-const apiSecret = 'Ecmpp6GOnlCUuKtqPfUdlovoUB73msZA';
+const apiKey = process.env.PF_API_KEY || '';
+const apiSecret = process.env.PF_API_SECRET || '';
 
 const CATEGORIES = [
   { name: 'Sell', category: 'residential', offeringType: 'sale' },
@@ -101,6 +101,10 @@ async function fetchLeadsCount(listingId, token) {
 }
 
 async function main() {
+  if (!apiKey || !apiSecret) {
+    throw new Error('Missing PF_API_KEY or PF_API_SECRET');
+  }
+
   const token = await getToken();
   console.log('Access token received');
   const credits = await fetchCreditsTransactions(token);

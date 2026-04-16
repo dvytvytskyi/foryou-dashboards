@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from './directions.module.css';
-import { Search } from 'lucide-react';
+import { Activity, BarChart3, Database, Search } from 'lucide-react';
 
 const formatMoney = (v: number) => Math.round(v).toLocaleString();
 const formatPct = (v: number) => `${(v * 100).toFixed(1)}%`;
@@ -11,23 +11,23 @@ export function DirectionCard({ title, data }: { title: string, data: any }) {
   return (
     <div className={styles.kpiCard}>
       <div className={styles.kpiLabel}>{title}</div>
-      <div className={styles.kpiValue}>{data.deals || 0} сделок</div>
+      <div className={styles.kpiValue} style={{ fontSize: '20px', marginBottom: '12px' }}>{data.deals || 0} <span style={{ fontSize: '12px', fontWeight: 500, color: 'var(--muted)' }}>сделок</span></div>
       
-      <div className={styles.metricsRow}>
+      <div className={styles.metricsRow} style={{ gap: '16px' }}>
         <div className={styles.metricItem}>
-          <span className={styles.metricLabel}>Net Profit</span>
-          <span className={styles.metricValue}>{formatMoney(data.net || 0)}</span>
+          <span className={styles.metricLabel}>NET PROFIT</span>
+          <span className={styles.metricValue} style={{ color: 'var(--white-soft)', fontSize: '13px' }}>{formatMoney(data.net || 0)}</span>
         </div>
         <div className={styles.metricItem}>
           <span className={styles.metricLabel}>GMV</span>
-          <span className={styles.metricValue}>{formatMoney(data.gmv || 0)}</span>
+          <span className={styles.metricValue} style={{ fontSize: '13px' }}>{formatMoney(data.gmv || 0)}</span>
         </div>
-        <div className={styles.metricItem} style={{ marginTop: '8px' }}>
-          <span className={styles.metricLabel}>Avg Check</span>
+        <div className={styles.metricItem} style={{ marginTop: '4px' }}>
+          <span className={styles.metricLabel}>AVG CHECK</span>
           <span className={styles.metricValue}>{formatMoney(data.avg_check || 0)}</span>
         </div>
-        <div className={styles.metricItem} style={{ marginTop: '8px' }}>
-          <span className={styles.metricLabel}>Broker %</span>
+        <div className={styles.metricItem} style={{ marginTop: '4px' }}>
+          <span className={styles.metricLabel}>BROKER %</span>
           <span className={styles.metricValue}>{formatPct(data.broker_share || 0)}</span>
         </div>
       </div>
@@ -41,8 +41,11 @@ export function SourcePerformanceTable({ sources }: { sources: any[] }) {
 
   return (
     <div className={styles.tableContainer}>
-      <div className={styles.sectionTitle}>
-        Эффективность по источникам
+      <div className={styles.sectionTitle} style={{ padding: '14px 18px', borderBottom: '1px solid var(--line)', marginBottom: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Activity size={14} />
+          <span>Эффективность по источникам</span>
+        </div>
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
           <Search size={12} style={{ position: 'absolute', left: '10px', color: 'var(--muted)' }} />
           <input 
@@ -51,7 +54,7 @@ export function SourcePerformanceTable({ sources }: { sources: any[] }) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             style={{ 
-              background: 'var(--surface-input)', 
+              background: 'var(--bg-0)', 
               border: '1px solid var(--line)', 
               borderRadius: '6px', 
               padding: '4px 10px 4px 28px',
@@ -63,7 +66,7 @@ export function SourcePerformanceTable({ sources }: { sources: any[] }) {
         </div>
       </div>
       
-      <div className={styles.tableWrapper}>
+      <div className={styles.tableWrapper} style={{ marginTop: '16px' }}>
         <table className={styles.table}>
           <thead>
             <tr>

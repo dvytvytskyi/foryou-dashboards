@@ -1,5 +1,5 @@
 .container {
-  padding: 16px 32px;
+  padding: 25px 32px 16px 32px;
   color: var(--text);
 }
 
@@ -22,10 +22,11 @@
 }
 
 .section {
-  background: var(--surface-input);
-  border: none;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
   border-radius: 12px;
-  padding: 14px;
+  padding: 18px;
+  overflow: hidden;
 }
 
 .sectionTitle {
@@ -41,6 +42,12 @@
 /* Table Styles */
 .tableWrapper {
   margin-top: 16px;
+  margin-left: 18px;
+  margin-right: 18px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--panel-2);
 }
 
 .tableScroll {
@@ -86,21 +93,32 @@
 
 .table th {
   text-align: left;
-  padding: 8px 12px;
+  padding: 10px 14px;
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--muted);
   border-bottom: 1px solid var(--line);
-  background: var(--bg-0);
+  border-right: 1px solid var(--line);
+  background: var(--panel-2);
   font-weight: 700;
 }
 
+.table th:last-child {
+  border-right: none;
+}
+
 .table td {
-  padding: 8px 12px;
+  padding: 10px 14px;
   font-size: 12px;
   border-bottom: 1px solid var(--line-soft);
+  border-right: 1px solid var(--line-soft);
   text-align: left;
+  background: var(--panel-2);
+}
+
+.table td:last-child {
+  border-right: none;
 }
 
 .table tr:hover td {
@@ -185,8 +203,9 @@
 }
 
 .progressBarTrack {
-  height: 28px;
-  background: var(--surface-input);
+  height: 24px;
+  background: var(--bg-0);
+  border: 1px solid var(--line);
   border-radius: 6px;
   overflow: hidden;
   position: relative;
@@ -219,16 +238,15 @@
 }
 
 .kpiCard {
-  background: var(--surface-input);
-  border: none;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
   border-radius: 12px;
   padding: 16px 20px;
-  transition: opacity 0.2s ease;
+  transition: border-color 0.2s ease;
 }
 
 .kpiCard:hover {
   border-color: var(--accent);
-  transform: translateY(-2px);
 }
 
 .kpiLabel {
@@ -260,7 +278,7 @@
   gap: 4px;
   padding: 3px 6px;
   border-radius: 4px;
-  background: var(--surface-input);
+  background: var(--panel-2);
 }
 
 .tagLabel {
@@ -330,7 +348,7 @@
 .donutCenter {
   width: 70%;
   height: 70%;
-  background: var(--bg-0);
+  background: var(--panel-2);
   border-radius: 50%;
   display: flex;
   flex-direction: column;
@@ -446,11 +464,11 @@
 }
 
 .chartListScroll::-webkit-scrollbar, .deptListScroll::-webkit-scrollbar {
-  width: 4px;
+  width: 3px;
 }
 
 .chartListScroll::-webkit-scrollbar-thumb, .deptListScroll::-webkit-scrollbar-thumb {
-  background: var(--line);
+  background: rgba(128, 128, 128, 0.15);
   border-radius: 10px;
 }
 
@@ -478,9 +496,10 @@
 }
 
 .barChartTrack {
-  height: 6px;
-  background: rgba(128, 128, 128, 0.15);
-  border-radius: 3px;
+  height: 10px;
+  background: rgba(128, 128, 128, 0.1);
+  border: 1px solid var(--line);
+  border-radius: 5px;
   overflow: hidden;
   position: relative;
 }
@@ -490,6 +509,7 @@
   background: var(--white-soft);
   border-radius: 4px;
   transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
 }
 
 .deptItem {
@@ -546,10 +566,9 @@
 }
 
 .supportCard {
-  background: var(--surface-input);
-  border-radius: 12px;
+  background: var(--panel-2);
+  border-radius: 8px;
   padding: 16px;
-  border: 0.5px solid rgba(128, 128, 128, 0.15);
 }
 
 .supportHeader {
@@ -595,7 +614,7 @@
 
 .smValue {
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--white-soft);
 }
 
@@ -613,7 +632,7 @@
 }
 
 .tableSearch {
-  background: var(--surface-input);
+  background: var(--panel-2);
   border: 1px solid var(--line);
   border-radius: 8px;
   height: 32px;

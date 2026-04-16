@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "eslint .",
     "sync:plan-fact:bq": "node scripts/sync/sync_plan_fact_bq.mjs",
-    "sync:brokers:bq": "node scripts/sync/sync_brokers_bq.mjs"
+    "sync:brokers:bq": "node scripts/sync/sync_brokers_bq.mjs",
+    "db:init": "node scripts/db/init_postgres.mjs",
+    "sync:pf:postgres": "node scripts/sync/sync_pf_to_postgres.mjs",
+    "sync:sales:postgres": "node scripts/sync/sync_sales_excel_to_postgres.mjs"
   },
   "dependencies": {
     "@google-cloud/bigquery": "^8.1.1",
@@ -23,6 +26,7 @@
     "jose": "^6.2.2",
     "lucide-react": "^0.577.0",
     "next": "^15.1.0",
+    "pg": "^8.16.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-select": "^5.10.2"

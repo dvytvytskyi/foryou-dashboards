@@ -9,6 +9,7 @@ import {
   User,
   Users,
   Zap,
+  Briefcase
 } from 'lucide-react';
 
 export const NAVIGATION_SECTIONS = [
@@ -25,16 +26,24 @@ export const NAVIGATION_SECTIONS = [
   {
     title: 'Отдел продаж',
     items: [
-      { label: 'Обзор', icon: BarChart3, href: '/sales' },
-      { label: 'Направления', icon: Compass, href: '/sales/directions' },
-      { label: 'План/Факт', icon: Target, href: '/sales/plan-fact' },
-      { label: 'Брокеры', icon: User, href: '/sales/brokers' },
+      { label: 'Overview', icon: BarChart3, href: '/sales' },
+      { label: 'Directions', icon: Compass, href: '/sales/directions' },
+      { label: 'Plan/Fact', icon: Target, href: '/sales/plan-fact' },
+      { label: 'Brokers', icon: User, href: '/sales/brokers' },
     ],
   },
   {
-    title: 'Партнеры',
+    title: 'Partners',
     items: [
-      { label: 'Партнеры', icon: Users, href: '/partners' },
+      { label: 'Klykov', icon: User, href: '/partners/klykov' },
+      { label: 'Facebook Oman', icon: Facebook, href: '/partners/facebook' },
+      { label: 'All Partners', icon: Users, href: '/partners' },
+    ],
+  },
+  {
+    title: 'Developer',
+    items: [
+      { label: 'System Map (AS-IS)', icon: Briefcase, href: '/developer' },
     ],
   },
 ] as const;

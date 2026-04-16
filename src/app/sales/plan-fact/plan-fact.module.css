@@ -1,9 +1,8 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  padding: 8px;
-  color: var(--white-soft);
+  padding: 25px 32px 16px 32px;
+  color: var(--text);
 }
 
 .summaryGrid {
@@ -13,20 +12,20 @@
 }
 
 .kpiCard {
-  background: var(--surface-input);
-  border: 1px solid var(--white-faint);
+  background: var(--panel-2);
+  border: 1px solid var(--line);
   border-radius: 12px;
-  padding: 16px;
+  padding: 16px 20px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
 }
 
 .kpiTitle {
-  font-size: 0.85rem;
-  color: var(--white-muted);
+  font-size: 10px;
+  color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  font-weight: 700;
 }
 
 .kpiMainValue {
@@ -36,13 +35,13 @@
 }
 
 .actualValue {
-  font-size: 1.8rem;
-  font-weight: 600;
+  font-size: 22px;
+  font-weight: 700;
 }
 
 .planValue {
-  font-size: 1rem;
-  color: var(--white-muted);
+  font-size: 12px;
+  color: var(--muted);
 }
 
 .progressContainer {
@@ -65,10 +64,11 @@
 }
 
 .section {
-  background: var(--surface-input);
-  border: 1px solid var(--white-faint);
+  background: var(--panel-2);
+  border: 1px solid var(--line);
   border-radius: 12px;
   overflow: hidden;
+  margin-top: 16px;
 }
 
 .sectionHeader {
@@ -80,41 +80,60 @@
 }
 
 .sectionTitle {
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 600;
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
 .tableWrapper {
-  overflow-x: auto;
-  max-width: 100%;
+  margin-top: 0;
+  margin-left: 18px;
+  margin-right: 18px;
+  margin-bottom: 18px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--panel-2);
 }
 
 .table {
   width: 100%;
-  border-collapse: collapse;
-  font-size: 0.85rem;
-  white-space: nowrap;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 12px;
 }
 
 .table th {
-  background: var(--surface-card);
-  padding: 12px 16px;
   text-align: left;
-  font-weight: 500;
-  color: var(--white-muted);
-  border-bottom: 1px solid var(--white-faint);
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  padding: 10px 14px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  background: var(--panel-2);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.table th:last-child {
+  border-right: none;
 }
 
 .table td {
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--white-faint);
-  color: var(--white-soft);
+  padding: 10px 14px;
+  font-size: 12px;
+  border-bottom: 1px solid var(--line-soft);
+  border-right: 1px solid var(--line-soft);
+  text-align: left;
+  background: var(--panel-2);
+}
+
+.table td:last-child {
+  border-right: none;
 }
 
 .table tr:hover td {

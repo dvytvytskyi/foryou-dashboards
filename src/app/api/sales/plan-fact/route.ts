@@ -118,8 +118,13 @@ const RE_PIPELINE_ID = 8696950;
 const KLYKOV_PIPELINE_ID = 10776450;
 const INCLUDED_PIPELINES = new Set([RE_PIPELINE_ID, KLYKOV_PIPELINE_ID]);
 
-const WON_STATUS_ID = 142;
+// Won in sales includes classic Sold plus SPA and POST SALES document stages.
+const WON_STATUS_IDS = new Set([142, 74717798, 74717802]);
 const LOST_STATUS_ID = 143;
+
+function isWonStatus(statusId: number) {
+  return WON_STATUS_IDS.has(statusId);
+}
 
 const RE_QL_STATUSES = new Set([
   70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802,
@@ -525,7 +530,7 @@ function newBrokerAggregate(id: number, name: string): BrokerAggregate {
 }
 
 function applyLeadToBucket(bucket: MetricBucket, lead: AmoLead, leadDate: Date, start: Date, end: Date, prevStart: Date, prevEnd: Date) {
-  const won = lead.status_id === WON_STATUS_ID;
+  const won = isWonStatus(lead.status_id);
   const lost = lead.status_id === LOST_STATUS_ID;
   const active = !won && !lost;
   const qlNow = isQlStatus(lead);

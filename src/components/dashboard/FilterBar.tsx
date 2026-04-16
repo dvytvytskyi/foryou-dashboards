@@ -1,40 +1,43 @@
 'use client';
 
-import React from 'react';
-import { Check, X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { 
+  ChevronDown,
+  Check
+} from 'lucide-react';
 import Select from 'react-select';
 import styles from './FilterBar.module.css';
-
-type Currency = 'aed' | 'usd';
 
 interface FilterBarProps {
   hideSourceFilter?: boolean;
   sourceFilter: string;
-  setSourceFilter: (filter: any) => void;
-  sourceChannels: string[];
+  setSourceFilter: (val: string) => void;
+  sourceChannels: { label: string; value: string }[];
   customFilterContent?: React.ReactNode;
   dateDropdownsRef: React.RefObject<HTMLDivElement | null>;
   toggleDateDropdown: (kind: 'from' | 'to') => void;
   openDateDropdown: 'from' | 'to' | null;
   draftStartParts: { day: string; month: string; year: string };
   draftEndParts: { day: string; month: string; year: string };
-  setDraftStartDate: (date: string) => void;
-  setDraftEndDate: (date: string) => void;
+  setDraftStartDate: (val: string) => void;
+  setDraftEndDate: (val: string) => void;
   isDateRangeDirty: boolean;
   applyDateRangeDraft: () => void;
+  setExactDateRange: (start: string, end: string) => void;
   startDate: string;
   endDate: string;
   today: string;
-  onResetFilters: () => void;
+  onResetFilters?: () => void;
   hideCurrency?: boolean;
-  currency: Currency;
-  setCurrency: (c: Currency) => void;
+  currency: 'usd' | 'aed';
+  setCurrency: (val: 'usd' | 'aed') => void;
   selectStyles: any;
   selectPortalTarget: HTMLElement | null;
-  dayOptions: any[];
-  monthOptions: any[];
-  yearOptions: any[];
+  dayOptions: { label: string; value: string }[];
+  monthOptions: { label: string; value: string }[];
+  yearOptions: { label: string; value: string }[];
   mergeDate: (parts: { day: string; month: string; year: string }) => string;
+  layoutVariant?: 'marketing' | 'red';
 }
 
 const FilterBar: React.FC<FilterBarProps> = ({
@@ -48,14 +51,12 @@ const FilterBar: React.FC<FilterBarProps> = ({
   openDateDropdown,
   draftStartParts,
   draftEndParts,
-  setDraftStartDate,
-  setDraftEndDate,
   isDateRangeDirty,
   applyDateRangeDraft,
+  setExactDateRange,
   startDate,
   endDate,
   today,
-  onResetFilters,
   hideCurrency,
   currency,
   setCurrency,
@@ -64,210 +65,139 @@ const FilterBar: React.FC<FilterBarProps> = ({
   dayOptions,
   monthOptions,
   yearOptions,
-  mergeDate
+  mergeDate,
+  layoutVariant = 'marketing'
 }) => {
-  return (
-    <section className={styles.filterBar}>
-      <div className={styles.filtersLeft}>
-        {!hideSourceFilter && (
-          <div className={styles.channels}>
-            <button
-              className={`${styles.channelChip} ${sourceFilter === 'all' ? styles.channelChipActive : ''}`}
-              onClick={() => setSourceFilter('all')}
-            >
-              Все источники
-            </button>
-            {sourceChannels.map((ch) => (
-              <button
-                key={ch}
-                className={`${styles.channelChip} ${sourceFilter === ch ? styles.channelChipActive : ''}`}
-                onClick={() => setSourceFilter(ch)}
-              >
-                {ch}
-              </button>
-            ))}
+  const [datePreset, setDatePreset] = useState('All time');
+
+  const presets = [
+    { label: 'All time', start: '2024-01-01', end: today },
+    { label: 'Today', start: today, end: today },
+    { label: 'Last 7 days', start: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10), end: today },
+    { label: 'Last 30 days', start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10), end: today },
+    { label: 'Custom', start: startDate, end: endDate }
+  ];
+
+  useEffect(() => {
+    const matching = presets.find(p => p.start === startDate && p.end === endDate);
+    if (matching && matching.label !== 'Custom') {
+      setDatePreset(matching.label);
+    } else {
+      setDatePreset('Custom');
+    }
+  }, [startDate, endDate]);
+
+  const handlePresetClick = (preset: any) => {
+    setDatePreset(preset.label);
+    if (preset.label !== 'Custom') {
+      setExactDateRange(preset.start, preset.end);
+    }
+  };
+
+  const renderDateControls = () => (
+    <div className={styles.dateGroups} ref={dateDropdownsRef}>
+      <div className={styles.dateDropdown}>
+        <button type="button" className={styles.dateDropdownTrigger} onClick={() => toggleDateDropdown('from')}>
+          <span className={styles.dateDropdownLabel}>From</span>
+          <span className={styles.dateDropdownValue}>{`${draftStartParts.day}.${draftStartParts.month}.${draftStartParts.year}`}</span>
+          <span className={styles.dateDropdownArrow} style={{ transform: openDateDropdown === 'from' ? 'rotate(180deg)' : 'none' }}>
+            <ChevronDown size={14} />
+          </span>
+        </button>
+        {openDateDropdown === 'from' && (
+          <div className={styles.dateDropdownMenu}>
+            <div className={styles.dateSelects}>
+              <Select instanceId="start-day" inputId="start-day" styles={selectStyles} menuPortalTarget={selectPortalTarget} options={dayOptions} value={dayOptions.find(o => o.value === draftStartParts.day)} onChange={(opt: any) => setDraftStartDate(mergeDate({ ...draftStartParts, day: opt.value }))} isSearchable={false} />
+              <Select instanceId="start-month" inputId="start-month" styles={selectStyles} menuPortalTarget={selectPortalTarget} options={monthOptions} value={monthOptions.find(o => o.value === draftStartParts.month)} onChange={(opt: any) => setDraftStartDate(mergeDate({ ...draftStartParts, month: opt.value }))} isSearchable={false} />
+              <Select instanceId="start-year" inputId="start-year" styles={selectStyles} menuPortalTarget={selectPortalTarget} options={yearOptions} value={yearOptions.find(o => o.value === draftStartParts.year)} onChange={(opt: any) => setDraftStartDate(mergeDate({ ...draftStartParts, year: opt.value }))} isSearchable={false} />
+            </div>
+            <div className={styles.dateSelectHints}>
+              <div className={styles.dateSelectHint}>Day</div>
+              <div className={styles.dateSelectHint}>Month</div>
+              <div className={styles.dateSelectHint}>Year</div>
+            </div>
           </div>
         )}
-
-        <div className={styles.controlsRow} style={{ marginLeft: hideSourceFilter ? 'auto' : '0' }}>
-          {customFilterContent}
-          <div className={styles.dateGroups} ref={dateDropdownsRef}>
-            <div className={styles.dateDropdown}>
-              <div className={styles.dateDropdownHeader}>
-                <button
-                  type="button"
-                  className={styles.dateDropdownTrigger}
-                  onClick={() => toggleDateDropdown('from')}
-                >
-                  <span className={styles.dateDropdownLabel}>From</span>
-                  <span className={styles.dateDropdownValue}>{`${draftStartParts.day}.${draftStartParts.month}.${draftStartParts.year}`}</span>
-                  <span className={styles.dateDropdownArrow}>{openDateDropdown === 'from' ? '▴' : '▾'}</span>
-                </button>
-              </div>
-              {openDateDropdown === 'from' ? (
-                <div className={styles.dateDropdownMenu}>
-                  <div className={styles.dateSelects}>
-                    <Select
-                      instanceId="start-day"
-                      inputId="start-day"
-                      isSearchable={false}
-                      menuPortalTarget={selectPortalTarget}
-                      menuPosition="fixed"
-                      options={dayOptions}
-                      styles={selectStyles}
-                      value={dayOptions.find((d) => d.value === draftStartParts.day)}
-                      onChange={(option: any) => {
-                        if (!option) return;
-                        setDraftStartDate(mergeDate({ ...draftStartParts, day: option.value }));
-                      }}
-                    />
-                    <Select
-                      instanceId="start-month"
-                      inputId="start-month"
-                      isSearchable={false}
-                      menuPortalTarget={selectPortalTarget}
-                      menuPosition="fixed"
-                      options={monthOptions}
-                      styles={selectStyles}
-                      value={monthOptions.find((m) => m.value === draftStartParts.month)}
-                      onChange={(option: any) => {
-                        if (!option) return;
-                        setDraftStartDate(mergeDate({ ...draftStartParts, month: option.value }));
-                      }}
-                    />
-                    <Select
-                      instanceId="start-year"
-                      inputId="start-year"
-                      isSearchable={false}
-                      menuPortalTarget={selectPortalTarget}
-                      menuPosition="fixed"
-                      options={yearOptions}
-                      styles={selectStyles}
-                      value={yearOptions.find((y) => y.value === draftStartParts.year)}
-                      onChange={(option: any) => {
-                        if (!option) return;
-                        setDraftStartDate(mergeDate({ ...draftStartParts, year: option.value }));
-                      }}
-                    />
-                  </div>
-                  <div className={styles.dateSelectHints}>
-                    <span className={styles.dateSelectHint}>day</span>
-                    <span className={styles.dateSelectHint}>month</span>
-                    <span className={styles.dateSelectHint}>year</span>
-                  </div>
-                </div>
-              ) : null}
+      </div>
+      <div className={styles.dateDropdown}>
+        <button type="button" className={styles.dateDropdownTrigger} onClick={() => toggleDateDropdown('to')}>
+          <span className={styles.dateDropdownLabel}>To</span>
+          <span className={styles.dateDropdownValue}>{`${draftEndParts.day}.${draftEndParts.month}.${draftEndParts.year}`}</span>
+          <span className={styles.dateDropdownArrow} style={{ transform: openDateDropdown === 'to' ? 'rotate(180deg)' : 'none' }}>
+            <ChevronDown size={14} />
+          </span>
+        </button>
+        {openDateDropdown === 'to' && (
+          <div className={styles.dateDropdownMenu}>
+            <div className={styles.dateSelects}>
+              <Select instanceId="end-day" inputId="end-day" styles={selectStyles} menuPortalTarget={selectPortalTarget} options={dayOptions} value={dayOptions.find(o => o.value === draftEndParts.day)} onChange={(opt: any) => setDraftEndDate(mergeDate({ ...draftEndParts, day: opt.value }))} isSearchable={false} />
+              <Select instanceId="end-month" inputId="end-month" styles={selectStyles} menuPortalTarget={selectPortalTarget} options={monthOptions} value={monthOptions.find(o => o.value === draftEndParts.month)} onChange={(opt: any) => setDraftEndDate(mergeDate({ ...draftEndParts, month: opt.value }))} isSearchable={false} />
+              <Select instanceId="end-year" inputId="end-year" styles={selectStyles} menuPortalTarget={selectPortalTarget} options={yearOptions} value={yearOptions.find(o => o.value === draftEndParts.year)} onChange={(opt: any) => setDraftEndDate(mergeDate({ ...draftEndParts, year: opt.value }))} isSearchable={false} />
             </div>
-
-            <div className={styles.dateDropdown}>
-              <div className={styles.dateDropdownHeader}>
-                <button
-                  type="button"
-                  className={styles.dateDropdownTrigger}
-                  onClick={() => toggleDateDropdown('to')}
-                >
-                  <span className={styles.dateDropdownLabel}>To</span>
-                  <span className={styles.dateDropdownValue}>{`${draftEndParts.day}.${draftEndParts.month}.${draftEndParts.year}`}</span>
-                  <span className={styles.dateDropdownArrow}>{openDateDropdown === 'to' ? '▴' : '▾'}</span>
-                </button>
-                {isDateRangeDirty ? (
-                  <button
-                    type="button"
-                    className={styles.dateApplyBtn}
-                    onClick={applyDateRangeDraft}
-                  >
-                    <Check size={14} />
-                  </button>
-                ) : null}
-                {(startDate !== '2024-01-01' || endDate !== today) && (
-                  <button
-                    type="button"
-                    className={styles.dateApplyBtn}
-                    style={{ background: '#f1f5f9', color: '#64748b', borderColor: '#e2e8f0', boxShadow: 'none' }}
-                    onClick={onResetFilters}
-                    title="Сбросить фильтр"
-                  >
-                    <X size={14} />
-                  </button>
-                )}
-              </div>
-              {openDateDropdown === 'to' ? (
-                <div className={styles.dateDropdownMenu}>
-                  <div className={styles.dateSelects}>
-                    <Select
-                      instanceId="end-day"
-                      inputId="end-day"
-                      isSearchable={false}
-                      menuPortalTarget={selectPortalTarget}
-                      menuPosition="fixed"
-                      options={dayOptions}
-                      styles={selectStyles}
-                      value={dayOptions.find((d) => d.value === draftEndParts.day)}
-                      onChange={(option: any) => {
-                        if (!option) return;
-                        setDraftEndDate(mergeDate({ ...draftEndParts, day: option.value }));
-                      }}
-                    />
-                    <Select
-                      instanceId="end-month"
-                      inputId="end-month"
-                      isSearchable={false}
-                      menuPortalTarget={selectPortalTarget}
-                      menuPosition="fixed"
-                      options={monthOptions}
-                      styles={selectStyles}
-                      value={monthOptions.find((m) => m.value === draftEndParts.month)}
-                      onChange={(option: any) => {
-                        if (!option) return;
-                        setDraftEndDate(mergeDate({ ...draftEndParts, month: option.value }));
-                      }}
-                    />
-                    <Select
-                      instanceId="end-year"
-                      inputId="end-year"
-                      isSearchable={false}
-                      menuPortalTarget={selectPortalTarget}
-                      menuPosition="fixed"
-                      options={yearOptions}
-                      styles={selectStyles}
-                      value={yearOptions.find((y) => y.value === draftEndParts.year)}
-                      onChange={(option: any) => {
-                        if (!option) return;
-                        setDraftEndDate(mergeDate({ ...draftEndParts, year: option.value }));
-                      }}
-                    />
-                  </div>
-                  <div className={styles.dateSelectHints}>
-                    <span className={styles.dateSelectHint}>day</span>
-                    <span className={styles.dateSelectHint}>month</span>
-                    <span className={styles.dateSelectHint}>year</span>
-                  </div>
-                </div>
-              ) : null}
+            <div className={styles.dateSelectHints}>
+              <div className={styles.dateSelectHint}>Day</div>
+              <div className={styles.dateSelectHint}>Month</div>
+              <div className={styles.dateSelectHint}>Year</div>
             </div>
           </div>
+        )}
+      </div>
+      {isDateRangeDirty && <button className={styles.dateApplyBtn} onClick={applyDateRangeDraft}><Check size={18} /></button>}
+    </div>
+  );
 
-          {!hideCurrency && (
-            <div className={styles.currencyBlock}>
-              <div className={styles.currencySwitch}>
-                <button
-                  className={`${styles.currencyBtn} ${currency === 'aed' ? styles.currencyActive : ''}`}
-                  onClick={() => setCurrency('aed')}
-                >
-                  AED
-                </button>
-                <button
-                  className={`${styles.currencyBtn} ${currency === 'usd' ? styles.currencyActive : ''}`}
-                  onClick={() => setCurrency('usd')}
-                >
-                  USD
-                </button>
-              </div>
-            </div>
-          )}
+  const renderCurrency = () => !hideCurrency && (
+    <div className={styles.currencySwitch}>
+      <button className={`${styles.currencyBtn} ${currency === 'aed' ? styles.currencyActive : ''}`} onClick={() => setCurrency('aed')}>AED</button>
+      <button className={`${styles.currencyBtn} ${currency === 'usd' ? styles.currencyActive : ''}`} onClick={() => setCurrency('usd')}>USD</button>
+    </div>
+  );
+
+  if (layoutVariant === 'red') {
+    return (
+      <div className={`${styles.filterBar} ${styles.redVariant}`}>
+        <div className={styles.presetsContainer}>
+          {presets.map(p => (
+            <button key={p.label} className={`${styles.presetBtn} ${datePreset === p.label ? styles.presetActive : ''}`} onClick={() => handlePresetClick(p)}>{p.label}</button>
+          ))}
+        </div>
+        
+        {customFilterContent && <div className={styles.customContent}>{customFilterContent}</div>}
+
+        {datePreset === 'Custom' && renderDateControls()}
+        
+        <div className={styles.currencyBlockRight}>
+          {renderCurrency()}
         </div>
       </div>
-    </section>
+    );
+  }
+
+  // Default / Marketing (2 rows)
+  return (
+    <div className={`${styles.filterBar} ${styles.marketingVariant}`}>
+      <div className={styles.topRail}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          {!hideSourceFilter && (
+            <div className={styles.channels}>
+              {sourceChannels.map((ch) => (
+                <button key={ch.value} className={`${styles.channelChip} ${sourceFilter === ch.value ? styles.channelChipActive : ''}`} onClick={() => setSourceFilter(ch.value)}>{ch.label}</button>
+              ))}
+            </div>
+          )}
+          {customFilterContent && <div className={styles.customContent}>{customFilterContent}</div>}
+        </div>
+        {renderCurrency()}
+      </div>
+      <div className={styles.dateRow}>
+        <div className={styles.presetsContainer}>
+          {presets.map(p => (
+            <button key={p.label} className={`${styles.presetBtn} ${datePreset === p.label ? styles.presetActive : ''}`} onClick={() => handlePresetClick(p)}>{p.label}</button>
+          ))}
+        </div>
+        {datePreset === 'Custom' && renderDateControls()}
+      </div>
+    </div>
   );
 };
 

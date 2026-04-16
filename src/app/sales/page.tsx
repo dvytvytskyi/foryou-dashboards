@@ -15,7 +15,10 @@ import {
 } from './OverviewUI';
 import styles from './sales.module.css';
 
+import RedFilters from '@/components/dashboard/filters/RedFilters';
+
 export default function SalesOverviewPage() {
+  const [syncTheme, setSyncTheme] = useState<'light' | 'night' | null>(null);
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -57,6 +60,9 @@ export default function SalesOverviewPage() {
       hideTable={true}
       hideSourceFilter={true}
       onDateChange={handleDateChange}
+      FilterComponent={RedFilters}
+      externalThemeMode={syncTheme}
+      onThemeChange={setSyncTheme}
     >
       <div className={styles.container}>
         {loading ? (

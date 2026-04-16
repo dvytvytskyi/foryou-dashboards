@@ -122,8 +122,13 @@ const BQ_TASKS_TABLE = 'plan_fact_crm_tasks';
 const RE_PIPELINE_ID = 8696950;
 const KLYKOV_PIPELINE_ID = 10776450;
 
-const WON_STATUS_ID = 142;
+// Won in sales includes classic Sold plus SPA and POST SALES document stages.
+const WON_STATUS_IDS = new Set([142, 74717798, 74717802]);
 const LOST_STATUS_ID = 143;
+
+function isWonStatus(statusId: number) {
+  return WON_STATUS_IDS.has(statusId);
+}
 
 const RE_QL_STATUSES = new Set([
   70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802,
@@ -184,7 +189,7 @@ function isShowingStatus(lead: { status_id: number; pipeline_id: number }): bool
 }
 
 function isActiveLead(lead: LeadRecord): boolean {
-  return lead.status_id !== WON_STATUS_ID && lead.status_id !== LOST_STATUS_ID;
+  return !isWonStatus(lead.status_id) && lead.status_id !== LOST_STATUS_ID;
 }
 
 function toUnixRangeForMonth(month: number, year: number) {
@@ -306,7 +311,7 @@ async function getBrokerMetrics(
       created_at_unix: timestampToUnix(row.created_at),
       is_ql: isQlStatus({ status_id: statusId, pipeline_id: pipelineId }),
       is_showing: isShowingStatus({ status_id: statusId, pipeline_id: pipelineId }),
-      is_won: statusId === WON_STATUS_ID,
+      is_won: isWonStatus(statusId),
     };
   });
 

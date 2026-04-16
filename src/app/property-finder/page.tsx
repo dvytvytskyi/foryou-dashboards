@@ -2,6 +2,7 @@
 
 import React, { useMemo, useState } from 'react';
 import DashboardPage from '@/components/DashboardPage';
+import RedFilters from '@/components/dashboard/filters/RedFilters';
 
 const PF_COLUMNS = [
   { key: 'channel', label: 'Listings' },
@@ -44,6 +45,7 @@ const PROJECT_COLUMNS = [
 ];
 
 export default function PropertyFinderPage() {
+  const [syncTheme, setSyncTheme] = useState<'light' | 'night' | null>(null);
   const [dateRange, setDateRange] = useState(() => {
     const today = new Date().toISOString().slice(0, 10);
     return { startDate: '2024-01-01', endDate: today };
@@ -69,12 +71,16 @@ export default function PropertyFinderPage() {
       customColumns={PF_COLUMNS}
       apiUrl="/api/pf-listings?group=Our"
       maxDrilldownLevel={3}
-      initialExpanded={['Property Finder']}
-      tableMinWidth="0px"
+      initialExpanded={[]}
+      tableMinWidth="100%"
       defaultChannelWidth={400}
+      FilterComponent={RedFilters}
+      externalThemeMode={syncTheme}
+      onThemeChange={setSyncTheme}
       onDateChange={(start, end) => setDateRange({ startDate: start, endDate: end })}
+      customTableStyle={{ marginTop: '23px' }}
     >
-      <div style={{ marginTop: '60px' }}>
+      <div style={{ marginTop: '0' }}>
         <DashboardPage 
           title="Property Finder Listings Performance - Partner"
           isNested={true}
@@ -84,13 +90,15 @@ export default function PropertyFinderPage() {
           customColumns={PF_COLUMNS}
           apiUrl={nestedPartnerApiUrl}
           maxDrilldownLevel={3}
-          initialExpanded={['Property Finder']}
-          tableMinWidth="0px"
+          initialExpanded={[]}
+          tableMinWidth="100%"
           defaultChannelWidth={400}
+          externalThemeMode={syncTheme}
+          customTableStyle={{ marginTop: '8px' }}
         />
       </div>
 
-      <div style={{ marginTop: '60px' }}>
+      <div style={{ marginTop: '-4px' }}>
         <DashboardPage 
           title="Property Finder Primary Plus (By Districts)"
           isNested={true}
@@ -100,9 +108,11 @@ export default function PropertyFinderPage() {
           customColumns={PROJECT_COLUMNS}
           apiUrl={nestedProjectsApiUrl}
           maxDrilldownLevel={3}
-          initialExpanded={['Primary Plus leads']}
-          tableMinWidth="0px"
+          initialExpanded={[]}
+          tableMinWidth="100%"
           defaultChannelWidth={400}
+          externalThemeMode={syncTheme}
+          customTableStyle={{ marginTop: '8px' }}
         />
       </div>
     </DashboardPage>

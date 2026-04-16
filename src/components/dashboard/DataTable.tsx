@@ -2,6 +2,7 @@
 
 import React, { CSSProperties } from 'react';
 import { ChevronRight, ChevronDown } from 'lucide-react';
+import Skeleton from '@/components/ui/Skeleton';
 import styles from './DataTable.module.css';
 
 interface DataTableProps {
@@ -122,45 +123,46 @@ const DataTable: React.FC<DataTableProps> = ({
         </div>
       )}
       <div className={styles.cardBody}>
-        {stickyHeaderVisible ? (
-          <div
-            ref={stickyHeaderRef}
-            className={styles.floatingHeader}
-            style={{ left: stickyHeaderLeft, width: stickyHeaderWidth } as CSSProperties}
-          >
-            <div className={styles.floatingHeaderViewport}>
-              <table
-                className={`${styles.table} ${styles.floatingHeaderTable}`}
-                style={{
-                  '--channel-col-width': `${channelColWidth}px`,
-                  '--table-min-width': tableMinWidth,
-                  width: tablePixelWidth ? `${tablePixelWidth}px` : undefined,
-                  transform: `translateX(-${tableScrollLeft}px)`,
-                } as CSSProperties}
-              >
-                <thead>{renderTableHeader(true)}</thead>
-              </table>
+        <div className={styles.tableContainer}>
+          {stickyHeaderVisible ? (
+            <div
+              ref={stickyHeaderRef}
+              className={styles.floatingHeader}
+              style={{ left: stickyHeaderLeft, width: stickyHeaderWidth } as CSSProperties}
+            >
+              <div className={styles.floatingHeaderViewport}>
+                <table
+                  className={`${styles.table} ${styles.floatingHeaderTable}`}
+                  style={{
+                    '--channel-col-width': `${channelColWidth}px`,
+                    '--table-min-width': tableMinWidth,
+                    width: tablePixelWidth ? `${tablePixelWidth}px` : undefined,
+                    transform: `translateX(-${tableScrollLeft}px)`,
+                  } as CSSProperties}
+                >
+                  <thead>{renderTableHeader(true)}</thead>
+                </table>
+              </div>
             </div>
-          </div>
-        ) : null}
-        <div
-          className={styles.scroll}
-          ref={tableScrollRef}
-          onScroll={onScroll}
-        >
-          <table
-            ref={tableRef}
-            className={styles.table}
-            aria-busy={showTableSkeletons}
-            style={{ 
-              '--channel-col-width': `${channelColWidth}px`,
-              '--table-min-width': tableMinWidth
-            } as CSSProperties}
+          ) : null}
+          <div
+            className={styles.scroll}
+            ref={tableScrollRef}
+            onScroll={onScroll}
           >
-            <thead>
-              {renderTableHeader(true)}
-            </thead>
-            <tbody>
+            <table
+              ref={tableRef}
+              className={styles.table}
+              aria-busy={showTableSkeletons}
+              style={{ 
+                '--channel-col-width': `${channelColWidth}px`,
+                '--table-min-width': tableMinWidth
+              } as CSSProperties}
+            >
+              <thead>
+                {renderTableHeader(true)}
+              </thead>
+              <tbody>
               {visibleRows.map(({ type, row, key, label, detailDepth, detailKey, hasChildren }, rowIndex) => {
                 const total = row.channel === 'TOTAL';
                 const hasDetails = type === 'channel' ? !!hasChildren : false;
@@ -270,7 +272,11 @@ const DataTable: React.FC<DataTableProps> = ({
                               className={styles.channelLabel}
                               title={!showTableSkeletons && type === 'detail' && label === OTHER_FALLBACK_LABEL ? OTHER_FALLBACK_HINT : undefined}
                             >
-                              {showTableSkeletons ? <span className={styles.skeletonText} /> : type === 'channel' ? row.channel : label}
+                              {showTableSkeletons ? (
+                                <Skeleton width="100%" height="12px" borderRadius="3px" />
+                              ) : (
+                                type === 'channel' ? row.channel : label
+                              )}
                             </div>
                           </div>
                         );
@@ -286,7 +292,9 @@ const DataTable: React.FC<DataTableProps> = ({
                           onMouseEnter={() => handleCellMouseEnter(rowIndex, colIndex)}
                           onMouseUp={handleCellMouseUp}
                         >
-                          {showTableSkeletons ? <span className={styles.skeletonValue} /> : value}
+                          {showTableSkeletons ? (
+                            <Skeleton width="40px" height="12px" borderRadius="3px" style={{ margin: '0 auto' }} />
+                          ) : value}
                         </td>
                       );
                     })}
@@ -297,6 +305,7 @@ const DataTable: React.FC<DataTableProps> = ({
           </table>
         </div>
       </div>
+    </div>
     </section>
   );
 };

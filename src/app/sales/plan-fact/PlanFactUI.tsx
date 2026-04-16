@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
-import styles from '../sales.module.css';
-import { ChevronDown, ChevronRight } from 'lucide-react';
+import styles from './plan-fact.module.css';
+import { BarChart3, ChevronDown, ChevronRight, Target, Trophy, Activity } from 'lucide-react';
 import { formatNumber, formatPercent } from '@/lib/formatters';
 
 type KpiRow = {
@@ -73,16 +73,29 @@ const SOURCE_COLORS: Record<string, string> = {
 
 function PlanProgress({ actual, plan }: { actual: number; plan: number }) {
   const percent = plan > 0 ? Math.round((actual / plan) * 100) : 0;
-  const color = percent >= 60 ? '#10b981' : '#f43f5e';
+  const color = percent >= 80 ? '#10b981' : percent >= 50 ? '#f59e0b' : '#f43f5e';
 
   return (
-    <div style={{ marginTop: '12px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', marginBottom: '6px' }}>
-        <span style={{ color: 'var(--muted)', fontWeight: 600 }}>ВЫПОЛНЕНИЕ</span>
-        <span style={{ color, fontWeight: 700 }}>{percent}%</span>
+    <div style={{ marginTop: 'auto' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', marginBottom: '6px' }}>
+        <span style={{ color: 'var(--muted)', fontWeight: 700, letterSpacing: '0.05em' }}>ВЫПОЛНЕНИЕ</span>
+        <span style={{ color, fontWeight: 800 }}>{percent}%</span>
       </div>
-      <div className={styles.barChartTrack} style={{ height: '4px' }}>
-        <div className={styles.barChartFill} style={{ width: `${Math.min(percent, 100)}%`, backgroundColor: color }} />
+      <div style={{ 
+        height: '10px', 
+        background: 'rgba(128, 128, 128, 0.1)', 
+        borderRadius: '5px', 
+        overflow: 'hidden',
+        position: 'relative',
+        boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.1)'
+      }}>
+        <div style={{ 
+          width: `${Math.min(percent, 100)}%`, 
+          height: '100%',
+          backgroundColor: color,
+          borderRadius: '5px',
+          boxShadow: '0 0 10px ' + color + '44'
+        }} />
       </div>
     </div>
   );
@@ -184,14 +197,16 @@ export default function PlanFactUI({ startDate, endDate }: { startDate: string; 
 
   return (
     <div className={styles.container}>
-      <div className={styles.kpiGrid}>
+      <div className={styles.summaryGrid}>
         {visibleKpis.map((k) => (
-          <div key={k.label} className={styles.kpiCard}>
-            <div className={styles.kpiLabel}>{k.label}</div>
-            <div className={styles.kpiValue}>
-              {formatNumber(k.actual)}
-              {k.suffix}
-              <span style={{ color: 'var(--muted)', fontSize: '14px', marginLeft: '6px', fontWeight: 400 }}>
+          <div key={k.label} className={styles.kpiCard} style={{ height: '140px' }}>
+            <div className={styles.kpiTitle}>{k.label}</div>
+            <div className={styles.kpiMainValue}>
+              <span className={styles.actualValue} style={{ color: 'var(--white-soft)' }}>
+                {formatNumber(k.actual)}
+                <span style={{ fontSize: '12px', marginLeft: '2px' }}>{k.suffix}</span>
+              </span>
+              <span className={styles.planValue}>
                 / {formatNumber(k.plan)}
                 {k.suffix}
               </span>
@@ -201,9 +216,12 @@ export default function PlanFactUI({ startDate, endDate }: { startDate: string; 
         ))}
       </div>
 
-      <div className={styles.section} style={{ marginTop: '8px' }}>
-        <div className={styles.sectionTitle}>
-          <span>Эффективность брокеров и сравнение периодов</span>
+      <div className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <div className={styles.sectionTitle}>
+            <Activity size={14} />
+            <span>Эффективность брокеров и сравнение периодов</span>
+          </div>
         </div>
 
         {error ? <div className={styles.error}>Ошибка: {error}</div> : null}
@@ -219,12 +237,15 @@ export default function PlanFactUI({ startDate, endDate }: { startDate: string; 
                       position: 'sticky',
                       left: 0,
                       zIndex: 30,
-                      background: 'var(--bg-0)',
+                      background: 'var(--panel-2)',
                       minWidth: '220px',
-                      borderRight: '1px solid var(--line-soft)',
+                      borderRight: '1px solid var(--line)',
                     }}
                   >
-                    ФИО брокера
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Trophy size={14} />
+                      <span>ФИО брокера</span>
+                    </div>
                   </th>
                   <th colSpan={8} style={{ textAlign: 'left', borderBottom: '1px solid var(--line)', background: 'var(--bg-0)', padding: '12px' }}>
                     &nbsp;
@@ -245,14 +266,14 @@ export default function PlanFactUI({ startDate, endDate }: { startDate: string; 
                   </th>
                 </tr>
                 <tr>
-                  <th style={{ minWidth: '100px', background: 'var(--bg-0)' }}>Всего получил</th>
-                  <th style={{ minWidth: '120px', background: 'var(--bg-0)' }}>Всего получил (прош.)</th>
-                  <th style={{ minWidth: '150px', background: 'var(--bg-0)' }}>Сравнение</th>
-                  <th style={{ minWidth: '100px', background: 'var(--bg-0)' }}>QL leads</th>
-                  <th style={{ minWidth: '120px', background: 'var(--bg-0)' }}>CR Lead - QL</th>
-                  <th style={{ minWidth: '100px', background: 'var(--bg-0)' }}>ПП/Показ+</th>
-                  <th style={{ minWidth: '120px', background: 'var(--bg-0)' }}>CR Lead - Показ</th>
-                  <th style={{ minWidth: '80px', background: 'var(--bg-0)' }}>Сделка</th>
+                  <th style={{ minWidth: '100px', background: 'var(--panel-2)' }}>Всего получил</th>
+                  <th style={{ minWidth: '120px', background: 'var(--panel-2)' }}>Всего получил (прош.)</th>
+                  <th style={{ minWidth: '150px', background: 'var(--panel-2)' }}>Сравнение</th>
+                  <th style={{ minWidth: '100px', background: 'var(--panel-2)' }}>QL leads</th>
+                  <th style={{ minWidth: '120px', background: 'var(--panel-2)' }}>CR Lead - QL</th>
+                  <th style={{ minWidth: '100px', background: 'var(--panel-2)' }}>ПП/Показ+</th>
+                  <th style={{ minWidth: '120px', background: 'var(--panel-2)' }}>CR Lead - Показ</th>
+                  <th style={{ minWidth: '80px', background: 'var(--panel-2)' }}>Сделка</th>
 
                   <th style={{ minWidth: '100px', background: 'rgba(128, 128, 128, 0.08)' }}>Total leads</th>
                   <th style={{ minWidth: '100px', background: 'rgba(128, 128, 128, 0.08)' }}>QL Leads</th>
@@ -286,8 +307,14 @@ export default function PlanFactUI({ startDate, endDate }: { startDate: string; 
                       <React.Fragment key={b.id}>
                         <tr style={{ cursor: 'pointer' }} onClick={() => toggleExpanded(b.name)}>
                           <td
-                            className={styles.stickyCell}
-                            style={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}
+                            className={styles.colName}
+                            style={{ 
+                              fontWeight: 600, 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              gap: '8px',
+                              background: 'var(--panel-2)' 
+                            }}
                           >
                             {isExpanded ? <ChevronDown size={14} className={styles.dimmed} /> : <ChevronRight size={14} className={styles.dimmed} />}
                             {b.name}
