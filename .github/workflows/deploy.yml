@@ -57,6 +57,13 @@ jobs:
           AMO_DOMAIN=${{ secrets.AMO_DOMAIN }}
           AMO_REDIRECT_URI=${{ secrets.AMO_REDIRECT_URI }}
           AUTH_SECRET=${{ secrets.AUTH_SECRET }}
+          POSTGRES_URL=${{ secrets.POSTGRES_URL }}
+          POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
+          POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_SSL_MODE=${{ secrets.POSTGRES_SSL_MODE }}
           EOF_ENV
           # Remove YAML indentation spaces from env file keys/values.
           sed -i 's/^[[:space:]]*//' .env
