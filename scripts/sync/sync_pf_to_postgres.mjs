@@ -95,36 +95,69 @@ async function fetchCreditsTransactions(token) {
   return txs;
 }
 
-async function fetchLeadsCount(listingId, listingReference, token) {
-  const fetchByParam = async (paramName, value) => {
-    if (!value) return null;
-    let page = 1;
-    let count = 0;
+async function fetchAllLeads(token) {
+  let page = 1;
+  const leads = [];
 
-    while (true) {
-      const res = await fetch(`${API_URL}/leads?${paramName}=${encodeURIComponent(String(value))}&perPage=50&page=${page}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      if (!res.ok) return null;
+  while (true) {
+    const res = await fetch(`${API_URL}/leads?perPage=50&page=${page}`, {
+      headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
+    });
+    const data = await res.json();
 
-      const rows = data.results || data.data || [];
-      count += rows.length;
-      if (!data.pagination?.nextPage) break;
-      page = data.pagination.nextPage;
-      if (page > 500) break;
+    if (!res.ok) {
+      throw new Error(`PF leads fetch failed: ${JSON.stringify(data)}`);
     }
 
-    return count;
-  };
+    const rows = data.data || data.results || [];
+    if (!rows.length) break;
 
-  const byId = await fetchByParam('listingId', listingId);
-  if (byId !== null) return byId;
+    leads.push(...rows);
+    if (!data.pagination?.nextPage) break;
+    page = data.pagination.nextPage;
+    if (page > 2000) break;
+  }
 
-  const byReference = await fetchByParam('listingReference', listingReference);
-  if (byReference !== null) return byReference;
+  return leads;
+}
 
-  return 0;
+function buildListingLeadMaps(leads) {
+  const byListingId = new Map();
+  const byListingRef = new Map();
+  const detailsByKey = new Map();
+  let listingWithoutKeyCount = 0;
+
+  for (const lead of leads) {
+    const entityType = String(lead?.entityType || '').toLowerCase();
+    const listingId = lead?.listing?.id ? String(lead.listing.id) : null;
+    const listingRef = lead?.listing?.reference ? String(lead.listing.reference) : null;
+    if (!listingId && !listingRef) {
+      if (entityType === 'listing') {
+        listingWithoutKeyCount += 1;
+      }
+      continue;
+    }
+
+    const key = listingId || `ref:${listingRef}`;
+    if (!detailsByKey.has(key)) {
+      detailsByKey.set(key, {
+        listingId,
+        listingRef,
+        count: 0,
+        sample: lead,
+      });
+    }
+    detailsByKey.get(key).count += 1;
+
+    if (listingId) {
+      byListingId.set(listingId, (byListingId.get(listingId) || 0) + 1);
+    }
+    if (listingRef) {
+      byListingRef.set(listingRef, (byListingRef.get(listingRef) || 0) + 1);
+    }
+  }
+
+  return { byListingId, byListingRef, detailsByKey, listingWithoutKeyCount };
 }
 
 function aggregateCredits(txs) {
@@ -224,34 +257,10 @@ async function upsertProject(client, project) {
   );
 }
 
-async function fetchProjectLeadsSummary(token) {
-  let page = 1;
-  const rawLeads = [];
-
-  while (true) {
-    const res = await fetch(`${API_URL}/leads?perPage=50&page=${page}&entityType=project`, {
-      headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
-    });
-
-    if (!res.ok) {
-      const body = await res.text();
-      throw new Error(`PF project leads fetch failed: ${body}`);
-    }
-
-    const data = await res.json();
-    const rows = data.data || [];
-    if (!rows.length) break;
-
-    rawLeads.push(...rows);
-    if (!data.pagination?.nextPage) break;
-    page = data.pagination.nextPage;
-
-    if (page > 500) break;
-  }
-
+function buildProjectLeadsSummary(rawLeads) {
   const grouped = new Map();
   for (const lead of rawLeads) {
-    const id = lead.project?.id;
+    const id = lead?.project?.id;
     if (!id) continue;
 
     if (!grouped.has(id)) {
@@ -298,8 +307,14 @@ async function main() {
 
   try {
     const token = await getToken();
-    const credits = await fetchCreditsTransactions(token);
+    const [credits, leads] = await Promise.all([
+      fetchCreditsTransactions(token),
+      fetchAllLeads(token),
+    ]);
+
     const { byReferenceTotal, byReferenceMonth } = aggregateCredits(credits);
+    const { byListingId, byListingRef, detailsByKey, listingWithoutKeyCount } = buildListingLeadMaps(leads);
+    const knownListingKeys = new Set();
 
     let totalListings = 0;
     for (const cat of CATEGORIES) {
@@ -307,7 +322,16 @@ async function main() {
       for (const state of states) {
         const listings = await fetchAllListings(cat.category, cat.offeringType, state, token);
         for (const listing of listings) {
-          const leadsCount = await fetchLeadsCount(listing.id, listing.reference, token);
+          const listingId = listing?.id ? String(listing.id) : null;
+          const listingRef = listing?.reference ? String(listing.reference) : null;
+          if (listingId) knownListingKeys.add(listingId);
+          if (listingRef) knownListingKeys.add(`ref:${listingRef}`);
+
+          const leadsCount =
+            (listingId && byListingId.get(listingId)) ||
+            (listingRef && byListingRef.get(listingRef)) ||
+            0;
+
           await upsertListing(client, {
             id: listing.id,
             reference: listing.reference,
@@ -327,14 +351,74 @@ async function main() {
       }
     }
 
-    const projects = await fetchProjectLeadsSummary(token);
+    let unmatchedListings = 0;
+    for (const detail of detailsByKey.values()) {
+      const key = detail.listingId || `ref:${detail.listingRef}`;
+      if (!key || knownListingKeys.has(key)) continue;
+
+      const syntheticId = detail.listingId || `unmatched-ref-${detail.listingRef}`;
+      const syntheticRef = detail.listingRef || null;
+
+      await upsertListing(client, {
+        id: syntheticId,
+        reference: syntheticRef,
+        groupName: 'Our',
+        categoryName: 'Other',
+        offeringType: 'other',
+        title: syntheticRef ? `Unmatched listing ${syntheticRef}` : `Unmatched listing ${syntheticId}`,
+        state: 'unknown',
+        budget: 0,
+        budgetByMonth: {},
+        leadsCount: detail.count,
+        createdAt: detail.sample?.createdAt || null,
+        payload: {
+          source: 'leads-unmatched',
+          sampleLead: detail.sample || null,
+        },
+      });
+
+      unmatchedListings += 1;
+      totalListings += 1;
+    }
+
+    if (listingWithoutKeyCount > 0) {
+      await upsertListing(client, {
+        id: 'unmatched-listing-no-id-ref',
+        reference: null,
+        groupName: 'Our',
+        categoryName: 'Other',
+        offeringType: 'other',
+        title: 'Unmatched listing leads (missing listing.id/reference)',
+        state: 'unknown',
+        budget: 0,
+        budgetByMonth: {},
+        leadsCount: listingWithoutKeyCount,
+        createdAt: null,
+        payload: {
+          source: 'leads-unmatched-no-key',
+        },
+      });
+      totalListings += 1;
+    }
+
+    const projects = buildProjectLeadsSummary(leads);
     for (const project of projects) {
       await upsertProject(client, project);
     }
 
     await client.query(
       `UPDATE sync_runs SET status='success', ended_at=NOW(), rows_processed=$1, meta = COALESCE(meta,'{}'::jsonb) || $2::jsonb WHERE id=$3`,
-      [totalListings + projects.length, JSON.stringify({ listings: totalListings, projects: projects.length }), runId],
+      [
+        totalListings + projects.length,
+        JSON.stringify({
+          listings: totalListings,
+          projects: projects.length,
+          unmatched_listings: unmatchedListings,
+          listing_without_key_leads: listingWithoutKeyCount,
+          leads_total: leads.length,
+        }),
+        runId,
+      ],
     );
 
     console.log(`SUCCESS: sync_pf_to_postgres. listings=${totalListings}, projects=${projects.length}`);
