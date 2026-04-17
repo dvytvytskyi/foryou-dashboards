@@ -26,7 +26,11 @@ function parseNumeric(value) {
   if (typeof value === 'number') return value;
   if (typeof value === 'object' && value && 'result' in value) return Number(value.result || 0);
   if (typeof value === 'string') {
-    const cleaned = value.replace(/[^\d.,-]/g, '').replace(',', '.');
+    // Extract only the first number before any operator (+, -, *, /) or non-numeric text
+    // e.g. "110000+30000 (TOP UP)" → 110000, "1 500 000" → 1500000, "2%" → 0
+    const firstToken = value.trim().match(/^[\d\s,.']*\d/);
+    if (!firstToken) return 0;
+    const cleaned = firstToken[0].replace(/[\s']/g, '').replace(',', '.');
     return Number(cleaned || 0);
   }
   return 0;
