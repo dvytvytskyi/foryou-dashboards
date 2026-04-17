@@ -18,8 +18,6 @@ const bq = new BigQuery({
   keyFilename: !bqCredentials ? path.resolve(process.cwd(), 'secrets/crypto-world-epta-2db29829d55d.json') : undefined
 });
 
-const PF_CREDIT_TO_AED = 1327;
-
 type ListingSnapshotRow = {
   listing_id: string;
   reference: string | null;
@@ -52,14 +50,6 @@ async function loadListingsFromPostgres(targetGroup: string | null) {
     [targetGroup],
   );
 
-  const toBudgetByMonthAed = (budgetByMonth: Record<string, number>) => {
-    const converted: Record<string, number> = {};
-    for (const [month, value] of Object.entries(budgetByMonth || {})) {
-      converted[month] = (Number(value || 0) || 0) * PF_CREDIT_TO_AED;
-    }
-    return converted;
-  };
-
   return rows.map((row) => ({
     Reference: row.reference || row.listing_id,
     group: row.group_name || 'Our',
@@ -68,8 +58,8 @@ async function loadListingsFromPostgres(targetGroup: string | null) {
       (row.offering_type === 'sale' ? 'Sell' : row.offering_type === 'rent' ? 'Rent' : 'Other'),
     Title: row.title || row.reference || row.listing_id,
     status: row.status || 'Active',
-    Budget: (Number(row.budget || 0) || 0) * PF_CREDIT_TO_AED,
-    BudgetByMonth: toBudgetByMonthAed(row.budget_by_month || {}),
+    Budget: Number(row.budget || 0) || 0,
+    BudgetByMonth: row.budget_by_month || {},
     LeadsPF: Number(row.leads_count || 0) || 0,
     CreatedAt:
       typeof row.source_updated_at === 'string'

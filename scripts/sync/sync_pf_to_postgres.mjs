@@ -163,22 +163,30 @@ function buildListingLeadMaps(leads) {
 function aggregateCredits(txs) {
   const byReferenceTotal = {};
   const byReferenceMonth = {};
+  let unassignedTotal = 0;
+  const unassignedByMonth = {};
 
   for (const tx of txs) {
-    const ref = tx.listingInfo?.reference;
-    if (!ref) continue;
     const isChargeCredits = tx.transactionInfo?.action === 'charge' && tx.transactionInfo?.type === 'credits';
     if (!isChargeCredits) continue;
 
     const amount = Math.abs(Number(tx.transactionInfo?.amount || 0));
+    const month = String(tx.createdAt || '').slice(0, 7);
+    const ref = tx.listingInfo?.reference;
+
+    if (!ref) {
+      unassignedTotal += amount;
+      if (month) unassignedByMonth[month] = (unassignedByMonth[month] || 0) + amount;
+      continue;
+    }
+
     byReferenceTotal[ref] = (byReferenceTotal[ref] || 0) + amount;
 
-    const month = String(tx.createdAt || '').slice(0, 7);
     if (!byReferenceMonth[ref]) byReferenceMonth[ref] = {};
     byReferenceMonth[ref][month] = (byReferenceMonth[ref][month] || 0) + amount;
   }
 
-  return { byReferenceTotal, byReferenceMonth };
+  return { byReferenceTotal, byReferenceMonth, unassignedTotal, unassignedByMonth };
 }
 
 async function upsertListing(client, row) {
@@ -312,7 +320,7 @@ async function main() {
       fetchAllLeads(token),
     ]);
 
-    const { byReferenceTotal, byReferenceMonth } = aggregateCredits(credits);
+    const { byReferenceTotal, byReferenceMonth, unassignedByMonth } = aggregateCredits(credits);
     const { byListingId, byListingRef, detailsByKey, listingWithoutKeyCount } = buildListingLeadMaps(leads);
     const knownListingKeys = new Set();
 
@@ -402,6 +410,30 @@ async function main() {
     }
 
     const projects = buildProjectLeadsSummary(leads);
+
+    const monthLeadTotals = {};
+    for (const project of projects) {
+      for (const [month, count] of Object.entries(project.leadsByMonth || {})) {
+        monthLeadTotals[month] = (monthLeadTotals[month] || 0) + Number(count || 0);
+      }
+    }
+
+    for (const project of projects) {
+      const budgetByMonth = {};
+      for (const [month, monthBudget] of Object.entries(unassignedByMonth || {})) {
+        const monthLeadsTotal = Number(monthLeadTotals[month] || 0);
+        if (!monthLeadsTotal) continue;
+
+        const projectMonthLeads = Number((project.leadsByMonth || {})[month] || 0);
+        if (!projectMonthLeads) continue;
+
+        budgetByMonth[month] = (Number(monthBudget || 0) * projectMonthLeads) / monthLeadsTotal;
+      }
+
+      project.budgetByMonth = budgetByMonth;
+      project.budget = Object.values(budgetByMonth).reduce((sum, v) => sum + Number(v || 0), 0);
+    }
+
     for (const project of projects) {
       await upsertProject(client, project);
     }

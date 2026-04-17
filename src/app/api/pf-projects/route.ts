@@ -18,8 +18,6 @@ const bq = new BigQuery({
   keyFilename: !bqCredentials ? path.resolve(process.cwd(), 'secrets/crypto-world-epta-2db29829d55d.json') : undefined
 });
 
-const PF_CREDIT_TO_AED = 1327;
-
 type ProjectSnapshotRow = {
   project_id: string;
   reference: string | null;
@@ -54,10 +52,8 @@ async function loadProjectsFromPostgres() {
     District: row.district || 'Other',
     Leads: Number(row.leads_count || 0),
     LeadsByMonth: row.leads_by_month || {},
-    Budget: (Number(row.budget || 0) || 0) * PF_CREDIT_TO_AED,
-    BudgetByMonth: Object.fromEntries(
-      Object.entries(row.budget_by_month || {}).map(([month, value]) => [month, (Number(value || 0) || 0) * PF_CREDIT_TO_AED]),
-    ),
+    Budget: Number(row.budget || 0) || 0,
+    BudgetByMonth: row.budget_by_month || {},
     CreatedAt: row.payload?.createdAt || null,
   }));
 }
