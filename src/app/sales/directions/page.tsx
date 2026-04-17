@@ -11,6 +11,17 @@ export default function SalesDirectionsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currency, setCurrency] = useState<'aed' | 'usd'>('aed');
+  const [dateRange, setDateRange] = useState(() => {
+    const today = new Date().toISOString().slice(0, 10);
+    try {
+      return {
+        startDate: localStorage.getItem('dashboard-startDate') || '2024-01-01',
+        endDate: localStorage.getItem('dashboard-endDate') || today,
+      };
+    } catch {
+      return { startDate: '2024-01-01', endDate: today };
+    }
+  });
 
   const fetchData = async (start?: string, end?: string) => {
     try {
@@ -35,15 +46,15 @@ export default function SalesDirectionsPage() {
   };
 
   useEffect(() => {
-    fetchData();
-  }, [currency]);
+    fetchData(dateRange.startDate, dateRange.endDate);
+  }, [currency, dateRange.startDate, dateRange.endDate]);
 
   return (
     <DashboardPage 
       title="Отдел продаж: Направления" 
       hideTable={true}
       FilterComponent={RedFilters}
-      onDateChange={(start, end) => fetchData(start, end)}
+      onDateChange={(start, end) => setDateRange({ startDate: start, endDate: end })}
       currency={currency as any}
       setCurrency={setCurrency as any}
       hideSourceFilter={true}
