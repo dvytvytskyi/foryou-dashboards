@@ -17,6 +17,11 @@ export default function FacebookPage() {
   const [scoreboard, setScoreboard] = useState<FacebookScoreboardData>(emptyScoreboard);
   const [dateRange, setDateRange] = useState<{ startDate: string; endDate: string }>(() => {
     const today = new Date().toISOString().slice(0, 10);
+    try {
+      const s = localStorage.getItem('dashboard-startDate');
+      const e = localStorage.getItem('dashboard-endDate');
+      if (s && e) return { startDate: s, endDate: e };
+    } catch {}
     return { startDate: '2024-01-01', endDate: today };
   });
 
