@@ -1,14 +1,18 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { BigQuery } from '@google-cloud/bigquery';
+import { CLOSED_DEAL_STATUS_IDS } from '../../src/lib/crmRules.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const rootDir = path.resolve(__dirname, '..');
+const rootDir = path.resolve(__dirname, '..', '..');
 
 const PROJECT_ID = 'crypto-world-epta';
 const DATASET_ID = 'foryou_analytics';
 const TABLE_ID = 'marketing_channel_drilldown_daily';
+const CLOSED_DEAL_STATUS_SQL = CLOSED_DEAL_STATUS_IDS.join(', ');
+const RED_STRICT_REGEX = '(red_ru|red_eng|red_arm|red_lux)';
+const FB_EXCLUDED_LEVEL1_REGEX = '(190k[ _-]*oman|radik[ _-]*oman|svetlana[ _-]*oman)';
 
 const bq = new BigQuery({
     projectId: PROJECT_ID,
@@ -38,6 +42,7 @@ async function createUnifiedMarketingDrilldownDaily() {
                     utm_campaign,
                     utm_medium,
                     utm_content,
+                    tags_text,
                     price,
                     created_at,
                     closed_at,
@@ -99,20 +104,34 @@ async function createUnifiedMarketingDrilldownDaily() {
             LEFT JOIN latest_loss l USING (lead_id)
             LEFT JOIN \`${PROJECT_ID}.${DATASET_ID}.milestones\` m
                 ON CAST(r.lead_id AS STRING) = m.deal_id
+                WHERE
+                    REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'${RED_STRICT_REGEX}')
+                    OR REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'${RED_STRICT_REGEX}')
         ),
         non_red_base AS (
             SELECT
                 DATE(a.created_at) AS report_date,
                 CASE
                     WHEN a.pipeline_id = 10776450 THEN 'Klykov'
+                        WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'${RED_STRICT_REGEX}') THEN 'RED'
+                    WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'(property finder|property_finder|pf off-plan|pf offplan|primary plus|prian|bayut)') THEN 'Property Finder'
+                    WHEN a.pipeline_id = 8696950
+                        AND REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'(oman|target point|facebook)') THEN 'Facebook'
                     WHEN a.pipeline_id = 8600274
                          OR a.client_type_enum_id = 695223
                          OR REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'(partner|партнер)') THEN 'Partners leads'
-                    WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'red') THEN 'RED'
+                    WHEN TRIM(COALESCE(a.source_label, '')) != '' THEN 'Own leads'
+                    WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'(klykov leads|klykov)') THEN 'Klykov'
+                        WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'${RED_STRICT_REGEX}') THEN 'RED'
+                    WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'(property finder|property_finder|pf off-plan|pf offplan|primary plus|prian|bayut)') THEN 'Property Finder'
+                    WHEN a.pipeline_id = 8696950
+                        AND REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'(oman|target point|facebook)') THEN 'Facebook'
+                    WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'(partner|партнер)') THEN 'Partners leads'
+                    WHEN TRIM(COALESCE(a.tags_text, '')) != '' THEN 'Own leads'
                     ELSE 'ETC'
                 END AS channel,
                 a.lead_id,
-                COALESCE(a.source_label, CONCAT('pipeline_', CAST(a.pipeline_id AS STRING))) AS level_1,
+                COALESCE(NULLIF(a.source_label, ''), NULLIF(a.tags_text, ''), CONCAT('pipeline_', CAST(a.pipeline_id AS STRING))) AS level_1,
                 COALESCE(a.utm_campaign, a.utm_medium, 'Unknown campaign') AS level_2,
                 COALESCE(a.utm_content, 'Unknown creative') AS level_3,
                 a.status_id,
@@ -159,11 +178,14 @@ async function createUnifiedMarketingDrilldownDaily() {
                     1,
                     0
                 ) AS is_meeting,
-                IF(status_id IN (142, 70757586), 1, 0) AS is_deal,
-                IF(status_id = 142, price, 0) AS revenue,
+                IF(status_id IN (${CLOSED_DEAL_STATUS_SQL}) AND (channel != 'RED' OR COALESCE(price, 0) > 0), 1, 0) AS is_deal,
+                IF(status_id IN (${CLOSED_DEAL_STATUS_SQL}), price, 0) AS revenue,
                 IF(
                     status_id = 143
-                    AND REGEXP_CONTAINS(COALESCE(loss_reason_name, ''), r'(нет ответа|спам|тест)'),
+                       AND (
+                           channel = 'Facebook'
+                           OR REGEXP_CONTAINS(COALESCE(loss_reason_name, ''), r'(нет ответа|спам|тест|no answer|spam|test)')
+                       ),
                     1,
                     0
                 ) AS is_no_answer_spam
@@ -176,7 +198,10 @@ async function createUnifiedMarketingDrilldownDaily() {
                 CASE
                     WHEN REGEXP_CONTAINS(LOWER(source), r'red') THEN 'RED'
                     WHEN REGEXP_CONTAINS(LOWER(source), r'klykov') THEN 'Klykov'
+                    WHEN REGEXP_CONTAINS(LOWER(source), r'(oman|target point)') THEN 'Facebook'
+                    WHEN REGEXP_CONTAINS(LOWER(source), r'(property finder|property_finder|pf off-plan|pf offplan|primary plus|prian|bayut)') THEN 'Property Finder'
                     WHEN REGEXP_CONTAINS(LOWER(source), r'partner|партнер') THEN 'Partners leads'
+                    WHEN REGEXP_CONTAINS(LOWER(source), r'(website|youtube|wz|gulnoza|artem|личн|serenia|horizon)') THEN 'Own leads'
                     ELSE 'ETC'
                 END AS channel,
                 SUM(spend) AS monthly_budget
@@ -189,7 +214,10 @@ async function createUnifiedMarketingDrilldownDaily() {
                 CASE
                     WHEN REGEXP_CONTAINS(LOWER(source), r'red') THEN 'RED'
                     WHEN REGEXP_CONTAINS(LOWER(source), r'klykov') THEN 'Klykov'
+                    WHEN REGEXP_CONTAINS(LOWER(source), r'(oman|target point)') THEN 'Facebook'
+                    WHEN REGEXP_CONTAINS(LOWER(source), r'(property finder|property_finder|pf off-plan|pf offplan|primary plus|prian|bayut)') THEN 'Property Finder'
                     WHEN REGEXP_CONTAINS(LOWER(source), r'partner|партнер') THEN 'Partners leads'
+                    WHEN REGEXP_CONTAINS(LOWER(source), r'(website|youtube|wz|gulnoza|artem|личн|serenia|horizon)') THEN 'Own leads'
                     ELSE 'ETC'
                 END AS channel,
                 SUM(income) AS monthly_income
@@ -235,6 +263,10 @@ async function createUnifiedMarketingDrilldownDaily() {
                 SUM(is_deal) AS deals,
                 SUM(revenue) AS revenue
             FROM lead_flags
+            WHERE NOT (
+                channel = 'Facebook'
+                AND REGEXP_CONTAINS(LOWER(COALESCE(level_1, '')), r'${FB_EXCLUDED_LEVEL1_REGEX}')
+            )
             GROUP BY 1, 2, 3, 4, 5
         ),
         detail_with_finance AS (
@@ -358,9 +390,12 @@ async function createUnifiedMarketingDrilldownDaily() {
                 ROUND(company_revenue * 0.27, 2) AS company_revenue_usd,
                 CASE channel
                     WHEN 'RED' THEN 1
-                    WHEN 'Klykov' THEN 2
-                    WHEN 'Partners leads' THEN 3
-                    WHEN 'ETC' THEN 4
+                    WHEN 'Facebook' THEN 2
+                    WHEN 'Klykov' THEN 3
+                    WHEN 'Property Finder' THEN 4
+                    WHEN 'Own leads' THEN 5
+                    WHEN 'Partners leads' THEN 6
+                    WHEN 'ETC' THEN 7
                     WHEN 'TOTAL' THEN 99
                     ELSE 50
                 END AS sort_order,

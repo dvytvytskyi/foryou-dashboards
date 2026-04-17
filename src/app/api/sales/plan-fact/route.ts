@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
 import { readPlanDataFromSheets, PlanByBroker } from '@/lib/sheets/planReader';
+import { classifyLeadSource, CLOSED_DEAL_STATUS_IDS } from '@/lib/crmRules.js';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -119,7 +120,7 @@ const KLYKOV_PIPELINE_ID = 10776450;
 const INCLUDED_PIPELINES = new Set([RE_PIPELINE_ID, KLYKOV_PIPELINE_ID]);
 
 // Won in sales includes classic Sold plus SPA and POST SALES document stages.
-const WON_STATUS_IDS = new Set([142, 74717798, 74717802]);
+const WON_STATUS_IDS = new Set(CLOSED_DEAL_STATUS_IDS);
 const LOST_STATUS_ID = 143;
 
 function isWonStatus(statusId: number) {
@@ -147,10 +148,6 @@ const SOURCE_ORDER: SourceName[] = [
   'Own leads',
 ];
 
-function normalizeText(v: unknown) {
-  return String(v || '').trim().toLowerCase();
-}
-
 function isQlStatus(lead: AmoLead) {
   if (lead.pipeline_id === RE_PIPELINE_ID) return RE_QL_STATUSES.has(lead.status_id);
   if (lead.pipeline_id === KLYKOV_PIPELINE_ID) return KL_QL_STATUSES.has(lead.status_id);
@@ -168,28 +165,18 @@ function classifySource(lead: AmoLead): SourceName {
   if (preclassified && SOURCE_ORDER.includes(preclassified)) return preclassified;
 
   const tags = (lead._embedded?.tags || []).map((t) => t.name || '');
-  const tagsNorm = tags.map(normalizeText);
   const customFields = lead.custom_fields_values || [];
   const sourceValue = customFields.find((f) => f.field_id === SOURCE_FIELD_ID)?.values?.[0]?.value || '';
   const utmSource = customFields.find((f) => f.field_code === 'UTM_SOURCE')?.values?.[0]?.value || '';
-  const bag = [sourceValue, utmSource, lead.name, ...tags].map(normalizeText).join(' | ');
 
-  if (lead.pipeline_id === KLYKOV_PIPELINE_ID || bag.includes('klykov')) return 'Klykov';
-  if (tagsNorm.some((t) => ['red_ru', 'red_eng', 'red_lux', 'red_arm'].includes(t)) || bag.includes('red')) return 'Red';
-  if (
-    bag.includes('property finder') ||
-    bag.includes('pf off-plan') ||
-    bag.includes('pf offplan') ||
-    bag.includes('pf ') ||
-    bag.includes('bayut') ||
-    bag.includes('prian')
-  ) {
-    return 'Property Finder';
-  }
-  if (bag.includes('oman')) return 'Oman';
-  if (bag.includes('facebook') || bag.includes(' fb') || bag.startsWith('fb ') || bag.includes('meta')) return 'Facebook';
-  if (bag.includes('partner') || bag.includes('партнер')) return 'Partners leads';
-  return 'Own leads';
+  return classifyLeadSource({
+    pipelineId: lead.pipeline_id,
+    sourceValue,
+    tags,
+    utmSource,
+    leadName: lead.name,
+    defaultCategory: 'Own leads',
+  }) as SourceName;
 }
 
 function toDateOnly(ts: number) {
@@ -574,7 +561,7 @@ function applyLeadToBucket(bucket: MetricBucket, lead: AmoLead, leadDate: Date, 
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    const startDateParam = searchParams.get('startDate') || '2024-01-01';
+    const startDateParam = searchParams.get('startDate') || '2000-01-01';
     const endDateParam = searchParams.get('endDate') || dateKey(new Date());
 
     const startDate = new Date(`${startDateParam}T00:00:00.000Z`);
@@ -585,8 +572,8 @@ export async function GET(request: NextRequest) {
     }
 
     const { prevStart, prevEnd } = getPreviousRange(startDate, endDate);
-    const month = startDate.getUTCMonth();
-    const year = startDate.getUTCFullYear();
+    const month = endDate.getUTCMonth();
+    const year = endDate.getUTCFullYear();
 
     const [bqRawData, planByBroker] = await Promise.all([
       readRawDataFromBigQuery(),

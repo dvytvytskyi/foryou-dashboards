@@ -5,7 +5,7 @@ import { BigQuery } from '@google-cloud/bigquery';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const rootDir = path.resolve(__dirname, '..');
+const rootDir = path.resolve(__dirname, '..', '..');
 
 const PROJECT_ID = 'crypto-world-epta';
 const DATASET_ID = 'foryou_analytics';
@@ -103,7 +103,7 @@ async function syncAmoChannelLeadsRaw() {
         let keepPaging = true;
 
         while (keepPaging) {
-            const url = `https://${AMO_DOMAIN}/api/v4/leads?filter[pipeline_id]=${pipeline.id}&limit=250&page=${page}`;
+            const url = `https://${AMO_DOMAIN}/api/v4/leads?filter[pipeline_id]=${pipeline.id}&limit=250&page=${page}&with=tags`;
             const data = await fetchWithRetry(url, accessToken);
             const leads = data?._embedded?.leads || [];
 
@@ -119,6 +119,7 @@ async function syncAmoChannelLeadsRaw() {
                 const utmCampaign = getFieldValue(lead.custom_fields_values, FIELD_UTM_CAMPAIGN);
                 const utmMedium = getFieldValue(lead.custom_fields_values, FIELD_UTM_MEDIUM);
                 const utmContent = getFieldValue(lead.custom_fields_values, FIELD_UTM_CONTENT);
+                const tagsText = (lead._embedded?.tags || []).map((tag) => tag?.name || '').filter(Boolean).join(' | ') || null;
 
                 rows.push({
                     lead_id: lead.id,
@@ -135,6 +136,7 @@ async function syncAmoChannelLeadsRaw() {
                     utm_campaign: utmCampaign?.value || null,
                     utm_medium: utmMedium?.value || null,
                     utm_content: utmContent?.value || null,
+                    tags_text: tagsText,
                     price: lead.price || 0,
                     created_at: new Date(lead.created_at * 1000).toISOString(),
                     closed_at: lead.closed_at ? new Date(lead.closed_at * 1000).toISOString() : null,
@@ -167,6 +169,7 @@ async function syncAmoChannelLeadsRaw() {
             { name: 'utm_campaign', type: 'STRING' },
             { name: 'utm_medium', type: 'STRING' },
             { name: 'utm_content', type: 'STRING' },
+            { name: 'tags_text', type: 'STRING' },
             { name: 'price', type: 'FLOAT64' },
             { name: 'created_at', type: 'TIMESTAMP' },
             { name: 'closed_at', type: 'TIMESTAMP' },

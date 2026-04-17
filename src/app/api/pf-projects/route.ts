@@ -3,6 +3,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { BigQuery } from '@google-cloud/bigquery';
 import { isPostgresConfigured, queryPostgres } from '@/lib/postgres';
+import { CLOSED_DEAL_STATUS_IDS } from '@/lib/crmRules.js';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -16,6 +17,8 @@ const bq = new BigQuery({
   credentials: bqCredentials,
   keyFilename: !bqCredentials ? path.resolve(process.cwd(), 'secrets/crypto-world-epta-2db29829d55d.json') : undefined
 });
+
+const PF_CREDIT_TO_AED = 1327;
 
 type ProjectSnapshotRow = {
   project_id: string;
@@ -45,13 +48,16 @@ async function loadProjectsFromPostgres() {
   );
 
   return rows.map((row) => ({
+    ...row,
     Reference: row.reference || row.project_id,
     Title: row.title || row.reference || row.project_id,
     District: row.district || 'Other',
     Leads: Number(row.leads_count || 0),
     LeadsByMonth: row.leads_by_month || {},
-    Budget: Number(row.budget || 0),
-    BudgetByMonth: row.budget_by_month || {},
+    Budget: (Number(row.budget || 0) || 0) * PF_CREDIT_TO_AED,
+    BudgetByMonth: Object.fromEntries(
+      Object.entries(row.budget_by_month || {}).map(([month, value]) => [month, (Number(value || 0) || 0) * PF_CREDIT_TO_AED]),
+    ),
     CreatedAt: row.payload?.createdAt || null,
   }));
 }
@@ -61,6 +67,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const startDate = searchParams.get('startDate');
     const endDate = searchParams.get('endDate');
+    const closedDealStatusSql = CLOSED_DEAL_STATUS_IDS.join(', ');
 
     const monthInRange = (monthKey: string) => {
       if (!startDate || !endDate) return true;
@@ -100,8 +107,8 @@ export async function GET(request: Request) {
         COUNTIF(crm_status_id IN (142, 70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586)) as qualified_count,
         COUNTIF(crm_status_id IN (70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586)) as ql_actual_count,
         COUNTIF(crm_status_id IN (142, 70457474, 70457478, 70457482, 70457486, 70757586)) as meetings_count,
-        COUNTIF(crm_status_id = 142) as deals_count,
-        SUM(IF(crm_status_id = 142, potential_value, 0)) as revenue_sum
+        COUNTIF(crm_status_id IN (${closedDealStatusSql})) as deals_count,
+        SUM(IF(crm_status_id IN (${closedDealStatusSql}), potential_value, 0)) as revenue_sum
       FROM \`crypto-world-epta.foryou_analytics.pf_efficacy_master\`
       WHERE pf_deal_type = 'project' OR listing_ref NOT LIKE '0%'
       ${dateFilter}
@@ -141,6 +148,8 @@ export async function GET(request: Request) {
       const projectMeetings = projectMeetingsMap[p.Reference] || 0;
       const projectDeals = projectDealsMap[p.Reference] || 0;
       const projectRevenue = projectRevenueMap[p.Reference] || 0;
+      const projectLeadsPfTotal = Number(p.Leads || 0);
+      const projectLeadsCrmTotal = projectQualified + projectSpam;
 
       if (months.length > 0) {
         const filteredMonths = months.filter((m) => monthInRange(m));
@@ -158,6 +167,9 @@ export async function GET(request: Request) {
             level_3: month,
             budget: Number(budgetByMonth[month] || 0),
             leads: Number(leadsByMonth[month] || 0),
+            leads_pf: Number(leadsByMonth[month] || 0),
+            leads_crm: isLatest ? projectLeadsCrmTotal : 0,
+            leads_gap: isLatest ? projectLeadsPfTotal - projectLeadsCrmTotal : 0,
             no_answer_spam: isLatest ? projectSpam : 0,
             qualified_leads: isLatest ? projectQualified : 0,
             ql_actual: isLatest ? projectQLActual : 0,
@@ -180,6 +192,9 @@ export async function GET(request: Request) {
           level_3: null,
           budget: Number(p.Budget || 0),
           leads: Number(p.Leads || 0),
+          leads_pf: projectLeadsPfTotal,
+          leads_crm: projectLeadsCrmTotal,
+          leads_gap: projectLeadsPfTotal - projectLeadsCrmTotal,
           no_answer_spam: projectSpam,
           qualified_leads: projectQualified,
           ql_actual: projectQLActual,

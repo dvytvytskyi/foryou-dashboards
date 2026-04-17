@@ -325,7 +325,11 @@ export default function DashboardPage({
   onDateChange,
   icon = <BarChart3 size={14} />,
   FilterComponent = FilterBar,
-  customTableStyle
+  customTableStyle,
+  layoutVariant = 'marketing',
+  queryChannels,
+  currency: externalCurrency,
+  setCurrency: externalSetCurrency,
 }: { 
   extraContent?: React.ReactNode, 
   initialSourceFilter?: SourceFilter,
@@ -353,6 +357,10 @@ export default function DashboardPage({
   icon?: React.ReactNode;
   FilterComponent?: React.FC<any>;
   customTableStyle?: React.CSSProperties;
+  layoutVariant?: 'marketing' | 'red';
+  queryChannels?: string[];
+  currency?: Currency;
+  setCurrency?: (val: Currency) => void;
 }) {
   const activeColumns = useMemo(() => {
     const base = customColumns || MARKETING_COLUMNS;
@@ -367,10 +375,12 @@ export default function DashboardPage({
 
   const today = new Date().toISOString().slice(0, 10);
 
-  const [currency, setCurrency] = useState<Currency>(() => {
+  const [internalCurrency, setInternalCurrency] = useState<Currency>(() => {
     if (isNested) return 'aed';
     try { return (localStorage.getItem('dashboard-currency') as Currency) || 'aed'; } catch { return 'aed'; }
   });
+  const currency = externalCurrency || internalCurrency;
+  const setCurrency = externalSetCurrency || setInternalCurrency;
   const [startDate, setStartDate] = useState(() => {
     if (isNested) return '2024-01-01';
     try { return localStorage.getItem('dashboard-startDate') || '2024-01-01'; } catch { return '2024-01-01'; }
@@ -402,6 +412,13 @@ export default function DashboardPage({
   const [loading, setLoading] = useState(() => (apiUrl && !initialRows));
   const [error, setError] = useState<string | null>(null);
   const [rows, setRows] = useState<Row[]>([]);
+
+  useEffect(() => {
+    if (!isFirstMount.current) {
+      load();
+    }
+  }, [currency]);
+
   const [sortKey, setSortKey] = useState<SortKey>('channel');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [internalThemeMode, setInternalThemeMode] = useState<ThemeMode>('light');
@@ -523,31 +540,30 @@ export default function DashboardPage({
     valueContainer: (base: any) => ({ 
       ...base, 
       padding: '0', 
-      height: 32,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
+      height: '32px',
+      display: 'grid',
+      placeItems: 'center',
     }),
     indicatorsContainer: (base: any) => ({ 
       ...base, 
-      height: 32, 
-      width: 20,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
+      height: '32px', 
     }),
     indicatorSeparator: () => ({ display: 'none' }),
     singleValue: (base: any) => ({
       ...base,
       color: themeMode === 'light' ? '#1e293b' : '#f1f5f9',
-      fontSize: 12,
+      fontSize: '12px',
       fontWeight: 700,
-      textAlign: 'center',
       margin: 0,
       padding: 0,
-      width: '100%',
-      // Simplified centering: removed top and transform which were causing the cutoff
-      lineHeight: '32px',
+      position: 'static',
+      transform: 'none',
+    }),
+    placeholder: (base: any) => ({
+      ...base,
+      position: 'static',
+      transform: 'none',
+      margin: 0,
     }),
     menuPortal: (base: any) => ({ ...base, zIndex: 9999 }),
     menu: (base: any) => ({
@@ -561,7 +577,7 @@ export default function DashboardPage({
     }),
     option: (base: any, state: any) => ({
       ...base,
-      fontSize: 12,
+      fontSize: '12px',
       fontWeight: 500,
       textAlign: 'center',
       backgroundColor: state.isSelected
@@ -574,10 +590,12 @@ export default function DashboardPage({
     }),
     input: (base: any) => ({ 
       ...base, 
-      color: themeMode === 'light' ? '#1e293b' : '#f1f5f9', 
-      textAlign: 'center', 
       margin: 0, 
       padding: 0,
+      // Ensure input doesn't take space or shift content
+      position: 'absolute',
+      width: 0,
+      opacity: 0,
     }),
     dropdownIndicator: (base: any) => ({ 
       ...base, 
@@ -785,7 +803,23 @@ export default function DashboardPage({
     setLoading(true);
     setError(null);
     try {
-      const channelsForQuery = CHANNELS;
+      if (isNested) {
+        const res = await fetch(apiUrl, { cache: 'no-store' });
+
+        if (res.status === 401) {
+          window.location.replace('/login');
+          return;
+        }
+
+        const json = await res.json();
+        if (!json.success) throw new Error(json.error || 'Request failed');
+
+        const incoming: Row[] = (json.data || []).map((r: Row) => ({ ...r, channel: normalizeChannel(r.channel) }));
+        setRows(incoming);
+        return;
+      }
+
+      const channelsForQuery = (queryChannels && queryChannels.length > 0 ? queryChannels : CHANNELS) as readonly string[];
 
       const activeChannels = channelsForQuery.map((name) =>
         name === 'Facebook / Target Point' ? 'Facebook' : name
@@ -927,7 +961,9 @@ export default function DashboardPage({
     }> = [];
 
     channelRows.forEach(({ channel, total, index, grouped }) => {
-      const hasAnyLevelData = grouped.some((r) => r.level_1 || r.level_2 || r.level_3);
+      const hasAnyLevelData = channel === 'RED'
+        ? grouped.some((r) => !!r.level_1?.trim())
+        : grouped.some((r) => r.level_1 || r.level_2 || r.level_3);
       out.push({ type: 'channel', row: total, key: `channel-${channel}`, hasChildren: hasAnyLevelData });
 
       if (!expanded[channel]) return;
@@ -937,6 +973,7 @@ export default function DashboardPage({
 
       const level1Map = new Map<string, Row[]>();
       grouped.forEach((r) => {
+        if (channel === 'RED' && !r.level_1?.trim()) return;
         const l1 = levelLabel(r.level_1);
         if (!level1Map.has(l1)) level1Map.set(l1, []);
         level1Map.get(l1)!.push(r);
@@ -1128,6 +1165,7 @@ export default function DashboardPage({
                 monthOptions={MONTH_OPTIONS}
                 yearOptions={YEAR_OPTIONS}
                 mergeDate={mergeDate}
+                layoutVariant={layoutVariant}
               />
             )}
           </div>

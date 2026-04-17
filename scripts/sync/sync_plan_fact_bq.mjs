@@ -1,6 +1,7 @@
 import { BigQuery } from '@google-cloud/bigquery';
 import fs from 'fs/promises';
 import path from 'path';
+import { classifyLeadSource } from '../../src/lib/crmRules.js';
 
 const PROJECT_ID = 'crypto-world-epta';
 const DATASET_ID = 'foryou_analytics';
@@ -27,34 +28,20 @@ const bq = new BigQuery({
   keyFilename: SERVICE_ACCOUNT_FILE,
 });
 
-function normalizeText(v) {
-  return String(v || '').trim().toLowerCase();
-}
-
 function classifySource(lead) {
   const tags = (lead._embedded?.tags || []).map((t) => t.name || '');
-  const tagsNorm = tags.map(normalizeText);
   const customFields = lead.custom_fields_values || [];
   const sourceValue = customFields.find((f) => f.field_id === SOURCE_FIELD_ID)?.values?.[0]?.value || '';
   const utmSource = customFields.find((f) => f.field_code === 'UTM_SOURCE')?.values?.[0]?.value || '';
-  const bag = [sourceValue, utmSource, lead.name, ...tags].map(normalizeText).join(' | ');
 
-  if (lead.pipeline_id === KLYKOV_PIPELINE_ID || bag.includes('klykov')) return 'Klykov';
-  if (tagsNorm.some((t) => ['red_ru', 'red_eng', 'red_lux', 'red_arm'].includes(t)) || bag.includes('red')) return 'Red';
-  if (
-    bag.includes('property finder') ||
-    bag.includes('pf off-plan') ||
-    bag.includes('pf offplan') ||
-    bag.includes('pf ') ||
-    bag.includes('bayut') ||
-    bag.includes('prian')
-  ) {
-    return 'Property Finder';
-  }
-  if (bag.includes('oman')) return 'Oman';
-  if (bag.includes('facebook') || bag.includes(' fb') || bag.startsWith('fb ') || bag.includes('meta')) return 'Facebook';
-  if (bag.includes('partner') || bag.includes('партнер')) return 'Partners leads';
-  return 'Own leads';
+  return classifyLeadSource({
+    pipelineId: lead.pipeline_id,
+    sourceValue,
+    tags,
+    utmSource,
+    leadName: lead.name,
+    defaultCategory: 'Own leads',
+  });
 }
 
 async function readTokensFile() {

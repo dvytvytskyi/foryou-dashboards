@@ -4,27 +4,41 @@ import React from 'react';
 import styles from './directions.module.css';
 import { Activity, BarChart3, Database, Search } from 'lucide-react';
 
-const formatMoney = (v: number) => Math.round(v).toLocaleString();
-const formatPct = (v: number) => `${(v * 100).toFixed(1)}%`;
+import { formatMoney as sysFormatMoney } from '@/lib/formatters';
 
-export function DirectionCard({ title, data }: { title: string, data: any }) {
+const formatPct = (v: number) => `${((v || 0) * 100).toFixed(1)}%`;
+
+function DisplayMoney({ value, currency }: { value: number, currency: 'aed' | 'usd' }) {
+  const finalValue = currency === 'usd' ? value / 3.673 : value;
+  return <span>{sysFormatMoney(finalValue, currency)}</span>;
+}
+
+export function DirectionCard({ title, data, currency }: { title: string, data: any, currency: 'aed' | 'usd' }) {
   return (
     <div className={styles.kpiCard}>
       <div className={styles.kpiLabel}>{title}</div>
-      <div className={styles.kpiValue} style={{ fontSize: '20px', marginBottom: '12px' }}>{data.deals || 0} <span style={{ fontSize: '12px', fontWeight: 500, color: 'var(--muted)' }}>сделок</span></div>
+      <div className={styles.kpiValue} style={{ fontSize: '20px', marginBottom: '12px' }}>
+        {data.deals || 0} <span style={{ fontSize: '12px', fontWeight: 500, color: 'var(--muted)' }}>сделок</span>
+      </div>
       
       <div className={styles.metricsRow} style={{ gap: '16px' }}>
         <div className={styles.metricItem}>
           <span className={styles.metricLabel}>NET PROFIT</span>
-          <span className={styles.metricValue} style={{ color: 'var(--white-soft)', fontSize: '13px' }}>{formatMoney(data.net || 0)}</span>
+          <span className={styles.metricValue} style={{ color: 'var(--white-soft)', fontSize: '13px' }}>
+            <DisplayMoney value={data.net || 0} currency={currency} />
+          </span>
         </div>
         <div className={styles.metricItem}>
           <span className={styles.metricLabel}>GMV</span>
-          <span className={styles.metricValue} style={{ fontSize: '13px' }}>{formatMoney(data.gmv || 0)}</span>
+          <span className={styles.metricValue} style={{ fontSize: '13px' }}>
+            <DisplayMoney value={data.gmv || 0} currency={currency} />
+          </span>
         </div>
         <div className={styles.metricItem} style={{ marginTop: '4px' }}>
           <span className={styles.metricLabel}>AVG CHECK</span>
-          <span className={styles.metricValue}>{formatMoney(data.avg_check || 0)}</span>
+          <span className={styles.metricValue}>
+            <DisplayMoney value={data.avg_check || 0} currency={currency} />
+          </span>
         </div>
         <div className={styles.metricItem} style={{ marginTop: '4px' }}>
           <span className={styles.metricLabel}>BROKER %</span>
@@ -35,7 +49,7 @@ export function DirectionCard({ title, data }: { title: string, data: any }) {
   );
 }
 
-export function SourcePerformanceTable({ sources }: { sources: any[] }) {
+export function SourcePerformanceTable({ sources, currency }: { sources: any[], currency: 'aed' | 'usd' }) {
   const [search, setSearch] = React.useState('');
   const filtered = sources.filter(s => s.name?.toLowerCase().includes(search.toLowerCase()));
 
@@ -83,8 +97,10 @@ export function SourcePerformanceTable({ sources }: { sources: any[] }) {
                 <tr key={s.name}>
                   <td><div className={styles.rank}>{i + 1}</div></td>
                   <td><div className={styles.sourceCell}>{s.name}</div></td>
-                  <td>{formatMoney(s.revenue)}</td>
-                  <td style={{ fontWeight: 700, color: 'var(--white-soft)' }}>{formatMoney(s.net)}</td>
+                  <td><DisplayMoney value={s.revenue} currency={currency} /></td>
+                  <td style={{ fontWeight: 700, color: 'var(--white-soft)' }}>
+                    <DisplayMoney value={s.net} currency={currency} />
+                  </td>
                   <td>{s.deals}</td>
                 </tr>
               );

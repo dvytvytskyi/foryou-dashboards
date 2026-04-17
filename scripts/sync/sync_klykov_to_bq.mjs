@@ -2,6 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 import { BigQuery } from '@google-cloud/bigquery';
+import { CLOSED_DEAL_STATUS_IDS } from '../../src/lib/crmRules.js';
 
 const AMO_DOMAIN = 'reforyou.amocrm.ru';
 const PIPELINE_ID = 10776450;
@@ -19,7 +20,7 @@ const TABLE_ID = 'marketing_channel_drilldown_daily';
 // Status mappings
 const QUALIFIED_STATUS_IDS = [84853934, 84853938, 84853942, 84853946, 84853950, 84853954, 84853958, 84853962, 84853966, 142];
 const MEETING_STATUS_IDS = [84853942, 84853946, 84853950, 84853954, 84853958, 84853962, 84853966, 142];
-const WON_STATUS_ID = 142;
+const WON_STATUS_IDS = new Set(CLOSED_DEAL_STATUS_IDS);
 const LOST_STATUS_ID = 143;
 
 async function fetchAllLeads(accessToken) {
@@ -89,7 +90,7 @@ async function sync() {
             day.meetings += 1;
         }
         
-        if (lead.status_id === WON_STATUS_ID) {
+        if (WON_STATUS_IDS.has(lead.status_id)) {
             day.deals += 1;
             day.revenue += (lead.price || 0);
         }

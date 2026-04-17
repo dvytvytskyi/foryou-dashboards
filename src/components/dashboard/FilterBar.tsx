@@ -53,6 +53,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
   draftEndParts,
   isDateRangeDirty,
   applyDateRangeDraft,
+  setDraftStartDate,
+  setDraftEndDate,
   setExactDateRange,
   startDate,
   endDate,
@@ -156,14 +158,14 @@ const FilterBar: React.FC<FilterBarProps> = ({
   if (layoutVariant === 'red') {
     return (
       <div className={`${styles.filterBar} ${styles.redVariant}`}>
+        {customFilterContent && <div className={styles.customContent}>{customFilterContent}</div>}
+
         <div className={styles.presetsContainer}>
           {presets.map(p => (
             <button key={p.label} className={`${styles.presetBtn} ${datePreset === p.label ? styles.presetActive : ''}`} onClick={() => handlePresetClick(p)}>{p.label}</button>
           ))}
         </div>
         
-        {customFilterContent && <div className={styles.customContent}>{customFilterContent}</div>}
-
         {datePreset === 'Custom' && renderDateControls()}
         
         <div className={styles.currencyBlockRight}>
@@ -178,6 +180,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
     <div className={`${styles.filterBar} ${styles.marketingVariant}`}>
       <div className={styles.topRail}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          {customFilterContent && <div className={styles.customContent}>{customFilterContent}</div>}
           {!hideSourceFilter && (
             <div className={styles.channels}>
               {sourceChannels.map((ch) => (
@@ -185,7 +188,6 @@ const FilterBar: React.FC<FilterBarProps> = ({
               ))}
             </div>
           )}
-          {customFilterContent && <div className={styles.customContent}>{customFilterContent}</div>}
         </div>
         {renderCurrency()}
       </div>

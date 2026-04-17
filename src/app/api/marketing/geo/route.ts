@@ -2,6 +2,7 @@
 import { BigQuery } from '@google-cloud/bigquery';
 import { NextRequest, NextResponse } from 'next/server';
 import path from 'path';
+import { CLOSED_DEAL_STATUS_IDS } from '@/lib/crmRules.js';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -19,7 +20,7 @@ const bq = new BigQuery({
 const RED_QUALIFIED_IDS = [70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802, 142];
 const RED_ACTUAL_IDS = [70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802];
 const RED_MEETING_IDS = [70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802, 142];
-const RED_WON_ID = 142;
+const RED_WON_IDS = CLOSED_DEAL_STATUS_IDS;
 const RED_LOST_ID = 143;
 
 export async function GET(request: NextRequest) {
@@ -57,8 +58,8 @@ export async function GET(request: NextRequest) {
           countif(status_id IN UNNEST(@qualified_ids)) as qualified_leads,
           countif(status_id IN UNNEST(@actual_ids)) as ql_actual,
           countif(status_id IN UNNEST(@meeting_ids)) as meetings,
-          countif(status_id = ${RED_WON_ID}) as deals,
-          sum(case when status_id = ${RED_WON_ID} then revenue else 0 end) as revenue
+          countif(status_id IN UNNEST(@won_ids)) as deals,
+          sum(case when status_id IN UNNEST(@won_ids) then revenue else 0 end) as revenue
         FROM raw_data
         WHERE ip_country IS NOT NULL AND ip_country != ''
         GROUP BY country, campaign
@@ -73,8 +74,8 @@ export async function GET(request: NextRequest) {
           countif(status_id IN UNNEST(@qualified_ids)) as qualified_leads,
           countif(status_id IN UNNEST(@actual_ids)) as ql_actual,
           countif(status_id IN UNNEST(@meeting_ids)) as meetings,
-          countif(status_id = ${RED_WON_ID}) as deals,
-          sum(case when status_id = ${RED_WON_ID} then revenue else 0 end) as revenue
+          countif(status_id IN UNNEST(@won_ids)) as deals,
+          sum(case when status_id IN UNNEST(@won_ids) then revenue else 0 end) as revenue
         FROM raw_data
         WHERE phone_country IS NOT NULL AND phone_country != ''
         GROUP BY country, campaign
@@ -93,6 +94,7 @@ export async function GET(request: NextRequest) {
         qualified_ids: RED_QUALIFIED_IDS,
         actual_ids: RED_ACTUAL_IDS,
         meeting_ids: RED_MEETING_IDS,
+        won_ids: RED_WON_IDS,
       },
     });
 

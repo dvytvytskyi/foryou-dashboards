@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Mail, Lock, ShieldAlert } from 'lucide-react';
 import { getPartnerHomePath } from '@/lib/partners';
 import styles from './login.module.css';
 
@@ -28,15 +29,14 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (!data.success) {
-        throw new Error(data.error || 'Login failed');
+        throw new Error(data.error || 'Invalid credentials');
       }
 
       if (data.user.partnerId) {
-        router.push(getPartnerHomePath(data.user.partnerId));
+        window.location.href = getPartnerHomePath(data.user.partnerId);
       } else {
-        router.push('/marketing');
+        window.location.href = '/marketing';
       }
-      router.refresh();
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -50,22 +50,23 @@ export default function LoginPage() {
       <div className={styles.glow2} />
       
       <motion.div 
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
         className={styles.card}
       >
         <div className={styles.logo}>ForYou Analytics</div>
-        <p className={styles.subtitle}>Enter your credentials to access the dashboard</p>
+        <h1 className={styles.title}>Login</h1>
 
         <AnimatePresence mode="wait">
           {error && (
             <motion.div 
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
               className={styles.error}
             >
+              <ShieldAlert size={14} />
               {error}
             </motion.div>
           )}
@@ -73,27 +74,53 @@ export default function LoginPage() {
 
         <form onSubmit={handleLogin}>
           <div className={styles.inputGroup}>
-            <label className={styles.label}>Email Address</label>
-            <input 
-              type="email" 
-              className={styles.input}
-              placeholder="admin@foryou.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+            <label className={styles.label}>Email address</label>
+            <div style={{ position: 'relative' }}>
+              <Mail 
+                size={16} 
+                style={{ 
+                  position: 'absolute', 
+                  left: '12px', 
+                  top: '50%', 
+                  transform: 'translateY(-50%)', 
+                  color: '#94a3b8' 
+                }} 
+              />
+              <input 
+                type="email" 
+                className={styles.input}
+                style={{ paddingLeft: '38px' }}
+                placeholder="admin@foryou.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
           </div>
 
           <div className={styles.inputGroup}>
             <label className={styles.label}>Password</label>
-            <input 
-              type="password" 
-              className={styles.input}
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div style={{ position: 'relative' }}>
+              <Lock 
+                size={16} 
+                style={{ 
+                  position: 'absolute', 
+                  left: '12px', 
+                  top: '50%', 
+                  transform: 'translateY(-50%)', 
+                  color: '#94a3b8' 
+                }} 
+              />
+              <input 
+                type="password" 
+                className={styles.input}
+                style={{ paddingLeft: '38px' }}
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
           </div>
 
           <button 
@@ -101,13 +128,9 @@ export default function LoginPage() {
             className={styles.button}
             disabled={loading}
           >
-            {loading ? 'Signing in...' : 'Sign in'}
+            {loading ? 'Authenticating...' : 'Sign In'}
           </button>
         </form>
-
-        <div className={styles.footer}>
-          Forgot password? <a href="#">Contact support</a>
-        </div>
       </motion.div>
     </div>
   );

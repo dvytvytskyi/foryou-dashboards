@@ -102,8 +102,20 @@ function PlanProgress({ actual, plan }: { actual: number; plan: number }) {
 }
 
 function growth(current: number, prev: number) {
-  if (!prev) return current > 0 ? 100 : 0;
+  if (!prev) return current > 0 ? null : 0;
   return ((current - prev) / prev) * 100;
+}
+
+function GrowthCell({ current, prev }: { current: number; prev: number }) {
+  const g = growth(current, prev);
+  if (g === null) return <td style={{ color: 'var(--muted)', fontSize: '11px' }}>нет данных</td>;
+  const sign = g > 0 ? '+' : '';
+  const color = g > 0 ? '#10b981' : g < 0 ? '#f43f5e' : 'var(--muted)';
+  return (
+    <td style={{ color, fontWeight: 600, fontSize: '13px' }}>
+      {sign}{Math.round(g)}%
+    </td>
+  );
 }
 
 function calcRate(part: number, total: number) {
@@ -114,18 +126,15 @@ function calcRate(part: number, total: number) {
 function PlanFactSkeleton() {
   return (
     <div className={styles.container}>
-      <div className={styles.kpiGrid}>
+      <div className={styles.summaryGrid}>
         {[1, 2, 3, 4].map((i) => (
           <div key={i} className={`${styles.kpiCard} ${styles.skeleton}`} style={{ height: '140px' }} />
         ))}
       </div>
 
-      <div className={styles.section} style={{ marginTop: '8px' }}>
-        <div className={styles.sectionTitle}>
-          <span>Эффективность брокеров и сравнение периодов</span>
-        </div>
-        <div style={{ padding: '14px' }}>
-          <div className={`${styles.skeleton} ${styles.skeletonTitle}`} />
+      <div className={styles.section} style={{ marginTop: '24px', padding: '24px' }}>
+        <div className={`${styles.skeleton} ${styles.skeletonTitle}`} />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {Array.from({ length: 8 }).map((_, index) => (
             <div key={index} className={`${styles.skeleton} ${styles.skeletonRow}`} />
           ))}
@@ -233,13 +242,9 @@ export default function PlanFactUI({ startDate, endDate }: { startDate: string; 
                 <tr>
                   <th
                     rowSpan={2}
+                    className={styles.stickyCell}
                     style={{
-                      position: 'sticky',
-                      left: 0,
-                      zIndex: 30,
-                      background: 'var(--panel-2)',
-                      minWidth: '220px',
-                      borderRight: '1px solid var(--line)',
+                      minWidth: '220px'
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -306,23 +311,23 @@ export default function PlanFactUI({ startDate, endDate }: { startDate: string; 
                     return (
                       <React.Fragment key={b.id}>
                         <tr style={{ cursor: 'pointer' }} onClick={() => toggleExpanded(b.name)}>
-                          <td
-                            className={styles.colName}
-                            style={{ 
-                              fontWeight: 600, 
-                              display: 'flex', 
-                              alignItems: 'center', 
-                              gap: '8px',
-                              background: 'var(--panel-2)' 
-                            }}
-                          >
-                            {isExpanded ? <ChevronDown size={14} className={styles.dimmed} /> : <ChevronRight size={14} className={styles.dimmed} />}
-                            {b.name}
+                          <td className={styles.stickyCell}>
+                            <div
+                              style={{ 
+                                fontWeight: 600, 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                gap: '8px'
+                              }}
+                            >
+                              {isExpanded ? <ChevronDown size={14} className={styles.dimmed} /> : <ChevronRight size={14} className={styles.dimmed} />}
+                              {b.name}
+                            </div>
                           </td>
 
                           <td style={{ fontWeight: 700 }}>{b.received}</td>
-                          <td>—</td>
-                          <td>—</td>
+                          <td>{b.prevReceived}</td>
+                          <GrowthCell current={b.received} prev={b.prevReceived} />
                           <td style={{ color: 'var(--white-soft)', fontWeight: 600 }}>{b.ql}</td>
                           <td>{formatPercent(calcRate(b.ql, b.received))}</td>
                           <td>{b.showings}</td>
@@ -356,29 +361,30 @@ export default function PlanFactUI({ startDate, endDate }: { startDate: string; 
                           b.sourceRows.map((s) => {
                             return (
                               <tr key={`${b.id}-${s.source}`} className={styles.subRowCell}>
-                                <td
-                                  className={styles.subRowSticky}
-                                  style={{
-                                    fontSize: '12px',
-                                    color: 'var(--white-soft)',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '6px',
-                                  }}
-                                >
+                                <td className={styles.subRowSticky}>
                                   <div
                                     style={{
-                                      width: '6px',
-                                      height: '6px',
-                                      borderRadius: '50%',
-                                      background: SOURCE_COLORS[s.source] || '#94a3b8',
+                                      fontSize: '12px',
+                                      color: 'var(--white-soft)',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      gap: '6px',
                                     }}
-                                  />
-                                  {s.source}
+                                  >
+                                    <div
+                                      style={{
+                                        width: '6px',
+                                        height: '6px',
+                                        borderRadius: '50%',
+                                        background: SOURCE_COLORS[s.source] || '#94a3b8',
+                                      }}
+                                    />
+                                    {s.source}
+                                  </div>
                                 </td>
                                 <td>{s.received}</td>
-                                <td>—</td>
-                                <td>—</td>
+                                <td>{s.prevReceived}</td>
+                                <GrowthCell current={s.received} prev={s.prevReceived} />
                                 <td>{s.ql}</td>
                                 <td>{formatPercent(calcRate(s.ql, s.received))}</td>
                                 <td>{s.showings}</td>

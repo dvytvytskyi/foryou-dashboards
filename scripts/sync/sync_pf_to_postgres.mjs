@@ -95,24 +95,36 @@ async function fetchCreditsTransactions(token) {
   return txs;
 }
 
-async function fetchLeadsCount(listingId, token) {
-  let page = 1;
-  let count = 0;
+async function fetchLeadsCount(listingId, listingReference, token) {
+  const fetchByParam = async (paramName, value) => {
+    if (!value) return null;
+    let page = 1;
+    let count = 0;
 
-  while (true) {
-    const res = await fetch(`${API_URL}/leads?listingId=${listingId}&perPage=50&page=${page}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(`PF leads fetch failed: ${listingId} ${JSON.stringify(data)}`);
+    while (true) {
+      const res = await fetch(`${API_URL}/leads?${paramName}=${encodeURIComponent(String(value))}&perPage=50&page=${page}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (!res.ok) return null;
 
-    const rows = data.results || [];
-    count += rows.length;
-    if (!data.pagination?.nextPage) break;
-    page = data.pagination.nextPage;
-  }
+      const rows = data.results || data.data || [];
+      count += rows.length;
+      if (!data.pagination?.nextPage) break;
+      page = data.pagination.nextPage;
+      if (page > 500) break;
+    }
 
-  return count;
+    return count;
+  };
+
+  const byId = await fetchByParam('listingId', listingId);
+  if (byId !== null) return byId;
+
+  const byReference = await fetchByParam('listingReference', listingReference);
+  if (byReference !== null) return byReference;
+
+  return 0;
 }
 
 function aggregateCredits(txs) {
@@ -234,7 +246,7 @@ async function fetchProjectLeadsSummary(token) {
     if (!data.pagination?.nextPage) break;
     page = data.pagination.nextPage;
 
-    if (page > 50) break;
+    if (page > 500) break;
   }
 
   const grouped = new Map();
@@ -295,7 +307,7 @@ async function main() {
       for (const state of states) {
         const listings = await fetchAllListings(cat.category, cat.offeringType, state, token);
         for (const listing of listings) {
-          const leadsCount = await fetchLeadsCount(listing.reference, token);
+          const leadsCount = await fetchLeadsCount(listing.id, listing.reference, token);
           await upsertListing(client, {
             id: listing.id,
             reference: listing.reference,

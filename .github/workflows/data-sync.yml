@@ -29,6 +29,12 @@ jobs:
       - name: Save AMO Tokens
         run: echo '${{ secrets.AMO_TOKENS_JSON }}' > secrets/amo_tokens.json
 
+      - name: Sync AMO channel leads raw
+        run: node scripts/kpi/sync_amo_channel_leads_raw.mjs
+
+      - name: Rebuild unified marketing mart
+        run: node scripts/kpi/create_unified_marketing_drilldown_daily.mjs
+
       - name: Sync RED leads
         run: node scripts/sync/sync_red_to_bq.mjs
         env:

@@ -3,6 +3,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { BigQuery } from '@google-cloud/bigquery';
 import { isPostgresConfigured, queryPostgres } from '@/lib/postgres';
+import { CLOSED_DEAL_STATUS_IDS } from '@/lib/crmRules.js';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -17,15 +18,19 @@ const bq = new BigQuery({
   keyFilename: !bqCredentials ? path.resolve(process.cwd(), 'secrets/crypto-world-epta-2db29829d55d.json') : undefined
 });
 
+const PF_CREDIT_TO_AED = 1327;
+
 type ListingSnapshotRow = {
   listing_id: string;
   reference: string | null;
   group_name: string | null;
   category: string | null;
+  offering_type: string | null;
   title: string | null;
   status: string | null;
   budget: number | string | null;
   budget_by_month: Record<string, number> | null;
+  leads_count: number | string | null;
   source_updated_at: Date | string | null;
   payload: Record<string, any> | null;
 };
@@ -39,22 +44,33 @@ async function loadListingsFromFile() {
 async function loadListingsFromPostgres(targetGroup: string | null) {
   const { rows } = await queryPostgres<ListingSnapshotRow>(
     `
-      SELECT listing_id, reference, group_name, category, title, status,
-             budget, budget_by_month, source_updated_at, payload
+      SELECT listing_id, reference, group_name, category, offering_type, title, status,
+             budget, budget_by_month, leads_count, source_updated_at, payload
       FROM pf_listings_snapshot
       WHERE ($1::text IS NULL OR group_name = $1)
     `,
     [targetGroup],
   );
 
+  const toBudgetByMonthAed = (budgetByMonth: Record<string, number>) => {
+    const converted: Record<string, number> = {};
+    for (const [month, value] of Object.entries(budgetByMonth || {})) {
+      converted[month] = (Number(value || 0) || 0) * PF_CREDIT_TO_AED;
+    }
+    return converted;
+  };
+
   return rows.map((row) => ({
     Reference: row.reference || row.listing_id,
     group: row.group_name || 'Our',
-    Category: row.category || 'Other',
+    Category:
+      row.category ||
+      (row.offering_type === 'sale' ? 'Sell' : row.offering_type === 'rent' ? 'Rent' : 'Other'),
     Title: row.title || row.reference || row.listing_id,
     status: row.status || 'Active',
-    Budget: Number(row.budget || 0),
-    BudgetByMonth: row.budget_by_month || {},
+    Budget: (Number(row.budget || 0) || 0) * PF_CREDIT_TO_AED,
+    BudgetByMonth: toBudgetByMonthAed(row.budget_by_month || {}),
+    LeadsPF: Number(row.leads_count || 0) || 0,
     CreatedAt:
       typeof row.source_updated_at === 'string'
         ? row.source_updated_at
@@ -98,6 +114,8 @@ export async function GET(request: Request) {
       return normalized >= startDate && normalized <= endDate;
     };
 
+    const closedDealStatusSql = CLOSED_DEAL_STATUS_IDS.join(', ');
+
     // Fetch CRM stats from BQ with date filtering
     const dateFilter = (startDate && endDate) 
       ? `AND created_at BETWEEN '${startDate}' AND '${endDate}'`
@@ -115,8 +133,8 @@ export async function GET(request: Request) {
           COUNTIF(crm_status_id IN (142, 70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586)) as qualified_count,
           COUNTIF(crm_status_id IN (70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586)) as ql_actual_count,
           COUNTIF(crm_status_id IN (142, 70457474, 70457478, 70457482, 70457486, 70757586)) as meetings_count,
-          COUNTIF(crm_status_id = 142) as deals_count,
-          SUM(IF(crm_status_id = 142, potential_value, 0)) as revenue_sum,
+          COUNTIF(crm_status_id IN (${closedDealStatusSql})) as deals_count,
+          SUM(IF(crm_status_id IN (${closedDealStatusSql}), potential_value, 0)) as revenue_sum,
           SUM(potential_value) as potential_revenue_sum,
           COUNT(*) as matched_leads
         FROM \`crypto-world-epta.foryou_analytics.pf_efficacy_master\`
@@ -129,8 +147,8 @@ export async function GET(request: Request) {
           COUNTIF(status_id IN (142, 70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586)) as total_qualified,
           COUNTIF(status_id IN (70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586)) as total_ql_actual,
           COUNTIF(status_id IN (142, 70457474, 70457478, 70457482, 70457486, 70757586)) as total_meetings,
-          COUNTIF(status_id = 142) as total_deals,
-          SUM(IF(status_id = 142, price, 0)) as total_revenue,
+          COUNTIF(status_id IN (${closedDealStatusSql})) as total_deals,
+          SUM(IF(status_id IN (${closedDealStatusSql}), price, 0)) as total_revenue,
           SUM(price) as total_potential_revenue,
           COUNT(*) as total_pf_leads
         FROM \`crypto-world-epta.foryou_analytics.amo_channel_leads_raw\`
@@ -228,6 +246,7 @@ export async function GET(request: Request) {
     filteredData.forEach((l: any) => {
       const normRef = normalizeRef(l.Reference);
       const stats = crmStats[`${normRef}_${l.Category}`] || {};
+      const listingLeadsPf = Number(l.LeadsPF || 0);
       const listingLeads = Number(stats.matched_leads || 0);
       const listingSpam = Number(stats.spam_count || 0);
       const listingQualified = Number(stats.qualified_count || 0);
@@ -259,6 +278,9 @@ export async function GET(request: Request) {
             level_3: month,
             budget: Number(budgetByMonth[month] || 0),
             leads: isLatest ? listingLeads : 0,
+            leads_pf: isLatest ? listingLeadsPf : 0,
+            leads_crm: isLatest ? listingLeads : 0,
+            leads_gap: isLatest ? listingLeadsPf - listingLeads : 0,
             no_answer_spam: isLatest ? listingSpam : 0,
             qualified_leads: isLatest ? listingQualified : 0,
             ql_actual: isLatest ? listingQLActual : 0,
@@ -283,6 +305,9 @@ export async function GET(request: Request) {
           level_3: null,
           budget: Number(l.Budget || 0),
           leads: listingLeads,
+          leads_pf: listingLeadsPf,
+          leads_crm: listingLeads,
+          leads_gap: listingLeadsPf - listingLeads,
           no_answer_spam: listingSpam,
           qualified_leads: listingQualified,
           ql_actual: listingQLActual,

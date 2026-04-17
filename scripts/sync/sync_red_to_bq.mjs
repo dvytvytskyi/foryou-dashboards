@@ -2,6 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 import { BigQuery } from '@google-cloud/bigquery';
+import { CLOSED_DEAL_STATUS_IDS } from '../../src/lib/crmRules.js';
 
 const AMO_DOMAIN = 'reforyou.amocrm.ru';
 const RED_PIPELINE_ID = 8696950;
@@ -19,7 +20,7 @@ const TABLE_ID = 'marketing_channel_drilldown_daily';
 // Status mappings for RED (8696950)
 const QUALIFIED_STATUS_IDS = [70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802, 142];
 const MEETING_STATUS_IDS = [70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802, 142];
-const WON_STATUS_ID = 142;
+const WON_STATUS_IDS = new Set(CLOSED_DEAL_STATUS_IDS);
 const LOST_STATUS_ID = 143;
 const QL_ACTUAL_STATUS_IDS = [70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802];
 
@@ -110,7 +111,7 @@ async function syncRed() {
             g.meetings += 1;
         }
         
-        if (lead.status_id === WON_STATUS_ID) {
+        if (WON_STATUS_IDS.has(lead.status_id)) {
             g.deals += 1;
             g.revenue += (lead.price || 0);
         }

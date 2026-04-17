@@ -36,7 +36,7 @@ export default function SalesDirectionsPage() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [currency]);
 
   return (
     <DashboardPage 
@@ -56,13 +56,13 @@ export default function SalesDirectionsPage() {
         ) : data ? (
           <>
             <div className={styles.kpiGrid}>
-              <DirectionCard title="Первичка" data={data.directions['Первичка']} />
-              <DirectionCard title="Вторичка" data={data.directions['Вторичка']} />
-              <DirectionCard title="Аренда" data={data.directions['Аренда']} />
-              <DirectionCard title="Сопровождение" data={data.directions['Сопровождение']} />
+              <DirectionCard title="Первичка" data={data.directions['Первичка']} currency={currency} />
+              <DirectionCard title="Вторичка" data={data.directions['Вторичка']} currency={currency} />
+              <DirectionCard title="Аренда" data={data.directions['Аренда']} currency={currency} />
+              <DirectionCard title="Сопровождение" data={data.directions['Сопровождение']} currency={currency} />
             </div>
 
-            <SourcePerformanceTable sources={data.sources} />
+            <SourcePerformanceTable sources={data.sources} currency={currency} />
           </>
         ) : null}
       </div>

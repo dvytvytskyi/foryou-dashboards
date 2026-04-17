@@ -120,6 +120,27 @@ function comparisonPercent(current: number, previous: number): number {
   return ((current - previous) / previous) * 100;
 }
 
+function BrokersSkeleton() {
+  return (
+    <div className={styles.container} style={{ padding: '0 32px 32px 32px' }}>
+      <div className={styles.kpiGrid} style={{ marginTop: '24px' }}>
+        {[1, 2, 3, 4].map(i => (
+          <div key={i} className={`${styles.skeletonCard} ${styles.skeleton}`} />
+        ))}
+      </div>
+      
+      <div className={styles.skeletonBlock} style={{ marginTop: '16px' }}>
+        <div className={`${styles.skeleton} ${styles.skeletonTitle}`} />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className={`${styles.skeleton} ${styles.skeletonRow}`} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function BrokersUI({ selectedBroker, startDate, endDate }: BrokersUIProps) {
   const [metrics, setMetrics] = useState<BrokerMetrics | null>(null);
   const [loading, setLoading] = useState(false);
@@ -166,22 +187,7 @@ export default function BrokersUI({ selectedBroker, startDate, endDate }: Broker
   }
 
   if (loading) {
-    return (
-      <div className={styles.container} style={{ padding: '0 32px 32px 32px' }}>
-        <div style={{ 
-          height: '400px', 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'center',
-          color: 'var(--muted)',
-          fontSize: '14px',
-          gap: '12px'
-        }}>
-          <Loader size={20} className={styles.spin} />
-          Загрузка данных...
-        </div>
-      </div>
-    );
+    return <BrokersSkeleton />;
   }
 
   if (!metrics) {
@@ -244,7 +250,7 @@ export default function BrokersUI({ selectedBroker, startDate, endDate }: Broker
             <table className={`${styles.table} ${styles.workTable}`}>
               <thead>
                 <tr>
-                  <th rowSpan={2} style={{ position: 'sticky', left: 0, background: 'var(--bg-0)', zIndex: 10, borderRight: '1px solid var(--line-soft)', minWidth: '180px' }}>ФИО брокера</th>
+                  <th rowSpan={2} className={styles.stickyCell} style={{ minWidth: '180px' }}>ФИО брокера</th>
                   <th rowSpan={2}>Всего получил</th>
                   <th rowSpan={2}>Всего получил</th>
                   <th rowSpan={2}>Сравнение с прошлым периодом</th>
@@ -265,9 +271,11 @@ export default function BrokersUI({ selectedBroker, startDate, endDate }: Broker
               </thead>
               <tbody>
                 <tr style={{ cursor: 'pointer' }} onClick={() => toggleWork('main')}>
-                  <td className={styles.stickyCell} style={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    {expandedWork['main'] ? <ChevronDown size={14} className={styles.dimmed} /> : <ChevronRight size={14} className={styles.dimmed} />}
-                    {selectedBroker.label}
+                  <td className={styles.stickyCell}>
+                    <div style={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      {expandedWork['main'] ? <ChevronDown size={14} className={styles.dimmed} /> : <ChevronRight size={14} className={styles.dimmed} />}
+                      {selectedBroker.label}
+                    </div>
                   </td>
                   <td>{metrics.period_data.current.total_leads}</td>
                   <td>{metrics.period_data.previous.total_leads}</td>
@@ -293,9 +301,11 @@ export default function BrokersUI({ selectedBroker, startDate, endDate }: Broker
                   if (!data) return null;
                   return (
                     <tr key={source} className={styles.subRowCell}>
-                      <td className={styles.subRowSticky} style={{ fontSize: '12px', color: 'var(--white-soft)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: SOURCE_COLORS[source] || '#94a3b8' }} />
-                        {source}
+                      <td className={styles.subRowSticky}>
+                        <div style={{ fontSize: '12px', color: 'var(--white-soft)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: SOURCE_COLORS[source] || '#94a3b8' }} />
+                          {source}
+                        </div>
                       </td>
                       <td>{srcCurrent}</td>
                       <td>{srcPrevious}</td>
@@ -327,7 +337,7 @@ export default function BrokersUI({ selectedBroker, startDate, endDate }: Broker
             <table className={styles.table}>
               <thead>
                 <tr>
-                  <th style={{ position: 'sticky', left: 0, background: 'var(--bg-0)', zIndex: 10, borderRight: '1px solid var(--line-soft)', minWidth: '180px' }}>ФИО брокера</th>
+                  <th className={styles.stickyCell} style={{ minWidth: '180px' }}>ФИО брокера</th>
                   <th>Total leads</th>
                   <th>Закрыто и не реализовано</th>
                   <th>QL Leads</th>
@@ -339,9 +349,11 @@ export default function BrokersUI({ selectedBroker, startDate, endDate }: Broker
               </thead>
               <tbody>
                 <tr style={{ cursor: 'pointer' }} onClick={() => toggleLifetime('total')}>
-                  <td className={styles.stickyCell} style={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    {expandedLifetime['total'] ? <ChevronDown size={14} className={styles.dimmed} /> : <ChevronRight size={14} className={styles.dimmed} />}
-                    <span>{selectedBroker.label}</span>
+                  <td className={styles.stickyCell}>
+                    <div style={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      {expandedLifetime['total'] ? <ChevronDown size={14} className={styles.dimmed} /> : <ChevronRight size={14} className={styles.dimmed} />}
+                      <span>{selectedBroker.label}</span>
+                    </div>
                   </td>
                   <td>{metrics.totals.leads}</td>
                   <td>{metrics.totals.lost_leads}</td>
@@ -356,9 +368,11 @@ export default function BrokersUI({ selectedBroker, startDate, endDate }: Broker
                   if (!data) return null;
                   return (
                     <tr key={source} className={styles.subRowCell}>
-                      <td className={styles.subRowSticky} style={{ fontSize: '12px', color: 'var(--white-soft)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: SOURCE_COLORS[source] || '#94a3b8' }} />
-                        {source}
+                      <td className={styles.subRowSticky}>
+                        <div style={{ fontSize: '12px', color: 'var(--white-soft)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: SOURCE_COLORS[source] || '#94a3b8' }} />
+                          {source}
+                        </div>
                       </td>
                       <td>{data.total_leads}</td>
                       <td>-</td>

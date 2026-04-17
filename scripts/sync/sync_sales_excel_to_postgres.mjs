@@ -102,9 +102,20 @@ async function readRowsFromCsv(fileName, mapping) {
       const cols = parseCsvLine(line);
       // cols are 0-indexed; mapping uses 1-indexed colNums
       const get = (colNum) => (colNum ? (cols[colNum - 1] || '').trim() : '');
+      const pickFirst = (colNums = []) => {
+        for (const colNum of colNums) {
+          const value = get(colNum);
+          if (value) return value;
+        }
+        return '';
+      };
       const dealDate = parseDate(get(mapping.dateCol));
       const broker = get(mapping.brokerCol) || null;
-      const partner = mapping.partnerCol ? get(mapping.partnerCol) || null : null;
+      const partner = mapping.partnerCols
+        ? pickFirst(mapping.partnerCols) || null
+        : mapping.partnerCol
+          ? get(mapping.partnerCol) || null
+          : null;
       const sourceLabel = mapping.fixedSource || get(mapping.sourceCol) || null;
       rows.push({
         source_file: fileName,
@@ -160,7 +171,7 @@ async function main() {
     })));
 
     rows.push(...(await readRowsFromCsv('support.csv', {
-      dealType: 'Support', dateCol: 1, brokerCol: 6, partnerCol: 4, gmvCol: 7, grossCol: 9, netCol: 14, fixedSource: 'Support',
+      dealType: 'Support', dateCol: 1, brokerCol: 6, partnerCols: [4, 5], gmvCol: 7, grossCol: 9, netCol: 14, fixedSource: 'Support',
     })));
 
     await client.query('BEGIN');

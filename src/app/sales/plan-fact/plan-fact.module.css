@@ -69,10 +69,11 @@
   border-radius: 12px;
   overflow: hidden;
   margin-top: 16px;
+  padding: 24px;
 }
 
 .sectionHeader {
-  padding: 16px 20px;
+  padding: 0 0 20px 0;
   border-bottom: 1px solid var(--white-faint);
   display: flex;
   justify-content: space-between;
@@ -89,9 +90,6 @@
 
 .tableWrapper {
   margin-top: 0;
-  margin-left: 18px;
-  margin-right: 18px;
-  margin-bottom: 18px;
   border: 1px solid var(--line);
   border-radius: 10px;
   overflow: hidden;
@@ -137,7 +135,33 @@
 }
 
 .table tr:hover td {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--row-hover) !important;
+}
+
+.stickyCell {
+  position: sticky !important;
+  left: 0 !important;
+  z-index: 11 !important;
+  background: var(--panel-2) !important;
+  border-right: 1px solid var(--line) !important;
+}
+
+.table th.stickyCell {
+  z-index: 25 !important; /* Headers must be above cells */
+}
+
+.subRowSticky {
+  position: sticky !important;
+  left: 0 !important;
+  z-index: 10 !important;
+  background: var(--panel-2) !important;
+  border-right: 1px solid var(--line) !important;
+  padding-left: 32px !important;
+}
+
+.table tr:hover .stickyCell,
+.table tr:hover .subRowSticky {
+  background: var(--row-hover) !important;
 }
 
 .brokerName {
@@ -183,7 +207,45 @@
   color: var(--white-muted);
 }
 
-/* Custom Column Widths */
-.colName { min-width: 200px; position: sticky; left: 0; background: var(--surface-input); z-index: 5; }
-.colStat { min-width: 100px; text-align: right; }
-.colPercent { min-width: 80px; text-align: right; }
+/* Skeletons */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(128, 128, 128, 0.05) 25%,
+    rgba(128, 128, 128, 0.1) 50%,
+    rgba(128, 128, 128, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.kpiCard.skeleton {
+  border: 1px solid var(--line);
+  background: var(--panel-2);
+}
+
+.skeletonTitle {
+  height: 20px;
+  width: 240px;
+  margin-bottom: 24px;
+  background: rgba(128, 128, 128, 0.1);
+}
+
+.skeletonRow {
+  height: 44px;
+  margin-bottom: 8px;
+  width: 100%;
+  background: rgba(128, 128, 128, 0.05);
+}
+
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}

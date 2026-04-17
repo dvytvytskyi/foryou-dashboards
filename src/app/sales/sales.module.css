@@ -25,14 +25,14 @@
   background: var(--panel-2);
   border: 1px solid var(--line);
   border-radius: 12px;
-  padding: 18px;
+  padding: 24px;
   overflow: hidden;
 }
 
 .sectionTitle {
   font-size: 13px;
   font-weight: 600;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
   color: var(--section-title);
   display: flex;
   justify-content: space-between;
@@ -41,9 +41,7 @@
 
 /* Table Styles */
 .tableWrapper {
-  margin-top: 16px;
-  margin-left: 18px;
-  margin-right: 18px;
+  margin-top: 0;
   border: 1px solid var(--line);
   border-radius: 10px;
   overflow: hidden;
@@ -126,15 +124,16 @@
 }
 
 .stickyCell {
-  position: sticky;
-  left: 0;
-  z-index: 10;
-  background: var(--bg-0);
-  border-right: 1px solid var(--line-soft);
+  position: sticky !important;
+  left: 0 !important;
+  z-index: 11 !important;
+  background: var(--panel-2) !important;
+  border-right: 1px solid var(--line) !important;
 }
 
-.table tr:hover .stickyCell {
-  background: var(--row-hover) !important;
+.table th.stickyCell {
+  z-index: 21; /* Headers must be above cells */
+  background: var(--panel-2) !important;
 }
 
 .group2Cell {
@@ -147,14 +146,15 @@
 }
 
 .subRowSticky {
-  position: sticky;
-  left: 0;
-  z-index: 9;
-  background: var(--bg-0);
+  position: sticky !important;
+  left: 0 !important;
+  z-index: 10 !important;
+  background: var(--panel-2) !important;
+  border-right: 1px solid var(--line) !important;
   padding-left: 32px !important;
-  border-right: 1px solid var(--line-soft);
 }
 
+.table tr:hover .stickyCell,
 .table tr:hover .subRowSticky {
   background: var(--row-hover) !important;
 }
@@ -792,43 +792,51 @@
   text-transform: uppercase;
 }
 
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
 .skeleton {
-  background: linear-gradient(90deg, var(--skeleton-base) 25%, var(--skeleton-shimmer) 50%, var(--skeleton-base) 75%);
+  background: linear-gradient(
+    90deg,
+    rgba(128, 128, 128, 0.05) 25%,
+    rgba(128, 128, 128, 0.1) 50%,
+    rgba(128, 128, 128, 0.05) 75%
+  );
   background-size: 200% 100%;
-  animation: shimmer 1s infinite linear;
+  animation: shimmer 1.5s infinite linear;
   border-radius: 8px;
 }
 
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
 .skeletonBlock {
-  background: var(--surface-input);
+  background: var(--panel-2);
+  border: 1px solid var(--line);
   border-radius: 12px;
-  height: 400px;
-  padding: 16px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
 
 .skeletonCard {
-  height: 100px;
+  height: 140px;
   width: 100%;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
 }
 
 .skeletonTitle {
-  width: 40%;
-  height: 14px;
-  margin-bottom: 20px;
+  width: 240px;
+  height: 20px;
+  margin-bottom: 24px;
 }
 
 .skeletonRow {
   width: 100%;
-  height: 24px;
-  margin-bottom: 12px;
+  height: 44px;
+  margin-bottom: 8px;
 }
 
 .skeletonCircle {

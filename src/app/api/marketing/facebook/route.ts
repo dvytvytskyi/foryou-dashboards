@@ -34,36 +34,42 @@ export async function GET(request: NextRequest) {
     const query = `
       WITH filtered AS (
         SELECT
-          DATE(created_at) AS report_date,
-          COALESCE(NULLIF(TRIM(source_label), ''), 'Facebook') AS source_name,
-          status_id,
-          IFNULL(price, 0) AS price
-        FROM \`crypto-world-epta.foryou_analytics.amo_channel_leads_raw\`
-        WHERE DATE(created_at) BETWEEN @startDate AND @endDate
-          AND REGEXP_CONTAINS(LOWER(COALESCE(source_label, '')), r'(facebook|meta|\\bfb\\b)')
+          report_date,
+          COALESCE(NULLIF(TRIM(level_1), ''), 'Facebook / Target Point') AS source_name,
+          leads,
+          no_answer_spam,
+          qualified_leads,
+          ql_actual,
+          meetings,
+          deals,
+          revenue,
+          company_revenue
+        FROM \`crypto-world-epta.foryou_analytics.marketing_channel_drilldown_daily\`
+        WHERE report_date BETWEEN @startDate AND @endDate
+          AND channel = 'Facebook'
       )
       SELECT
         'Facebook' AS channel,
         source_name AS level_1,
-        'AmoCRM' AS level_2,
+        'Marketing mart' AS level_2,
         CAST(report_date AS STRING) AS level_3,
         0 AS budget,
-        COUNT(*) AS leads,
+        SUM(leads) AS leads,
         0 AS cpl,
-        COUNTIF(status_id = 143) AS no_answer_spam,
-        ROUND(SAFE_DIVIDE(COUNT(*) - COUNTIF(status_id = 143), NULLIF(COUNT(*), 0)) * 100, 2) AS rate_answer,
-        COUNTIF(status_id IN (142, 70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586)) AS qualified_leads,
+        SUM(no_answer_spam) AS no_answer_spam,
+        ROUND(SAFE_DIVIDE(SUM(leads) - SUM(no_answer_spam), NULLIF(SUM(leads), 0)) * 100, 2) AS rate_answer,
+        SUM(qualified_leads) AS qualified_leads,
         0 AS cost_per_qualified_leads,
         0 AS cr_ql,
-        COUNTIF(status_id IN (70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586)) AS ql_actual,
+        SUM(ql_actual) AS ql_actual,
         0 AS cpql_actual,
-        COUNTIF(status_id IN (142, 70457474, 70457478, 70457482, 70457486, 70757586)) AS meetings,
+        SUM(meetings) AS meetings,
         0 AS cp_meetings,
-        COUNTIF(status_id = 142) AS deals,
+        SUM(deals) AS deals,
         0 AS cost_per_deal,
-        SUM(IF(status_id = 142, price, 0)) AS revenue,
+        SUM(revenue) AS revenue,
         0 AS roi,
-        ROUND(SUM(IF(status_id = 142, price, 0)) * 0.02, 2) AS company_revenue,
+        SUM(company_revenue) AS company_revenue,
         100 AS sort_order,
         report_date
       FROM filtered
@@ -81,7 +87,7 @@ export async function GET(request: NextRequest) {
       success: true,
       data: rows,
       meta: {
-        source: 'amo_channel_leads_raw',
+        source: 'marketing_channel_drilldown_daily',
         startDate,
         endDate,
         rowCount: rows.length,

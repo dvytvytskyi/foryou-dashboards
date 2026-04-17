@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { queryPostgres } from '@/lib/postgres';
+import { readPlanDataFromSheets } from '@/lib/sheets/planReader';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -39,11 +40,109 @@ function toNumber(value: number | string | null | undefined) {
   return Number(value) || 0;
 }
 
+function normalizeDepartmentSource(source: string): string {
+  const v = (source || '').trim().toLowerCase();
+  if (!v || v === '-' || v === 'null') return 'Own leads';
+  if (v.includes('property finder') || v.includes('pf') || v.includes('primary plus')) return 'Property Finder';
+  if (v.includes('partner') || v.includes('partnership') || v.includes('партнер')) return 'Партнеры';
+  if (v.includes('support') || v.includes('сопров')) return 'Сопровождение';
+  if (v.includes('red')) return 'RED';
+  if (v.includes('klykov')) return 'Klykov';
+  if (v.includes('facebook') || v.includes('target point') || v.includes('oman')) return 'Facebook';
+  return source;
+}
+
+function normalizeBrokerKey(name: string): string {
+  return (name || '')
+    .toLowerCase()
+    .replace(/ё/g, 'е')
+    .replace(/[^a-zа-я0-9]+/gi, ' ')
+    .trim();
+}
+
+// Maps normalized DB broker names → normalized plan broker names (for mismatched representations)
+const BROKER_DB_TO_PLAN: Record<string, string> = {
+  // Валерия Богданова
+  'valeria bogdanova': 'валерия богданова',
+  'богданова валерия': 'валерия богданова',
+  // Артем Герасимов
+  'артем герасимов': 'artem gerasimov',
+  // Радик Погосян
+  'радик погосян': 'radik pogosyan',
+  'radik': 'radik pogosyan',
+  'cb radik': 'radik pogosyan',
+  // Диана Рустам Кызы
+  'diana rustam': 'диана рустам кызы',
+  'диана': 'диана рустам кызы',
+  // Гульноза
+  'гульноза': 'рахимова гульноза алишеровна',
+  'gulnoza': 'рахимова гульноза алишеровна',
+  // Кристина Нохрина
+  'кристина': 'кристина нохрина',
+  // Алексей Клыков
+  'алексей клыков': 'alexey klykov',
+  // Абдуллаев Руслан (reversed)
+  'руслан абдуллаев': 'абдуллаев руслан',
+  // Даниил Невзоров (Cyrillic)
+  'даниил невзоров': 'daniil nevzorov',
+  'невзоров даниил': 'daniil nevzorov',
+  // Екатерина Спицына (Latin variant)
+  'ekaterina spitsyna': 'екатерина спицына',
+  'ekaterina spytsina': 'екатерина спицына',
+  'ekaterina nbd': 'екатерина спицына',
+  // Камила (Cyrillic short)
+  'kamila': 'камила евстегнеева',
+  'kamilla': 'камила евстегнеева',
+  // Яна
+  'яна': 'яна',
+  'yana': 'яна',
+  // Dima
+  'дима': 'dima',
+};
+
+function resolveBrokerPlan(
+  brokerName: string,
+  brokerPlanIndex: Map<string, { lids: number; ql: number; revenue: number; deals: number }>,
+) {
+  const EMPTY = { lids: 0, ql: 0, revenue: 0, deals: 0 };
+  const key = normalizeBrokerKey(brokerName);
+
+  // Direct match
+  if (brokerPlanIndex.has(key)) return brokerPlanIndex.get(key)!;
+
+  // Alias lookup
+  const mappedKey = BROKER_DB_TO_PLAN[key];
+  if (mappedKey && brokerPlanIndex.has(mappedKey)) return brokerPlanIndex.get(mappedKey)!;
+
+  // Partial: try first name only (single word) against plan index keys
+  const firstWord = key.split(' ')[0];
+  if (firstWord.length >= 4) {
+    for (const [planKey, planVal] of brokerPlanIndex.entries()) {
+      if (planKey.startsWith(firstWord) || planKey.includes(` ${firstWord}`)) {
+        return planVal;
+      }
+    }
+  }
+
+  return EMPTY;
+}
+
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const startDate = searchParams.get('startDate') || '2024-01-01';
     const endDate = searchParams.get('endDate') || new Date().toISOString().slice(0, 10);
+    const periodDate = new Date(`${endDate}T00:00:00.000Z`);
+    const planByBroker = await readPlanDataFromSheets(periodDate.getUTCMonth(), periodDate.getUTCFullYear());
+    const brokerPlanIndex = new Map<string, { lids: number; ql: number; revenue: number; deals: number }>();
+    for (const [name, plan] of Object.entries(planByBroker || {})) {
+      brokerPlanIndex.set(normalizeBrokerKey(name), {
+        lids: Number(plan.lids || 0),
+        ql: Number(plan.ql || 0),
+        revenue: Number(plan.revenue || 0),
+        deals: Number(plan.deals || 0),
+      });
+    }
 
     const { rows } = await queryPostgres<SalesDealRow>(
       `
@@ -106,7 +205,7 @@ export async function GET(request: NextRequest) {
       }
 
       typeMap[type] = (typeMap[type] || 0) + net;
-      const srcKey = sourceRaw === '-' || sourceRaw === 'null' ? 'Other' : sourceRaw;
+      const srcKey = normalizeDepartmentSource(sourceRaw);
       sourceMap[srcKey] = (sourceMap[srcKey] || 0) + net;
 
       rawDeals.push({
@@ -137,16 +236,24 @@ export async function GET(request: NextRequest) {
       color: typeColors[label] || 'var(--muted)',
     }));
 
+    const totalNetAbs = Math.abs(scoreboard.net_profit || 0);
     const departments = Object.entries(sourceMap)
       .map(([label, value]) => ({
-        label: label === 'PF' ? 'Property Finder' : ['PARTNERSHIP', 'PARTNER'].includes(label.toUpperCase()) ? 'Партнеры' : label,
+        label,
         value,
-        share: Math.round((value / totalNet) * 100),
-        color: label === 'PF' ? 'var(--white-soft)' : 'var(--muted)',
+        share: totalNetAbs > 0 ? Math.round((value / totalNetAbs) * 100) : 0,
+        color: label === 'Property Finder' ? 'var(--white-soft)' : 'var(--muted)',
       }))
       .sort((a, b) => b.value - a.value);
 
     const brokers = Object.values(brokerMap).sort((a: any, b: any) => b.net_profit - a.net_profit);
+    for (const broker of brokers as any[]) {
+      const plan = resolveBrokerPlan(broker.broker_name, brokerPlanIndex);
+      broker.plan_deals = plan.deals || 0;
+      broker.plan_leads = plan.lids || 0;
+      broker.plan_ql = plan.ql || 0;
+      broker.plan_revenue = plan.revenue || 0;
+    }
     const partners = Object.values(partnerMap).sort((a: any, b: any) => b.revenue - a.revenue);
 
     return NextResponse.json({

@@ -3,6 +3,7 @@
 import { BigQuery } from '@google-cloud/bigquery';
 import fs from 'fs/promises';
 import path from 'path';
+import { CLOSED_DEAL_STATUS_IDS } from '../../src/lib/crmRules.js';
 
 const PROJECT_ID = 'crypto-world-epta';
 const DATASET_ID = 'foryou_analytics';
@@ -15,7 +16,7 @@ const bq = new BigQuery({
   keyFilename: path.resolve(process.cwd(), 'secrets/crypto-world-epta-2db29829d55d.json'),
 });
 
-const WON_STATUS_ID = 142;
+const WON_STATUS_SQL = CLOSED_DEAL_STATUS_IDS.join(', ');
 const LOST_STATUS_ID = 143;
 
 const RE_PIPELINE_ID = 8696950;
@@ -57,7 +58,7 @@ async function syncBrokersMetrics() {
             ELSE FALSE
           END
         ) as showing_leads,
-        COUNTIF(l.status_id = ${WON_STATUS_ID}) as won_leads,
+        COUNTIF(l.status_id IN (${WON_STATUS_SQL})) as won_leads,
         COUNTIF(l.status_id = ${LOST_STATUS_ID}) as lost_leads,
         COALESCE(SUM(l.price), 0) as total_revenue,
         CURRENT_TIMESTAMP() as synced_at

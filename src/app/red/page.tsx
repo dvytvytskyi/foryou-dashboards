@@ -53,6 +53,7 @@ export default function RedPage() {
     <DashboardPage
       title="Red Leads"
       initialSourceFilter="RED"
+      queryChannels={['RED']}
       hideSourceFilter={true}
       customColumns={RED_COLUMNS_MAIN}
       firstColumnLabel="Источник / РК"

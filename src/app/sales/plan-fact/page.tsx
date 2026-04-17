@@ -6,7 +6,7 @@ import PlanFactUI from './PlanFactUI';
 
 export default function PlanFactPage() {
   const today = useMemo(() => new Date().toISOString().slice(0, 10), []);
-  const [dateRange, setDateRange] = useState({ startDate: '2024-01-01', endDate: today });
+  const [dateRange, setDateRange] = useState({ startDate: '2000-01-01', endDate: today });
 
   return (
     <DashboardPage

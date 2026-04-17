@@ -199,7 +199,25 @@ export function DepartmentBreakdown({ data }: { data: any[] }) {
     { label: 'Партнеры', value: 0, share: 0, color: 'var(--muted)' },
   ];
 
-  const maxVal = Math.max(...depts.map(d => d.value), 1);
+  const minVal = Math.min(...depts.map((d) => d.value || 0), 0);
+  const maxVal = Math.max(...depts.map((d) => d.value || 0), 0);
+  const range = Math.max(1, maxVal - minVal);
+  const zeroPos = ((0 - minVal) / range) * 100;
+
+  const barStyle = (value: number) => {
+    if (value >= 0) {
+      return {
+        left: `${zeroPos}%`,
+        width: `${Math.max(0, (value / range) * 100)}%`,
+        background: 'linear-gradient(90deg, rgba(16,185,129,0.55) 0%, rgba(16,185,129,0.95) 100%)',
+      };
+    }
+    return {
+      left: `${zeroPos + (value / range) * 100}%`,
+      width: `${Math.max(0, (-value / range) * 100)}%`,
+      background: 'linear-gradient(90deg, rgba(244,63,94,0.95) 0%, rgba(244,63,94,0.55) 100%)',
+    };
+  };
 
   return (
     <div className={styles.section} style={{ padding: 0 }}>
@@ -221,9 +239,19 @@ export function DepartmentBreakdown({ data }: { data: any[] }) {
                       <span className={styles.barChartValue}>{formatMoney(d.value)} AED</span>
                     </div>
                     <div className={styles.barChartTrack}>
+                      <div
+                        style={{
+                          position: 'absolute',
+                          left: `${zeroPos}%`,
+                          top: 0,
+                          bottom: 0,
+                          width: '1px',
+                          background: 'rgba(255,255,255,0.18)',
+                        }}
+                      />
                       <div 
                         className={styles.barChartFill} 
-                        style={{ width: `${(d.value / maxVal) * 100}%` }}
+                        style={barStyle(d.value || 0)}
                       />
                     </div>
                   </div>
@@ -268,7 +296,25 @@ export function SupportSection({ data }: { data: any[] }) {
 
 export function ProfitBarChart({ brokers }: { brokers: any[] }) {
   const sorted = [...(brokers || [])].sort((a, b) => b.net_profit - a.net_profit);
-  const maxProfit = Math.max(...sorted.map((b) => b.net_profit || 0), 1);
+  const minProfit = Math.min(...sorted.map((b) => b.net_profit || 0), 0);
+  const maxProfit = Math.max(...sorted.map((b) => b.net_profit || 0), 0);
+  const range = Math.max(1, maxProfit - minProfit);
+  const zeroPos = ((0 - minProfit) / range) * 100;
+
+  const barStyle = (value: number) => {
+    if (value >= 0) {
+      return {
+        left: `${zeroPos}%`,
+        width: `${Math.max(0, (value / range) * 100)}%`,
+        background: 'linear-gradient(90deg, rgba(16,185,129,0.55) 0%, rgba(16,185,129,0.95) 100%)',
+      };
+    }
+    return {
+      left: `${zeroPos + (value / range) * 100}%`,
+      width: `${Math.max(0, (-value / range) * 100)}%`,
+      background: 'linear-gradient(90deg, rgba(244,63,94,0.95) 0%, rgba(244,63,94,0.55) 100%)',
+    };
+  };
   
   return (
     <div className={styles.section} style={{ padding: 0 }}>
@@ -290,9 +336,19 @@ export function ProfitBarChart({ brokers }: { brokers: any[] }) {
                       <span className={styles.barChartValue}>{formatMoney(b.net_profit)} AED</span>
                     </div>
                     <div className={styles.barChartTrack}>
+                      <div
+                        style={{
+                          position: 'absolute',
+                          left: `${zeroPos}%`,
+                          top: 0,
+                          bottom: 0,
+                          width: '1px',
+                          background: 'rgba(255,255,255,0.18)',
+                        }}
+                      />
                       <div 
                         className={styles.barChartFill} 
-                        style={{ width: `${(b.net_profit / maxProfit) * 100}%` }}
+                        style={barStyle(b.net_profit || 0)}
                       />
                     </div>
                   </div>
@@ -333,6 +389,8 @@ export function BrokerKpiTable({ brokers }: { brokers: any[] }) {
                 <th className={styles.numCell}>ПРИБЫЛЬ</th>
                 <th className={styles.numCell}>ПЛАН (С)</th>
                 <th className={styles.numCell}>ПЛАН (Л)</th>
+                <th className={styles.numCell}>ПЛАН (QL)</th>
+                <th className={styles.numCell}>ПЛАН (REV)</th>
               </tr>
             </thead>
             <tbody>
@@ -344,6 +402,8 @@ export function BrokerKpiTable({ brokers }: { brokers: any[] }) {
                   <td className={styles.numCell} style={{ fontWeight: 700, color: 'var(--white-soft)' }}>{formatMoney(b.net_profit)}</td>
                   <td className={styles.numCell} style={{ opacity: 0.6 }}>{b.plan_deals || '-'}</td>
                   <td className={styles.numCell} style={{ opacity: 0.6 }}>{b.plan_leads || '-'}</td>
+                  <td className={styles.numCell} style={{ opacity: 0.6 }}>{b.plan_ql || '-'}</td>
+                  <td className={styles.numCell} style={{ opacity: 0.6 }}>{b.plan_revenue ? formatMoney(b.plan_revenue) : '-'}</td>
                 </tr>
               ))}
             </tbody>

@@ -1,0 +1,92 @@
+export const CLOSED_DEAL_STATUS_IDS = [142, 74717798, 74717802];
+
+const RED_SIGNALS = ['red_ru', 'red_eng', 'red_arm', 'red_lux', 'red'];
+const KLYKOV_SIGNALS = ['klykov leads', 'alex klykov', 'klykov'];
+const PROPERTY_FINDER_SIGNALS = [
+  'property finder',
+  'property_finder',
+  'pf off-plan',
+  'pf offplan',
+  'pf off plan',
+  'primary plus',
+  'prian',
+  'bayut',
+];
+const FACEBOOK_SIGNALS = ['facebook', 'meta', 'target point', 'fb'];
+const OMAN_SIGNALS = ['oman'];
+const PARTNER_SIGNALS = ['partner', 'partners leads', 'партнер', 'партнерка'];
+
+export function normalizeLeadText(value) {
+  return String(value || '').trim().toLowerCase();
+}
+
+export function extractTagNames(rawTags) {
+  return (rawTags || []).map((tag) => tag?.name || '').filter(Boolean);
+}
+
+function includesSignal(text, signal) {
+  if (!text || !signal) return false;
+  return text === signal || text.includes(signal);
+}
+
+function hasAnySignal(text, signals) {
+  return signals.some((signal) => includesSignal(text, signal));
+}
+
+function classifyFromSignals(text, { preferMarketingBuckets = false } = {}) {
+  if (!text) return null;
+  if (hasAnySignal(text, KLYKOV_SIGNALS)) return 'Klykov';
+  if (hasAnySignal(text, RED_SIGNALS)) return 'Red';
+  if (hasAnySignal(text, PROPERTY_FINDER_SIGNALS)) return 'Property Finder';
+  if (hasAnySignal(text, PARTNER_SIGNALS)) return 'Partners leads';
+  if (preferMarketingBuckets) {
+    if (hasAnySignal(text, [...OMAN_SIGNALS, 'target point'])) return 'Facebook';
+  } else {
+    if (hasAnySignal(text, OMAN_SIGNALS)) return 'Oman';
+    if (hasAnySignal(text, FACEBOOK_SIGNALS)) return 'Facebook';
+  }
+  return null;
+}
+
+export function classifyLeadSource({
+  pipelineId,
+  sourceValue,
+  tags = [],
+  utmSource = '',
+  leadName = '',
+  preferMarketingBuckets = false,
+  clientTypeEnumId = null,
+  defaultCategory = 'Own leads',
+}) {
+  if (Number(pipelineId) === 10776450) return 'Klykov';
+  if (Number(clientTypeEnumId) === 695223) return 'Partners leads';
+
+  const normalizedSource = normalizeLeadText(sourceValue);
+  const normalizedTags = tags.map(normalizeLeadText).filter(Boolean);
+  const normalizedUtmSource = normalizeLeadText(utmSource);
+  const normalizedLeadName = normalizeLeadText(leadName);
+
+  const sourceCategory = classifyFromSignals(normalizedSource, { preferMarketingBuckets });
+  if (sourceCategory) return sourceCategory;
+  if (normalizedSource) return 'Own leads';
+
+  const tagBag = normalizedTags.join(' | ');
+  const tagCategory = classifyFromSignals(tagBag, { preferMarketingBuckets });
+  if (tagCategory) return tagCategory;
+  if (tagBag) return 'Own leads';
+
+  const fallbackBag = [normalizedUtmSource, normalizedLeadName].filter(Boolean).join(' | ');
+  const fallbackCategory = classifyFromSignals(fallbackBag, { preferMarketingBuckets });
+  if (fallbackCategory) return fallbackCategory;
+  if (fallbackBag) return 'Own leads';
+
+  return defaultCategory;
+}
+
+export function isClosedDealStatus(statusId) {
+  return CLOSED_DEAL_STATUS_IDS.includes(Number(statusId));
+}
+
+export function hasOmanTag(tags = []) {
+  return tags.map(normalizeLeadText).some((tag) => hasAnySignal(tag, OMAN_SIGNALS));
+}

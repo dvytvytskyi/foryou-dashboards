@@ -33,14 +33,14 @@ export async function GET(request: NextRequest) {
 
     const query = `
       SELECT
-        COUNT(*) AS leads_total,
-        COUNTIF(status_id IN (142, 70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586)) AS ql_total,
-        COUNTIF(status_id IN (142, 70457474, 70457478, 70457482, 70457486, 70757586)) AS meetings_total,
-        COUNTIF(status_id = 142) AS deals_total,
-        SUM(IF(status_id = 142, IFNULL(price, 0), 0)) AS revenue_total
-      FROM \`crypto-world-epta.foryou_analytics.amo_channel_leads_raw\`
-      WHERE DATE(created_at) BETWEEN @startDate AND @endDate
-        AND REGEXP_CONTAINS(LOWER(COALESCE(source_label, '')), r'(facebook|meta|\\bfb\\b)')
+        SUM(leads) AS leads_total,
+        SUM(qualified_leads) AS ql_total,
+        SUM(meetings) AS meetings_total,
+        SUM(deals) AS deals_total,
+        SUM(revenue) AS revenue_total
+      FROM \`crypto-world-epta.foryou_analytics.marketing_channel_drilldown_daily\`
+      WHERE report_date BETWEEN @startDate AND @endDate
+        AND channel = 'Facebook'
     `;
 
     const [rows] = await bq.query({

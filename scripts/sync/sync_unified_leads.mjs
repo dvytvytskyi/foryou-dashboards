@@ -2,6 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 import { BigQuery } from '@google-cloud/bigquery';
+import { CLOSED_DEAL_STATUS_IDS } from '../../src/lib/crmRules.js';
 
 const AMO_DOMAIN = 'reforyou.amocrm.ru';
 const TOKENS_FILE = path.resolve(process.cwd(), 'secrets/amo_tokens.json');
@@ -23,7 +24,7 @@ const PIPELINES = {
     ConditionalReject: { id: 10651778, sort: 9 }
 };
 
-const WON_STATUS_ID = 142;
+const WON_STATUS_IDS = new Set(CLOSED_DEAL_STATUS_IDS);
 const LOST_STATUS_ID = 143;
 
 // Default Status mappings (can be refined per pipeline if needed)
@@ -106,7 +107,7 @@ async function sync() {
             if (st.qualified.includes(lead.status_id)) g.ql++;
             if (st.actual.includes(lead.status_id)) g.ql_actual++;
             if (st.meetings.includes(lead.status_id)) g.meetings++;
-            if (lead.status_id === WON_STATUS_ID) {
+            if (WON_STATUS_IDS.has(lead.status_id)) {
                 g.deals++;
                 g.revenue += (lead.price || 0);
             }

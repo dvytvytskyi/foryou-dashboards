@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import DashboardPage, { FACEBOOK_COLUMNS_MAIN } from '@/components/DashboardPage';
+import DashboardPage, { RED_COLUMNS_MAIN } from '@/components/DashboardPage';
 import FacebookScoreboard, { FacebookScoreboardData } from './Scoreboard';
 
 const emptyScoreboard: FacebookScoreboardData = {
@@ -40,10 +40,10 @@ export default function FacebookPage() {
 
   return (
     <DashboardPage
-      title="Facebook Leads"
+      title="Facebook / Target Point"
       initialSourceFilter="Facebook"
       hideSourceFilter={true}
-      customColumns={FACEBOOK_COLUMNS_MAIN}
+      customColumns={RED_COLUMNS_MAIN}
       firstColumnLabel="Источник / РК"
       extraContent={<FacebookScoreboard data={scoreboard} />}
       externalThemeMode={syncTheme}
