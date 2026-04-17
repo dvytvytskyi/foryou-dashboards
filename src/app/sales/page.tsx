@@ -19,14 +19,22 @@ import RedFilters from '@/components/dashboard/filters/RedFilters';
 
 export default function SalesOverviewPage() {
   const [syncTheme, setSyncTheme] = useState<'light' | 'night' | null>(null);
+  const [currency, setCurrency] = useState<'usd' | 'aed'>('aed');
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeMetric, setActiveMetric] = useState<string | null>(null);
-  const [dateRange, setDateRange] = useState({ 
-    startDate: '2024-01-01', 
-    endDate: new Date().toISOString().split('T')[0] 
+  const [dateRange, setDateRange] = useState<{ startDate: string; endDate: string }>(() => {
+    if (typeof window !== 'undefined') {
+      const s = localStorage.getItem('dashboard-startDate');
+      const e = localStorage.getItem('dashboard-endDate');
+      if (s && e) return { startDate: s, endDate: e };
+    }
+    return { 
+      startDate: '2024-01-01', 
+      endDate: new Date().toISOString().split('T')[0] 
+    };
   });
 
   const fetchData = async (start: string, end: string) => {
@@ -63,6 +71,8 @@ export default function SalesOverviewPage() {
       FilterComponent={RedFilters}
       externalThemeMode={syncTheme}
       onThemeChange={setSyncTheme}
+      currency={currency}
+      setCurrency={setCurrency}
     >
       <div className={styles.container}>
         {loading ? (
@@ -73,6 +83,7 @@ export default function SalesOverviewPage() {
           <>
             <SalesScoreboard 
               data={data.scoreboard} 
+              currency={currency}
               onClick={(metric) => {
                 setActiveMetric(metric);
                 setIsModalOpen(true);
@@ -82,25 +93,25 @@ export default function SalesOverviewPage() {
             {/* Ряд 1: Распределение + Сопровождение */}
             <div className={styles.visualsGrid}>
               <DealTypeStackedBar data={data.types} />
-              <SupportSection data={data.support} />
+              <SupportSection data={data.support} currency={currency} />
             </div>
-
             {/* Ряд 2: Доходность по источникам + Топ брокеров */}
             <div className={styles.visualsGrid}>
-              <DepartmentBreakdown data={data.departments} />
-              <ProfitBarChart brokers={data.brokers} />
+              <DepartmentBreakdown data={data.departments} currency={currency} />
+              <ProfitBarChart brokers={data.brokers} currency={currency} />
             </div>
 
             {/* Ряд 3: Партнеры + KPI брокеров */}
             <div className={styles.topGrid}>
-              <PartnersTable partners={data.partners} />
-              <BrokerKpiTable brokers={data.brokers} />
+              <PartnersTable partners={data.partners} currency={currency} />
+              <BrokerKpiTable brokers={data.brokers} currency={currency} />
             </div>
 
             <DealsModal 
               isOpen={isModalOpen} 
               onClose={() => setIsModalOpen(false)} 
               deals={data.deals || []} 
+              currency={currency}
               highlightMetric={activeMetric}
             />
           </>

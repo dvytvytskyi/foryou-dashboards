@@ -9,10 +9,24 @@ export default function BrokersPage() {
   const [brokers, setBrokers] = useState<Array<{ id: number; name: string }>>([]);
   const [selectedBroker, setSelectedBroker] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [currency, setCurrency] = useState<'usd' | 'aed'>('aed');
+  
   const [dateRange, setDateRange] = useState<{ startDate: string; endDate: string }>(() => {
+    if (typeof window !== 'undefined') {
+      const s = localStorage.getItem('dashboard-startDate');
+      const e = localStorage.getItem('dashboard-endDate');
+      if (s && e) return { startDate: s, endDate: e };
+    }
     const today = new Date().toISOString().slice(0, 10);
-    return { startDate: '2000-01-01', endDate: today };
+    return { startDate: '2024-01-01', endDate: today };
   });
+
+  useEffect(() => {
+    const storedCurrency = typeof window !== 'undefined' ? localStorage.getItem('dashboard-currency') : null;
+    if (storedCurrency === 'usd' || storedCurrency === 'aed') {
+      setCurrency(storedCurrency as 'usd' | 'aed');
+    }
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -164,12 +178,17 @@ export default function BrokersPage() {
       title="Брокеры" 
       hideTable={true} 
       hideSourceFilter={true} 
-      hideCurrency={true}
+      currency={currency}
+      setCurrency={setCurrency}
       customFilterContent={customFilter}
       layoutVariant="red"
       onDateChange={(start, end) => setDateRange({ startDate: start, endDate: end })}
     >
-      <BrokersUI selectedBroker={selectedBroker} startDate={dateRange.startDate} endDate={dateRange.endDate} />
+      <BrokersUI 
+        selectedBroker={selectedBroker} 
+        startDate={dateRange.startDate} 
+        endDate={dateRange.endDate} 
+      />
     </DashboardPage>
   );
 }

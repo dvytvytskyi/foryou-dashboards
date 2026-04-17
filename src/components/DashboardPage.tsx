@@ -413,12 +413,6 @@ export default function DashboardPage({
   const [error, setError] = useState<string | null>(null);
   const [rows, setRows] = useState<Row[]>([]);
 
-  useEffect(() => {
-    if (!isFirstMount.current) {
-      load();
-    }
-  }, [currency]);
-
   const [sortKey, setSortKey] = useState<SortKey>('channel');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [internalThemeMode, setInternalThemeMode] = useState<ThemeMode>('light');
@@ -617,7 +611,9 @@ export default function DashboardPage({
       setLoading(false);
       isFirstMount.current = false;
     } else {
-      load();
+      load().then(() => {
+        isFirstMount.current = false;
+      });
     }
   }, [sourceFilter, startDate, endDate, currency, initialRows, apiUrl, isNested, authChecked, user]);
 
@@ -803,8 +799,15 @@ export default function DashboardPage({
     setLoading(true);
     setError(null);
     try {
+      const qs = new URLSearchParams({
+        currency: requestCurrency,
+        startDate: requestStartDate,
+        endDate: requestEndDate,
+      });
+
       if (isNested) {
-        const res = await fetch(apiUrl, { cache: 'no-store' });
+        const separator = apiUrl.includes('?') ? '&' : '?';
+        const res = await fetch(`${apiUrl}${separator}${qs.toString()}`, { cache: 'no-store' });
 
         if (res.status === 401) {
           window.location.replace('/login');
@@ -825,7 +828,7 @@ export default function DashboardPage({
         name === 'Facebook / Target Point' ? 'Facebook' : name
       );
 
-      const qs = new URLSearchParams({
+      const mainQs = new URLSearchParams({
         currency: requestCurrency,
         startDate: requestStartDate,
         endDate: requestEndDate,
@@ -833,7 +836,7 @@ export default function DashboardPage({
       });
 
       const separator = apiUrl.includes('?') ? '&' : '?';
-      const res = await fetch(`${apiUrl}${separator}${qs.toString()}`, { cache: 'no-store' });
+      const res = await fetch(`${apiUrl}${separator}${mainQs.toString()}`, { cache: 'no-store' });
 
       if (res.status === 401) {
         window.location.replace('/login');

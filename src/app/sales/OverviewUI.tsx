@@ -4,8 +4,16 @@ import React from 'react';
 import styles from './sales.module.css';
 import { ArrowUpRight, ArrowDownRight, Info, User, Search, X, Filter, PieChart, Trophy, TrendingUp, HeartHandshake, Briefcase } from 'lucide-react';
 
+const RATE = 3.673;
+
+const formatMoney = (v: number, currency: string = 'aed') => {
+  const amount = currency === 'usd' ? v / RATE : v;
+  const rounded = Math.round(amount);
+  const formatted = rounded.toLocaleString();
+  return currency === 'usd' ? `$${formatted}` : `${formatted} AED`;
+};
+
 const formatNum = (v: number) => v.toLocaleString();
-const formatMoney = (v: number) => Math.round(v).toLocaleString();
 const formatPct = (v: number) => `${(v * 100).toFixed(2)}%`;
 
 function DynamicTag({ label, value, up }: { label: string, value: string, up?: boolean }) {
@@ -20,12 +28,12 @@ function DynamicTag({ label, value, up }: { label: string, value: string, up?: b
   );
 }
 
-export function SalesScoreboard({ data, onClick }: { data: any, onClick: (metric: string) => void }) {
+export function SalesScoreboard({ data, currency, onClick }: { data: any, currency: string, onClick: (metric: string) => void }) {
   const kpis = [
     { id: 'COUNT', label: 'КОЛИЧЕСТВО СДЕЛОК', value: formatNum(data.closed_deals || 0), dynamics: [{ label: 'mom', value: '5%', up: true }, { label: 'qoq', value: '12%', up: true }, { label: 'yoy', value: '2%', up: false }] },
-    { id: 'GMV', label: 'СУММА СДЕЛОК (GMV)', value: formatMoney(data.gmv || 0), dynamics: [{ label: 'mom', value: '8.4%', up: true }, { label: 'qoq', value: '22%', up: true }, { label: 'yoy', value: '45%', up: true }] },
-    { id: 'GROSS', label: 'ВАЛОВАЯ КОМИССИЯ', value: formatMoney(data.gross_commission || 0), dynamics: [{ label: 'mom', value: '3.1%', up: true }, { label: 'qoq', value: '15.4%', up: true }, { label: 'yoy', value: '18%', up: true }] },
-    { id: 'NET', label: 'ДОХОД КОМПАНИИ (NET)', value: formatMoney(data.net_profit || 0), dynamics: [{ label: 'mom', value: '1.2%', up: true }, { label: 'qoq', value: '8.9%', up: true }, { label: 'yoy', value: '11.2%', up: true }] },
+    { id: 'GMV', label: 'СУММА СДЕЛОК (GMV)', value: formatMoney(data.gmv || 0, currency), dynamics: [{ label: 'mom', value: '8.4%', up: true }, { label: 'qoq', value: '22%', up: true }, { label: 'yoy', value: '45%', up: true }] },
+    { id: 'GROSS', label: 'ВАЛОВАЯ КОМИССИЯ', value: formatMoney(data.gross_commission || 0, currency), dynamics: [{ label: 'mom', value: '3.1%', up: true }, { label: 'qoq', value: '15.4%', up: true }, { label: 'yoy', value: '18%', up: true }] },
+    { id: 'NET', label: 'ДОХОД КОМПАНИИ (NET)', value: formatMoney(data.net_profit || 0, currency), dynamics: [{ label: 'mom', value: '1.2%', up: true }, { label: 'qoq', value: '8.9%', up: true }, { label: 'yoy', value: '11.2%', up: true }] },
   ];
 
   return (
@@ -45,7 +53,7 @@ export function SalesScoreboard({ data, onClick }: { data: any, onClick: (metric
   );
 }
 
-export function DealsModal({ isOpen, onClose, deals, highlightMetric }: { isOpen: boolean, onClose: () => void, deals: any[], highlightMetric?: string | null }) {
+export function DealsModal({ isOpen, onClose, deals, currency, highlightMetric }: { isOpen: boolean, onClose: () => void, deals: any[], currency: string, highlightMetric?: string | null }) {
   const [typeFilter, setTypeFilter] = React.useState('ALL');
   const [search, setSearch] = React.useState('');
 
@@ -136,9 +144,9 @@ export function DealsModal({ isOpen, onClose, deals, highlightMetric }: { isOpen
                       {d.type}
                     </span>
                   </td>
-                  <td className={styles.numCell}>{formatMoney(d.gmv)}</td>
-                  <td className={styles.numCell}>{formatMoney(d.gross)}</td>
-                  <td className={styles.numCell} style={{ color: 'var(--accent)', fontWeight: 700 }}>{formatMoney(d.net)}</td>
+                  <td className={styles.numCell}>{formatMoney(d.gmv, currency)}</td>
+                  <td className={styles.numCell}>{formatMoney(d.gross, currency)}</td>
+                  <td className={styles.numCell} style={{ color: 'var(--accent)', fontWeight: 700 }}>{formatMoney(d.net, currency)}</td>
                 </tr>
               ))}
             </tbody>
@@ -193,7 +201,7 @@ export function DealTypeStackedBar({ data }: { data: any[] }) {
   );
 }
 
-export function DepartmentBreakdown({ data }: { data: any[] }) {
+export function DepartmentBreakdown({ data, currency }: { data: any[], currency: string }) {
   const depts = data && data.length > 0 ? data : [
     { label: 'Прямые продажи', value: 0, share: 0, color: 'var(--white-soft)' },
     { label: 'Партнеры', value: 0, share: 0, color: 'var(--muted)' },
@@ -236,7 +244,7 @@ export function DepartmentBreakdown({ data }: { data: any[] }) {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
                       <span className={styles.barChartLabel}>{d.label} <span style={{ color: 'var(--muted)', fontSize: '11px', marginLeft: '4px' }}>{d.share}%</span></span>
-                      <span className={styles.barChartValue}>{formatMoney(d.value)} AED</span>
+                      <span className={styles.barChartValue}>{formatMoney(d.value, currency)}</span>
                     </div>
                     <div className={styles.barChartTrack}>
                       <div
@@ -265,7 +273,7 @@ export function DepartmentBreakdown({ data }: { data: any[] }) {
   );
 }
 
-export function SupportSection({ data }: { data: any[] }) {
+export function SupportSection({ data, currency }: { data: any[], currency: string }) {
   const managers = data && data.length > 0 ? data : [{ name: 'Крис', deals: 0, revenue: 0, color: '#6366f1' }, { name: 'Яна', deals: 0, revenue: 0, color: '#ec4899' }];
   return (
     <div className={styles.section} style={{ padding: 0 }}>
@@ -284,8 +292,8 @@ export function SupportSection({ data }: { data: any[] }) {
             </div>
             <div className={styles.supportMetrics}>
               <div className={styles.supportMetric}><span className={styles.smLabel}>Сделок</span><span className={styles.smValue}>{m.deals}</span></div>
-              <div className={styles.supportMetric}><span className={styles.smLabel}>Сумма сопровожд.</span><span className={styles.smValue}>{formatMoney(m.fee || 0)}</span></div>
-              <div className={styles.supportMetric}><span className={styles.smLabel}>Доход компании</span><span className={styles.smValue}>{formatMoney(m.revenue)}</span></div>
+              <div className={styles.supportMetric}><span className={styles.smLabel}>Сумма сопровожд.</span><span className={styles.smValue}>{formatMoney(m.fee || 0, currency)}</span></div>
+              <div className={styles.supportMetric}><span className={styles.smLabel}>Доход компании</span><span className={styles.smValue}>{formatMoney(m.revenue, currency)}</span></div>
             </div>
           </div>
         ))}
@@ -294,7 +302,7 @@ export function SupportSection({ data }: { data: any[] }) {
   );
 }
 
-export function ProfitBarChart({ brokers }: { brokers: any[] }) {
+export function ProfitBarChart({ brokers, currency }: { brokers: any[], currency: string }) {
   const sorted = [...(brokers || [])].sort((a, b) => b.net_profit - a.net_profit);
   const minProfit = Math.min(...sorted.map((b) => b.net_profit || 0), 0);
   const maxProfit = Math.max(...sorted.map((b) => b.net_profit || 0), 0);
@@ -333,7 +341,7 @@ export function ProfitBarChart({ brokers }: { brokers: any[] }) {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
                       <span className={styles.barChartLabel}>{b.broker_name}</span>
-                      <span className={styles.barChartValue}>{formatMoney(b.net_profit)} AED</span>
+                      <span className={styles.barChartValue}>{formatMoney(b.net_profit, currency)}</span>
                     </div>
                     <div className={styles.barChartTrack}>
                       <div
@@ -362,7 +370,7 @@ export function ProfitBarChart({ brokers }: { brokers: any[] }) {
   );
 }
 
-export function BrokerKpiTable({ brokers }: { brokers: any[] }) {
+export function BrokerKpiTable({ brokers, currency }: { brokers: any[], currency: string }) {
   const [search, setSearch] = React.useState('');
   const filtered = (brokers || []).filter(b => b.broker_name?.toLowerCase().includes(search.toLowerCase()));
 
@@ -398,12 +406,12 @@ export function BrokerKpiTable({ brokers }: { brokers: any[] }) {
                 <tr key={b.broker_name}>
                   <td><div className={styles.rank}>{i + 1}</div></td>
                   <td>{b.broker_name}</td>
-                  <td className={styles.numCell}>{formatMoney(b.gross_revenue)}</td>
-                  <td className={styles.numCell} style={{ fontWeight: 700, color: 'var(--white-soft)' }}>{formatMoney(b.net_profit)}</td>
+                  <td className={styles.numCell}>{formatMoney(b.gross_revenue, currency)}</td>
+                  <td className={styles.numCell} style={{ fontWeight: 700, color: 'var(--white-soft)' }}>{formatMoney(b.net_profit, currency)}</td>
                   <td className={styles.numCell} style={{ opacity: 0.6 }}>{b.plan_deals || '-'}</td>
                   <td className={styles.numCell} style={{ opacity: 0.6 }}>{b.plan_leads || '-'}</td>
                   <td className={styles.numCell} style={{ opacity: 0.6 }}>{b.plan_ql || '-'}</td>
-                  <td className={styles.numCell} style={{ opacity: 0.6 }}>{b.plan_revenue ? formatMoney(b.plan_revenue) : '-'}</td>
+                  <td className={styles.numCell} style={{ opacity: 0.6 }}>{b.plan_revenue ? formatMoney(b.plan_revenue, currency) : '-'}</td>
                 </tr>
               ))}
             </tbody>
@@ -414,7 +422,7 @@ export function BrokerKpiTable({ brokers }: { brokers: any[] }) {
   );
 }
 
-export function PartnersTable({ partners }: { partners: any[] }) {
+export function PartnersTable({ partners, currency }: { partners: any[], currency: string }) {
   const [search, setSearch] = React.useState('');
   const filtered = (partners || []).filter(p => p.name?.toLowerCase().includes(search.toLowerCase())).sort((a, b) => b.revenue - a.revenue);
   
@@ -447,7 +455,7 @@ export function PartnersTable({ partners }: { partners: any[] }) {
                   <td><div className={styles.rank}>{i + 1}</div></td>
                   <td>{p.name}</td>
                   <td className={styles.numCell}>{p.deals}</td>
-                  <td className={styles.numCell} style={{ fontWeight: 700, color: 'var(--white-soft)' }}>{formatMoney(p.revenue)}</td>
+                  <td className={styles.numCell} style={{ fontWeight: 700, color: 'var(--white-soft)' }}>{formatMoney(p.revenue, currency)}</td>
                 </tr>
               ))}
             </tbody>
