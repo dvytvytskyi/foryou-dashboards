@@ -163,7 +163,7 @@ async function main() {
     const rows = [];
 
     rows.push(...(await readRowsFromCsv('offplan.csv', {
-      dealType: 'Offplan', dateCol: 2, brokerCol: 5, partnerCol: 6, gmvCol: 7, grossCol: 10, netCol: 17, sourceCol: 3,
+        dealType: 'Offplan', dateCol: 2, brokerCol: 5, partnerCol: 5, gmvCol: 7, grossCol: 10, netCol: 17, sourceCol: 3,
     })));
 
     rows.push(...(await readRowsFromCsv('secondary.csv', {
