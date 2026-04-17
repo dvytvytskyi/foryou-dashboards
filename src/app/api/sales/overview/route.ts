@@ -198,10 +198,10 @@ export async function GET(request: NextRequest) {
         supportMap[brokerNormalized].revenue += net;
       }
 
-      if (partner !== '-' && partner !== 'Unknown' && partner !== 'null') {
-        if (!partnerMap[partner]) partnerMap[partner] = { name: partner, revenue: 0, deals: 0 };
-        partnerMap[partner].revenue += net;
-        partnerMap[partner].deals += 1;
+        if (displayBroker !== '-' && displayBroker !== 'Unknown' && displayBroker !== 'null') {
+          if (!partnerMap[displayBroker]) partnerMap[displayBroker] = { name: displayBroker, revenue: 0, deals: 0 };
+          partnerMap[displayBroker].revenue += net;
+          partnerMap[displayBroker].deals += 1;
       }
 
       typeMap[type] = (typeMap[type] || 0) + net;
