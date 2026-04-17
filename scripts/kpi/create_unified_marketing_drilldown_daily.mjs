@@ -181,11 +181,7 @@ async function createUnifiedMarketingDrilldownDaily() {
                 IF(status_id IN (${CLOSED_DEAL_STATUS_SQL}) AND (channel != 'RED' OR COALESCE(price, 0) > 0), 1, 0) AS is_deal,
                 IF(status_id IN (${CLOSED_DEAL_STATUS_SQL}), price, 0) AS revenue,
                 IF(
-                    status_id = 143
-                       AND (
-                           channel = 'Facebook'
-                           OR REGEXP_CONTAINS(COALESCE(loss_reason_name, ''), r'(нет ответа|спам|тест|no answer|spam|test)')
-                       ),
+                    status_id = 143,
                     1,
                     0
                 ) AS is_no_answer_spam
