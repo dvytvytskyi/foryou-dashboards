@@ -15,6 +15,18 @@ type DetailPoint = {
   shareOfExpense?: number;
 };
 
+type ExpenseDetailRow = {
+  name: string;
+  current: number;
+  average: number;
+  mom: number;
+  qoq: number;
+  yoy: number;
+  details: DetailPoint[];
+  isTotal?: boolean;
+  isResult?: boolean;
+};
+
 function monthRange(startDate: string, endDate: string): Set<string> {
   const start = new Date(`${startDate}T00:00:00Z`);
   const end = new Date(`${endDate}T00:00:00Z`);
@@ -150,7 +162,7 @@ export async function GET(request: NextRequest) {
       };
     }
 
-    const expenseDetails = expenseRows.map((row) => {
+    const expenseDetails: ExpenseDetailRow[] = expenseRows.map((row) => {
       const current = round2(categoryCurrent(latest, row.key));
       const avg = round2(sum(records.map((r) => r.expenses[row.key])) / records.length);
       const details: DetailPoint[] = records.map((record) => {
