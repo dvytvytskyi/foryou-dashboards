@@ -10,7 +10,8 @@ import {
   ChevronDown,
   User as UserIcon,
   BarChart,
-  Target
+  Target,
+  BadgeCheck
 } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
@@ -60,29 +61,14 @@ const Sidebar: React.FC<SidebarProps> = ({
     <aside className={styles.sidebar}>
       {/* User Profile Header */}
       <div className={styles.sidebarProfile}>
-        <div className={styles.profileCard}>
-          <div className={styles.profileAvatar}>
-            <div 
-              style={{ 
-                width: '100%', 
-                height: '100%', 
-                background: 'var(--panel)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'var(--white-soft)',
-                fontSize: '13px',
-                fontWeight: '700'
-              }}
-            >
-              {getInitials(displayName)}
-            </div>
-          </div>
+        <div className={styles.profileCard} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
           <div className={styles.profileInfo}>
             <div className={styles.profileName}>{displayName}</div>
             <div className={styles.profileRole}>{displayRole}</div>
           </div>
-          <ChevronDown size={14} color="var(--muted)" />
+          <div style={{ color: '#0095f6', display: 'flex', flexShrink: 0 }}>
+            <BadgeCheck size={16} fill="currentColor" color="#fff" strokeWidth={1.5} />
+          </div>
         </div>
       </div>
 
@@ -140,16 +126,6 @@ const Sidebar: React.FC<SidebarProps> = ({
       </nav>
 
       <div className={styles.sidebarBottom}>
-        <button 
-          type="button"
-          className={styles.sidebarItem}
-          onClick={() => window.location.href = '/profile'}
-        >
-          <div className={styles.sidebarItemIcon}>
-            <UserIcon size={16} />
-          </div>
-          <span className={styles.sidebarItemLabel}>Account</span>
-        </button>
         <button 
           type="button"
           className={styles.sidebarItem}

@@ -1,8 +1,8 @@
-# Документація: Автоматичний звіт по витратах Property Finder
+# Документація: Consolidated Property Finder Export
 
 ## Опис задачі
 
-Скрипт автоматично формує звіт по лістингах Property Finder з деталізацією витрат (бюджету) по кожному лістингу та по місяцях. Дані беруться з API Property Finder (Atlas API) та зберігаються у pf_listings_report.json.
+Скрипт формує consolidated JSON-експорт Property Finder з деталізацією по лістингах, проєктах, бюджетах, лідах і dual KPI (confirmed vs modeled). Дані беруться з API Property Finder (Atlas API) та зберігаються у `data/exports/pf_full_export_latest.json`.
 
 ---
 
@@ -17,8 +17,8 @@
 
 ## Основні файли
 
-- **scripts/pf_listings_report_auto.mjs** — основний скрипт для збору та обробки даних
-- **pf_listings_report.json** — фінальний звіт з усіма лістингами та витратами
+- **scripts/pf_export_full_json.mjs** — основний скрипт для збору та обробки даних
+- **data/exports/pf_full_export_latest.json** — фінальний експорт
 
 ---
 
@@ -52,7 +52,7 @@
 
 ---
 
-## Формат pf_listings_report.json
+## Формат експорту
 
 ```json
 [
@@ -89,9 +89,9 @@
    ```
 2. Запустити скрипт:
    ```sh
-   node scripts/pf_listings_report_auto.mjs
+   node scripts/pf_export_full_json.mjs
    ```
-3. Результат буде у pf_listings_report.json
+3. Результат буде у `data/exports/pf_full_export_latest.json`
 
 ---
 

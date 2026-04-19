@@ -169,6 +169,7 @@ export async function GET(request: Request) {
     let totalCrmMeetings = bqRows[0]?.total_meetings || 0;
     let totalCrmDeals = bqRows[0]?.total_deals || 0;
     let totalCrmRevenue = bqRows[0]?.total_revenue || 0;
+    let totalCrmPfLeads = bqRows[0]?.total_pf_leads || 0;
 
     let matchedSpamTotal = 0;
     let matchedQualifiedTotal = 0;
@@ -176,6 +177,7 @@ export async function GET(request: Request) {
     let matchedMeetingsTotal = 0;
     let matchedDealsTotal = 0;
     let matchedRevenueTotal = 0;
+    let matchedLeadRowsTotal = 0;
 
     bqRows.forEach((r: any) => {
       const spamCount = Number(r.spam_count || 0);
@@ -201,9 +203,11 @@ export async function GET(request: Request) {
         matchedMeetingsTotal += meetingsCount;
         matchedDealsTotal += dealsCount;
         matchedRevenueTotal += revenue;
+        matchedLeadRowsTotal += Number(r.matched_leads || 0);
       }
     });
 
+    const unattributedPfLeads = Math.max(0, totalCrmPfLeads - matchedLeadRowsTotal);
     const unattributedSpam = Math.max(0, totalCrmSpam - matchedSpamTotal);
     const unattributedQualified = Math.max(0, totalCrmQualified - matchedQualifiedTotal);
     const unattributedQLActual = Math.max(0, totalCrmQLActual - matchedQLActualTotal);
@@ -221,11 +225,33 @@ export async function GET(request: Request) {
     };
 
     const crmStats: any = {};
+    const crmStatsByRefAnyType: any = {};
     bqRows.forEach((r: any) => {
       if (r.listing_ref) {
         const type = r.pf_deal_type === 'Sale' ? 'Sell' : r.pf_deal_type;
-        const key = `${normalizeRef(r.listing_ref)}_${type}`;
+        const normalizedRef = normalizeRef(r.listing_ref);
+        const key = `${normalizedRef}_${type}`;
         crmStats[key] = r;
+
+        if (!crmStatsByRefAnyType[normalizedRef]) {
+          crmStatsByRefAnyType[normalizedRef] = {
+            matched_leads: 0,
+            spam_count: 0,
+            qualified_count: 0,
+            ql_actual_count: 0,
+            meetings_count: 0,
+            deals_count: 0,
+            revenue_sum: 0,
+          };
+        }
+
+        crmStatsByRefAnyType[normalizedRef].matched_leads += Number(r.matched_leads || 0);
+        crmStatsByRefAnyType[normalizedRef].spam_count += Number(r.spam_count || 0);
+        crmStatsByRefAnyType[normalizedRef].qualified_count += Number(r.qualified_count || 0);
+        crmStatsByRefAnyType[normalizedRef].ql_actual_count += Number(r.ql_actual_count || 0);
+        crmStatsByRefAnyType[normalizedRef].meetings_count += Number(r.meetings_count || 0);
+        crmStatsByRefAnyType[normalizedRef].deals_count += Number(r.deals_count || 0);
+        crmStatsByRefAnyType[normalizedRef].revenue_sum += Number(r.revenue_sum || 0);
       }
     });
 
@@ -235,7 +261,9 @@ export async function GET(request: Request) {
 
     filteredData.forEach((l: any) => {
       const normRef = normalizeRef(l.Reference);
-      const stats = crmStats[`${normRef}_${l.Category}`] || {};
+      const exactStats = crmStats[`${normRef}_${l.Category}`] || null;
+      const fallbackOtherStats = l.Category === 'Other' && normRef ? crmStatsByRefAnyType[normRef] || null : null;
+      const stats = exactStats || fallbackOtherStats || {};
       const listingLeadsPf = Number(l.LeadsPF || 0);
       const listingLeads = Number(stats.matched_leads || 0);
       const listingSpam = Number(stats.spam_count || 0);
@@ -243,8 +271,8 @@ export async function GET(request: Request) {
       const listingQLActual = Number(stats.ql_actual_count || 0);
       const listingMeetings = Number(stats.meetings_count || 0);
       const listingDeals = Number(stats.deals_count || 0);
-      const listingRevenue = Number(stats.revenue_sum || 0);
-      const listingCompRevenue = Number(l.CompanyRevenue || 0);
+      const listingRevenue = 0;
+      const listingCompRevenue = 0;
       
       const listingLabel = l.Title && l.Title.length > 30 ? `${l.Title.slice(0, 30)}...` : (l.Title || l.Reference);
       const sort_order = l.Category === 'Sell' ? 1 : l.Category === 'Rent' ? 2 : 3;

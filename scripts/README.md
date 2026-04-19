@@ -4,7 +4,10 @@
 
 - `sync/sync_plan_fact_bq.mjs` — plan/fact sync into BigQuery
 - `sync/sync_brokers_bq.mjs` — broker sync into BigQuery
-- `pf_listings_report_auto.mjs` — automated Property Finder report refresh
+- `sync/sync_pf_to_postgres.mjs` — Property Finder sync into Postgres
+- `kpi/sync_pf_final_fix.mjs` — full PF leads sync into BigQuery raw table
+- `kpi/create_pf_master_view.mjs` — PF to CRM phone matching view
+- `pf_export_full_json.mjs` — consolidated PF export with dual KPI
 
 ## Support Zones
 

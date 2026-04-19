@@ -26,8 +26,9 @@
 
 | Первинний source | Куди йде | Процес | Частота | Статус |
 |---|---|---|---|---|
-| Property Finder API | `pf_listings_report.json` | `scripts/pf_listings_report_auto.mjs` | Вручну | Активно, але manual |
-| Property Finder API | `pf_projects_report.json` | `scripts/kpi/generate_pf_projects_report.mjs` | Вручну | Активно, але manual |
+| Property Finder API | `foryou_analytics.pf_leads_raw` | `scripts/kpi/sync_pf_final_fix.mjs` | Вручну | Активно, але manual |
+| Property Finder API | `foryou_analytics.pf_efficacy_master` | `scripts/kpi/create_pf_master_view.mjs` | Вручну | Активно, але manual |
+| Property Finder API | `data/exports/pf_full_export_latest.json` | `scripts/pf_export_full_json.mjs` | Вручну | Активно, але manual |
 | Google Sheets (план брокерів) | Runtime API (`/api/sales/plan-fact`, `/api/sales/brokers`) + кеш `data/cache/plan-data/*.json` | `src/lib/sheets/planReader.ts` | На запит API (з кешуванням) | Активно, не BQ ingest |
 | Excel файли: `offplan.xlsx`, `secondary_rental.xlsx`, `support.xlsx` | Runtime API (`/api/sales/overview`, `/api/sales/directions`) | Пряме читання xlsx у route | На запит API | Активно, file-based runtime |
 

@@ -133,11 +133,12 @@
 ### 7.3) Актуальність PF
 
 - Потенційно застаріває саме JSON-частина (`pf_listings_report.json`, `pf_projects_report.json`)
-- Скрипти генерації є:
-  - `scripts/pf_listings_report_auto.mjs`
-  - `scripts/kpi/generate_pf_projects_report.mjs`
-- Але в `.github/workflows/data-sync.yml` вони не запускаються
-- Висновок: PF не має гарантованого автооновлення цими workflow і потребує окремого refresh + deploy
+- Актуальні скрипти refresh:
+  - `scripts/kpi/sync_pf_final_fix.mjs` (повний PF leads ingest у BQ)
+  - `scripts/kpi/create_pf_master_view.mjs` (phone matching view)
+  - `scripts/pf_export_full_json.mjs` (повний PF export із dual KPI)
+- В `.github/workflows/data-sync.yml` ці кроки не запускаються
+- Висновок: PF потребує окремого manual refresh
 
 ## 8) Property Finder Primary Plus (окрема сторінка)
 
@@ -261,13 +262,14 @@
 
 Мінімальний процес оновлення PF:
 
-1. Запустити генерацію JSON:
-   - `node scripts/pf_listings_report_auto.mjs`
-   - `node scripts/kpi/generate_pf_projects_report.mjs`
-2. Закомітити оновлені `pf_listings_report.json` і `pf_projects_report.json`
-3. Задеплоїти `main` (спрацює `deploy.yml`)
+1. Оновити PF raw leads:
+  - `node scripts/kpi/sync_pf_final_fix.mjs`
+2. Перебудувати phone matching view:
+  - `node scripts/kpi/create_pf_master_view.mjs`
+3. Згенерувати consolidated export:
+  - `node scripts/pf_export_full_json.mjs`
 
-Без цього PF буде показувати старий snapshot з останнього деплою.
+Без цього PF буде показувати неактуальний snapshot.
 
 ## Корисні файли для підтримки
 

@@ -1,0 +1,223 @@
+.container {
+  padding: 25px 32px 16px 32px;
+  color: var(--text);
+}
+
+.tableContainer {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.tableWrapper {
+  margin: 16px 18px 18px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--panel-2);
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table th {
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  background: var(--panel-2);
+  font-weight: 700;
+}
+
+.table th:last-child {
+  border-right: none;
+}
+
+.table td {
+  padding: 10px 14px;
+  font-size: 12px;
+  border-bottom: 1px solid var(--line-soft);
+  border-right: 1px solid var(--line-soft);
+  text-align: left;
+  background: var(--panel-2);
+}
+
+.table td:last-child {
+  border-right: none;
+}
+
+.table tr:hover td {
+  background: var(--row-hover);
+}
+
+.totalRow {
+  background: var(--bg-0);
+}
+
+.totalRow td {
+  background: var(--bg-0) !important;
+  color: var(--white-soft);
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-top: 1px solid var(--line);
+}
+
+.resultRow {
+  background: var(--bg-0);
+}
+
+.resultRow td {
+  background: var(--bg-0) !important;
+  padding: 12px 14px !important;
+  border-top: 1px solid var(--line);
+}
+
+.resultValue {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.resultLabel {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.trendBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.trendUp {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.trendDown {
+  background: rgba(244, 63, 94, 0.1);
+  color: #f43f5e;
+}
+
+.section {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 8px;
+}
+
+.sectionTitle {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--section-title);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.kpiCard {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px 20px;
+}
+
+.placeholder {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.sourceCell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+  color: var(--white-soft);
+}
+
+.expandButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  transition: color 0.15s ease;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+}
+
+.expandButton:hover {
+  color: var(--white-soft);
+  background: var(--bg-0);
+}
+
+.detailCell {
+  padding: 0 !important;
+  border-right: none !important;
+}
+
+.detailPanel {
+  padding: 16px 20px;
+  background: color-mix(in srgb, var(--bg-0) 60%, transparent);
+  border-bottom: 1px solid var(--line);
+}
+
+.detailTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.detailTable th {
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+}
+
+.detailTable td {
+  padding: 8px 12px;
+  font-size: 11px;
+  color: var(--white-soft);
+  border-bottom: 1px dashed var(--line-soft);
+}
+
+.detailTable tr:last-child td {
+  border-bottom: none;
+}
+

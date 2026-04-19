@@ -7,8 +7,9 @@
 | BigQuery: `foryou_analytics.marketing_v2_leads` | `scripts/sync/sync_unified_leads.mjs` (через `.github/workflows/data-sync.yml`) | Щогодини (`cron: 0 * * * *`) |
 | BigQuery: `foryou_analytics.amo_channel_leads_raw` | Немає явного скрипта у поточному scheduler workflow | Невідомо / не підтверджено в цьому репо |
 | BigQuery: `foryou_analytics.marketing_geo_creative_hub` | Немає явного скрипта у поточному scheduler workflow | Невідомо / не підтверджено в цьому репо |
-| JSON файл: `pf_listings_report.json` | Є ручний скрипт `scripts/pf_listings_report_auto.mjs`, але НЕ підключений у `.github/workflows/data-sync.yml` | Автооновлення: Немає. Тільки вручну (коли запускають скрипт + деплой) |
-| JSON файл: `pf_projects_report.json` | Є ручний скрипт `scripts/kpi/generate_pf_projects_report.mjs`, але НЕ підключений у `.github/workflows/data-sync.yml` | Автооновлення: Немає. Тільки вручну (коли запускають скрипт + деплой) |
+| BigQuery: `foryou_analytics.pf_leads_raw` | Ручний скрипт `scripts/kpi/sync_pf_final_fix.mjs` | Автооновлення: Немає. Тільки вручну |
+| BigQuery: `foryou_analytics.pf_efficacy_master` | Ручний скрипт `scripts/kpi/create_pf_master_view.mjs` | Автооновлення: Немає. Тільки вручну |
+| JSON файл: `data/exports/pf_full_export_latest.json` | Ручний скрипт `scripts/pf_export_full_json.mjs` | Автооновлення: Немає. Тільки вручну |
 | Excel файл: `offplan.xlsx` | Скрипт автооновлення у workflow: Порожньо | Автооновлення: Немає (API читає файл як є на сервері) |
 | Excel файл: `secondary_rental.xlsx` | Скрипт автооновлення у workflow: Порожньо | Автооновлення: Немає (API читає файл як є на сервері) |
 | Excel файл: `support.xlsx` | Скрипт автооновлення у workflow: Порожньо | Автооновлення: Немає (API читає файл як є на сервері) |

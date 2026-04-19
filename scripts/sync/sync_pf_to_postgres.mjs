@@ -1,6 +1,8 @@
+import 'dotenv/config';
 import { Client } from 'pg';
 
 const API_URL = 'https://atlas.propertyfinder.com/v1';
+const PF_CREDITS_TX_TYPE = 'credits';
 
 const CATEGORIES = [
   { name: 'Sell', category: 'residential', offeringType: 'sale', groupName: 'Our' },
@@ -78,7 +80,7 @@ async function fetchCreditsTransactions(token) {
   let txs = [];
 
   while (true) {
-    const res = await fetch(`${API_URL}/credits/transactions?perPage=50&page=${page}`, {
+    const res = await fetch(`${API_URL}/credits/transactions?type=${encodeURIComponent(PF_CREDITS_TX_TYPE)}&perPage=50&page=${page}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
@@ -119,6 +121,35 @@ async function fetchAllLeads(token) {
   }
 
   return leads;
+}
+
+async function fetchProjectDetails(projectIds, token) {
+  const out = new Map();
+  const ids = Array.from(projectIds || []).map((id) => String(id)).filter(Boolean);
+
+  for (let i = 0; i < ids.length; i += 20) {
+    const chunk = ids.slice(i, i + 20);
+    const rows = await Promise.all(
+      chunk.map(async (id) => {
+        try {
+          const res = await fetch(`${API_URL}/projects/${encodeURIComponent(id)}`, {
+            headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
+          });
+          if (!res.ok) return [id, null];
+          const data = await res.json();
+          return [id, data];
+        } catch {
+          return [id, null];
+        }
+      }),
+    );
+
+    for (const [id, data] of rows) {
+      out.set(id, data);
+    }
+  }
+
+  return out;
 }
 
 function buildListingLeadMaps(leads) {
@@ -187,6 +218,31 @@ function aggregateCredits(txs) {
   }
 
   return { byReferenceTotal, byReferenceMonth, unassignedTotal, unassignedByMonth };
+}
+
+function aggregateProjectCredits(txs) {
+  const byProjectId = new Map();
+
+  for (const tx of txs) {
+    const isChargeCredits = tx.transactionInfo?.action === 'charge' && tx.transactionInfo?.type === 'credits';
+    if (!isChargeCredits) continue;
+
+    const projectId = tx?.projectInfo?.id ? String(tx.projectInfo.id) : null;
+    if (!projectId) continue;
+
+    const amount = Math.abs(Number(tx.transactionInfo?.amount || 0));
+    const month = String(tx.createdAt || '').slice(0, 7);
+
+    if (!byProjectId.has(projectId)) {
+      byProjectId.set(projectId, { totalCredits: 0, byMonth: {} });
+    }
+
+    const row = byProjectId.get(projectId);
+    row.totalCredits += amount;
+    if (month) row.byMonth[month] = (row.byMonth[month] || 0) + amount;
+  }
+
+  return byProjectId;
 }
 
 async function upsertListing(client, row) {
@@ -320,7 +376,8 @@ async function main() {
       fetchAllLeads(token),
     ]);
 
-    const { byReferenceTotal, byReferenceMonth, unassignedByMonth } = aggregateCredits(credits);
+    const { byReferenceTotal, byReferenceMonth } = aggregateCredits(credits);
+    const projectCreditsById = aggregateProjectCredits(credits);
     const { byListingId, byListingRef, detailsByKey, listingWithoutKeyCount } = buildListingLeadMaps(leads);
     const knownListingKeys = new Set();
 
@@ -410,32 +467,41 @@ async function main() {
     }
 
     const projects = buildProjectLeadsSummary(leads);
+    const projectIds = new Set(projects.map((project) => String(project.projectId)));
+    const projectDetails = await fetchProjectDetails(projectIds, token);
 
-    const monthLeadTotals = {};
-    for (const project of projects) {
-      for (const [month, count] of Object.entries(project.leadsByMonth || {})) {
-        monthLeadTotals[month] = (monthLeadTotals[month] || 0) + Number(count || 0);
-      }
-    }
+    await client.query(`DELETE FROM pf_projects_snapshot`);
 
     for (const project of projects) {
-      const budgetByMonth = {};
-      for (const [month, monthBudget] of Object.entries(unassignedByMonth || {})) {
-        const monthLeadsTotal = Number(monthLeadTotals[month] || 0);
-        if (!monthLeadsTotal) continue;
+      const projectId = String(project.projectId);
+      const detail = projectDetails.get(projectId) || {};
+      const budgetAgg = projectCreditsById.get(projectId) || { totalCredits: 0, byMonth: {} };
 
-        const projectMonthLeads = Number((project.leadsByMonth || {})[month] || 0);
-        if (!projectMonthLeads) continue;
-
-        budgetByMonth[month] = (Number(monthBudget || 0) * projectMonthLeads) / monthLeadsTotal;
-      }
-
-      project.budgetByMonth = budgetByMonth;
-      project.budget = Object.values(budgetByMonth).reduce((sum, v) => sum + Number(v || 0), 0);
-    }
-
-    for (const project of projects) {
-      await upsertProject(client, project);
+      await upsertProject(client, {
+        projectId,
+        reference: detail?.reference || project.reference || projectId,
+        title:
+          detail?.title?.en ||
+          detail?.title?.ar ||
+          detail?.name?.en ||
+          detail?.name?.ar ||
+          project.title ||
+          detail?.reference ||
+          `Project ${projectId}`,
+        district:
+          detail?.location?.name?.en ||
+          detail?.location?.name?.ar ||
+          project.district ||
+          'Other',
+        leadsCount: project.leadsCount,
+        leadsByMonth: project.leadsByMonth,
+        budget: budgetAgg.totalCredits,
+        budgetByMonth: budgetAgg.byMonth,
+        payload: {
+          projectDetail: detail || null,
+          sampleLead: project.payload?.sampleLead || null,
+        },
+      });
     }
 
     await client.query(
@@ -447,6 +513,8 @@ async function main() {
           projects: projects.length,
           unmatched_listings: unmatchedListings,
           listing_without_key_leads: listingWithoutKeyCount,
+          credits_transactions_filter: { type: PF_CREDITS_TX_TYPE },
+          project_budget_source: 'direct_project_credit_transactions_only',
           leads_total: leads.length,
         }),
         runId,

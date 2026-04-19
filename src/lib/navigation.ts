@@ -9,20 +9,11 @@ import {
   User,
   Users,
   Zap,
-  Briefcase
+  Briefcase,
+  Wallet
 } from 'lucide-react';
 
 export const NAVIGATION_SECTIONS = [
-  {
-    title: 'Маркетинг',
-    items: [
-      { label: 'Marketing', icon: Megaphone, href: '/marketing' },
-      { label: 'RED', icon: Zap, href: '/red' },
-      { label: 'Facebook_Target point', icon: Facebook, href: '/facebook' },
-      { label: 'Website', icon: Globe, href: '/website' },
-      { label: 'Property Finder', icon: FileText, href: '/property-finder' },
-    ],
-  },
   {
     title: 'Отдел продаж',
     items: [
@@ -33,17 +24,40 @@ export const NAVIGATION_SECTIONS = [
     ],
   },
   {
-    title: 'Partners',
+    title: 'Сделки компании',
     items: [
-      { label: 'Klykov', icon: User, href: '/partners/klykov' },
-      { label: 'Facebook Oman', icon: Facebook, href: '/partners/facebook' },
-      { label: 'All Partners', icon: Users, href: '/partners' },
+      { label: 'Итоги', icon: Briefcase, href: '/company-deals' },
+      { label: 'Рейтинги', icon: BarChart3, href: '/company-deals/ratings' },
+      { label: 'Альянс', icon: Users, href: '/company-deals/alliance' },
     ],
   },
   {
-    title: 'Developer',
+    title: 'Партнеры',
     items: [
-      { label: 'System Map (AS-IS)', icon: Briefcase, href: '/developer' },
+      { label: 'Klykov', icon: User, href: '/partners/klykov' },
+      { label: 'Facebook Oman', icon: Facebook, href: '/partners/facebook' },
+    ],
+  },
+  {
+    title: 'Расходы',
+    items: [
+      { label: 'Обзор', icon: Wallet, href: '/expenses/overview' },
+    ],
+  },
+  {
+    title: 'Инвойсы',
+    items: [
+      { label: 'Обзор', icon: FileText, href: '/invoices/overview' },
+    ],
+  },
+  {
+    title: 'Маркетинг',
+    items: [
+      { label: 'Marketing', icon: Megaphone, href: '/marketing' },
+      { label: 'RED', icon: Zap, href: '/red' },
+      { label: 'Facebook_Target point', icon: Facebook, href: '/facebook' },
+      { label: 'Website', icon: Globe, href: '/website' },
+      { label: 'Property Finder', icon: FileText, href: '/property-finder' },
     ],
   },
 ] as const;

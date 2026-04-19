@@ -38,8 +38,9 @@
 - `src/app/**/page.tsx`
 - `src/app/api/**/route.ts`
 - `scripts/sync/*.mjs`
-- `scripts/pf_listings_report_auto.mjs`
-- `scripts/kpi/generate_pf_projects_report.mjs`
+- `scripts/pf_export_full_json.mjs`
+- `scripts/kpi/sync_pf_final_fix.mjs`
+- `scripts/kpi/create_pf_master_view.mjs`
 - `docs/DATA_SOURCES_BY_PAGE.md`
 - `docs/DATA_REFRESH_TABLE.md`
 
@@ -53,8 +54,9 @@
 - sync_red_to_bq
 - sync_klykov_to_bq
 - sync_unified_leads
-- pf_listings_report_auto (manual)
-- generate_pf_projects_report (manual)
+- pf_export_full_json (manual)
+- sync_pf_final_fix (manual)
+- create_pf_master_view (manual)
 - sync_plan_fact_bq (present in repo, schedule not confirmed)
 - sync_brokers_bq (present in repo, schedule not confirmed)
 
