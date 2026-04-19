@@ -97,6 +97,7 @@ type BrokerMetrics = {
   broker_name: string;
   broker_id: number;
   period_data: PeriodComparison;
+  by_source?: Record<string, any>;
   totals: {
     leads: number;
     ql_leads: number;
