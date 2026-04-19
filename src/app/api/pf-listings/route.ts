@@ -50,7 +50,7 @@ async function loadListingsFromPostgres(targetGroup: string | null) {
     [targetGroup],
   );
 
-  return rows.map((row) => ({
+  return rows.map((row: ListingSnapshotRow) => ({
     Reference: row.reference || row.listing_id,
     group: row.group_name || 'Our',
     Category:

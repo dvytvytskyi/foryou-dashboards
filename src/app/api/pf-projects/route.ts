@@ -33,7 +33,7 @@ async function loadProjectsFromPostgres() {
     `,
   );
 
-  return rows.map((row) => ({
+  return rows.map((row: ProjectSnapshotRow) => ({
     Reference: row.reference || row.project_id,
     Title: row.title || row.reference || row.project_id,
     District: row.district || 'Other',
