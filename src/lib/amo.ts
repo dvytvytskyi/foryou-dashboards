@@ -23,15 +23,6 @@ export function getAmoDomain(): string {
 }
 
 export function readAmoTokens(): { tokens: AmoTokens; fromEnv: boolean } {
-  const envJson = process.env.AMO_TOKENS_JSON;
-  if (envJson) {
-    const parsed = parseJson(envJson);
-    if (parsed && typeof parsed === 'object') {
-      return { tokens: parsed, fromEnv: true };
-    }
-    console.error('[AMO] Invalid AMO_TOKENS_JSON in environment');
-  }
-
   try {
     const fileJson = fs.readFileSync(TOKENS_PATH, 'utf8');
     const parsedFile = parseJson(fileJson);
@@ -43,6 +34,16 @@ export function readAmoTokens(): { tokens: AmoTokens; fromEnv: boolean } {
     }
     return { tokens: parsedFile, fromEnv: false };
   } catch (err: any) {
+    const envJson = process.env.AMO_TOKENS_JSON;
+    if (envJson) {
+      const parsed = parseJson(envJson);
+      if (parsed && typeof parsed === 'object') {
+        console.warn('[AMO] Falling back to AMO_TOKENS_JSON from environment');
+        return { tokens: parsed, fromEnv: true };
+      }
+      console.error('[AMO] Invalid AMO_TOKENS_JSON in environment');
+    }
+
     throw new Error(`[AMO] Failed to read tokens: ${err.message}. Path: ${TOKENS_PATH}`);
   }
 }
