@@ -9,6 +9,25 @@ const KNOWN_CHANNELS = ['RED', 'Facebook', 'Klykov', 'Website', 'Own leads', 'Pa
 const RED_FIXED_CPL_USD = 58;
 const RED_FIXED_CPL_AED = 238;
 const AED_PER_USD = 3.6725;
+const EXCLUDED_RED_LABELS = new Set(['1/ TP_Sell_Oman_(st+vid)_TPFP_RU']);
+const EXCLUDED_RED_LEVEL2_PREFIXES = [
+  'ST gr_worldwide(kz/ru) TPFP',
+  'Video  gr_worldwide(kz/ru) TPFP',
+  'ST+video (Radik) gr_worldwide(kz/ru) TPFP',
+];
+
+function shouldExcludeRedRow(row: any) {
+  const levelValues = [row.level_1, row.level_2, row.level_3]
+    .filter((value: unknown): value is string => typeof value === 'string')
+    .map((value) => value.trim());
+
+  if (levelValues.some((value) => EXCLUDED_RED_LABELS.has(value))) {
+    return true;
+  }
+
+  const level2 = typeof row.level_2 === 'string' ? row.level_2.trim() : '';
+  return EXCLUDED_RED_LEVEL2_PREFIXES.some((prefix) => level2.startsWith(prefix));
+}
 
 // Ініціалізуємо BigQuery з сервіс-аккаунтом
 const bqCredentials = process.env.GOOGLE_AUTH_JSON 
@@ -114,15 +133,20 @@ export async function GET(request: NextRequest) {
       },
     });
 
+    const filteredRows = rows.filter((row: any) => {
+      if (row.channel !== 'RED') return true;
+      return !shouldExcludeRedRow(row);
+    });
+
     // Повертаємо JSON відповідь
     return NextResponse.json({
       success: true,
-      data: rows,
+      data: filteredRows,
       meta: {
         currency,
         startDate,
         endDate,
-        rowCount: rows.length,
+        rowCount: filteredRows.length,
         fetchedAt: new Date().toISOString(),
       },
     });
