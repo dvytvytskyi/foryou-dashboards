@@ -11,6 +11,7 @@
     "sync:brokers:bq": "node scripts/sync/sync_brokers_bq.mjs",
     "db:init": "node scripts/db/init_postgres.mjs",
     "sync:pf:postgres": "node scripts/sync/sync_pf_to_postgres.mjs",
+    "sync:pf:amo": "node scripts/sync/sync_pf_to_amo.mjs",
     "sync:sales:postgres": "node scripts/sync/sync_sales_excel_to_postgres.mjs",
     "sync:pf:match:phone": "node scripts/kpi/create_pf_master_view.mjs"
   },

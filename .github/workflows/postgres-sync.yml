@@ -46,6 +46,24 @@ jobs:
           PF_API_KEY: ${{ secrets.PF_API_KEY }}
           PF_API_SECRET: ${{ secrets.PF_API_SECRET }}
 
+      - name: Sync Property Finder leads to amoCRM
+        run: npm run sync:pf:amo
+        env:
+          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_SSL_MODE: ${{ secrets.POSTGRES_SSL_MODE }}
+          PF_API_KEY: ${{ secrets.PF_API_KEY }}
+          PF_API_SECRET: ${{ secrets.PF_API_SECRET }}
+          AMO_DOMAIN: ${{ secrets.AMO_DOMAIN }}
+          AMO_CLIENT_ID: ${{ secrets.AMO_CLIENT_ID }}
+          AMO_CLIENT_SECRET: ${{ secrets.AMO_CLIENT_SECRET }}
+          AMO_REDIRECT_URI: ${{ secrets.AMO_REDIRECT_URI }}
+          AMO_TOKENS_JSON: ${{ secrets.AMO_TOKENS_JSON }}
+
       - name: Sync Sales Excel to PostgreSQL
         run: npm run sync:sales:postgres
         env:
