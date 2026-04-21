@@ -5,6 +5,7 @@ import path from 'path';
 import { amoFetch } from '@/lib/amo';
 
 const CACHE_PATH = path.resolve(process.cwd(), 'data/cache/partners/klykov_leads.json');
+const FALLBACK_CACHE_MAX_AGE_MS = 2 * 60 * 60 * 1000;
 
 async function readCache() {
   try {
@@ -23,6 +24,13 @@ async function writeCache(data: any[]) {
   );
 }
 
+function hasRecentCache(cachedAt?: string) {
+  if (!cachedAt) return false;
+  const timestamp = Date.parse(cachedAt);
+  if (Number.isNaN(timestamp)) return false;
+  return Date.now() - timestamp <= FALLBACK_CACHE_MAX_AGE_MS;
+}
+
 export async function GET() {
   try {
     const pipelineId = '10776450';
@@ -39,6 +47,15 @@ export async function GET() {
           errorLength: err.length,
         });
         const cached = await readCache();
+        if (res.status === 401 && cached?.data?.length && hasRecentCache(cached.cachedAt)) {
+          return NextResponse.json({
+            success: true,
+            stale: true,
+            fallback: 'recent-cache',
+            cachedAt: cached.cachedAt,
+            data: cached.data,
+          });
+        }
         if (cached?.data?.length) {
           return NextResponse.json({ success: true, stale: true, cachedAt: cached.cachedAt, data: cached.data });
         }
@@ -66,6 +83,15 @@ export async function GET() {
   } catch (e: any) {
     console.error('[Partners/Klykov/Leads] Exception:', e.message);
     const cached = await readCache();
+    if (cached?.data?.length && hasRecentCache(cached.cachedAt)) {
+      return NextResponse.json({
+        success: true,
+        stale: true,
+        fallback: 'recent-cache',
+        cachedAt: cached.cachedAt,
+        data: cached.data,
+      });
+    }
     if (cached?.data?.length) {
       return NextResponse.json({ success: true, stale: true, cachedAt: cached.cachedAt, data: cached.data });
     }

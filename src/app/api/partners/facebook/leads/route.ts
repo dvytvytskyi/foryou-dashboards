@@ -17,6 +17,7 @@ type AmoLead = {
 
 const RE_PIPELINE_ID = '8696950';
 const CACHE_PATH = path.resolve(process.cwd(), 'data/cache/partners/facebook_leads.json');
+const FALLBACK_CACHE_MAX_AGE_MS = 2 * 60 * 60 * 1000;
 
 async function readCache() {
   try {
@@ -37,6 +38,13 @@ async function writeCache(data: any[], funnels: Array<{ id: number; name: string
     JSON.stringify({ data, funnels, cachedAt: new Date().toISOString() }),
     'utf8',
   );
+}
+
+function hasRecentCache(cachedAt?: string) {
+  if (!cachedAt) return false;
+  const timestamp = Date.parse(cachedAt);
+  if (Number.isNaN(timestamp)) return false;
+  return Date.now() - timestamp <= FALLBACK_CACHE_MAX_AGE_MS;
 }
 
 function isFacebookOmanLead(lead: AmoLead) {
@@ -63,6 +71,16 @@ export async function GET() {
       if (!res.ok) {
         const err = await res.text();
         const cached = await readCache();
+        if (res.status === 401 && cached?.data?.length && hasRecentCache(cached.cachedAt)) {
+          return NextResponse.json({
+            success: true,
+            stale: true,
+            fallback: 'recent-cache',
+            cachedAt: cached.cachedAt,
+            data: cached.data,
+            funnels: cached.funnels || [],
+          });
+        }
         if (cached?.data?.length) {
           return NextResponse.json({
             success: true,
@@ -122,6 +140,16 @@ export async function GET() {
     });
   } catch (e: any) {
     const cached = await readCache();
+    if (cached?.data?.length && hasRecentCache(cached.cachedAt)) {
+      return NextResponse.json({
+        success: true,
+        stale: true,
+        fallback: 'recent-cache',
+        cachedAt: cached.cachedAt,
+        data: cached.data,
+        funnels: cached.funnels || [],
+      });
+    }
     if (cached?.data?.length) {
       return NextResponse.json({
         success: true,
