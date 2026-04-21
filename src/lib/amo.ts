@@ -58,6 +58,18 @@ function shouldRefresh(tokens: AmoTokens, force: boolean): boolean {
   return exp - now <= REFRESH_SKEW_SECONDS;
 }
 
+function shouldPreferTokens(candidate: AmoTokens, current: AmoTokens): boolean {
+  const candidateExp = tokenExpiresAt(candidate) || 0;
+  const currentExp = tokenExpiresAt(current) || 0;
+  if (candidateExp !== currentExp) return candidateExp > currentExp;
+
+  const candidateServerTime = Number(candidate.server_time || 0);
+  const currentServerTime = Number(current.server_time || 0);
+  if (candidateServerTime !== currentServerTime) return candidateServerTime > currentServerTime;
+
+  return Boolean(candidate.access_token) && !current.access_token;
+}
+
 export function getAmoDomain(): string {
   const raw = process.env.AMO_DOMAIN || 'reforyou.amocrm.ru';
   return raw.replace(/^https?:\/\//i, '').replace(/\/+$/g, '');
@@ -209,6 +221,18 @@ async function refreshAmoTokens(
 async function readTokensPreferDb(): Promise<{ tokens: AmoTokens; fromEnv: boolean }> {
   const dbTokens = await readTokensFromPostgres();
   if (dbTokens && typeof dbTokens === 'object') {
+    try {
+      const fallback = readAmoTokens();
+      if (shouldPreferTokens(fallback.tokens, dbTokens)) {
+        if (isPostgresConfigured()) {
+          await writeTokensToPostgres(fallback.tokens);
+        }
+        return fallback;
+      }
+    } catch {
+      // Ignore local fallback read errors when Postgres already has tokens.
+    }
+
     return { tokens: dbTokens, fromEnv: false };
   }
 
