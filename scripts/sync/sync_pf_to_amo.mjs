@@ -15,6 +15,7 @@ const PF_FIELD_LISTING_REF = Number(process.env.AMO_PF_FIELD_LISTING_REF || 1516
 const PF_FIELD_CATEGORY = Number(process.env.AMO_PF_FIELD_CATEGORY || 1516913);
 const PF_FIELD_CHANNEL_TYPE = Number(process.env.AMO_PF_FIELD_CHANNEL_TYPE || 1516915);
 const PF_FIELD_STATUS = Number(process.env.AMO_PF_FIELD_STATUS || 1516917);
+const PF_FIELD_LISTING_URL = Number(process.env.AMO_PF_FIELD_LISTING_URL || 1516919);
 
 const LOOKBACK_HOURS = Number(process.env.PF_TO_AMO_LOOKBACK_HOURS || 24);
 const MAX_PAGES = Number(process.env.PF_TO_AMO_MAX_PAGES || 40);
@@ -251,6 +252,18 @@ function pickPhone(lead) {
   return normalizePhone(phone?.value || '');
 }
 
+function buildPfListingUrl(pfLead) {
+  const listingRef = String(pfLead?.listing?.reference || '').trim();
+  const listingId = String(pfLead?.listing?.id || '').trim();
+  if (listingRef) {
+    return `https://www.propertyfinder.ae/en/search?q=${encodeURIComponent(listingRef)}`;
+  }
+  if (listingId) {
+    return `https://www.propertyfinder.ae/en/search?q=${encodeURIComponent(listingId)}`;
+  }
+  return '';
+}
+
 async function getPropertyFinderSourceEnumId(client) {
   if (process.env.AMO_SOURCE_PROPERTY_FINDER_ENUM_ID) {
     return Number(process.env.AMO_SOURCE_PROPERTY_FINDER_ENUM_ID);
@@ -273,6 +286,7 @@ function buildLeadPayload(pfLead, sourceEnumId) {
   const phone = pickPhone(pfLead);
   const listingId = pfLead?.listing?.id ? String(pfLead.listing.id) : '';
   const listingRef = pfLead?.listing?.reference ? String(pfLead.listing.reference) : '';
+  const listingUrl = buildPfListingUrl(pfLead);
   const channelType = String(pfLead?.channel || pfLead?.type || '').trim();
   const pfStatus = String(pfLead?.status || '').trim();
   const pfCategory = String(pfLead?.entityType || '').trim() || 'listing';
@@ -283,6 +297,7 @@ function buildLeadPayload(pfLead, sourceEnumId) {
     { field_id: PF_FIELD_CATEGORY, values: [{ value: pfCategory }] },
     { field_id: PF_FIELD_CHANNEL_TYPE, values: [{ value: channelType }] },
     { field_id: PF_FIELD_STATUS, values: [{ value: pfStatus }] },
+    { field_id: PF_FIELD_LISTING_URL, values: [{ value: listingUrl || '' }] },
     {
       field_id: COMMENT_FIELD_ID,
       values: [
@@ -293,6 +308,7 @@ function buildLeadPayload(pfLead, sourceEnumId) {
             `Phone: ${phone || '-'}`,
             `Listing ID: ${listingId || '-'}`,
             `Listing Ref: ${listingRef || '-'}`,
+            `Listing URL: ${listingUrl || '-'}`,
             `Category: ${pfCategory || '-'}`,
             `Channel: ${channelType || '-'}`,
             `Status: ${pfStatus || '-'}`,
