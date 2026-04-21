@@ -293,7 +293,17 @@ async function getValidTokens(forceRefresh: boolean): Promise<AmoTokens> {
 
 export async function amoFetch(pathname: string, init?: RequestInit): Promise<Response> {
   const pathOnly = pathname.startsWith('/') ? pathname : `/${pathname}`;
-  const tokens = await getValidTokens(false);
+  let tokens: AmoTokens;
+  try {
+    tokens = await getValidTokens(false);
+  } catch (err: any) {
+    const message = err?.message || 'Token acquisition failed';
+    console.error(`[AMO] Failed to get valid token before request ${pathname}: ${message}`);
+    return new Response(JSON.stringify({ error: message }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 
   const doFetch = (accessToken?: string) =>
     fetch(`https://${getAmoDomain()}${pathOnly}`, {
@@ -314,7 +324,17 @@ export async function amoFetch(pathname: string, init?: RequestInit): Promise<Re
   }
 
   console.warn(`[AMO] Got 401 on ${pathname}, attempting token refresh...`);
-  const refreshed = await getValidTokens(true);
+  let refreshed: AmoTokens | null = null;
+  try {
+    refreshed = await getValidTokens(true);
+  } catch (err: any) {
+    const message = err?.message || 'Token refresh failed';
+    console.error(`[AMO] Forced refresh failed on ${pathname}: ${message}`);
+    return new Response(JSON.stringify({ error: message }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
   
   if (!refreshed?.access_token) {
     console.error('[AMO] Token refresh failed, returning 401 response');
