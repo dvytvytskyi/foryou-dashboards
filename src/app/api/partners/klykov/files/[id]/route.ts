@@ -1,19 +1,26 @@
 
-import fs from 'fs';
-import path from 'path';
+import { amoFetch, getAmoDomain } from '@/lib/amo';
+
+function toAmoPath(urlOrPath: string): string | null {
+    if (!urlOrPath) return null;
+    if (urlOrPath.startsWith('/')) return urlOrPath;
+    try {
+        const u = new URL(urlOrPath);
+        if (u.host !== getAmoDomain()) return null;
+        return `${u.pathname}${u.search}`;
+    } catch {
+        return null;
+    }
+}
 
 export async function GET(_request: Request, props: { params: Promise<{ id: string }> }) {
     try {
         const params = await props.params;
         const fileId = params.id;
-        
-        const tokensPath = path.join(process.cwd(), 'secrets/amo_tokens.json');
-        const tokens = JSON.parse(fs.readFileSync(tokensPath, 'utf8'));
-        const headers = { 'Authorization': 'Bearer ' + tokens.access_token };
 
         // 1. Try to fetch file metadata to get the download URL
         let downloadUrl = null;
-        const fileMetaRes = await fetch('https://reforyou.amocrm.ru/api/v4/files/' + fileId, { headers });
+        const fileMetaRes = await amoFetch('/api/v4/files/' + fileId);
         
         if (fileMetaRes.ok) {
             const fileMeta = await fileMetaRes.json();
@@ -23,12 +30,12 @@ export async function GET(_request: Request, props: { params: Promise<{ id: stri
         // 2. If no metadata or URL, try multiple fallback patterns
         if (!downloadUrl) {
             const fallbacks = [
-                'https://reforyou.amocrm.ru/download/' + fileId,
-                'https://reforyou.amocrm.ru/api/v4/files/' + fileId + '/download_url'
+                '/download/' + fileId,
+                '/api/v4/files/' + fileId + '/download_url'
             ];
             
             for (const fUrl of fallbacks) {
-                const check = await fetch(fUrl, { headers, method: 'HEAD' });
+                const check = await amoFetch(fUrl, { method: 'HEAD' });
                 if (check.ok) {
                     downloadUrl = fUrl;
                     break;
@@ -39,9 +46,15 @@ export async function GET(_request: Request, props: { params: Promise<{ id: stri
         if (!downloadUrl) return new Response('Cannot resolve file URL for ' + fileId, { status: 404 });
 
         // 3. Fetch binary with optional auth
-        let imageRes = await fetch(downloadUrl, { headers });
-        if (!imageRes.ok) {
-            // Some links (S3) must be fetched without Auth header
+        let imageRes: Response;
+        const amoPath = toAmoPath(downloadUrl);
+        if (amoPath) {
+            imageRes = await amoFetch(amoPath);
+            if (!imageRes.ok && /^https?:\/\//i.test(downloadUrl)) {
+                // Some links can point to signed external storage and require a plain fetch.
+                imageRes = await fetch(downloadUrl);
+            }
+        } else {
             imageRes = await fetch(downloadUrl);
         }
 

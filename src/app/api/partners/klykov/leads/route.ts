@@ -1,6 +1,27 @@
 
 import { NextResponse } from 'next/server';
+import fs from 'fs/promises';
+import path from 'path';
 import { amoFetch } from '@/lib/amo';
+
+const CACHE_PATH = path.resolve(process.cwd(), 'data/cache/partners/klykov_leads.json');
+
+async function readCache() {
+  try {
+    return JSON.parse(await fs.readFile(CACHE_PATH, 'utf8')) as { data: any[]; cachedAt: string };
+  } catch {
+    return null;
+  }
+}
+
+async function writeCache(data: any[]) {
+  await fs.mkdir(path.dirname(CACHE_PATH), { recursive: true });
+  await fs.writeFile(
+    CACHE_PATH,
+    JSON.stringify({ data, cachedAt: new Date().toISOString() }),
+    'utf8',
+  );
+}
 
 export async function GET() {
   try {
@@ -17,6 +38,10 @@ export async function GET() {
           statusText: res.statusText,
           errorLength: err.length,
         });
+        const cached = await readCache();
+        if (cached?.data?.length) {
+          return NextResponse.json({ success: true, stale: true, cachedAt: cached.cachedAt, data: cached.data });
+        }
         return NextResponse.json({ success: false, error: err }, { status: res.status });
     }
 
@@ -35,9 +60,15 @@ export async function GET() {
         tags: l._embedded?.tags?.map((t: any) => t.name) || []
     }));
 
+    await writeCache(mapped);
+
     return NextResponse.json({ success: true, data: mapped });
   } catch (e: any) {
     console.error('[Partners/Klykov/Leads] Exception:', e.message);
+    const cached = await readCache();
+    if (cached?.data?.length) {
+      return NextResponse.json({ success: true, stale: true, cachedAt: cached.cachedAt, data: cached.data });
+    }
     return NextResponse.json({ success: false, error: e.message }, { status: 500 });
   }
 }

@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { amoFetch } from '@/lib/amo';
 
 async function safeJson(res: Response, fallback: any = {}) {
     if (!res.ok || res.status === 204) return fallback;
@@ -16,29 +15,14 @@ export async function GET(_request: Request, props: { params: Promise<{ id: stri
     try {
         const params = await props.params;
         const leadId = params.id;
-        const tokensPath = path.join(process.cwd(), 'secrets/amo_tokens.json');
-        let tokens;
-        if (process.env.AMO_TOKENS_JSON) {
-            tokens = JSON.parse(process.env.AMO_TOKENS_JSON);
-        } else {
-            tokens = JSON.parse(fs.readFileSync(tokensPath, 'utf8'));
-        }
-
-        const domain = process.env.AMO_DOMAIN || 'reforyou.amocrm.ru';
-        const headers = { 
-            'Authorization': 'Bearer ' + tokens.access_token,
-            'Content-Type': 'application/json'
-        };
-
-        const baseUrl = `https://${domain}`;
 
         // Phase 1: Fetch Lead and other main entity data in parallel
         const [leadRes, filesRes, entityFilesRes, notesRes, tasksRes] = await Promise.all([
-            fetch(`${baseUrl}/api/v4/leads/${leadId}?with=contacts,companies`, { headers }),
-            fetch(`${baseUrl}/api/v4/files?filter[entity_type]=leads&filter[entity_id]=${leadId}`, { headers }),
-            fetch(`${baseUrl}/api/v4/leads/${leadId}/files`, { headers }),
-            fetch(`${baseUrl}/api/v4/leads/${leadId}/notes`, { headers }),
-            fetch(`${baseUrl}/api/v4/tasks?filter[entity_id]=${leadId}&filter[entity_type]=leads&filter[is_completed]=0`, { headers })
+            amoFetch(`/api/v4/leads/${leadId}?with=contacts,companies`),
+            amoFetch(`/api/v4/files?filter[entity_type]=leads&filter[entity_id]=${leadId}`),
+            amoFetch(`/api/v4/leads/${leadId}/files`),
+            amoFetch(`/api/v4/leads/${leadId}/notes`),
+            amoFetch(`/api/v4/tasks?filter[entity_id]=${leadId}&filter[entity_type]=leads&filter[is_completed]=0`)
         ]);
 
         if (!leadRes.ok) {
@@ -58,11 +42,11 @@ export async function GET(_request: Request, props: { params: Promise<{ id: stri
 
         // Phase 2: Fetch Contacts and Companies in parallel
         const contactsPromises = (leadData._embedded?.contacts || []).map((c: any) => 
-            fetch(`${baseUrl}/api/v4/contacts/${c.id}`, { headers }).then(r => safeJson(r, null))
+            amoFetch(`/api/v4/contacts/${c.id}`).then(r => safeJson(r, null))
         );
         
         const companiesPromises = (leadData._embedded?.companies || []).map((comp: any) => 
-            fetch(`${baseUrl}/api/v4/companies/${comp.id}`, { headers }).then(r => safeJson(r, null))
+            amoFetch(`/api/v4/companies/${comp.id}`).then(r => safeJson(r, null))
         );
 
         const [contactsData, companiesData] = await Promise.all([

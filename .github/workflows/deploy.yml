@@ -38,9 +38,11 @@ jobs:
           ${{ secrets.GOOGLE_AUTH_JSON }}
           EOF_GOOGLE_AUTH_JSON
 
-          cat > secrets/amo_tokens.json <<'EOF_AMO_TOKENS_JSON'
+          if [ ! -s secrets/amo_tokens.json ]; then
+            cat > secrets/amo_tokens.json <<'EOF_AMO_TOKENS_JSON'
           ${{ secrets.AMO_TOKENS_JSON }}
           EOF_AMO_TOKENS_JSON
+          fi
 
           GOOGLE_AUTH_JSON_COMPACT=$(tr -d '\n\r' < secrets/crypto-world-epta-2db29829d55d.json)
           AMO_TOKENS_JSON_COMPACT=$(tr -d '\n\r' < secrets/amo_tokens.json)

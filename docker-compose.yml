@@ -7,7 +7,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./secrets:/app/secrets:ro
+      - ./secrets:/app/secrets
     ports:
       - "3007:3000"
     restart: unless-stopped

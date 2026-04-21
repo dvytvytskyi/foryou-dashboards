@@ -1,27 +1,12 @@
 
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { amoFetch } from '@/lib/amo';
 
 export async function POST(request: Request, props: { params: Promise<{ id: string }> }) {
     try {
         const params = await props.params;
         const leadId = params.id;
         const { responsible_user_id } = await request.json();
-
-        const tokensPath = path.join(process.cwd(), 'secrets/amo_tokens.json');
-        let tokens;
-        if (process.env.AMO_TOKENS_JSON) {
-            tokens = JSON.parse(process.env.AMO_TOKENS_JSON);
-        } else {
-            tokens = JSON.parse(fs.readFileSync(tokensPath, 'utf8'));
-        }
-
-        const domain = process.env.AMO_DOMAIN || 'reforyou.amocrm.ru';
-        const headers = { 
-            'Authorization': 'Bearer ' + tokens.access_token,
-            'Content-Type': 'application/json'
-        };
 
         const taskText = "Обновить подрядчика по статусу (запрос с дашборда)";
         const now = Math.floor(Date.now() / 1000);
@@ -37,9 +22,9 @@ export async function POST(request: Request, props: { params: Promise<{ id: stri
             }
         ];
 
-        const res = await fetch(`https://${domain}/api/v4/tasks`, {
+        const res = await amoFetch(`/api/v4/tasks`, {
             method: 'POST',
-            headers,
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
 

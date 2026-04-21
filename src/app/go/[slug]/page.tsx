@@ -1,8 +1,8 @@
 import { BigQuery } from '@google-cloud/bigquery';
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
+import { amoFetch } from '@/lib/amo';
 import path from 'path';
-import fs from 'fs';
 
 const PROJECT_ID = 'crypto-world-epta';
 const DATASET_ID = 'foryou_analytics';
@@ -58,19 +58,10 @@ export default async function GoBridgePage(props: Props) {
             is_converted: false
         }]);
 
-        // Call amoCRM to create a ghost lead
-        let tokens;
-        if (process.env.AMO_TOKENS_JSON) {
-            tokens = JSON.parse(process.env.AMO_TOKENS_JSON);
-        } else {
-            tokens = JSON.parse(fs.readFileSync(path.resolve('./secrets/amo_tokens.json'), 'utf8'));
-        }
-
-        const domain = process.env.AMO_DOMAIN || 'reforyou.amocrm.ru';
-        await fetch(`https://${domain}/api/v4/leads`, {
+        // Call amoCRM to create a ghost lead.
+        await amoFetch('/api/v4/leads', {
             method: 'POST',
             headers: { 
-                'Authorization': `Bearer ${tokens.access_token}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify([{

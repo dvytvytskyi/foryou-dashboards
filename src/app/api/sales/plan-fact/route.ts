@@ -4,6 +4,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { readPlanDataFromSheets, PlanByBroker } from '@/lib/sheets/planReader';
 import { classifyLeadSource, CLOSED_DEAL_STATUS_IDS } from '@/lib/crmRules.js';
+import { amoFetchJson as sharedAmoFetchJson } from '@/lib/amo';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -41,14 +42,6 @@ type AmoUser = {
   name: string;
 };
 
-type AmoTokens = {
-  access_token: string;
-  refresh_token: string;
-  token_type?: string;
-  expires_in?: number;
-  server_time?: number;
-};
-
 type SourceName =
   | 'Red'
   | 'Property Finder'
@@ -63,12 +56,6 @@ type RawLead = AmoLead & {
   broker_name?: string;
 };
 
-const AMO_DOMAIN = process.env.AMO_DOMAIN || 'reforyou.amocrm.ru';
-const AMO_CLIENT_ID = process.env.AMO_CLIENT_ID || '';
-const AMO_CLIENT_SECRET = process.env.AMO_CLIENT_SECRET || '';
-const AMO_REDIRECT_URI = process.env.AMO_REDIRECT_URI || '';
-
-const TOKENS_FILE = path.resolve(process.cwd(), 'secrets/amo_tokens.json');
 const CACHE_DIR = path.resolve(process.cwd(), 'data/cache/plan-fact');
 const RAW_CACHE_FILE = path.join(CACHE_DIR, 'raw_leads.json');
 const CACHE_TTL_MS = 30 * 60 * 1000;
@@ -279,11 +266,6 @@ async function readRawDataFromBigQuery(): Promise<RawData | null> {
   }
 }
 
-async function readTokensFile(): Promise<AmoTokens> {
-  const raw = await fs.readFile(TOKENS_FILE, 'utf8');
-  return JSON.parse(raw) as AmoTokens;
-}
-
 async function readRawCache(): Promise<RawData | null> {
   try {
     const raw = await fs.readFile(RAW_CACHE_FILE, 'utf8');
@@ -300,17 +282,17 @@ async function writeRawCache(data: RawData) {
   await fs.writeFile(RAW_CACHE_FILE, JSON.stringify(data), 'utf8');
 }
 
-async function getOrFetchRawData(tokens: AmoTokens): Promise<RawData> {
+async function getOrFetchRawData(): Promise<RawData> {
   // Deduplicate concurrent requests — only one CRM fetch runs at a time
   if (_rawDataFetchPromise) return _rawDataFetchPromise;
 
   _rawDataFetchPromise = (async () => {
     try {
       const [usersResponse, reLeads, klykovLeads, openTasks] = await Promise.all([
-        amoFetchJson<{ _embedded?: { users?: AmoUser[] } }>(`/api/v4/users?limit=250`, tokens),
-        fetchAllLeadsByPipeline(RE_PIPELINE_ID, tokens),
-        fetchAllLeadsByPipeline(KLYKOV_PIPELINE_ID, tokens),
-        fetchAllOpenTasks(tokens),
+        amoFetchJson<{ _embedded?: { users?: AmoUser[] } }>(`/api/v4/users?limit=250`),
+        fetchAllLeadsByPipeline(RE_PIPELINE_ID),
+        fetchAllLeadsByPipeline(KLYKOV_PIPELINE_ID),
+        fetchAllOpenTasks(),
       ]);
       const result: RawData = {
         leads: [...reLeads, ...klykovLeads].filter((l) => INCLUDED_PIPELINES.has(l.pipeline_id)),
@@ -329,74 +311,13 @@ async function getOrFetchRawData(tokens: AmoTokens): Promise<RawData> {
   return _rawDataFetchPromise;
 }
 
-async function writeTokensFile(tokens: AmoTokens) {
-  const toSave = {
-    ...tokens,
-    server_time: Math.floor(Date.now() / 1000),
-  };
-  await fs.writeFile(TOKENS_FILE, JSON.stringify(toSave, null, 2), 'utf8');
-}
-
-async function refreshTokens(tokens: AmoTokens): Promise<AmoTokens> {
-  if (!AMO_CLIENT_ID || !AMO_CLIENT_SECRET || !AMO_REDIRECT_URI || !tokens.refresh_token) {
-    throw new Error('Cannot refresh AmoCRM token: missing env credentials or refresh token');
-  }
-
-  const res = await fetch(`https://${AMO_DOMAIN}/oauth2/access_token`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      client_id: AMO_CLIENT_ID,
-      client_secret: AMO_CLIENT_SECRET,
-      grant_type: 'refresh_token',
-      refresh_token: tokens.refresh_token,
-      redirect_uri: AMO_REDIRECT_URI,
-    }),
+async function amoFetchJson<T>(apiPath: string): Promise<T> {
+  return sharedAmoFetchJson<T>(apiPath, {
+    headers: { Accept: 'application/json' },
   });
-
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`Failed to refresh AmoCRM token: ${err}`);
-  }
-
-  const nextTokens = (await res.json()) as AmoTokens;
-  await writeTokensFile(nextTokens);
-  return nextTokens;
 }
 
-async function amoFetchJson<T>(apiPath: string, tokens: AmoTokens): Promise<T> {
-  const url = `https://${AMO_DOMAIN}${apiPath}`;
-
-  const doRequest = async (accessToken: string) => {
-    const res = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        Accept: 'application/json',
-      },
-    });
-    return res;
-  };
-
-  let res = await doRequest(tokens.access_token);
-
-  if (res.status === 401) {
-    const refreshed = await refreshTokens(tokens);
-    res = await doRequest(refreshed.access_token);
-  }
-
-  if (res.status === 204) {
-    return {} as T;
-  }
-
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`AmoCRM request failed (${apiPath}): ${err}`);
-  }
-
-  return (await res.json()) as T;
-}
-
-async function fetchAllLeadsByPipeline(pipelineId: number, tokens: AmoTokens): Promise<AmoLead[]> {
+async function fetchAllLeadsByPipeline(pipelineId: number): Promise<AmoLead[]> {
   const all: AmoLead[] = [];
   const limit = 250;
   let page = 1;
@@ -408,7 +329,6 @@ async function fetchAllLeadsByPipeline(pipelineId: number, tokens: AmoTokens): P
 
     const data = await amoFetchJson<{ _embedded?: { leads?: AmoLead[] } }>(
       `/api/v4/leads?filter[pipeline_id]=${pipelineId}&limit=${limit}&page=${page}&with=tags`,
-      tokens,
     );
 
     const leads = data?._embedded?.leads || [];
@@ -426,7 +346,7 @@ async function fetchAllLeadsByPipeline(pipelineId: number, tokens: AmoTokens): P
   return all;
 }
 
-async function fetchAllOpenTasks(tokens: AmoTokens): Promise<AmoTask[]> {
+async function fetchAllOpenTasks(): Promise<AmoTask[]> {
   const all: AmoTask[] = [];
   const limit = 250;
   let page = 1;
@@ -438,7 +358,6 @@ async function fetchAllOpenTasks(tokens: AmoTokens): Promise<AmoTask[]> {
 
     const data = await amoFetchJson<{ _embedded?: { tasks?: AmoTask[] } }>(
       `/api/v4/tasks?filter[is_completed]=0&limit=${limit}&page=${page}`,
-      tokens,
     );
 
     const tasks = data?._embedded?.tasks || [];
@@ -583,9 +502,8 @@ export async function GET(request: NextRequest) {
     let rawData = bqRawData;
     let dataSource: 'bigquery' | 'crm-cache' = bqRawData ? 'bigquery' : 'crm-cache';
     if (!rawData) {
-      const tokens = await readTokensFile();
       const cachedRaw = await readRawCache();
-      rawData = cachedRaw || (await getOrFetchRawData(tokens));
+      rawData = cachedRaw || (await getOrFetchRawData());
       dataSource = 'crm-cache';
     }
 

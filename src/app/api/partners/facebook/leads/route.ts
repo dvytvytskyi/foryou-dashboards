@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+import fs from 'fs/promises';
+import path from 'path';
 import { amoFetch } from '@/lib/amo';
 
 type AmoLead = {
@@ -14,6 +16,28 @@ type AmoLead = {
 };
 
 const RE_PIPELINE_ID = '8696950';
+const CACHE_PATH = path.resolve(process.cwd(), 'data/cache/partners/facebook_leads.json');
+
+async function readCache() {
+  try {
+    return JSON.parse(await fs.readFile(CACHE_PATH, 'utf8')) as {
+      data: any[];
+      funnels: Array<{ id: number; name: string }>;
+      cachedAt: string;
+    };
+  } catch {
+    return null;
+  }
+}
+
+async function writeCache(data: any[], funnels: Array<{ id: number; name: string }>) {
+  await fs.mkdir(path.dirname(CACHE_PATH), { recursive: true });
+  await fs.writeFile(
+    CACHE_PATH,
+    JSON.stringify({ data, funnels, cachedAt: new Date().toISOString() }),
+    'utf8',
+  );
+}
 
 function isFacebookOmanLead(lead: AmoLead) {
   const tags = (lead._embedded?.tags || []).map((t) => (t.name || '').toLowerCase());
@@ -38,6 +62,16 @@ export async function GET() {
       if (res.status === 204) break;
       if (!res.ok) {
         const err = await res.text();
+        const cached = await readCache();
+        if (cached?.data?.length) {
+          return NextResponse.json({
+            success: true,
+            stale: true,
+            cachedAt: cached.cachedAt,
+            data: cached.data,
+            funnels: cached.funnels || [],
+          });
+        }
         return NextResponse.json({ success: false, error: err }, { status: res.status });
       }
 
@@ -79,12 +113,24 @@ export async function GET() {
         .filter((s: any) => Number.isFinite(s.id) && s.name && s.id !== 143); // Exclude "Closed" if needed
     }
 
+      await writeCache(mapped, funnels);
+
     return NextResponse.json({
       success: true,
       data: mapped,
       funnels
     });
   } catch (e: any) {
+    const cached = await readCache();
+    if (cached?.data?.length) {
+      return NextResponse.json({
+        success: true,
+        stale: true,
+        cachedAt: cached.cachedAt,
+        data: cached.data,
+        funnels: cached.funnels || [],
+      });
+    }
     return NextResponse.json({ success: false, error: e.message }, { status: 500 });
   }
 }

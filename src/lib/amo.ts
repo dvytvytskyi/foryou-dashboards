@@ -1,13 +1,22 @@
 import fs from 'fs';
 import path from 'path';
+import { getPostgresPool, isPostgresConfigured } from '@/lib/postgres';
 
 const TOKENS_PATH = path.join(process.cwd(), 'secrets/amo_tokens.json');
+const TOKEN_PROVIDER = 'amo';
+const REFRESH_SKEW_SECONDS = Number(process.env.AMO_REFRESH_SKEW_SECONDS || 600);
 
 type AmoTokens = {
   access_token?: string;
   refresh_token?: string;
+  expires_in?: number;
+  server_time?: number;
+  token_type?: string;
   [key: string]: unknown;
 };
+
+let ensureTablePromise: Promise<void> | null = null;
+let inProcessRefreshPromise: Promise<AmoTokens> | null = null;
 
 function parseJson(value: string): any | null {
   try {
@@ -17,31 +26,114 @@ function parseJson(value: string): any | null {
   }
 }
 
+function parseJwtPayload(token?: string): Record<string, unknown> | null {
+  if (!token) return null;
+  const parts = token.split('.');
+  if (parts.length < 2) return null;
+  try {
+    return JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8')) as Record<string, unknown>;
+  } catch {
+    return null;
+  }
+}
+
+function tokenExpiresAt(tokens: AmoTokens): number | null {
+  const payload = parseJwtPayload(tokens.access_token);
+  const exp = Number(payload?.exp || 0);
+  if (Number.isFinite(exp) && exp > 0) return exp;
+
+  const serverTime = Number(tokens.server_time || 0);
+  const expiresIn = Number(tokens.expires_in || 0);
+  if (serverTime > 0 && expiresIn > 0) return serverTime + expiresIn;
+
+  return null;
+}
+
+function shouldRefresh(tokens: AmoTokens, force: boolean): boolean {
+  if (force) return true;
+  if (!tokens.access_token) return true;
+  const exp = tokenExpiresAt(tokens);
+  if (!exp) return true;
+  const now = Math.floor(Date.now() / 1000);
+  return exp - now <= REFRESH_SKEW_SECONDS;
+}
+
 export function getAmoDomain(): string {
   const raw = process.env.AMO_DOMAIN || 'reforyou.amocrm.ru';
   return raw.replace(/^https?:\/\//i, '').replace(/\/+$/g, '');
 }
 
+async function ensureTokenTable() {
+  if (!isPostgresConfigured()) return;
+  if (ensureTablePromise) return ensureTablePromise;
+
+  ensureTablePromise = getPostgresPool().query(`
+    CREATE TABLE IF NOT EXISTS integration_tokens (
+      provider TEXT PRIMARY KEY,
+      tokens JSONB NOT NULL,
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `).then(() => undefined);
+
+  return ensureTablePromise;
+}
+
+function readTokensFromFile(): AmoTokens {
+  const fileJson = fs.readFileSync(TOKENS_PATH, 'utf8');
+  const parsedFile = parseJson(fileJson);
+  if (!parsedFile || typeof parsedFile !== 'object') {
+    throw new Error('Invalid JSON structure in secrets/amo_tokens.json');
+  }
+  return parsedFile;
+}
+
+function readTokensFromEnv(): AmoTokens | null {
+  const envJson = process.env.AMO_TOKENS_JSON;
+  if (!envJson) return null;
+  const parsed = parseJson(envJson);
+  if (!parsed || typeof parsed !== 'object') {
+    console.error('[AMO] Invalid AMO_TOKENS_JSON in environment');
+    return null;
+  }
+  return parsed;
+}
+
+async function readTokensFromPostgres(): Promise<AmoTokens | null> {
+  if (!isPostgresConfigured()) return null;
+  await ensureTokenTable();
+  const res = await getPostgresPool().query<{ tokens: AmoTokens }>(
+    `SELECT tokens FROM integration_tokens WHERE provider = $1 LIMIT 1`,
+    [TOKEN_PROVIDER],
+  );
+  return res.rows[0]?.tokens || null;
+}
+
+async function writeTokensToPostgres(tokens: AmoTokens): Promise<void> {
+  if (!isPostgresConfigured()) return;
+  await ensureTokenTable();
+  await getPostgresPool().query(
+    `
+      INSERT INTO integration_tokens(provider, tokens, updated_at)
+      VALUES ($1, $2::jsonb, NOW())
+      ON CONFLICT (provider)
+      DO UPDATE SET tokens = EXCLUDED.tokens, updated_at = NOW()
+    `,
+    [TOKEN_PROVIDER, JSON.stringify(tokens)],
+  );
+}
+
 export function readAmoTokens(): { tokens: AmoTokens; fromEnv: boolean } {
   try {
-    const fileJson = fs.readFileSync(TOKENS_PATH, 'utf8');
-    const parsedFile = parseJson(fileJson);
-    if (!parsedFile || typeof parsedFile !== 'object') {
-      throw new Error('Invalid JSON structure in secrets/amo_tokens.json');
-    }
+    const parsedFile = readTokensFromFile();
     if (!parsedFile.access_token) {
       console.warn('[AMO] Warning: access_token missing in file tokens');
     }
     return { tokens: parsedFile, fromEnv: false };
   } catch (err: any) {
-    const envJson = process.env.AMO_TOKENS_JSON;
-    if (envJson) {
-      const parsed = parseJson(envJson);
-      if (parsed && typeof parsed === 'object') {
-        console.warn('[AMO] Falling back to AMO_TOKENS_JSON from environment');
-        return { tokens: parsed, fromEnv: true };
-      }
-      console.error('[AMO] Invalid AMO_TOKENS_JSON in environment');
+    const parsed = readTokensFromEnv();
+    if (parsed) {
+      console.warn('[AMO] Falling back to AMO_TOKENS_JSON from environment');
+      return { tokens: parsed, fromEnv: true };
     }
 
     throw new Error(`[AMO] Failed to read tokens: ${err.message}. Path: ${TOKENS_PATH}`);
@@ -49,11 +141,24 @@ export function readAmoTokens(): { tokens: AmoTokens; fromEnv: boolean } {
 }
 
 function persistTokensIfFile(tokens: AmoTokens, fromEnv: boolean) {
-  if (fromEnv) return;
-  fs.writeFileSync(TOKENS_PATH, JSON.stringify(tokens, null, 2));
+  if (fromEnv && !fs.existsSync(TOKENS_PATH)) return;
+  try {
+    fs.writeFileSync(TOKENS_PATH, JSON.stringify(tokens, null, 2));
+  } catch (err: any) {
+    console.warn(`[AMO] Cannot persist tokens to file (${TOKENS_PATH}): ${err.message}`);
+  }
 }
 
-async function refreshAmoTokens(currentTokens: AmoTokens, fromEnv: boolean): Promise<AmoTokens | null> {
+async function persistTokens(tokens: AmoTokens, fromEnv: boolean) {
+  await writeTokensToPostgres(tokens);
+  persistTokensIfFile(tokens, fromEnv);
+}
+
+async function refreshAmoTokens(
+  currentTokens: AmoTokens,
+  fromEnv: boolean,
+  options?: { persist?: boolean },
+): Promise<AmoTokens | null> {
   const clientId = process.env.AMO_CLIENT_ID;
   const clientSecret = process.env.AMO_CLIENT_SECRET;
   const redirectUri = process.env.AMO_REDIRECT_URI;
@@ -90,16 +195,108 @@ async function refreshAmoTokens(currentTokens: AmoTokens, fromEnv: boolean): Pro
 
   const refreshed = await res.json();
   console.log('[AMO] Token refreshed successfully');
-  const merged = { ...currentTokens, ...refreshed };
-  persistTokensIfFile(merged, fromEnv);
+  const merged = {
+    ...currentTokens,
+    ...refreshed,
+    server_time: Math.floor(Date.now() / 1000),
+  };
+  if (options?.persist !== false) {
+    await persistTokens(merged, fromEnv);
+  }
   return merged;
 }
 
+async function readTokensPreferDb(): Promise<{ tokens: AmoTokens; fromEnv: boolean }> {
+  const dbTokens = await readTokensFromPostgres();
+  if (dbTokens && typeof dbTokens === 'object') {
+    return { tokens: dbTokens, fromEnv: false };
+  }
+
+  const fallback = readAmoTokens();
+  if (isPostgresConfigured()) {
+    await writeTokensToPostgres(fallback.tokens);
+  }
+  return fallback;
+}
+
+async function refreshWithDbLock(forceRefresh: boolean): Promise<AmoTokens> {
+  if (!isPostgresConfigured()) {
+    const current = readAmoTokens();
+    if (!shouldRefresh(current.tokens, forceRefresh)) return current.tokens;
+    const refreshed = await refreshAmoTokens(current.tokens, current.fromEnv);
+    if (!refreshed) throw new Error('[AMO] Failed to refresh token');
+    return refreshed;
+  }
+
+  await ensureTokenTable();
+  const pool = getPostgresPool();
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    await client.query('SELECT pg_advisory_xact_lock(hashtext($1))', [`${TOKEN_PROVIDER}_token_lock`]);
+
+    let row = await client.query<{ tokens: AmoTokens }>(
+      `SELECT tokens FROM integration_tokens WHERE provider = $1 FOR UPDATE`,
+      [TOKEN_PROVIDER],
+    );
+
+    if (!row.rows[0]) {
+      const fallback = readAmoTokens();
+      await client.query(
+        `INSERT INTO integration_tokens(provider, tokens, updated_at) VALUES ($1, $2::jsonb, NOW())`,
+        [TOKEN_PROVIDER, JSON.stringify(fallback.tokens)],
+      );
+      row = await client.query<{ tokens: AmoTokens }>(
+        `SELECT tokens FROM integration_tokens WHERE provider = $1 FOR UPDATE`,
+        [TOKEN_PROVIDER],
+      );
+    }
+
+    const currentTokens = row.rows[0].tokens;
+    if (!shouldRefresh(currentTokens, forceRefresh)) {
+      await client.query('COMMIT');
+      return currentTokens;
+    }
+
+    const refreshed = await refreshAmoTokens(currentTokens, false, { persist: false });
+    if (!refreshed) {
+      throw new Error('[AMO] Refresh returned empty token set');
+    }
+
+    await client.query(
+      `UPDATE integration_tokens SET tokens = $2::jsonb, updated_at = NOW() WHERE provider = $1`,
+      [TOKEN_PROVIDER, JSON.stringify(refreshed)],
+    );
+    await client.query('COMMIT');
+    return refreshed;
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
+async function getValidTokens(forceRefresh: boolean): Promise<AmoTokens> {
+  const current = await readTokensPreferDb();
+  if (!shouldRefresh(current.tokens, forceRefresh)) {
+    return current.tokens;
+  }
+
+  if (!inProcessRefreshPromise) {
+    inProcessRefreshPromise = refreshWithDbLock(forceRefresh).finally(() => {
+      inProcessRefreshPromise = null;
+    });
+  }
+  return inProcessRefreshPromise;
+}
+
 export async function amoFetch(pathname: string, init?: RequestInit): Promise<Response> {
-  const { tokens, fromEnv } = readAmoTokens();
+  const pathOnly = pathname.startsWith('/') ? pathname : `/${pathname}`;
+  const tokens = await getValidTokens(false);
 
   const doFetch = (accessToken?: string) =>
-    fetch(`https://${getAmoDomain()}${pathname}`, {
+    fetch(`https://${getAmoDomain()}${pathOnly}`, {
       ...init,
       headers: {
         ...(init?.headers || {}),
@@ -117,7 +314,7 @@ export async function amoFetch(pathname: string, init?: RequestInit): Promise<Re
   }
 
   console.warn(`[AMO] Got 401 on ${pathname}, attempting token refresh...`);
-  const refreshed = await refreshAmoTokens(tokens, fromEnv);
+  const refreshed = await getValidTokens(true);
   
   if (!refreshed?.access_token) {
     console.error('[AMO] Token refresh failed, returning 401 response');
@@ -127,4 +324,16 @@ export async function amoFetch(pathname: string, init?: RequestInit): Promise<Re
   console.log('[AMO] Retrying request with refreshed token');
   res = await doFetch(refreshed.access_token);
   return res;
+}
+
+export async function amoFetchJson<T>(pathname: string, init?: RequestInit): Promise<T> {
+  const res = await amoFetch(pathname, init);
+  if (res.status === 204) {
+    return {} as T;
+  }
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`[AMO] Request failed ${pathname}: ${res.status} ${err}`);
+  }
+  return (await res.json()) as T;
 }
