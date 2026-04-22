@@ -1,0 +1,111 @@
+name: Check Lead Notes
+
+on:
+  workflow_dispatch:
+    inputs:
+      lead_id:
+        description: 'Lead ID to check'
+        required: false
+        default: '45399843'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Create secrets directory
+        run: mkdir -p secrets
+
+      - name: Save AMO Tokens
+        run: echo '${{ secrets.AMO_TOKENS_JSON }}' > secrets/amo_tokens.json
+
+      - name: Check Lead Notes
+        run: |
+          node - << 'EOF'
+          const fs = require('fs');
+          const tokens = JSON.parse(fs.readFileSync('secrets/amo_tokens.json', 'utf8'));
+          const leadId = '${{ github.event.inputs.lead_id }}' || '45399843';
+          
+          (async () => {
+            console.log(`\n=== Checking Lead #${leadId} ===\n`);
+            
+            // Check accounts first
+            let res = await fetch('https://reforyou.amocrm.ru/api/v4/account', {
+              headers: { 'Authorization': `Bearer ${tokens.access_token}` }
+            });
+            console.log('✓ Auth status:', res.status);
+            
+            if (!res.ok) {
+              console.log('✗ Auth failed!');
+              process.exit(1);
+            }
+            
+            // Get lead info
+            res = await fetch(`https://reforyou.amocrm.ru/api/v4/leads/${leadId}`, {
+              headers: { 'Authorization': `Bearer ${tokens.access_token}` }
+            });
+            
+            if (!res.ok) {
+              console.log('✗ Lead not found');
+              process.exit(1);
+            }
+            
+            const lead = await res.json();
+            console.log(`Lead: ${lead.name}`);
+            console.log(`Created: ${new Date(lead.created_at * 1000).toISOString()}\n`);
+            
+            // Get notes
+            res = await fetch(`https://reforyou.amocrm.ru/api/v4/leads/${leadId}/notes?limit=100`, {
+              headers: { 'Authorization': `Bearer ${tokens.access_token}` }
+            });
+            
+            const notesData = await res.json();
+            const notes = notesData._embedded?.notes || [];
+            
+            console.log(`📝 Total Notes: ${notes.length}`);
+            
+            if (notes.length === 0) {
+              console.log('No notes found.');
+              process.exit(0);
+            }
+            
+            // Group by type
+            const typeMap = {};
+            notes.forEach(n => {
+              if (!typeMap[n.note_type]) typeMap[n.note_type] = [];
+              typeMap[n.note_type].push(n);
+            });
+            
+            console.log('\n📊 Note Types:');
+            Object.entries(typeMap).forEach(([type, typeNotes]) => {
+              console.log(`\n  ${type}: ${typeNotes.length}`);
+              typeNotes.slice(0, 2).forEach(n => {
+                const text = (n.params?.text || n.params?.body || '').substring(0, 100);
+                const date = new Date(n.created_at * 1000).toISOString().split('T')[0];
+                console.log(`    - [${date}] ${text || '(empty)'}`);
+              });
+              if (typeNotes.length > 2) {
+                console.log(`    ... and ${typeNotes.length - 2} more`);
+              }
+            });
+            
+            // If there are wazzup notes, show their structure
+            const wazzupNotes = notes.filter(n => 
+              n.note_type?.toLowerCase().includes('wazzup') || 
+              n.note_type?.toLowerCase().includes('whatsapp') ||
+              n.note_type?.toLowerCase().includes('message')
+            );
+            
+            if (wazzupNotes.length > 0) {
+              console.log(`\n\n💬 Wazzup/WhatsApp Notes (${wazzupNotes.length}):`);
+              console.log(JSON.stringify(wazzupNotes[0], null, 2));
+            }
+          })().catch(console.error);
+          EOF
