@@ -1,7 +1,37 @@
 import fs from 'fs';
 
-const tokens = JSON.parse(fs.readFileSync('secrets/amo_tokens.json', 'utf8'));
+console.log('📂 Reading token file...');
+let tokenContent;
+try {
+  tokenContent = fs.readFileSync('secrets/amo_tokens.json', 'utf8');
+  console.log('✓ File read, size:', tokenContent.length);
+} catch (e) {
+  console.error('✗ Failed to read token file:', e.message);
+  process.exit(1);
+}
+
+let tokens;
+try {
+  tokens = JSON.parse(tokenContent);
+  console.log('✓ JSON parsed successfully');
+} catch (e) {
+  console.error('✗ Failed to parse JSON:', e.message);
+  console.error('Content preview:', tokenContent.substring(0, 200));
+  process.exit(1);
+}
+
 const leadId = process.argv[2] || '45399843';
+
+console.log('\n🔍 Token details:');
+console.log('  - access_token exists:', !!tokens.access_token);
+console.log('  - token type:', tokens.token_type);
+console.log('  - expires_in:', tokens.expires_in);
+
+if (!tokens.access_token) {
+  console.error('✗ No access_token in parsed JSON!');
+  console.error('Available keys:', Object.keys(tokens));
+  process.exit(1);
+}
 
 (async () => {
   console.log(`\n=== Checking Lead #${leadId} ===\n`);

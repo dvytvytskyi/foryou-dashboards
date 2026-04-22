@@ -24,7 +24,16 @@ jobs:
         run: mkdir -p secrets
 
       - name: Save AMO Tokens
-        run: echo '${{ secrets.AMO_TOKENS_JSON }}' > secrets/amo_tokens.json
+        run: |
+          mkdir -p secrets
+          cat > secrets/amo_tokens.json << 'EOFTOKEN'
+          ${{ secrets.AMO_TOKENS_JSON }}
+          EOFTOKEN
+          
+          # Verify token was saved correctly
+          echo "✓ Token file size: $(wc -c < secrets/amo_tokens.json) bytes"
+          echo "✓ Can parse JSON:"
+          jq empty secrets/amo_tokens.json && echo "  JSON is valid" || echo "  ✗ JSON is INVALID"
 
       - name: Check Lead Notes
         run: node scripts/ci/check-lead-notes.mjs ${{ github.event.inputs.lead_id }}
