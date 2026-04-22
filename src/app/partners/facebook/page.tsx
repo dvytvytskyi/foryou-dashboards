@@ -32,6 +32,7 @@ interface Lead {
   status_id: number;
   created_at: number;
   responsible_user_id: number;
+  phone?: string | null;
   tags: string[];
 }
 
@@ -87,6 +88,7 @@ export default function FacebookKanban() {
       hideTable={true}
       hideSourceFilter={true}
       hideFilters={true}
+      hideSidebar={true}
     >
       <div className={styles.kanbanWrapper}>
         {loading && safeColumns.length === 0 ? (
@@ -148,7 +150,7 @@ export default function FacebookKanban() {
 
                         <div className={styles.cardFooter}>
                           <div className={styles.cardPhone}>
-                            +971 55 805 0018
+                            {lead.phone || 'Без номера'}
                           </div>
                           <div className={styles.sourceBadge}>Facebook</div>
                         </div>

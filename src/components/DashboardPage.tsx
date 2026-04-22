@@ -319,6 +319,7 @@ export default function DashboardPage({
   hideTotal = false,
   hideTable = false,
   hideFilters = false,
+  hideSidebar = false,
   hideCurrency = false,
   customFilterContent = null,
   customColumns,
@@ -350,6 +351,7 @@ export default function DashboardPage({
   hideTotal?: boolean,
   hideTable?: boolean,
   hideFilters?: boolean,
+  hideSidebar?: boolean,
   hideCurrency?: boolean,
   customFilterContent?: React.ReactNode,
   customColumns?: any[],
@@ -1244,14 +1246,16 @@ export default function DashboardPage({
   return (
     <div className={styles.page} data-theme={themeMode}>
       <div className={styles.layout}>
-        <Sidebar 
-          sections={filteredSidebarSections}
-          user={user}
-          onLogout={async () => {
-              await fetch('/api/auth/logout', { method: 'POST' });
-              window.location.href = '/login';
-          }}
-        />
+        {!hideSidebar && (
+          <Sidebar 
+            sections={filteredSidebarSections}
+            user={user}
+            onLogout={async () => {
+                await fetch('/api/auth/logout', { method: 'POST' });
+                window.location.href = '/login';
+            }}
+          />
+        )}
 
         {dashboardContent}
       </div>

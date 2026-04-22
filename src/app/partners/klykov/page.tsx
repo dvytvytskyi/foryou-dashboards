@@ -45,6 +45,7 @@ interface Lead {
   status_id: number;
   created_at: number;
   responsible_user_id: number;
+  phone?: string | null;
   tags: string[];
 }
 
@@ -106,6 +107,7 @@ export default function KlykovKanban() {
       hideTable={true}
       hideSourceFilter={true}
       hideFilters={true}
+      hideSidebar={true}
     >
       <div className={styles.kanbanWrapper}>
         {COLUMNS.map(col => {
@@ -161,7 +163,7 @@ export default function KlykovKanban() {
 
                       <div className={styles.cardFooter}>
                         <div className={styles.cardPhone}>
-                          +971 55 805 0018
+                          {lead.phone || 'Без номера'}
                         </div>
                         <div className={styles.sourceBadge}>Klykov</div>
                       </div>

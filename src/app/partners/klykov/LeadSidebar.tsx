@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from 'react';
 import styles from './sidebar.module.css';
-import { X, User, MessageSquare, Info, Building2, UserCircle, Image as ImageIcon } from 'lucide-react';
+import { X, User, MessageSquare, Info, Building2, UserCircle, Image as ImageIcon, MessageCircle } from 'lucide-react';
 
 interface FullLeadProps {
   leadId: number;
@@ -16,7 +16,10 @@ export default function LeadSidebar({ leadId, onClose, users }: FullLeadProps) {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'details' | 'history'>('details');
+  const [activeTab, setActiveTab] = useState<'details' | 'history' | 'wazzup'>('details');
+  const [wazzupUrl, setWazzupUrl] = useState<string | null>(null);
+  const [wazzupLoading, setWazzupLoading] = useState(false);
+  const [wazzupError, setWazzupError] = useState<string | null>(null);
 
   const fetchDetail = async () => {
     try {
@@ -60,7 +63,50 @@ export default function LeadSidebar({ leadId, onClose, users }: FullLeadProps) {
 
   useEffect(() => {
     fetchDetail();
+    // Reset wazzup tab when lead changes
+    setWazzupUrl(null);
+    setWazzupError(null);
   }, [leadId]);
+
+  const extractPhone = (contactsData: any[]) => {
+    for (const contact of contactsData || []) {
+      for (const cf of contact.custom_fields_values || []) {
+        if (cf.field_code === 'PHONE' || cf.field_name?.toLowerCase().includes('телефон') || cf.field_name?.toLowerCase().includes('phone')) {
+          const val = cf.values?.[0]?.value;
+          if (val) return String(val).replace(/\D/g, '');
+        }
+      }
+    }
+    return null;
+  };
+
+  const loadWazzupChat = async () => {
+    if (wazzupUrl) return; // already loaded
+    const phone = extractPhone(data?.contacts);
+    if (!phone) {
+      setWazzupError('Телефон не знайдено у контактах цього ліда');
+      return;
+    }
+    setWazzupLoading(true);
+    setWazzupError(null);
+    try {
+      const res = await fetch('/api/wazzup/iframe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone, userId: data?.lead?.responsible_user_id }),
+      });
+      const json = await res.json();
+      if (json.url) {
+        setWazzupUrl(json.url);
+      } else {
+        setWazzupError(json.error || 'Помилка Wazzup');
+      }
+    } catch (err: any) {
+      setWazzupError(err.message);
+    } finally {
+      setWazzupLoading(false);
+    }
+  };
 
   const hasPendingUpdate = data?.tasks?.some((t: any) => 
     t.text.includes('Обновить подрядчика') || t.text.includes('Оновити підрядника')
@@ -126,7 +172,14 @@ export default function LeadSidebar({ leadId, onClose, users }: FullLeadProps) {
             onClick={() => setActiveTab('history')}
           >
             <MessageSquare size={14} style={{marginRight: 6, display: 'inline', verticalAlign: 'middle'}} />
-            История / Чат
+            История
+          </div>
+          <div 
+            className={activeTab === 'wazzup' ? styles.tab + ' ' + styles.tabActive : styles.tab}
+            onClick={() => { setActiveTab('wazzup'); if (!wazzupUrl && !wazzupLoading && data) loadWazzupChat(); }}
+          >
+            <MessageCircle size={14} style={{marginRight: 6, display: 'inline', verticalAlign: 'middle', color: '#25D366'}} />
+            WhatsApp
           </div>
         </div>
 
@@ -325,6 +378,39 @@ export default function LeadSidebar({ leadId, onClose, users }: FullLeadProps) {
                       Debug: {data.files?.length || 0} files loaded for this lead.
                     </div>
                   </div>
+                </div>
+              )}
+
+              {activeTab === 'wazzup' && (
+                <div className={styles.tabPanel} style={{padding: 0, height: '100%'}}>
+                  {wazzupLoading && (
+                    <div className={styles.loading}>
+                      <div className={styles.skeletonContainer}>
+                        <div className={styles.skeletonSection} />
+                        <div className={styles.skeletonCard} />
+                      </div>
+                    </div>
+                  )}
+                  {wazzupError && (
+                    <div style={{padding: 20, color: 'var(--muted)', fontSize: 13, textAlign: 'center'}}>
+                      <MessageCircle size={32} style={{opacity: 0.3, marginBottom: 8, color: '#25D366'}} />
+                      <div>{wazzupError}</div>
+                    </div>
+                  )}
+                  {wazzupUrl && !wazzupLoading && (
+                    <iframe
+                      src={wazzupUrl}
+                      allow="microphone *; clipboard-write *"
+                      style={{width: '100%', height: '100%', border: 'none', minHeight: 500, borderRadius: 8}}
+                      title="Wazzup Chat"
+                    />
+                  )}
+                  {!wazzupUrl && !wazzupLoading && !wazzupError && data && (
+                    <div style={{padding: 20, color: 'var(--muted)', fontSize: 13, textAlign: 'center'}}>
+                      <MessageCircle size={32} style={{opacity: 0.3, marginBottom: 8, color: '#25D366'}} />
+                      <div>Клікніть на таб для завантаження чату</div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
