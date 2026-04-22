@@ -1,0 +1,44 @@
+name: Sync AMO Token from Production
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 135.181.201.185 >> ~/.ssh/known_hosts
+
+      - name: Fetch Token from Production
+        run: |
+          echo "📥 Fetching AMO token from production server..."
+          scp root@135.181.201.185:/root/foryou-dashboards-prod/secrets/amo_tokens.json ./prod_amo_tokens.json
+          echo "✓ Token fetched"
+          
+          echo ""
+          echo "📊 Token info:"
+          jq -c '{token_type, expires_in, server_time, access_token: (.access_token | .[0:30] + "...")}' ./prod_amo_tokens.json
+          
+          echo ""
+          echo "🧪 Testing token..."
+          ACCESS_TOKEN=$(jq -r '.access_token' ./prod_amo_tokens.json)
+          STATUS=$(curl -s -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $ACCESS_TOKEN" 'https://reforyou.amocrm.ru/api/v4/account')
+          echo "Auth test status: $STATUS"
+          
+          if [ "$STATUS" = "200" ]; then
+            echo "✅ Token is VALID!"
+            echo ""
+            echo "💾 Token content (to copy to local secrets/amo_tokens.json):"
+            cat ./prod_amo_tokens.json
+          else
+            echo "⚠️ Token returned status $STATUS - might not be valid"
+            cat ./prod_amo_tokens.json
+          fi
