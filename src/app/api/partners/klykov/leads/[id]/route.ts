@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { amoFetch } from '@/lib/amo';
 
+const KLYKOV_PIPELINE_ID = 10776450;
+
 async function safeJson(res: Response, fallback: any = {}) {
     if (!res.ok || res.status === 204) return fallback;
     try {
@@ -11,18 +13,62 @@ async function safeJson(res: Response, fallback: any = {}) {
     }
 }
 
+async function fetchAllLeadNotes(leadId: string) {
+    const out: any[] = [];
+    const limit = 250;
+
+    for (let page = 1; page <= 20; page++) {
+        const res = await amoFetch(`/api/v4/leads/${leadId}/notes?limit=${limit}&page=${page}`);
+        if (!res.ok || res.status === 204) break;
+
+        const data = await safeJson(res, { _embedded: { notes: [] } });
+        const notes = data?._embedded?.notes || [];
+        if (!notes.length) break;
+
+        out.push(...notes);
+        if (notes.length < limit) break;
+    }
+
+    return out;
+}
+
+async function fetchLeadTalks(leadId: string) {
+    const res = await amoFetch(`/api/v4/talks?filter[entity_id]=${leadId}&filter[entity_type]=lead&limit=250`);
+    if (!res.ok || res.status === 204) return [];
+    const data = await safeJson(res, { _embedded: { talks: [] } });
+    return data?._embedded?.talks || [];
+}
+
+async function fetchLeadChatEvents(leadId: string) {
+    const types = ['incoming_chat_message', 'outgoing_chat_message'];
+    const events: any[] = [];
+
+    for (const type of types) {
+        const res = await amoFetch(
+            `/api/v4/events?filter[type]=${type}&filter[entity]=lead&filter[entity_id]=${leadId}&limit=250`
+        );
+        if (!res.ok || res.status === 204) continue;
+        const data = await safeJson(res, { _embedded: { events: [] } });
+        events.push(...(data?._embedded?.events || []));
+    }
+
+    return events.sort((a, b) => Number(a.created_at || 0) - Number(b.created_at || 0));
+}
+
 export async function GET(_request: Request, props: { params: Promise<{ id: string }> }) {
     try {
         const params = await props.params;
         const leadId = params.id;
 
         // Phase 1: Fetch Lead and other main entity data in parallel
-        const [leadRes, filesRes, entityFilesRes, notesRes, tasksRes] = await Promise.all([
+        const [leadRes, filesRes, entityFilesRes, tasksRes, allNotes, talks, chatEvents] = await Promise.all([
             amoFetch(`/api/v4/leads/${leadId}?with=contacts,companies`),
             amoFetch(`/api/v4/files?filter[entity_type]=leads&filter[entity_id]=${leadId}`),
             amoFetch(`/api/v4/leads/${leadId}/files`),
-            amoFetch(`/api/v4/leads/${leadId}/notes`),
-            amoFetch(`/api/v4/tasks?filter[entity_id]=${leadId}&filter[entity_type]=leads&filter[is_completed]=0`)
+            amoFetch(`/api/v4/tasks?filter[entity_id]=${leadId}&filter[entity_type]=leads&filter[is_completed]=0`),
+            fetchAllLeadNotes(leadId),
+            fetchLeadTalks(leadId),
+            fetchLeadChatEvents(leadId)
         ]);
 
         if (!leadRes.ok) {
@@ -31,12 +77,20 @@ export async function GET(_request: Request, props: { params: Promise<{ id: stri
         }
 
         const leadData = await leadRes.json();
+        if (Number(leadData?.pipeline_id) !== KLYKOV_PIPELINE_ID) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: `Lead ${leadId} is not in Klykov pipeline ${KLYKOV_PIPELINE_ID}`,
+                },
+                { status: 404 }
+            );
+        }
         
         // Parse the rest in parallel
-        const [filesData, entityFilesData, notesData, tasksData] = await Promise.all([
+        const [filesData, entityFilesData, tasksData] = await Promise.all([
             safeJson(filesRes, { _embedded: { files: [] } }),
             safeJson(entityFilesRes, { _embedded: { files: [] } }),
-            safeJson(notesRes, { _embedded: { notes: [] } }),
             safeJson(tasksRes, { _embedded: { tasks: [] } })
         ]);
 
@@ -68,7 +122,9 @@ export async function GET(_request: Request, props: { params: Promise<{ id: stri
                 companies: companiesDataArray.filter(Boolean),
                 files: allFiles,
                 tasks: tasksData._embedded?.tasks || [],
-                history: notesData._embedded?.notes || []
+                history: allNotes,
+                whatsappTalks: talks,
+                whatsappEvents: chatEvents
             }
         });
     } catch (error: any) {

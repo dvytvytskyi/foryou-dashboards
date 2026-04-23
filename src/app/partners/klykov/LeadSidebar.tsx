@@ -16,10 +16,10 @@ export default function LeadSidebar({ leadId, onClose, users }: FullLeadProps) {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [wazzupIframeUrl, setWazzupIframeUrl] = useState<string | null>(null);
+  const [wazzupIframeLoading, setWazzupIframeLoading] = useState(false);
+  const [wazzupIframeError, setWazzupIframeError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'details' | 'history' | 'wazzup'>('details');
-  const [wazzupUrl, setWazzupUrl] = useState<string | null>(null);
-  const [wazzupLoading, setWazzupLoading] = useState(false);
-  const [wazzupError, setWazzupError] = useState<string | null>(null);
 
   const fetchDetail = async () => {
     try {
@@ -63,50 +63,7 @@ export default function LeadSidebar({ leadId, onClose, users }: FullLeadProps) {
 
   useEffect(() => {
     fetchDetail();
-    // Reset wazzup tab when lead changes
-    setWazzupUrl(null);
-    setWazzupError(null);
   }, [leadId]);
-
-  const extractPhone = (contactsData: any[]) => {
-    for (const contact of contactsData || []) {
-      for (const cf of contact.custom_fields_values || []) {
-        if (cf.field_code === 'PHONE' || cf.field_name?.toLowerCase().includes('телефон') || cf.field_name?.toLowerCase().includes('phone')) {
-          const val = cf.values?.[0]?.value;
-          if (val) return String(val).replace(/\D/g, '');
-        }
-      }
-    }
-    return null;
-  };
-
-  const loadWazzupChat = async () => {
-    if (wazzupUrl) return; // already loaded
-    const phone = extractPhone(data?.contacts);
-    if (!phone) {
-      setWazzupError('Телефон не знайдено у контактах цього ліда');
-      return;
-    }
-    setWazzupLoading(true);
-    setWazzupError(null);
-    try {
-      const res = await fetch('/api/wazzup/iframe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone, userId: data?.lead?.responsible_user_id }),
-      });
-      const json = await res.json();
-      if (json.url) {
-        setWazzupUrl(json.url);
-      } else {
-        setWazzupError(json.error || 'Помилка Wazzup');
-      }
-    } catch (err: any) {
-      setWazzupError(err.message);
-    } finally {
-      setWazzupLoading(false);
-    }
-  };
 
   const hasPendingUpdate = data?.tasks?.some((t: any) => 
     t.text.includes('Обновить подрядчика') || t.text.includes('Оновити підрядника')
@@ -132,6 +89,86 @@ export default function LeadSidebar({ leadId, onClose, users }: FullLeadProps) {
     if (!url) return false;
     return /\.(jpg|jpeg|png|webp|gif)$/i.test(url);
   };
+
+  const isWhatsAppNote = (note: any) => {
+    const type = String(note?.note_type || '').toLowerCase();
+    if (type === 'attachment') return false;
+    const text = String(note?.params?.text || note?.params?.body || '').toLowerCase();
+    const service = String(note?.params?.service || '').toLowerCase();
+    const source = String(note?.params?.source || '').toLowerCase();
+    const channel = String(note?.params?.channel || '').toLowerCase();
+
+    const waRegex = /(whatsapp|wazzup|wa\.me|ватсап|вотсап)/i;
+    const knownChatTypes = ['message_cashier', 'incoming_chat_message', 'outgoing_chat_message'];
+
+    if (knownChatTypes.includes(type)) return true;
+    if (waRegex.test(service) || waRegex.test(source) || waRegex.test(channel) || waRegex.test(text)) return true;
+
+    // service_message is noisy (e.g. Google Drive), include only if WA markers exist
+    if (type === 'service_message') {
+      return waRegex.test(`${service} ${text} ${source} ${channel}`);
+    }
+
+    return false;
+  };
+
+  const whatsappNotes = (data?.history || []).filter(isWhatsAppNote);
+  const whatsappTalks = data?.whatsappTalks || [];
+  const whatsappEvents = data?.whatsappEvents || [];
+
+  const getLeadPhone = () => {
+    const contacts = data?.contacts || [];
+    for (const contact of contacts) {
+      for (const cf of contact?.custom_fields_values || []) {
+        const fieldCode = String(cf?.field_code || '').toUpperCase();
+        const fieldName = String(cf?.field_name || '').toLowerCase();
+        if (fieldCode === 'PHONE' || fieldName.includes('телефон') || fieldName.includes('phone')) {
+          const raw = String(cf?.values?.[0]?.value || '');
+          const normalized = raw.replace(/\D/g, '');
+          if (normalized) return normalized;
+        }
+      }
+    }
+    return null;
+  };
+
+  useEffect(() => {
+    const loadWazzupIframe = async () => {
+      if (!data || activeTab !== 'wazzup') return;
+      if (wazzupIframeUrl || wazzupIframeLoading) return;
+
+      const phone = getLeadPhone();
+      if (!phone) {
+        setWazzupIframeError('Не знайдено номер телефону у контакті');
+        return;
+      }
+
+      try {
+        setWazzupIframeLoading(true);
+        setWazzupIframeError(null);
+
+        const res = await fetch('/api/wazzup/iframe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone, userId: data?.lead?.responsible_user_id || 'dashboard-user' })
+        });
+
+        const json = await res.json();
+        if (!res.ok || !json?.url) {
+          setWazzupIframeError(json?.error || 'Не вдалося отримати URL чату Wazzup');
+          return;
+        }
+
+        setWazzupIframeUrl(json.url);
+      } catch (err: any) {
+        setWazzupIframeError(err?.message || 'Помилка завантаження Wazzup iframe');
+      } finally {
+        setWazzupIframeLoading(false);
+      }
+    };
+
+    loadWazzupIframe();
+  }, [activeTab, data, wazzupIframeLoading, wazzupIframeUrl]);
 
   if (!leadId) return null;
 
@@ -176,7 +213,7 @@ export default function LeadSidebar({ leadId, onClose, users }: FullLeadProps) {
           </div>
           <div 
             className={activeTab === 'wazzup' ? styles.tab + ' ' + styles.tabActive : styles.tab}
-            onClick={() => { setActiveTab('wazzup'); if (!wazzupUrl && !wazzupLoading && data) loadWazzupChat(); }}
+            onClick={() => setActiveTab('wazzup')}
           >
             <MessageCircle size={14} style={{marginRight: 6, display: 'inline', verticalAlign: 'middle', color: '#25D366'}} />
             WhatsApp
@@ -382,35 +419,98 @@ export default function LeadSidebar({ leadId, onClose, users }: FullLeadProps) {
               )}
 
               {activeTab === 'wazzup' && (
-                <div className={styles.tabPanel} style={{padding: 0, height: '100%'}}>
-                  {wazzupLoading && (
-                    <div className={styles.loading}>
-                      <div className={styles.skeletonContainer}>
-                        <div className={styles.skeletonSection} />
-                        <div className={styles.skeletonCard} />
+                <div className={styles.tabPanel}>
+                  <div className={styles.history}>
+                    {wazzupIframeLoading && (
+                      <div className={styles.system}>Завантаження Wazzup чату...</div>
+                    )}
+
+                    {wazzupIframeError && (
+                      <div className={styles.system}>{wazzupIframeError}</div>
+                    )}
+
+                    {wazzupIframeUrl && (
+                      <div style={{ marginBottom: 12 }}>
+                        <iframe
+                          src={wazzupIframeUrl}
+                          title="Wazzup Chat"
+                          style={{ width: '100%', height: '520px', border: '1px solid var(--line)', borderRadius: 10, background: '#fff' }}
+                          allow="clipboard-read; clipboard-write"
+                        />
                       </div>
-                    </div>
-                  )}
-                  {wazzupError && (
-                    <div style={{padding: 20, color: 'var(--muted)', fontSize: 13, textAlign: 'center'}}>
-                      <MessageCircle size={32} style={{opacity: 0.3, marginBottom: 8, color: '#25D366'}} />
-                      <div>{wazzupError}</div>
-                    </div>
-                  )}
-                  {wazzupUrl && !wazzupLoading && (
-                    <iframe
-                      src={wazzupUrl}
-                      allow="microphone *; clipboard-write *"
-                      style={{width: '100%', height: '100%', border: 'none', minHeight: 500, borderRadius: 8}}
-                      title="Wazzup Chat"
-                    />
-                  )}
-                  {!wazzupUrl && !wazzupLoading && !wazzupError && data && (
-                    <div style={{padding: 20, color: 'var(--muted)', fontSize: 13, textAlign: 'center'}}>
-                      <MessageCircle size={32} style={{opacity: 0.3, marginBottom: 8, color: '#25D366'}} />
-                      <div>Клікніть на таб для завантаження чату</div>
-                    </div>
-                  )}
+                    )}
+
+                    {whatsappNotes.length > 0 && (
+                      whatsappNotes.map((note: any) => {
+                        const text = note.params?.text || note.params?.body || '';
+
+                        return (
+                          <div key={note.id} className={styles.historyItem}>
+                            <React.Fragment>
+                              <div className={styles.avatar}>
+                                <MessageCircle size={16} />
+                              </div>
+                              <div className={styles.message}>
+                                <div className={styles.messageHeader}>
+                                  <span className={styles.author}>WhatsApp</span>
+                                  <span className={styles.time}>{formatDate(note.created_at)}</span>
+                                </div>
+                                {text ? <div className={styles.text}>{text}</div> : <div className={styles.system}>Порожнє сервісне повідомлення</div>}
+                              </div>
+                            </React.Fragment>
+                          </div>
+                        );
+                      }).reverse()
+                    )}
+
+                    {whatsappEvents.length > 0 && (
+                      whatsappEvents.map((ev: any) => {
+                        const evType = String(ev.type || '').toLowerCase();
+                        const isIncoming = evType.includes('incoming');
+                        return (
+                          <div key={ev.id} className={styles.historyItem}>
+                            <React.Fragment>
+                              <div className={styles.avatar}>
+                                <MessageCircle size={16} />
+                              </div>
+                              <div className={styles.message}>
+                                <div className={styles.messageHeader}>
+                                  <span className={styles.author}>{isIncoming ? 'WhatsApp • Вхідне' : 'WhatsApp • Вихідне'}</span>
+                                  <span className={styles.time}>{formatDate(ev.created_at)}</span>
+                                </div>
+                                <div className={styles.text}>Подія чату зафіксована в AMO, але текст повідомлення недоступний через API scope.</div>
+                              </div>
+                            </React.Fragment>
+                          </div>
+                        );
+                      }).reverse()
+                    )}
+
+                    {whatsappTalks.length > 0 && (
+                      <div style={{marginTop: 8}}>
+                        {whatsappTalks.map((talk: any) => (
+                          <div key={talk.talk_id} className={styles.historyItem}>
+                            <React.Fragment>
+                              <div className={styles.avatar}>
+                                <MessageCircle size={16} />
+                              </div>
+                              <div className={styles.message}>
+                                <div className={styles.messageHeader}>
+                                  <span className={styles.author}>WhatsApp бесіда #{talk.talk_id}</span>
+                                  <span className={styles.time}>{formatDate(talk.updated_at)}</span>
+                                </div>
+                                <div className={styles.text}>Джерело: {talk.origin || 'n/a'}. Статус: {talk.status || 'n/a'}.</div>
+                              </div>
+                            </React.Fragment>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {whatsappNotes.length === 0 && whatsappEvents.length === 0 && whatsappTalks.length === 0 && !wazzupIframeUrl && !wazzupIframeLoading && (
+                      <div className={styles.system}>WhatsApp повідомлень не знайдено</div>
+                    )}
+                  </div>
                 </div>
               )}
             </div>

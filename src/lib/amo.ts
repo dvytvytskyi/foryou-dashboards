@@ -5,6 +5,9 @@ import { getPostgresPool, isPostgresConfigured } from '@/lib/postgres';
 const TOKENS_PATH = path.join(process.cwd(), 'secrets/amo_tokens.json');
 const TOKEN_PROVIDER = 'amo';
 const REFRESH_SKEW_SECONDS = Number(process.env.AMO_REFRESH_SKEW_SECONDS || 600);
+const AMO_MAX_RPS = Math.max(1, Number(process.env.AMO_MAX_RPS || 3));
+const AMO_MIN_INTERVAL_MS = Math.ceil(1000 / AMO_MAX_RPS);
+const AMO_MAX_429_RETRIES = Math.max(0, Number(process.env.AMO_MAX_429_RETRIES || 4));
 
 type AmoTokens = {
   access_token?: string;
@@ -17,6 +20,48 @@ type AmoTokens = {
 
 let ensureTablePromise: Promise<void> | null = null;
 let inProcessRefreshPromise: Promise<AmoTokens> | null = null;
+let amoRequestChain: Promise<void> = Promise.resolve();
+let amoNextAllowedAtMs = 0;
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function parseRetryAfterMs(retryAfterHeader: string | null): number | null {
+  if (!retryAfterHeader) return null;
+
+  const seconds = Number(retryAfterHeader);
+  if (Number.isFinite(seconds) && seconds >= 0) {
+    return Math.ceil(seconds * 1000);
+  }
+
+  const dateTs = Date.parse(retryAfterHeader);
+  if (!Number.isNaN(dateTs)) {
+    const diff = dateTs - Date.now();
+    return diff > 0 ? diff : 0;
+  }
+
+  return null;
+}
+
+function enqueueAmoRequest<T>(task: () => Promise<T>): Promise<T> {
+  const run = async () => {
+    const now = Date.now();
+    const waitMs = Math.max(0, amoNextAllowedAtMs - now);
+    if (waitMs > 0) {
+      await sleep(waitMs);
+    }
+    amoNextAllowedAtMs = Date.now() + AMO_MIN_INTERVAL_MS;
+    return task();
+  };
+
+  const result = amoRequestChain.then(run, run);
+  amoRequestChain = result.then(
+    () => undefined,
+    () => undefined,
+  );
+  return result;
+}
 
 function parseJson(value: string): any | null {
   try {
@@ -329,14 +374,30 @@ export async function amoFetch(pathname: string, init?: RequestInit): Promise<Re
     });
   }
 
-  const doFetch = (accessToken?: string) =>
-    fetch(`https://${getAmoDomain()}${pathOnly}`, {
-      ...init,
-      headers: {
-        ...(init?.headers || {}),
-        Authorization: `Bearer ${accessToken || ''}`,
-      },
-    });
+  const doFetch = async (accessToken?: string) => {
+    let attempt = 0;
+    while (true) {
+      const res = await enqueueAmoRequest(() =>
+        fetch(`https://${getAmoDomain()}${pathOnly}`, {
+          ...init,
+          headers: {
+            ...(init?.headers || {}),
+            Authorization: `Bearer ${accessToken || ''}`,
+          },
+        }),
+      );
+
+      if (res.status !== 429 || attempt >= AMO_MAX_429_RETRIES) {
+        return res;
+      }
+
+      const retryAfterMs = parseRetryAfterMs(res.headers.get('retry-after'));
+      const backoffMs = retryAfterMs ?? Math.min(1500 * (attempt + 1), 8000);
+      console.warn(`[AMO] 429 on ${pathOnly}, retry ${attempt + 1}/${AMO_MAX_429_RETRIES} after ${backoffMs}ms`);
+      attempt += 1;
+      await sleep(backoffMs);
+    }
+  };
 
   let res = await doFetch(tokens.access_token);
   

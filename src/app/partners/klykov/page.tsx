@@ -54,6 +54,7 @@ export default function KlykovKanban() {
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [selectedLeadId, setSelectedLeadId] = useState<number | null>(null);
+  const [hideSidebarForCurrentUser, setHideSidebarForCurrentUser] = useState(true);
 
   useEffect(() => {
     fetchData();
@@ -62,6 +63,10 @@ export default function KlykovKanban() {
   const fetchData = async () => {
     try {
       setLoading(true);
+      const sessionRes = await fetch('/api/auth/session');
+      const sessionJson = await sessionRes.json();
+      setHideSidebarForCurrentUser(sessionJson?.user?.role !== 'admin');
+
       // Fetch Kanban leads
       const kanbanRes = await fetch('/api/partners/klykov/leads');
       const kanbanJson = await kanbanRes.json();
@@ -107,7 +112,7 @@ export default function KlykovKanban() {
       hideTable={true}
       hideSourceFilter={true}
       hideFilters={true}
-      hideSidebar={true}
+      hideSidebar={hideSidebarForCurrentUser}
     >
       <div className={styles.kanbanWrapper}>
         {COLUMNS.map(col => {

@@ -46,6 +46,7 @@ export default function FacebookKanban() {
   const [columns, setColumns] = useState<Column[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedLeadId, setSelectedLeadId] = useState<number | null>(null);
+  const [hideSidebarForCurrentUser, setHideSidebarForCurrentUser] = useState(true);
 
   useEffect(() => {
     fetchData();
@@ -54,6 +55,10 @@ export default function FacebookKanban() {
   const fetchData = async () => {
     try {
       setLoading(true);
+      const sessionRes = await fetch('/api/auth/session');
+      const sessionJson = await sessionRes.json();
+      setHideSidebarForCurrentUser(sessionJson?.user?.role !== 'admin');
+
       const res = await fetch('/api/partners/facebook/leads');
       const json = await res.json();
       if (json.success) {
@@ -88,7 +93,7 @@ export default function FacebookKanban() {
       hideTable={true}
       hideSourceFilter={true}
       hideFilters={true}
-      hideSidebar={true}
+      hideSidebar={hideSidebarForCurrentUser}
     >
       <div className={styles.kanbanWrapper}>
         {loading && safeColumns.length === 0 ? (
