@@ -232,7 +232,7 @@ export async function GET() {
       const statuses = pipeline?._embedded?.statuses || [];
       funnels = statuses
         .map((s: any) => ({ id: Number(s.id), name: String(s.name || '') }))
-        .filter((s: any) => Number.isFinite(s.id) && s.name && s.id !== 143); // Exclude "Closed" if needed
+        .filter((s: any) => Number.isFinite(s.id) && s.name);
     }
 
       await writeCache(mapped, funnels);

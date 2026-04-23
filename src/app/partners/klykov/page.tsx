@@ -16,6 +16,7 @@ const COLUMNS = [
   { id: 84853950, name: 'EOI / Чек' },
   { id: 84853954, name: 'Договор' },
   { id: 142, name: 'Оплачено' },
+  { id: 143, name: 'Закрито і нереалізовано' },
 ];
 
 const AMO_USERS: Record<number, string> = {
