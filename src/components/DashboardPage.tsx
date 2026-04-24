@@ -331,6 +331,8 @@ export default function DashboardPage({
   queryChannels,
   currency: externalCurrency,
   setCurrency: externalSetCurrency,
+  sidebarSections,
+  sidebarMinimal = false,
 }: { 
   extraContent?: React.ReactNode, 
   initialSourceFilter?: SourceFilter,
@@ -363,6 +365,8 @@ export default function DashboardPage({
   queryChannels?: string[];
   currency?: Currency;
   setCurrency?: (val: Currency) => void;
+  sidebarSections?: Array<{ title: string; items: Array<{ label: string; icon: any; href?: string }> }>;
+  sidebarMinimal?: boolean;
 }) {
   const activeColumns = useMemo(() => {
     const base = customColumns || MARKETING_COLUMNS;
@@ -470,6 +474,10 @@ export default function DashboardPage({
   }, [isNested]);
 
   const filteredSidebarSections = useMemo(() => {
+    if (sidebarSections && sidebarSections.length > 0) {
+      return sidebarSections;
+    }
+
     if (!user) return NAVIGATION_SECTIONS;
     
     // If partner, hide internal boards and force Partners group to go to their specific page
@@ -500,7 +508,7 @@ export default function DashboardPage({
     }
     
     return NAVIGATION_SECTIONS;
-  }, [user]);
+  }, [user, sidebarSections]);
 
   const suppressRowToggleRef = useRef(false);
   const channelResizeRef = useRef<{ startX: number; startWidth: number } | null>(null);
@@ -1250,6 +1258,7 @@ export default function DashboardPage({
           <Sidebar 
             sections={filteredSidebarSections}
             user={user}
+            minimalMode={sidebarMinimal}
             onLogout={async () => {
                 await fetch('/api/auth/logout', { method: 'POST' });
                 window.location.href = '/login';

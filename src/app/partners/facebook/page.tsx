@@ -1,9 +1,19 @@
 'use client';
 
 import React, { useEffect, useState, useMemo } from 'react';
+import { User as UserIcon } from 'lucide-react';
 import DashboardPage from '@/components/DashboardPage';
 import styles from './kanban.module.css';
 import LeadSidebar from './LeadSidebar';
+
+const PARTNER_MINIMAL_SIDEBAR = [
+  {
+    title: 'Партнеры',
+    items: [
+      { label: 'Klykov', icon: UserIcon, href: '/partners/klykov' },
+    ],
+  },
+];
 
 const AMO_USERS: Record<number, string> = {
   8615800: 'Alexey Klykov',
@@ -46,7 +56,6 @@ export default function FacebookKanban() {
   const [columns, setColumns] = useState<Column[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedLeadId, setSelectedLeadId] = useState<number | null>(null);
-  const [hideSidebarForCurrentUser, setHideSidebarForCurrentUser] = useState(true);
 
   useEffect(() => {
     fetchData();
@@ -55,10 +64,6 @@ export default function FacebookKanban() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const sessionRes = await fetch('/api/auth/session');
-      const sessionJson = await sessionRes.json();
-      setHideSidebarForCurrentUser(sessionJson?.user?.role !== 'admin');
-
       const res = await fetch('/api/partners/facebook/leads');
       const json = await res.json();
       if (json.success) {
@@ -93,7 +98,9 @@ export default function FacebookKanban() {
       hideTable={true}
       hideSourceFilter={true}
       hideFilters={true}
-      hideSidebar={hideSidebarForCurrentUser}
+      hideSidebar={false}
+      sidebarSections={PARTNER_MINIMAL_SIDEBAR}
+      sidebarMinimal={true}
     >
       <div className={styles.kanbanWrapper}>
         {loading && safeColumns.length === 0 ? (

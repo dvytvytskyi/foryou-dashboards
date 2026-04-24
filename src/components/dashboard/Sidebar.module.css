@@ -139,6 +139,10 @@
   gap: 20px;
 }
 
+.sidebarNavMinimal {
+  padding-top: 8px;
+}
+
 .sidebarSection {
   display: flex;
   flex-direction: column;

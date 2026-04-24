@@ -2,9 +2,19 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { User as UserIcon } from 'lucide-react';
 import DashboardPage from '@/components/DashboardPage';
 import styles from './kanban.module.css';
 import LeadSidebar from './LeadSidebar';
+
+const PARTNER_MINIMAL_SIDEBAR = [
+  {
+    title: 'Партнеры',
+    items: [
+      { label: 'Klykov', icon: UserIcon, href: '/partners/klykov' },
+    ],
+  },
+];
 
 const COLUMNS = [
   { id: 84853590, name: 'Заявка получена' },
@@ -55,7 +65,6 @@ export default function KlykovKanban() {
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [selectedLeadId, setSelectedLeadId] = useState<number | null>(null);
-  const [hideSidebarForCurrentUser, setHideSidebarForCurrentUser] = useState(true);
 
   useEffect(() => {
     fetchData();
@@ -64,10 +73,6 @@ export default function KlykovKanban() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const sessionRes = await fetch('/api/auth/session');
-      const sessionJson = await sessionRes.json();
-      setHideSidebarForCurrentUser(sessionJson?.user?.role !== 'admin');
-
       // Fetch Kanban leads
       const kanbanRes = await fetch('/api/partners/klykov/leads');
       const kanbanJson = await kanbanRes.json();
@@ -113,7 +118,9 @@ export default function KlykovKanban() {
       hideTable={true}
       hideSourceFilter={true}
       hideFilters={true}
-      hideSidebar={hideSidebarForCurrentUser}
+      hideSidebar={false}
+      sidebarSections={PARTNER_MINIMAL_SIDEBAR}
+      sidebarMinimal={true}
     >
       <div className={styles.kanbanWrapper}>
         {COLUMNS.map(col => {

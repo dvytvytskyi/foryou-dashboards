@@ -30,12 +30,14 @@ interface SidebarProps {
   sections: SidebarSection[];
   onLogout?: () => void;
   user?: any;
+  minimalMode?: boolean;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
   sections,
   onLogout,
-  user
+  user,
+  minimalMode = false,
 }) => {
   const [searchTerm, setSearchTerm] = React.useState('');
 
@@ -72,27 +74,30 @@ const Sidebar: React.FC<SidebarProps> = ({
         </div>
       </div>
 
-      {/* Search Bar */}
-      <div className={styles.sidebarSearch}>
-        <div className={styles.searchWrapper}>
-          <Search size={14} className={styles.searchIcon} />
-          <input 
-            type="text" 
-            placeholder="Search" 
-            className={styles.searchInput}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <span className={styles.searchShortcut}>⌘F</span>
+      {!minimalMode && (
+        <div className={styles.sidebarSearch}>
+          <div className={styles.searchWrapper}>
+            <Search size={14} className={styles.searchIcon} />
+            <input 
+              type="text" 
+              placeholder="Search" 
+              className={styles.searchInput}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <span className={styles.searchShortcut}>⌘F</span>
+          </div>
         </div>
-      </div>
+      )}
 
-      <nav className={styles.sidebarNav}>
+      <nav className={`${styles.sidebarNav} ${minimalMode ? styles.sidebarNavMinimal : ''}`}>
         {filteredSections.map((section) => (
           <div key={section.title} className={styles.sidebarSection}>
-            <div className={styles.sidebarSectionTitle}>
-              {section.title}
-            </div>
+            {!minimalMode && (
+              <div className={styles.sidebarSectionTitle}>
+                {section.title}
+              </div>
+            )}
             <div className={styles.sidebarItems}>
               {section.items.map((item) => {
                 const Icon = item.icon;
