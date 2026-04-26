@@ -99,8 +99,6 @@ export default function FacebookKanban() {
       hideSourceFilter={true}
       hideFilters={true}
       hideSidebar={false}
-      sidebarSections={PARTNER_MINIMAL_SIDEBAR}
-      sidebarMinimal={true}
     >
       <div className={styles.kanbanWrapper}>
         {loading && safeColumns.length === 0 ? (

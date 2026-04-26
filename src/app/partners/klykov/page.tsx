@@ -119,8 +119,6 @@ export default function KlykovKanban() {
       hideSourceFilter={true}
       hideFilters={true}
       hideSidebar={false}
-      sidebarSections={PARTNER_MINIMAL_SIDEBAR}
-      sidebarMinimal={true}
     >
       <div className={styles.kanbanWrapper}>
         {COLUMNS.map(col => {
