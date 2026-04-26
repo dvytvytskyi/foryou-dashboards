@@ -7,6 +7,15 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  serverExternalPackages: [
+    'pg',
+    'pg-pool',
+    'pg-native',
+    '@google-cloud/bigquery',
+    'googleapis',
+    'google-auth-library',
+    'exceljs',
+  ],
 };
 
 export default nextConfig;
