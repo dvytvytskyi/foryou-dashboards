@@ -169,7 +169,7 @@ export async function GET() {
       };
     });
 
-    await writeCache(mapped);
+    try { await writeCache(mapped); } catch {}
 
     return NextResponse.json({ success: true, data: mapped });
   } catch (e: any) {

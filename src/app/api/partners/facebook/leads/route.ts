@@ -235,7 +235,7 @@ export async function GET() {
         .filter((s: any) => Number.isFinite(s.id) && s.name);
     }
 
-      await writeCache(mapped, funnels);
+      try { await writeCache(mapped, funnels); } catch {}
 
     return NextResponse.json({
       success: true,

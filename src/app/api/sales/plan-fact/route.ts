@@ -278,8 +278,10 @@ async function readRawCache(): Promise<RawData | null> {
 }
 
 async function writeRawCache(data: RawData) {
-  await fs.mkdir(CACHE_DIR, { recursive: true });
-  await fs.writeFile(RAW_CACHE_FILE, JSON.stringify(data), 'utf8');
+  try {
+    await fs.mkdir(CACHE_DIR, { recursive: true });
+    await fs.writeFile(RAW_CACHE_FILE, JSON.stringify(data), 'utf8');
+  } catch {}
 }
 
 async function getOrFetchRawData(): Promise<RawData> {
