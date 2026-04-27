@@ -480,31 +480,27 @@ export default function DashboardPage({
 
     if (!user) return NAVIGATION_SECTIONS;
     
-    // If partner, hide internal boards and force Partners group to go to their specific page
+    // For partner users, show only their own partner page in sidebar.
     if (user.role === 'partner') {
-        const pId = user.partnerId || 'klykov';
-        return NAVIGATION_SECTIONS
-            .filter(section => section.title !== 'Developer' && section.title !== 'Отдел продаж' && section.title !== 'Маркетинг')
-            .map(section => {
-                if (section.title === 'Partners') {
-                    // For Klykov, ONLY Klykov
-                    if (pId === 'klykov') {
-                        return {
-                            ...section,
-                            items: section.items.filter(item => item.label === 'Klykov')
-                        };
-                    }
-                    // For Facebook, ONLY Facebook items
-                    if (pId === 'facebook') {
-                        return {
-                            ...section,
-                            items: section.items.filter(item => item.label === 'Facebook Oman')
-                        };
-                    }
-                }
-                return section;
-            })
-            .filter(section => section.items.length > 0);
+      const pId = user.partnerId || 'klykov';
+      const partnerHref = `/partners/${pId}`;
+
+      const partnerSection = NAVIGATION_SECTIONS.find(section =>
+        section.items.some(item => item.href?.startsWith('/partners/'))
+      );
+
+      const partnerItem = partnerSection?.items.find(item => item.href === partnerHref);
+
+      if (partnerSection && partnerItem) {
+        return [
+          {
+            ...partnerSection,
+            items: [partnerItem],
+          },
+        ];
+      }
+
+      return [];
     }
     
     return NAVIGATION_SECTIONS;
