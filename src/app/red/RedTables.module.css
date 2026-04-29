@@ -1,0 +1,126 @@
+.card {
+  margin-top: 8px;
+  margin-left: 32px;
+  margin-right: 32px;
+  background: var(--panel-2);
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardHeader {
+  padding: 16px 20px 8px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cardIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  opacity: 0.8;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--white-soft);
+  letter-spacing: -0.01em;
+}
+
+.cardBody {
+  padding: 0 12px 12px 12px;
+}
+
+.tableContainer {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.scroll {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead th {
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--muted);
+  padding: 14px 12px;
+  text-align: right;
+  white-space: nowrap;
+  min-width: 80px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  user-select: none;
+  cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease;
+}
+
+.table thead th:hover {
+  background: var(--row-hover) !important;
+  color: var(--white-soft);
+}
+
+.thLeft {
+  text-align: left !important;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  min-width: 220px;
+  background: var(--panel) !important;
+  box-shadow: 1px 0 0 var(--line);
+}
+
+.table tbody td {
+  border-bottom: 1px solid var(--line-soft);
+  border-right: 1px solid var(--line);
+  color: var(--table-body-text);
+  padding: 12px 12px;
+  text-align: right;
+  white-space: nowrap;
+  font-size: 13px;
+  min-width: 80px;
+}
+
+.tdLeft {
+  text-align: left !important;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--panel);
+  box-shadow: 1px 0 0 var(--line);
+  font-weight: 500;
+  color: var(--white-soft);
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.emptyRow td {
+  text-align: center !important;
+  color: var(--muted);
+  padding: 32px 12px;
+  font-size: 13px;
+}

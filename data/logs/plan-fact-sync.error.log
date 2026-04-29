@@ -1773,3 +1773,910 @@ FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check 
     at async Promise.all (index 1)
     at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
     at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:12277) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:17858) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 1)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+npm notice
+npm notice New minor version of npm available! 11.3.0 -> 11.13.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.13.0
+npm notice To update run: npm install -g npm@11.13.0
+npm notice
+(node:21527) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 1)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:22873) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 2)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:23643) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 2)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:28520) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:34490) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 2)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:42150) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 1)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:86674) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async Promise.all (index 0)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:10839) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 2)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:12104) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 2)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:17945) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 2)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:19588) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async Promise.all (index 0)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:21266) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:22674) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 1)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:23951) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 1)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:25408) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async Promise.all (index 0)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:28327) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async Promise.all (index 0)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:33904) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async Promise.all (index 0)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:38583) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async Promise.all (index 0)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:39948) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:42245) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 2)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:44209) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async Promise.all (index 0)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:44474) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async Promise.all (index 0)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:44737) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 1)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:45080) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 2)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:45359) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 2)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:45726) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 1)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:46136) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 1)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:46404) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:46743) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:47021) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:47442) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 1)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:47670) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 1)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:48144) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:48383) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 2)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:48719) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 2)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:49016) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:49447) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:49734) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async Promise.all (index 0)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:50068) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:50399) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 2)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:50729) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async Promise.all (index 0)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:51057) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 2)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:51435) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:51722) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: AmoCRM request failed (/api/v4/leads?filter[pipeline_id]=8696950&limit=250&page=1&with=tags): <html>
+<head><title>504 Gateway Time-out</title></head>
+<body>
+<center><h1>504 Gateway Time-out</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+    at amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:102:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 1)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:51972) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:52226) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 1)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:52447) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:52709) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:53015) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 1)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:53379) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:53860) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 1)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:54460) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:59915) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async Promise.all (index 0)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:81419) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:7603) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:43616) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 1)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:74810) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:95678) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 1)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:16727) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:31712) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async Promise.all (index 0)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:50276) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 2)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:63617) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:83100) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:17662) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 1)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:49122) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:74208) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 1)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:84705) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 1)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:95187) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:19928) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 2)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:30820) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:52737) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:71927) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:95763) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllLeadsByPipeline (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:113:18)
+    at async Promise.all (index 1)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:34693) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:67650) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)

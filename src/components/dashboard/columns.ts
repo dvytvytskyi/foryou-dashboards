@@ -38,7 +38,6 @@ export const RED_COLUMNS_MAIN: DashboardColumn[] = [
   { key: 'cost_per_deal', label: 'Cost Per Deal' },
   { key: 'revenue', label: 'Revenue' },
   { key: 'roi', label: 'ROI' },
-  { key: 'company_revenue', label: 'Company revenue' },
 ];
 
 export const RED_COLUMNS_GEO: DashboardColumn[] = [
