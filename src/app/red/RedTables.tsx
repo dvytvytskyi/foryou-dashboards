@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
-import { BarChart2 } from 'lucide-react';
+import React, { useMemo, useState } from 'react';
+import { BarChart2, ChevronDown, ChevronRight } from 'lucide-react';
 import styles from './RedTables.module.css';
 
 const MAIN_COLUMNS = [
@@ -24,18 +24,12 @@ const MAIN_COLUMNS = [
   { key: 'company_revenue', label: 'Company revenue' },
 ];
 
-const GEO_COLUMNS = [
-  { key: 'category', label: 'Категория' },
-  { key: 'leads', label: 'Leads' },
-  { key: 'no_answer_spam', label: 'No answer / Spam' },
-  { key: 'rate_answer', label: '% rate answer' },
-  { key: 'qualified_leads', label: 'Qualified Leads' },
-  { key: 'cr_ql', label: 'CR QL' },
-  { key: 'ql_actual', label: 'QL Actual' },
-  { key: 'meetings', label: 'Meetings' },
-  { key: 'deals', label: 'Deals' },
-  { key: 'revenue', label: 'Revenue' },
-];
+type GeoGroupItem = { label: string; leads: number };
+type RedGeoData = {
+  totalRedLeads: number;
+  countries: GeoGroupItem[];
+  phoneCodes: GeoGroupItem[];
+};
 
 interface RedTableProps {
   columns: { key: string; label: string }[];
@@ -106,13 +100,75 @@ export function RedMainTable({ rows = [] }: { rows?: Record<string, unknown>[] }
   );
 }
 
-export function RedGeoTable({ rows = [] }: { rows?: Record<string, unknown>[] }) {
+export function RedGeoTable({ data }: { data?: RedGeoData | null }) {
+  const [countriesOpen, setCountriesOpen] = useState(true);
+  const [phonesOpen, setPhonesOpen] = useState(true);
+
+  const countries = useMemo(() => data?.countries || [], [data]);
+  const phoneCodes = useMemo(() => data?.phoneCodes || [], [data]);
+  const total = Number(data?.totalRedLeads || 0);
+
   return (
-    <RedTable
-      columns={GEO_COLUMNS}
-      rows={rows}
-      title="География и телефоны"
-      firstKey="category"
-    />
+    <div className={styles.card}>
+      <div className={styles.cardHeader}>
+        <span className={styles.cardIcon}><BarChart2 size={15} /></span>
+        <h2 className={styles.cardTitle}>География и номера телефонов</h2>
+      </div>
+      <div className={styles.cardBody}>
+        <div className={styles.tableContainer}>
+          <div className={styles.scroll}>
+            <table className={styles.table}>
+              <thead>
+                <tr>
+                  <th className={styles.thLeft}>Категория</th>
+                  <th>Leads</th>
+                </tr>
+              </thead>
+              <tbody>
+                {!data ? (
+                  <tr className={styles.emptyRow}>
+                    <td colSpan={2}>Нет данных</td>
+                  </tr>
+                ) : (
+                  <>
+                    <tr>
+                      <td className={styles.tdLeft}>
+                        <button className={styles.geoToggle} type="button" onClick={() => setCountriesOpen((v) => !v)}>
+                          {countriesOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                          <span>Країни (по номерам)</span>
+                        </button>
+                      </td>
+                      <td>{total}</td>
+                    </tr>
+                    {countriesOpen && countries.map((item) => (
+                      <tr key={`country-${item.label}`}>
+                        <td className={styles.tdLeft}>{`  ${item.label.replace('Country: ', '')}`}</td>
+                        <td>{item.leads}</td>
+                      </tr>
+                    ))}
+
+                    <tr>
+                      <td className={styles.tdLeft}>
+                        <button className={styles.geoToggle} type="button" onClick={() => setPhonesOpen((v) => !v)}>
+                          {phonesOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                          <span>Номери телефонів (коди)</span>
+                        </button>
+                      </td>
+                      <td>{total}</td>
+                    </tr>
+                    {phonesOpen && phoneCodes.map((item) => (
+                      <tr key={`phone-${item.label}`}>
+                        <td className={styles.tdLeft}>{`  ${item.label.replace('Phone code: ', '')}`}</td>
+                        <td>{item.leads}</td>
+                      </tr>
+                    ))}
+                  </>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

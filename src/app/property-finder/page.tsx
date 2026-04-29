@@ -48,11 +48,16 @@ export default function PropertyFinderPage() {
   const [syncTheme, setSyncTheme] = useState<'light' | 'night' | null>(null);
   const [dateRange, setDateRange] = useState(() => {
     const today = new Date().toISOString().slice(0, 10);
-    return { startDate: '2024-01-01', endDate: today };
+    return { startDate: '2026-01-01', endDate: today };
   });
 
   const nestedPartnerApiUrl = useMemo(
     () => `/api/pf-listings?group=Partner&startDate=${encodeURIComponent(dateRange.startDate)}&endDate=${encodeURIComponent(dateRange.endDate)}`,
+    [dateRange.startDate, dateRange.endDate],
+  );
+
+  const ourApiUrl = useMemo(
+    () => `/api/pf-listings?group=Our&startDate=${encodeURIComponent(dateRange.startDate)}&endDate=${encodeURIComponent(dateRange.endDate)}`,
     [dateRange.startDate, dateRange.endDate],
   );
 
@@ -69,7 +74,7 @@ export default function PropertyFinderPage() {
       hideTotal={true}
       firstColumnLabel="Listings"
       customColumns={PF_COLUMNS}
-      apiUrl="/api/pf-listings?group=Our"
+      apiUrl={ourApiUrl}
       maxDrilldownLevel={3}
       initialExpanded={[]}
       tableMinWidth="100%"
@@ -86,6 +91,8 @@ export default function PropertyFinderPage() {
           isNested={true}
           hideFilters={true}
           hideTotal={true}
+          initialSourceFilter="all"
+          hideSourceFilter={true}
           firstColumnLabel="Listings"
           customColumns={PF_COLUMNS}
           apiUrl={nestedPartnerApiUrl}

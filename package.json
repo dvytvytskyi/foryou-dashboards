@@ -13,7 +13,8 @@
     "sync:pf:postgres": "node scripts/sync/sync_pf_to_postgres.mjs",
     "sync:pf:amo": "node scripts/sync/sync_pf_to_amo.mjs",
     "sync:sales:postgres": "node scripts/sync/sync_sales_excel_to_postgres.mjs",
-    "sync:pf:match:phone": "node scripts/kpi/create_pf_master_view.mjs"
+    "sync:pf:match:phone": "node scripts/kpi/create_pf_master_view.mjs",
+    "sync:pf:match:stats": "node scripts/sync/sync_pf_amo_match_stats.mjs"
   },
   "dependencies": {
     "@google-cloud/bigquery": "^8.1.1",

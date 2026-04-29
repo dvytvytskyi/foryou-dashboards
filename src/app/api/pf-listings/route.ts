@@ -1,22 +1,10 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
-import { BigQuery } from '@google-cloud/bigquery';
 import { isPostgresConfigured, queryPostgres } from '@/lib/postgres';
-import { CLOSED_DEAL_STATUS_IDS } from '@/lib/crmRules.js';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
-
-const bqCredentials = process.env.GOOGLE_AUTH_JSON 
-  ? JSON.parse(process.env.GOOGLE_AUTH_JSON)
-  : undefined;
-
-const bq = new BigQuery({
-  projectId: 'crypto-world-epta',
-  credentials: bqCredentials,
-  keyFilename: !bqCredentials ? path.resolve(process.cwd(), 'secrets/crypto-world-epta-2db29829d55d.json') : undefined
-});
 
 type ListingSnapshotRow = {
   listing_id: string;
@@ -29,8 +17,21 @@ type ListingSnapshotRow = {
   budget: number | string | null;
   budget_by_month: Record<string, number> | null;
   leads_count: number | string | null;
+  leads_by_month: Record<string, number> | null;
   source_updated_at: Date | string | null;
   payload: Record<string, any> | null;
+};
+
+type MatchStatsRow = {
+  category: string;
+  pf_leads: number | string;
+  matched_amo_leads: number | string;
+  spam_count: number | string;
+  qualified_count: number | string;
+  ql_actual_count: number | string;
+  meetings_count: number | string;
+  deals_count: number | string;
+  revenue_sum: number | string;
 };
 
 async function loadListingsFromFile() {
@@ -43,7 +44,7 @@ async function loadListingsFromPostgres(targetGroup: string | null) {
   const { rows } = await queryPostgres<ListingSnapshotRow>(
     `
       SELECT listing_id, reference, group_name, category, offering_type, title, status,
-             budget, budget_by_month, leads_count, source_updated_at, payload
+              budget, budget_by_month, leads_count, leads_by_month, source_updated_at, payload
       FROM pf_listings_snapshot
       WHERE ($1::text IS NULL OR group_name = $1)
     `,
@@ -61,13 +62,98 @@ async function loadListingsFromPostgres(targetGroup: string | null) {
     Budget: Number(row.budget || 0) || 0,
     BudgetByMonth: row.budget_by_month || {},
     LeadsPF: Number(row.leads_count || 0) || 0,
+    LeadsByMonth: row.leads_by_month || {},
     CreatedAt:
-      typeof row.source_updated_at === 'string'
-        ? row.source_updated_at
-        : row.source_updated_at instanceof Date
-          ? row.source_updated_at.toISOString()
-          : (row.payload?.createdAt ?? null),
+      (row.payload?.createdAt ??
+        (typeof row.source_updated_at === 'string'
+          ? row.source_updated_at
+          : row.source_updated_at instanceof Date
+            ? row.source_updated_at.toISOString()
+            : null)),
   }));
+}
+
+async function loadMatchStatsFromPostgres(startDate: string | null, endDate: string | null) {
+  let { rows } = await queryPostgres<MatchStatsRow>(
+    `
+      SELECT DISTINCT ON (category)
+        category,
+        pf_leads,
+        matched_amo_leads,
+        spam_count,
+        qualified_count,
+        ql_actual_count,
+        meetings_count,
+        deals_count,
+        revenue_sum
+      FROM pf_amo_match_stats
+      WHERE (
+        ($1::date IS NULL OR period_start <= $1::date)
+        AND ($2::date IS NULL OR period_end >= $2::date)
+      )
+      ORDER BY category, updated_at DESC
+    `,
+    [startDate, endDate],
+  );
+
+  if (!rows.length) {
+    const fallback = await queryPostgres<MatchStatsRow>(
+      `
+        SELECT DISTINCT ON (category)
+          category,
+          pf_leads,
+          matched_amo_leads,
+          spam_count,
+          qualified_count,
+          ql_actual_count,
+          meetings_count,
+          deals_count,
+          revenue_sum
+        FROM pf_amo_match_stats
+        ORDER BY category, updated_at DESC
+      `,
+      [],
+    );
+    rows = fallback.rows;
+  }
+
+  const byCategory: Record<string, {
+    matchRate: number;
+    spamRate: number;
+    qualifiedRate: number;
+    qlActualRate: number;
+    meetingsRate: number;
+    dealsRate: number;
+    revenuePerMatched: number;
+  }> = {};
+
+  for (const row of rows) {
+    const category =
+      row.category === 'Sell' || row.category === 'Rent' ||
+      row.category === 'Commercial Sell' || row.category === 'Commercial Rent'
+        ? row.category
+        : 'Other';
+    const pfLeads = Number(row.pf_leads || 0);
+    const matched = Number(row.matched_amo_leads || 0);
+    const spam = Number(row.spam_count || 0);
+    const qualified = Number(row.qualified_count || 0);
+    const qlActual = Number(row.ql_actual_count || 0);
+    const meetings = Number(row.meetings_count || 0);
+    const deals = Number(row.deals_count || 0);
+    const revenue = Number(row.revenue_sum || 0);
+
+    byCategory[category] = {
+      matchRate: pfLeads > 0 ? matched / pfLeads : 0,
+      spamRate: matched > 0 ? spam / matched : 0,
+      qualifiedRate: matched > 0 ? qualified / matched : 0,
+      qlActualRate: matched > 0 ? qlActual / matched : 0,
+      meetingsRate: matched > 0 ? meetings / matched : 0,
+      dealsRate: matched > 0 ? deals / matched : 0,
+      revenuePerMatched: matched > 0 ? revenue / matched : 0,
+    };
+  }
+
+  return byCategory;
 }
 
 export async function GET(request: Request) {
@@ -104,180 +190,44 @@ export async function GET(request: Request) {
       return normalized >= startDate && normalized <= endDate;
     };
 
-    const closedDealStatusSql = CLOSED_DEAL_STATUS_IDS.join(', ');
-
-    // Fetch CRM stats from BQ with date filtering
-    const dateFilter = (startDate && endDate) 
-      ? `AND created_at BETWEEN '${startDate}' AND '${endDate}'`
-      : '';
-    const pfMasterDateFilter = (startDate && endDate)
-      ? `AND pf_created_at BETWEEN '${startDate}' AND '${endDate}'`
-      : '';
-
-    const crmQuery = `
-      WITH matched AS (
-        SELECT 
-          listing_ref, 
-          pf_deal_type,
-          COUNTIF(crm_status_id = 143) as spam_count,
-          COUNTIF(crm_status_id IN (142, 70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586)) as qualified_count,
-          COUNTIF(crm_status_id IN (70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586)) as ql_actual_count,
-          COUNTIF(crm_status_id IN (142, 70457474, 70457478, 70457482, 70457486, 70757586)) as meetings_count,
-          COUNTIF(crm_status_id IN (${closedDealStatusSql})) as deals_count,
-          SUM(IF(crm_status_id IN (${closedDealStatusSql}), potential_value, 0)) as revenue_sum,
-          SUM(potential_value) as potential_revenue_sum,
-          COUNT(*) as matched_leads
-        FROM \`crypto-world-epta.foryou_analytics.pf_efficacy_master\`
-        WHERE 1=1 ${pfMasterDateFilter}
-        GROUP BY 1, 2
-      ),
-      totals AS (
-        SELECT 
-          COUNTIF(status_id = 143) as total_spam,
-          COUNTIF(status_id IN (142, 70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586)) as total_qualified,
-          COUNTIF(status_id IN (70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586)) as total_ql_actual,
-          COUNTIF(status_id IN (142, 70457474, 70457478, 70457482, 70457486, 70757586)) as total_meetings,
-          COUNTIF(status_id IN (${closedDealStatusSql})) as total_deals,
-          SUM(IF(status_id IN (${closedDealStatusSql}), price, 0)) as total_revenue,
-          SUM(price) as total_potential_revenue,
-          COUNT(*) as total_pf_leads
-        FROM \`crypto-world-epta.foryou_analytics.amo_channel_leads_raw\`
-        WHERE source_label LIKE '%Property%' ${dateFilter}
-      )
-      SELECT * FROM matched CROSS JOIN totals
-    `;
-    const [bqRows] = await bq.query(crmQuery);
-    
-    // Maps for merging
-    const listingSpamMap: Record<string, number> = {};
-    const listingQualifiedMap: Record<string, number> = {};
-    const listingQLActualMap: Record<string, number> = {};
-    const listingMeetingsMap: Record<string, number> = {};
-    const listingDealsMap: Record<string, number> = {};
-    const listingRevenueMap: Record<string, number> = {};
-    const listingCompRevenueMap: Record<string, number> = {};
-
-    // Lookup for categories
-    const refToCategory: Record<string, string> = {};
-    rawData.forEach((l: any) => {
-      refToCategory[l.Reference] = l.Category;
-    });
-
-    let totalCrmSpam = bqRows[0]?.total_spam || 0;
-    let totalCrmQualified = bqRows[0]?.total_qualified || 0;
-    let totalCrmQLActual = bqRows[0]?.total_ql_actual || 0;
-    let totalCrmMeetings = bqRows[0]?.total_meetings || 0;
-    let totalCrmDeals = bqRows[0]?.total_deals || 0;
-    let totalCrmRevenue = bqRows[0]?.total_revenue || 0;
-    let totalCrmPfLeads = bqRows[0]?.total_pf_leads || 0;
-
-    let matchedSpamTotal = 0;
-    let matchedQualifiedTotal = 0;
-    let matchedQLActualTotal = 0;
-    let matchedMeetingsTotal = 0;
-    let matchedDealsTotal = 0;
-    let matchedRevenueTotal = 0;
-    let matchedLeadRowsTotal = 0;
-
-    bqRows.forEach((r: any) => {
-      const spamCount = Number(r.spam_count || 0);
-      const qualCount = Number(r.qualified_count || 0);
-      const qlActualCount = Number(r.ql_actual_count || 0);
-      const meetingsCount = Number(r.meetings_count || 0);
-      const dealsCount = Number(r.deals_count || 0);
-      const revenue = Number(r.revenue_sum || 0);
-
-      if (r.listing_ref && r.listing_ref !== '0') {
-        listingSpamMap[r.listing_ref] = (listingSpamMap[r.listing_ref] || 0) + spamCount;
-        listingQualifiedMap[r.listing_ref] = (listingQualifiedMap[r.listing_ref] || 0) + qualCount;
-        listingQLActualMap[r.listing_ref] = (listingQLActualMap[r.listing_ref] || 0) + qlActualCount;
-        listingMeetingsMap[r.listing_ref] = (listingMeetingsMap[r.listing_ref] || 0) + meetingsCount;
-        listingDealsMap[r.listing_ref] = (listingDealsMap[r.listing_ref] || 0) + dealsCount;
-        listingRevenueMap[r.listing_ref] = (listingRevenueMap[r.listing_ref] || 0) + (revenue || 0);
-        // Estimate company revenue as 2% of deal value
-        listingCompRevenueMap[r.listing_ref] = (listingCompRevenueMap[r.listing_ref] || 0) + (revenue * 0.02);
-        
-        matchedSpamTotal += spamCount;
-        matchedQualifiedTotal += qualCount;
-        matchedQLActualTotal += qlActualCount;
-        matchedMeetingsTotal += meetingsCount;
-        matchedDealsTotal += dealsCount;
-        matchedRevenueTotal += revenue;
-        matchedLeadRowsTotal += Number(r.matched_leads || 0);
-      }
-    });
-
-    const unattributedPfLeads = Math.max(0, totalCrmPfLeads - matchedLeadRowsTotal);
-    const unattributedSpam = Math.max(0, totalCrmSpam - matchedSpamTotal);
-    const unattributedQualified = Math.max(0, totalCrmQualified - matchedQualifiedTotal);
-    const unattributedQLActual = Math.max(0, totalCrmQLActual - matchedQLActualTotal);
-    const unattributedMeetings = Math.max(0, totalCrmMeetings - matchedMeetingsTotal);
-    const unattributedDeals = Math.max(0, totalCrmDeals - matchedDealsTotal);
-    const unattributedRevenue = Math.max(0, totalCrmRevenue - matchedRevenueTotal);
-    const unattributedCompRevenue = unattributedRevenue * 0.02;
-
     const formattedRows: any[] = [];
 
-    const normalizeRef = (ref: string) => {
-      if (!ref) return '';
-      const match = ref.match(/\d+$/);
-      return match ? match[0].replace(/^0+/, '') : ref;
-    };
-
-    const crmStats: any = {};
-    const crmStatsByRefAnyType: any = {};
-    bqRows.forEach((r: any) => {
-      if (r.listing_ref) {
-        const type = r.pf_deal_type === 'Sale' ? 'Sell' : r.pf_deal_type;
-        const normalizedRef = normalizeRef(r.listing_ref);
-        const key = `${normalizedRef}_${type}`;
-        crmStats[key] = r;
-
-        if (!crmStatsByRefAnyType[normalizedRef]) {
-          crmStatsByRefAnyType[normalizedRef] = {
-            matched_leads: 0,
-            spam_count: 0,
-            qualified_count: 0,
-            ql_actual_count: 0,
-            meetings_count: 0,
-            deals_count: 0,
-            revenue_sum: 0,
-          };
-        }
-
-        crmStatsByRefAnyType[normalizedRef].matched_leads += Number(r.matched_leads || 0);
-        crmStatsByRefAnyType[normalizedRef].spam_count += Number(r.spam_count || 0);
-        crmStatsByRefAnyType[normalizedRef].qualified_count += Number(r.qualified_count || 0);
-        crmStatsByRefAnyType[normalizedRef].ql_actual_count += Number(r.ql_actual_count || 0);
-        crmStatsByRefAnyType[normalizedRef].meetings_count += Number(r.meetings_count || 0);
-        crmStatsByRefAnyType[normalizedRef].deals_count += Number(r.deals_count || 0);
-        crmStatsByRefAnyType[normalizedRef].revenue_sum += Number(r.revenue_sum || 0);
+    let categoryStats: Record<string, any> = {};
+    if ((targetGroup === 'Our' || targetGroup === 'Partner') && isPostgresConfigured()) {
+      try {
+        categoryStats = await loadMatchStatsFromPostgres(startDate, endDate);
+      } catch (statsError) {
+        console.warn('PF match stats read failed, fallback to zero CRM metrics:', statsError);
       }
-    });
+    }
 
     const filteredData = targetGroup
       ? rawData.filter((l: any) => l.group === targetGroup)
       : rawData;
 
     filteredData.forEach((l: any) => {
-      const normRef = normalizeRef(l.Reference);
-      const exactStats = crmStats[`${normRef}_${l.Category}`] || null;
-      const fallbackOtherStats = l.Category === 'Other' && normRef ? crmStatsByRefAnyType[normRef] || null : null;
-      const stats = exactStats || fallbackOtherStats || {};
       const listingLeadsPf = Number(l.LeadsPF || 0);
-      const listingLeads = Number(stats.matched_leads || 0);
-      const listingSpam = Number(stats.spam_count || 0);
-      const listingQualified = Number(stats.qualified_count || 0);
-      const listingQLActual = Number(stats.ql_actual_count || 0);
-      const listingMeetings = Number(stats.meetings_count || 0);
-      const listingDeals = Number(stats.deals_count || 0);
-      const listingRevenue = 0;
+      const normalizedCategory =
+        l.Category === 'Sell' || l.Category === 'Rent' ||
+        l.Category === 'Commercial Sell' || l.Category === 'Commercial Rent'
+          ? l.Category
+          : 'Other';
+      const stats = categoryStats[normalizedCategory] || null;
+
+      const estimatedMatched = stats ? listingLeadsPf * stats.matchRate : 0;
+      const listingSpam = stats ? estimatedMatched * stats.spamRate : 0;
+      const listingQualified = stats ? estimatedMatched * stats.qualifiedRate : 0;
+      const listingQLActual = stats ? estimatedMatched * stats.qlActualRate : 0;
+      const listingMeetings = stats ? estimatedMatched * stats.meetingsRate : 0;
+      const listingDeals = stats ? estimatedMatched * stats.dealsRate : 0;
+      const listingRevenue = stats ? estimatedMatched * stats.revenuePerMatched : 0;
       const listingCompRevenue = 0;
       
       const listingLabel = l.Title && l.Title.length > 30 ? `${l.Title.slice(0, 30)}...` : (l.Title || l.Reference);
-      const sort_order = l.Category === 'Sell' ? 1 : l.Category === 'Rent' ? 2 : 3;
+      const sort_order = l.Category === 'Sell' ? 1 : l.Category === 'Rent' ? 2 : l.Category === 'Commercial Sell' ? 3 : l.Category === 'Commercial Rent' ? 4 : 5;
 
       const budgetByMonth = l.BudgetByMonth || {};
+      const leadsByMonth = l.LeadsByMonth || {};
       const months = Object.keys(budgetByMonth);
 
       if (months.length > 0) {
@@ -286,26 +236,22 @@ export async function GET(request: Request) {
           return;
         }
 
-        const sortedMonths = [...filteredMonths].sort((a,b)=>b.localeCompare(a));
         filteredMonths.forEach(month => {
-          const isLatest = month === sortedMonths[0]; // ONLY LATEST MONTH GETS LEADS
+          const monthLeads = Number(leadsByMonth[month] || 0);
           formattedRows.push({
             channel: 'Property Finder',
             level_1: l.Category,
             level_2: listingLabel,
             level_3: month,
             budget: Number(budgetByMonth[month] || 0),
-            leads: isLatest ? listingLeadsPf : 0,
-            leads_pf: isLatest ? listingLeadsPf : 0,
-            leads_crm: isLatest ? listingLeads : 0,
-            leads_gap: isLatest ? listingLeadsPf - listingLeads : 0,
-            no_answer_spam: isLatest ? listingSpam : 0,
-            qualified_leads: isLatest ? listingQualified : 0,
-            ql_actual: isLatest ? listingQLActual : 0,
-            meetings: isLatest ? listingMeetings : 0,
-            deals: isLatest ? listingDeals : 0,
-            revenue: isLatest ? listingRevenue : 0,
-            company_revenue: isLatest ? listingCompRevenue : 0,
+            leads: monthLeads,
+            no_answer_spam: listingLeadsPf > 0 ? (listingSpam * monthLeads) / listingLeadsPf : 0,
+            qualified_leads: listingLeadsPf > 0 ? (listingQualified * monthLeads) / listingLeadsPf : 0,
+            ql_actual: listingLeadsPf > 0 ? (listingQLActual * monthLeads) / listingLeadsPf : 0,
+            meetings: listingLeadsPf > 0 ? (listingMeetings * monthLeads) / listingLeadsPf : 0,
+            deals: listingLeadsPf > 0 ? (listingDeals * monthLeads) / listingLeadsPf : 0,
+            revenue: listingLeadsPf > 0 ? (listingRevenue * monthLeads) / listingLeadsPf : 0,
+            company_revenue: listingLeadsPf > 0 ? (listingCompRevenue * monthLeads) / listingLeadsPf : 0,
             date: month,
             cpl: 0,
             sort_order: sort_order,
@@ -313,7 +259,11 @@ export async function GET(request: Request) {
           });
         });
       } else {
-        if (!dateInRange(l.CreatedAt || null)) {
+        const filteredLeadMonths = Object.entries(leadsByMonth).filter(([month]) => monthInRange(month));
+        const rangedLeads = filteredLeadMonths.reduce((sum, [, count]) => sum + Number(count || 0), 0);
+        if (startDate || endDate) {
+          if (rangedLeads === 0) return;
+        } else if (!dateInRange(l.CreatedAt || null)) {
           return;
         }
         formattedRows.push({
@@ -322,16 +272,13 @@ export async function GET(request: Request) {
           level_2: listingLabel,
           level_3: null,
           budget: Number(l.Budget || 0),
-          leads: listingLeadsPf,
-          leads_pf: listingLeadsPf,
-          leads_crm: listingLeads,
-          leads_gap: listingLeadsPf - listingLeads,
-          no_answer_spam: listingSpam,
-          qualified_leads: listingQualified,
-          ql_actual: listingQLActual,
-          meetings: listingMeetings,
-          deals: listingDeals,
-          revenue: listingRevenue,
+          leads: rangedLeads || listingLeadsPf,
+          no_answer_spam: listingLeadsPf > 0 ? (listingSpam * (rangedLeads || listingLeadsPf)) / listingLeadsPf : 0,
+          qualified_leads: listingLeadsPf > 0 ? (listingQualified * (rangedLeads || listingLeadsPf)) / listingLeadsPf : 0,
+          ql_actual: listingLeadsPf > 0 ? (listingQLActual * (rangedLeads || listingLeadsPf)) / listingLeadsPf : 0,
+          meetings: listingLeadsPf > 0 ? (listingMeetings * (rangedLeads || listingLeadsPf)) / listingLeadsPf : 0,
+          deals: listingLeadsPf > 0 ? (listingDeals * (rangedLeads || listingLeadsPf)) / listingLeadsPf : 0,
+          revenue: listingLeadsPf > 0 ? (listingRevenue * (rangedLeads || listingLeadsPf)) / listingLeadsPf : 0,
           company_revenue: listingCompRevenue,
           date: l.CreatedAt ? l.CreatedAt.slice(0, 10) : '-',
           cpl: 0,

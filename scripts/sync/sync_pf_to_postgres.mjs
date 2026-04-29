@@ -175,16 +175,27 @@ function buildListingLeadMaps(leads) {
         listingId,
         listingRef,
         count: 0,
+        byMonth: {},
         sample: lead,
       });
     }
+    const month = String(lead?.createdAt || '').slice(0, 7);
     detailsByKey.get(key).count += 1;
+    if (month) {
+      detailsByKey.get(key).byMonth[month] = (detailsByKey.get(key).byMonth[month] || 0) + 1;
+    }
 
     if (listingId) {
-      byListingId.set(listingId, (byListingId.get(listingId) || 0) + 1);
+      if (!byListingId.has(listingId)) byListingId.set(listingId, { total: 0, byMonth: {} });
+      const row = byListingId.get(listingId);
+      row.total += 1;
+      if (month) row.byMonth[month] = (row.byMonth[month] || 0) + 1;
     }
     if (listingRef) {
-      byListingRef.set(listingRef, (byListingRef.get(listingRef) || 0) + 1);
+      if (!byListingRef.has(listingRef)) byListingRef.set(listingRef, { total: 0, byMonth: {} });
+      const row = byListingRef.get(listingRef);
+      row.total += 1;
+      if (month) row.byMonth[month] = (row.byMonth[month] || 0) + 1;
     }
   }
 
@@ -246,14 +257,15 @@ function aggregateProjectCredits(txs) {
 }
 
 async function upsertListing(client, row) {
+  await client.query(`ALTER TABLE pf_listings_snapshot ADD COLUMN IF NOT EXISTS leads_by_month JSONB DEFAULT '{}'::jsonb`);
   await client.query(
     `
       INSERT INTO pf_listings_snapshot (
         listing_id, reference, group_name, category, offering_type, title, status,
-        budget, budget_by_month, leads_count, source_updated_at, payload, synced_at
+        budget, budget_by_month, leads_count, leads_by_month, source_updated_at, payload, synced_at
       ) VALUES (
         $1,$2,$3,$4,$5,$6,$7,
-        $8,$9::jsonb,$10,$11,$12::jsonb,NOW()
+        $8,$9::jsonb,$10,$11::jsonb,$12,$13::jsonb,NOW()
       )
       ON CONFLICT (listing_id) DO UPDATE SET
         reference = EXCLUDED.reference,
@@ -265,6 +277,7 @@ async function upsertListing(client, row) {
         budget = EXCLUDED.budget,
         budget_by_month = EXCLUDED.budget_by_month,
         leads_count = EXCLUDED.leads_count,
+        leads_by_month = EXCLUDED.leads_by_month,
         source_updated_at = EXCLUDED.source_updated_at,
         payload = EXCLUDED.payload,
         synced_at = NOW()
@@ -280,6 +293,7 @@ async function upsertListing(client, row) {
       Number(row.budget || 0),
       JSON.stringify(row.budgetByMonth || {}),
       Number(row.leadsCount || 0),
+      JSON.stringify(row.leadsByMonth || {}),
       row.createdAt ? new Date(row.createdAt) : null,
       JSON.stringify(row.payload || {}),
     ],
@@ -392,10 +406,10 @@ async function main() {
           if (listingId) knownListingKeys.add(listingId);
           if (listingRef) knownListingKeys.add(`ref:${listingRef}`);
 
-          const leadsCount =
+          const leadAgg =
             (listingId && byListingId.get(listingId)) ||
             (listingRef && byListingRef.get(listingRef)) ||
-            0;
+            { total: 0, byMonth: {} };
 
           await upsertListing(client, {
             id: listing.id,
@@ -407,7 +421,8 @@ async function main() {
             state,
             budget: byReferenceTotal[listing.reference] || 0,
             budgetByMonth: byReferenceMonth[listing.reference] || {},
-            leadsCount,
+            leadsCount: leadAgg.total,
+            leadsByMonth: leadAgg.byMonth,
             createdAt: listing.createdAt,
             payload: listing,
           });
@@ -416,51 +431,36 @@ async function main() {
       }
     }
 
-    let unmatchedListings = 0;
+    let unmatchedListingRefs = 0;
+    let unattributedLeadsTotal = 0;
+    const unattributedLeadsByMonth = {};
     for (const detail of detailsByKey.values()) {
       const key = detail.listingId || `ref:${detail.listingRef}`;
       if (!key || knownListingKeys.has(key)) continue;
-
-      const syntheticId = detail.listingId || `unmatched-ref-${detail.listingRef}`;
-      const syntheticRef = detail.listingRef || null;
-
-      await upsertListing(client, {
-        id: syntheticId,
-        reference: syntheticRef,
-        groupName: 'Our',
-        categoryName: 'Other',
-        offeringType: 'other',
-        title: syntheticRef ? `Unmatched listing ${syntheticRef}` : `Unmatched listing ${syntheticId}`,
-        state: 'unknown',
-        budget: 0,
-        budgetByMonth: {},
-        leadsCount: detail.count,
-        createdAt: detail.sample?.createdAt || null,
-        payload: {
-          source: 'leads-unmatched',
-          sampleLead: detail.sample || null,
-        },
-      });
-
-      unmatchedListings += 1;
-      totalListings += 1;
+      unmatchedListingRefs += 1;
+      unattributedLeadsTotal += Number(detail.count || 0);
+      for (const [month, count] of Object.entries(detail.byMonth || {})) {
+        unattributedLeadsByMonth[month] = (unattributedLeadsByMonth[month] || 0) + Number(count || 0);
+      }
     }
 
-    if (listingWithoutKeyCount > 0) {
+    if (unattributedLeadsTotal > 0) {
       await upsertListing(client, {
-        id: 'unmatched-listing-no-id-ref',
+        id: 'pf-unattributed-listing-leads',
         reference: null,
         groupName: 'Our',
         categoryName: 'Other',
         offeringType: 'other',
-        title: 'Unmatched listing leads (missing listing.id/reference)',
+        title: 'Unattributed',
         state: 'unknown',
         budget: 0,
         budgetByMonth: {},
-        leadsCount: listingWithoutKeyCount,
+        leadsCount: unattributedLeadsTotal,
+        leadsByMonth: unattributedLeadsByMonth,
         createdAt: null,
         payload: {
-          source: 'leads-unmatched-no-key',
+          source: 'leads-unmatched',
+          note: 'Leads linked to listing references that are not present in current listings API snapshot',
         },
       });
       totalListings += 1;
@@ -511,7 +511,8 @@ async function main() {
         JSON.stringify({
           listings: totalListings,
           projects: projects.length,
-          unmatched_listings: unmatchedListings,
+          unmatched_listing_refs: unmatchedListingRefs,
+          unattributed_listing_leads: unattributedLeadsTotal,
           listing_without_key_leads: listingWithoutKeyCount,
           credits_transactions_filter: { type: PF_CREDITS_TX_TYPE },
           project_budget_source: 'direct_project_credit_transactions_only',

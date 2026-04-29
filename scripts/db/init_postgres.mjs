@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS pf_listings_snapshot (
   budget NUMERIC DEFAULT 0,
   budget_by_month JSONB DEFAULT '{}'::jsonb,
   leads_count INTEGER DEFAULT 0,
+  leads_by_month JSONB DEFAULT '{}'::jsonb,
   source_updated_at TIMESTAMPTZ,
   payload JSONB NOT NULL,
   synced_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
