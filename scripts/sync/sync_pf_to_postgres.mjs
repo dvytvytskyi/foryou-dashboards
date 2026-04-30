@@ -7,8 +7,8 @@ const PF_CREDITS_TX_TYPE = 'credits';
 const CATEGORIES = [
   { name: 'Sell', category: 'residential', offeringType: 'sale', groupName: 'Our' },
   { name: 'Rent', category: 'residential', offeringType: 'rent', groupName: 'Our' },
-  { name: 'Commercial Sell', category: 'commercial', offeringType: 'sale', groupName: 'Partner' },
-  { name: 'Commercial Rent', category: 'commercial', offeringType: 'rent', groupName: 'Partner' },
+  { name: 'Commercial Sell', category: 'commercial', offeringType: 'sale', groupName: 'Our' },
+  { name: 'Commercial Rent', category: 'commercial', offeringType: 'rent', groupName: 'Our' },
 ];
 
 function getConnectionString() {

@@ -84,6 +84,7 @@ export default function PropertyFinderPage() {
       onThemeChange={setSyncTheme}
       onDateChange={(start, end) => setDateRange({ startDate: start, endDate: end })}
       customTableStyle={{ marginTop: '23px' }}
+      showDataStatus={true}
     >
       <div style={{ marginTop: '0' }}>
         <DashboardPage 

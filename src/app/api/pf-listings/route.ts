@@ -315,6 +315,18 @@ export async function GET(request: Request) {
     }
     */
 
+    // Fetch last sync time for freshness status
+    let lastUpdatedAt: string | null = null;
+    if (isPostgresConfigured()) {
+      try {
+        const { rows: freshRows } = await queryPostgres<{ max_synced: string | null }>(
+          `SELECT MAX(synced_at)::text AS max_synced FROM pf_listings_snapshot`,
+          [],
+        );
+        lastUpdatedAt = freshRows[0]?.max_synced ?? null;
+      } catch { /* ignore */ }
+    }
+
     // Sorting by status (Active first, Archive last), then by category, then by title
     formattedRows.sort((a, b) => {
       // Archive goes last
@@ -330,7 +342,7 @@ export async function GET(request: Request) {
     // DashboardPage automatically aggregates levels.
     // So channel level will be sum of all level_1, which will be sum of all level_2.
 
-    return NextResponse.json({ success: true, data: formattedRows });
+    return NextResponse.json({ success: true, data: formattedRows, meta: { lastUpdatedAt } });
 
   } catch (error: any) {
     console.error('API ERROR (PF Listings):', error.message);
