@@ -7,26 +7,132 @@ export const revalidate = 0;
 
 const KNOWN_CHANNELS = ['RED', 'Facebook', 'Klykov', 'Website', 'Own leads', 'Partners leads', 'Old leads', 'OKK', 'ETC', 'TOTAL', 'Property Finder'];
 const RED_FIXED_CPL_USD = 58;
-const RED_FIXED_CPL_AED = 238;
 const AED_PER_USD = 3.6725;
-const EXCLUDED_RED_LABELS = new Set(['1/ TP_Sell_Oman_(st+vid)_TPFP_RU']);
-const EXCLUDED_RED_LEVEL2_PREFIXES = [
-  'ST gr_worldwide(kz/ru) TPFP',
-  'Video  gr_worldwide(kz/ru) TPFP',
-  'ST+video (Radik) gr_worldwide(kz/ru) TPFP',
-];
+const RED_RE_QL_STATUSES = [70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802];
+const RED_RE_MEETING_STATUSES = [70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802];
+const RED_WON_STATUSES = [142, 70457486, 70757586];
 
-function shouldExcludeRedRow(row: any) {
-  const levelValues = [row.level_1, row.level_2, row.level_3]
-    .filter((value: unknown): value is string => typeof value === 'string')
-    .map((value) => value.trim());
+const RED_QL_SQL = RED_RE_QL_STATUSES.join(', ');
+const RED_MEETING_SQL = RED_RE_MEETING_STATUSES.join(', ');
+const RED_WON_SQL = RED_WON_STATUSES.join(', ');
+const MAX_MARKETING_FRESHNESS_HOURS = Number(process.env.MAX_MARKETING_FRESHNESS_HOURS || 3);
 
-  if (levelValues.some((value) => EXCLUDED_RED_LABELS.has(value))) {
-    return true;
-  }
+function asIso(value: any): string | null {
+  if (!value) return null;
+  if (typeof value === 'string') return value;
+  if (typeof value?.value === 'string') return value.value;
+  return null;
+}
 
-  const level2 = typeof row.level_2 === 'string' ? row.level_2.trim() : '';
-  return EXCLUDED_RED_LEVEL2_PREFIXES.some((prefix) => level2.startsWith(prefix));
+function lagHours(iso: string | null): number {
+  if (!iso) return Number.POSITIVE_INFINITY;
+  const ts = new Date(iso).getTime();
+  if (!Number.isFinite(ts)) return Number.POSITIVE_INFINITY;
+  return (Date.now() - ts) / (1000 * 60 * 60);
+}
+
+async function loadRedRows(startDate: string, endDate: string) {
+  const redQuery = `
+    SELECT
+      COALESCE(tag, 'UNKNOWN')                   AS tag,
+      CASE WHEN REGEXP_CONTAINS(COALESCE(utm_source,''), r'^(1|0|\\{\\{.*\\}\\})$') THEN '—'
+           ELSE COALESCE(utm_source, '—') END     AS level_1,
+      CASE WHEN REGEXP_CONTAINS(COALESCE(utm_medium,''), r'^(1|0|\\{\\{.*\\}\\})$') THEN '—'
+           ELSE COALESCE(utm_medium, '—') END     AS level_2,
+      CASE WHEN REGEXP_CONTAINS(COALESCE(utm_campaign,''), r'^(1|0|\\{\\{.*\\}\\})$') THEN '—'
+           ELSE COALESCE(utm_campaign, '—') END   AS level_3,
+      COUNT(*)                                    AS leads,
+      COUNTIF(status_id NOT IN (${RED_QL_SQL}) AND status_id NOT IN (${RED_WON_SQL}))
+                                                  AS no_answer_spam,
+      COUNTIF(status_id IN (${RED_QL_SQL}))       AS qualified_leads,
+      COUNTIF(status_id IN (${RED_QL_SQL}))       AS ql_actual,
+      COUNTIF(status_id IN (${RED_MEETING_SQL}))  AS meetings,
+      COUNTIF(status_id IN (${RED_WON_SQL}))      AS deals,
+      SUM(IF(status_id IN (${RED_WON_SQL}), COALESCE(price, 0), 0))
+                                                  AS revenue
+    FROM \`crypto-world-epta.foryou_analytics.red_leads_raw\`
+    WHERE DATE(created_at) BETWEEN @startDate AND @endDate
+      AND tag IN ('RED_RU', 'RED_ENG', 'RED_ARM', 'RED_LUX')
+    GROUP BY tag, level_1, level_2, level_3
+    ORDER BY tag, level_1, level_2, level_3
+  `;
+
+  const [redRows] = await bq.query({
+    query: redQuery,
+    params: { startDate, endDate },
+  });
+
+  const TAG_ORDER: Record<string, number> = { RED_RU: 0, RED_ENG: 1, RED_ARM: 2, RED_LUX: 3 };
+
+  return redRows.map((r: any, idx: number) => {
+    const leads = Number(r.leads || 0);
+    const noAnswerSpam = Number(r.no_answer_spam || 0);
+    const qualifiedLeads = Number(r.qualified_leads || 0);
+    const meetings = Number(r.meetings || 0);
+    const deals = Number(r.deals || 0);
+    const revenue = Number(r.revenue || 0);
+    const budget = leads * RED_FIXED_CPL_USD * AED_PER_USD;
+    const answered = leads - noAnswerSpam;
+    const cpqlActualBase = Number(r.ql_actual || 0);
+    const tag = String(r.tag || 'UNKNOWN');
+
+    return {
+      report_date: null,
+      channel: 'RED',
+      // Keep RED as one channel in Marketing and show 4 tags as the first dropdown level.
+      level_1: tag,
+      level_2: r.level_1,
+      level_3: `${r.level_2} | ${r.level_3}`,
+      budget: Math.round(budget),
+      leads,
+      cpl: leads > 0 ? Math.round(budget / leads) : 0,
+      no_answer_spam: noAnswerSpam,
+      rate_answer: leads > 0 ? answered / leads : 0,
+      qualified_leads: qualifiedLeads,
+      cost_per_qualified_leads: qualifiedLeads > 0 ? Math.round(budget / qualifiedLeads) : 0,
+      cr_ql: leads > 0 ? qualifiedLeads / leads : 0,
+      ql_actual: cpqlActualBase,
+      cpql_actual: cpqlActualBase > 0 ? Math.round(budget / cpqlActualBase) : 0,
+      meetings,
+      cp_meetings: meetings > 0 ? Math.round(budget / meetings) : 0,
+      deals,
+      cost_per_deal: deals > 0 ? Math.round(budget / deals) : 0,
+      revenue,
+      roi: budget > 0 ? revenue / budget : 0,
+      company_revenue: revenue,
+      sort_order: 1_000_000 + (TAG_ORDER[tag] ?? 9) * 100000 + idx,
+    };
+  });
+}
+
+async function loadRedLastSyncedAt() {
+  const [rows] = await bq.query({
+    query: `
+      SELECT MAX(synced_at) AS last_synced_at
+      FROM \`crypto-world-epta.foryou_analytics.red_leads_raw\`
+      WHERE tag IN ('RED_RU', 'RED_ENG', 'RED_ARM', 'RED_LUX')
+    `,
+  });
+  return asIso(rows?.[0]?.last_synced_at);
+}
+
+async function loadMarketingRefreshedAtByChannel(channels: string[]) {
+  if (channels.length === 0) return [] as Array<{ channel: string; last_refreshed_at: string | null }>;
+
+  const [rows] = await bq.query({
+    query: `
+      SELECT channel, MAX(refreshed_at) AS last_refreshed_at
+      FROM \`crypto-world-epta.foryou_analytics.marketing_channel_drilldown_daily\`
+      WHERE channel IN UNNEST(@channels)
+      GROUP BY channel
+    `,
+    params: { channels },
+  });
+
+  return (rows || []).map((row: any) => ({
+    channel: String(row.channel || ''),
+    last_refreshed_at: asIso(row.last_refreshed_at),
+  }));
 }
 
 // Ініціалізуємо BigQuery з сервіс-аккаунтом
@@ -77,6 +183,9 @@ export async function GET(request: NextRequest) {
         }
     }
 
+    const includeRed = channels.includes('RED');
+    const nonRedChannels = channels.filter((channel) => channel !== 'RED');
+
     const toCurrency = (col: string) => (currency === 'usd' ? `SAFE_DIVIDE(${col}, @aedPerUsd)` : col);
 
     const budgetExpr = toCurrency('budget');
@@ -121,33 +230,70 @@ export async function GET(request: NextRequest) {
     `;
 
     // Виконуємо параметризований запит
-    const [rows] = await bq.query({
-      query,
-      params: {
-        startDate,
-        endDate,
-        channels,
-        redFixedCplUsd: RED_FIXED_CPL_USD,
-        redFixedCplAed: RED_FIXED_CPL_AED,
-        aedPerUsd: AED_PER_USD,
-      },
-    });
+    const [rows] = nonRedChannels.length
+      ? await bq.query({
+          query,
+          params: {
+            startDate,
+            endDate,
+            channels: nonRedChannels,
+            redFixedCplUsd: RED_FIXED_CPL_USD,
+            aedPerUsd: AED_PER_USD,
+          },
+        })
+      : [[]];
 
-    const filteredRows = rows.filter((row: any) => {
-      if (row.channel !== 'RED') return true;
-      return !shouldExcludeRedRow(row);
-    });
+    const [redRows, redLastSyncedAt, nonRedRefreshedRows] = await Promise.all([
+      includeRed ? loadRedRows(startDate, endDate) : Promise.resolve([]),
+      includeRed ? loadRedLastSyncedAt() : Promise.resolve(null),
+      loadMarketingRefreshedAtByChannel(nonRedChannels),
+    ]);
+
+    const combinedRows = [...rows, ...redRows];
+
+    const freshnessIssues: string[] = [];
+    const freshnessTimestamps: string[] = [];
+
+    for (const row of nonRedRefreshedRows) {
+      if (!row.last_refreshed_at) {
+        freshnessIssues.push(`${row.channel}: missing refreshed_at`);
+        continue;
+      }
+      freshnessTimestamps.push(row.last_refreshed_at);
+      const lag = lagHours(row.last_refreshed_at);
+      if (lag > MAX_MARKETING_FRESHNESS_HOURS) {
+        freshnessIssues.push(`${row.channel}: stale by ${lag.toFixed(1)}h`);
+      }
+    }
+
+    if (includeRed) {
+      if (!redLastSyncedAt) {
+        freshnessIssues.push('RED: missing synced_at');
+      } else {
+        freshnessTimestamps.push(redLastSyncedAt);
+        const redLag = lagHours(redLastSyncedAt);
+        if (redLag > MAX_MARKETING_FRESHNESS_HOURS) {
+          freshnessIssues.push(`RED: stale by ${redLag.toFixed(1)}h`);
+        }
+      }
+    }
+
+    const lastUpdatedAt = freshnessTimestamps.length
+      ? freshnessTimestamps.sort((a, b) => new Date(b).getTime() - new Date(a).getTime())[0]
+      : null;
 
     // Повертаємо JSON відповідь
     return NextResponse.json({
       success: true,
-      data: filteredRows,
+      data: combinedRows,
       meta: {
         currency,
         startDate,
         endDate,
-        rowCount: filteredRows.length,
+        rowCount: combinedRows.length,
         fetchedAt: new Date().toISOString(),
+        lastUpdatedAt,
+        freshnessError: freshnessIssues.length > 0 ? freshnessIssues.join(' | ') : null,
       },
     });
   } catch (error) {

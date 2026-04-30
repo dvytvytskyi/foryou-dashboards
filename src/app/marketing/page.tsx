@@ -9,6 +9,7 @@ export default function MarketingPage() {
       title="Marketing Analytics" 
       customColumns={MARKETING_COLUMNS} 
       FilterComponent={MarketingFilters}
+      showDataStatus={true}
     />
   );
 }

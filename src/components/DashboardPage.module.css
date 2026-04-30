@@ -119,6 +119,41 @@
   font-size: 13px;
 }
 
+.error {
+  margin: 12px 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #fca5a5;
+  background: #fef2f2;
+  color: #991b1b;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.dataStatus {
+  margin: 10px 0 14px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.dataStatusOk {
+  color: var(--text);
+}
+
+.dataStatusError {
+  border-color: #fca5a5;
+  color: #991b1b;
+  background: #fef2f2;
+}
+
 .iconBtn {
   display: inline-flex;
   align-items: center;

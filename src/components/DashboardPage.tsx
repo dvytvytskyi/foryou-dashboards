@@ -299,6 +299,21 @@ function mergeDate(parts: { day: string; month: string; year: string }) {
   return `${parts.year}-${parts.month}-${parts.day}`;
 }
 
+function formatStatusDateTime(iso: string | null) {
+  if (!iso) return 'n/a';
+  const dt = new Date(iso);
+  if (Number.isNaN(dt.getTime())) return iso;
+  return dt.toLocaleString('en-GB', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  });
+}
+
 export default function DashboardPage({
   extraContent = null,
   title = 'General Marketing',
@@ -333,6 +348,7 @@ export default function DashboardPage({
   setCurrency: externalSetCurrency,
   sidebarSections,
   sidebarMinimal = false,
+  showDataStatus = false,
 }: { 
   extraContent?: React.ReactNode, 
   initialSourceFilter?: SourceFilter,
@@ -367,6 +383,7 @@ export default function DashboardPage({
   setCurrency?: (val: Currency) => void;
   sidebarSections?: Array<{ title: string; items: Array<{ label: string; icon: any; href?: string }> }>;
   sidebarMinimal?: boolean;
+  showDataStatus?: boolean;
 }) {
   const activeColumns = useMemo(() => {
     const base = customColumns || MARKETING_COLUMNS;
@@ -418,6 +435,10 @@ export default function DashboardPage({
   const [loading, setLoading] = useState(() => (apiUrl && !initialRows));
   const [error, setError] = useState<string | null>(null);
   const [rows, setRows] = useState<Row[]>([]);
+  const [dataStatus, setDataStatus] = useState<{ lastUpdatedAt: string | null; freshnessError: string | null }>({
+    lastUpdatedAt: null,
+    freshnessError: null,
+  });
 
   const [sortKey, setSortKey] = useState<SortKey>('channel');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
@@ -825,6 +846,10 @@ export default function DashboardPage({
 
         const incoming: Row[] = (json.data || []).map((r: Row) => ({ ...r, channel: normalizeChannel(r.channel) }));
         setRows(incoming);
+        setDataStatus({
+          lastUpdatedAt: json?.meta?.lastUpdatedAt || null,
+          freshnessError: json?.meta?.freshnessError || null,
+        });
         return;
       }
 
@@ -854,9 +879,14 @@ export default function DashboardPage({
 
       const incoming: Row[] = (json.data || []).map((r: Row) => ({ ...r, channel: normalizeChannel(r.channel) }));
       setRows(incoming);
+      setDataStatus({
+        lastUpdatedAt: json?.meta?.lastUpdatedAt || null,
+        freshnessError: json?.meta?.freshnessError || null,
+      });
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Unexpected error');
       setRows([]);
+      setDataStatus({ lastUpdatedAt: null, freshnessError: null });
     } finally {
       setLoading(false);
     }
@@ -1181,6 +1211,12 @@ export default function DashboardPage({
         )}
 
         {error ? <div className={styles.error}>{error}</div> : null}
+        {!isNested && showDataStatus ? (
+          <div className={`${styles.dataStatus} ${dataStatus.freshnessError ? styles.dataStatusError : styles.dataStatusOk}`}>
+            <span>Last update: {formatStatusDateTime(dataStatus.lastUpdatedAt)}</span>
+            <span>{dataStatus.freshnessError ? `ERROR: ${dataStatus.freshnessError}` : 'Status: OK'}</span>
+          </div>
+        ) : null}
         {!isNested && extraContent}
 
         {!hideTable && (

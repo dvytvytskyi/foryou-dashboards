@@ -2,12 +2,17 @@ name: Data Sync
 
 on:
   schedule:
-    - cron: '0 * * * *' # Every hour
+    - cron: '0 * * * *' # Every hour (UTC)
   workflow_dispatch: # Allow manual trigger
+
+concurrency:
+  group: data-sync-hourly
+  cancel-in-progress: false
 
 jobs:
   sync:
     runs-on: ubuntu-latest
+    timeout-minutes: 55
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -18,7 +23,7 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Create secrets directory
         run: mkdir -p secrets
@@ -31,9 +36,6 @@ jobs:
 
       - name: Sync AMO channel leads raw
         run: node scripts/kpi/sync_amo_channel_leads_raw.mjs
-
-      - name: Rebuild unified marketing mart
-        run: node scripts/kpi/create_unified_marketing_drilldown_daily.mjs
 
       - name: Sync RED leads
         run: node scripts/sync/sync_red_to_bq.mjs
@@ -49,5 +51,14 @@ jobs:
           AMO_CLIENT_ID: ${{ secrets.AMO_CLIENT_ID }}
           AMO_CLIENT_SECRET: ${{ secrets.AMO_CLIENT_SECRET }}
 
+      - name: Rebuild unified marketing mart
+        run: node scripts/kpi/create_unified_marketing_drilldown_daily.mjs
+
       - name: Sync Unified Master Leads
         run: node scripts/sync/sync_unified_leads.mjs
+
+      - name: Check marketing freshness
+        run: npm run check:marketing:freshness
+        env:
+          MAX_LAG_HOURS_MARKETING: '3'
+          MAX_LAG_HOURS_RED_RAW: '3'
