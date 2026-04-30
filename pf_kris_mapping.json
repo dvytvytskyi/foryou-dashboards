@@ -1,0 +1,1298 @@
+[
+  {
+    "permit": "8292",
+    "project": "La Residencia DEL MAR",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "7380",
+    "project": "Seven City JLT(3BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "9688",
+    "project": "Jumeirah gate tower 1 ADDRESS ( 1BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "2822",
+    "project": "CRESTMARK (3BR off)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "3606",
+    "project": "CREEK CRESCENT (1br)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "9235",
+    "project": "JASMINE LANE (3br)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "5031",
+    "project": "Palace beach residence (2BR off)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "9519",
+    "project": "Seascape (2BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "5872",
+    "project": "Park Horizon (1BR off)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "5587",
+    "project": "LAMAA 1",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "40026",
+    "project": "AZIZI Riviera Azure(studio)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "9667",
+    "project": "Paragon (studio)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000048/",
+    "project": "AYKON City 3(3bd)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "8790",
+    "project": "Bayz101",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "7251",
+    "project": "Design Quarter Tower B",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "4965",
+    "project": "Golf Grand Hills estate",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "5028",
+    "project": "TRIDENT Residence",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "7613",
+    "project": "Elitz by Danube (studio off)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "6468",
+    "project": "Millenium place TFG ONE Hotel (studio)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "8087",
+    "project": "SEAGATE (2 BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "5550",
+    "project": "DAMAC hills, Victoria 2 , (Town, 3br)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "6108",
+    "project": "PARAGON (studio Off)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "5861",
+    "project": "48 PARKSIDE (1br)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "9772",
+    "project": "ME DO RE2 ( studio)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "1913",
+    "project": "CENTURY (studio)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "6669",
+    "project": "CHIC Tower (studio)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "8601",
+    "project": "Binghatti Phantom (1br)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "5717",
+    "project": "SADAF 7 (1bd)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "2188",
+    "project": "MURJAN 6 (3br)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "8800",
+    "project": "SEAPOINT Tower 2 (2BR)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "4965",
+    "project": "Golf Grand (Dubai hills, 2BR)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "3559",
+    "project": "Design Quarter tower A (2BR)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "1513",
+    "project": "COTE D'AZUR - M (hotel room)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "6685",
+    "project": "Thyme (1 BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "5652",
+    "project": "Marina Living 1BR",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "7294",
+    "project": "Azizi Riviera 44 (studio)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "5710",
+    "project": "STONEHENGE 2, JVC, ( 1br)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "3278",
+    "project": "The COVE 2 (1BR)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "9352",
+    "project": "Peninsula Four Plaza 1801",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "0000027/",
+    "project": "Bahar 1 (2BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "0000032/",
+    "project": "Azizi Mirage 1 (1BR)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "0000047/",
+    "project": "DAMAC CITY TOWER B (1BR)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "0000058/",
+    "project": "GEMINI SPLENDOR (2BR) sobha hartland",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "0000059/",
+    "project": "Opulent Residences (Rixos) 1br",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "0000061/",
+    "project": "Upper House EAST( JLT, 2BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "0000062/",
+    "project": "Ozone 1 Residence (1BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "0000065/",
+    "project": "MARINA STAR (1BR)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000066/",
+    "project": "Jomana 7 (1BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "JULY",
+    "project": "",
+    "bgColor": "FFFFFFFF",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "00000117/",
+    "project": "Azizi Riviera Beachfront",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000122/",
+    "project": "Binghatti House (1BR) JVC",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "0026/",
+    "project": "AZIZI Riviera Azure(studio)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000135/",
+    "project": "Elysee III by Pantheon (studio)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000137/",
+    "project": "Azizi Riviera Beachfront (Studio)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "August",
+    "project": "",
+    "bgColor": "FFFFFFFF",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "00000154/",
+    "project": "One Za'abeel (1BR) 5902",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000155/",
+    "project": "One Za'abeel (1BR) 5903",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000156/",
+    "project": "Sobha Hartland Crest (1BR)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000161/",
+    "project": "SAMANA PARK VIEWS (2BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000165/",
+    "project": "California by SD ( Studio)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000166/",
+    "project": "The Crest, Sobha Hartland (1BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000167/",
+    "project": "Sterling West House (2BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000168/",
+    "project": "ELITE Residence(2br)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000175/",
+    "project": "PEARL HOUSE I BY IMTIAZ (1BR)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000176/",
+    "project": "Silicon Heights (1BR)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000177/",
+    "project": "STERLING EAST HOUSE",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000181/",
+    "project": "Elitz by Danube (1BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "September",
+    "project": "",
+    "bgColor": "FFFFFFFF",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "00000185/",
+    "project": "Uptown Tower (1BR)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000195/",
+    "project": "The EDGE (1br)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000199/",
+    "project": "Elitz 2 By Danube (1BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000209/",
+    "project": "Mama Shelter (Luxury family) 1BR",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000215/",
+    "project": "SEVEN PALM (1br) hotel ap",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000216/",
+    "project": "Sobha Hartland - The Crest Tower B (1br)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "0/",
+    "project": "SAFA TWO, AYKON CITY 3 - TOWER D",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000226/",
+    "project": "Regalia (studio)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000229/",
+    "project": "Creek Beach - Canopy -Moor Building 3",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000236/",
+    "project": "Town Square Jenna 1 (2BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000237/",
+    "project": "Paragon by Igo (Studio)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "October",
+    "project": "",
+    "bgColor": "FFFFFFFF",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "00000240/",
+    "project": "Vida Dubai Mall (2BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000241/",
+    "project": "MARINA STAR (1 BR) 703",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000243/",
+    "project": "NEW DUBAI GATE2",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "11113",
+    "project": "Saadiyat Lagoons Phase 2, 4br villa",
+    "bgColor": "FF00FFFF",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "00000247/",
+    "project": "Aeternitas Tower",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000248/",
+    "project": "Oceanz 2 By Danube (3BR)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "111115",
+    "project": "The Source Residences (2BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000258/",
+    "project": "Peninsula Four (B-1004) studio",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000259/",
+    "project": "Peninsula Four (B-1003) studio",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000261/",
+    "project": "LIV Marina (studio)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000273/",
+    "project": "THE RESIDENCES AT MARINA GATE 1, 4208, 1BR",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000275/",
+    "project": "THE RESIDENCES AT MARINA GATE 1, 4010, 2BR",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000277/",
+    "project": "AVALON TOWER (studio)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000279/",
+    "project": "Peninsula One (Studio)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "0000281/",
+    "project": "Pearl House Imtiaz (1BR)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000284/",
+    "project": "Pearl House (1BR) 902",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000283/",
+    "project": "Palm Beach Towers - 2",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "111117",
+    "project": "The Arthouse, 3BR",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000285/",
+    "project": "Binghatti Heights (2br)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "November",
+    "project": "",
+    "bgColor": "FFFFFFFF",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "00000286/",
+    "project": "Golf Grand (1BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000288/",
+    "project": "Royal Oceanic 1 (2BR)",
+    "bgColor": "FFD5A6BD",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "00000289/",
+    "project": "Opera Grand (3br)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000290/",
+    "project": "BURJ VISTA Tower 1 (3BR)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000291/",
+    "project": "LIV LUX (1BR)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000292/",
+    "project": "ELEGANCE TOWER (2BR)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "111118",
+    "project": "NOBU Residences (2br)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000293/",
+    "project": "Peninsula Four (B-101)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000294/",
+    "project": "Peninsula Four (B-402)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000295/",
+    "project": "Peninsula Five - 3 (2br)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000296/",
+    "project": "Peninsula one/ 710 (Studio)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000297/",
+    "project": "Beach Isle Tower 2 ( 2BR)",
+    "bgColor": "FFD5A6BD",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "00000298/",
+    "project": "UH EAST BY ELLINGTON (1BR)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "111119",
+    "project": "The Bay Residence 11 (1BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000303/",
+    "project": "The Paragon By IGO",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000304/",
+    "project": "Sidra 3 (4BR VILLA)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000305/",
+    "project": "MAG 330 (studio)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000310/",
+    "project": "DAMAC LAGOONS - VENICE (1) 6br villa",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000311/",
+    "project": "Cove Living Residence By Imtiaz (Studio)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "2023",
+    "project": "ZADA TOWER (1318)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000312/",
+    "project": "Palace beach Residences T2 (2BR)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000315/",
+    "project": "BURJ Royal (1BR)",
+    "bgColor": "FFD5A6BD",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "00000316/",
+    "project": "Bliss V250 (arabian ranches) villa",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000317/",
+    "project": "Wadi Al Safa 5 (4BR Villa)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000322/",
+    "project": "DAMAC BAY Tower C (1BR)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000323/",
+    "project": "Pear House (1BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000324/",
+    "project": "Jasmine Lane ( 3br villa)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000326/",
+    "project": "Mamashelter (Luxury family) studio",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000328/",
+    "project": "Al Serh Residences 11 By Asak, unit 410",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000333/",
+    "project": "Trillionaire Residences (2 BR)",
+    "bgColor": "FFD5A6BD",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "00000334/",
+    "project": "LAKE TERRACE (STUDIO)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000336/",
+    "project": "THE CRESTMARK (2br)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000337/",
+    "project": "THE CRESTMARK (1br)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "December",
+    "project": "",
+    "bgColor": "FFFFFFFF",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "00000341/",
+    "project": "Park Heights I (3BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000342/",
+    "project": "TRUSSARDI RESIDENCES, Unit 412",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000343/",
+    "project": "Binghatti Emerald (1br)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000345/",
+    "project": "CONCEPT 7 RESIDENCES (1br)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000344/",
+    "project": "Pearl House II (1BR)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000348/",
+    "project": "SPARKLZ by Danube - TOWER A (studio)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000349/",
+    "project": "SPIRIT tower (STUDIO)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "JTPRKG7R",
+    "project": "PARK RIDGE (3br)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000356/",
+    "project": "AL GHURAIR Residense (1BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000359/",
+    "project": "Solitaire Casa (4BR) villa",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000361/",
+    "project": "Peninsula One (studio)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000362/",
+    "project": "Sandoval Lane (4 BR)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000364/",
+    "project": "Socio Tower 1",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000365/",
+    "project": "Peninsula one (1br)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000366/",
+    "project": "GRANDEUR RESIDENCES (3br)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000372/",
+    "project": "Empire Residence (studio)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000387/",
+    "project": "Park Horizon - Tower 2 (1BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000399/",
+    "project": "Ruba 3 (3br) villa",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000401/",
+    "project": "SLS AT PALM JUMEIRAH (2BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000407/",
+    "project": "CHIC TOWER (1BR)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000408/",
+    "project": "CHIC TOWER (studio)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000409/",
+    "project": "Oxford Gardens (1BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000412/",
+    "project": "Dubai Star (1br)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000413/",
+    "project": "Luxur Tower By Imtiaz (2404) 1BR",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000414/",
+    "project": "Luxur Tower By Imtiaz (2405) 1 BR",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000415/",
+    "project": "Palace Beach Residence (2BR) #3704",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000416/",
+    "project": "Palace Beach Residence (2BR)#2203",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "0000417/",
+    "project": "Botanica Tower 1 (studio)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "January 2026",
+    "project": "",
+    "bgColor": "FFFFFFFF",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "00000422/",
+    "project": "51 Business Bay (office)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000426/",
+    "project": "330 Riverside Crescent (1BR)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000428/",
+    "project": "Ocean House (3br)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000435/",
+    "project": "ELLINGTON HOUSE II (1BR)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000438/",
+    "project": "Ellington Beach House (2BR)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000439/",
+    "project": "ADDRESS HARBOUR POINT TOWER 2 (3BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000440/",
+    "project": "KYOTO BY ORO24 (Studio)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000448/",
+    "project": "Thr Highbury (1BR)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000450/",
+    "project": "Park Horizon - Tower 2, 1606 (1br)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000451/",
+    "project": "Westwood Grande (",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "1111121",
+    "project": "The Source Residences (2BR)",
+    "bgColor": "FF00FFFF",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "0000452/",
+    "project": "COTE D'AZUR - N (studio)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "February",
+    "project": "",
+    "bgColor": "FFFFFFFF",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "00000453/",
+    "project": "Peninsula 5 (2BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000454/",
+    "project": "COTE D'AZUR - C (studio)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000455/",
+    "project": "Azizi Mirage 1 (studio)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000457/",
+    "project": "Jumeirah Gate Tower 2",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000458/",
+    "project": "The PAD (1BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000459/",
+    "project": "Condor Golf Links 18 (Studio)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000461/",
+    "project": "Al Jazi 4 (1BR)802",
+    "bgColor": "FFD5A6BD",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "1111123/",
+    "project": "Abu Dhabi City, Ghadeer Al Tayr, Al Jarf",
+    "bgColor": "FF00FFFF",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "1111124/",
+    "project": "The Arthouse, 3BR",
+    "bgColor": "FF00FFFF",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "1111125/",
+    "project": "The Bay Residence 11 (1BR)",
+    "bgColor": "FF00FFFF",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "00000462/",
+    "project": "Park ridge (2BR)",
+    "bgColor": "FFD5A6BD",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "1111126/",
+    "project": "Al Jurf Gardens",
+    "bgColor": "FF00FFFF",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "1111128",
+    "project": "Sea La Vie",
+    "bgColor": "FF00FFFF",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "00000470/",
+    "project": "Peninsula Four, A -1905 (studio)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000472/",
+    "project": "NEVA RESIDENCES (1BR)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "MARCH",
+    "project": "",
+    "bgColor": "FFFFFFFF",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "11111127",
+    "project": "NOBU Residences (2br)",
+    "bgColor": "FF00FFFF",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "00000473/",
+    "project": "Shams 2 (2BR)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000474/",
+    "project": "ELLINGTON HOUSE II",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000475/",
+    "project": "Azizi Riviera Azure",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "00000477/",
+    "project": "THE CRESTMARK (1BR)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000478/",
+    "project": "CLAYDON HOUSE BY ELLINGTON (1)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000479/",
+    "project": "The Residence By Prestige One (1br)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000480/",
+    "project": "UH WEST BY ELLINGTON (2BR)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000481/",
+    "project": "Luma22 (studio)",
+    "bgColor": "FFFF0000",
+    "groupName": "Partner"
+  },
+  {
+    "permit": "111120/",
+    "project": "Saadiyat Lagoons Phase 2 (4+maid)",
+    "bgColor": "FF00FFFF",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "00000503/",
+    "project": "Palace Beach Residence Tower 2",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "1111129",
+    "project": "Mamsha gardens B (2BR)",
+    "bgColor": "FF00FFFF",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "00000506/",
+    "project": "CENTURY (studio)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000507/",
+    "project": "Sparkle tower (1BR)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000511/",
+    "project": "SOBHA HARTLAND GREENS - PHASE III - 2",
+    "bgColor": "FFD5A6BD",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "April",
+    "project": "",
+    "bgColor": "FFFFFFFF",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "00000513/",
+    "project": "Socio Tower 2, 1205 (2BR)",
+    "bgColor": "FFD5A6BD",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "00000514/",
+    "project": "PRIVE RESIDENCE - DUBAI HILLS",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000517/",
+    "project": "Peninsula Four/ A-3104 (1BR)",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000518/",
+    "project": "ELLINGTON HOUSE IV",
+    "bgColor": "FF00FF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "1111130/",
+    "project": "The Bay Residence 11 (1BR)",
+    "bgColor": "FF00FFFF",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "00000522/",
+    "project": "Grand Bleu Tower interiors by Elie Saab Tower 1",
+    "bgColor": "FFD5A6BD",
+    "groupName": "Unknown"
+  },
+  {
+    "permit": "00000523/",
+    "project": "ZADA TOWER/ 617",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  },
+  {
+    "permit": "00000525/",
+    "project": "Skyhills Residences 3 - TOWER B (1BR)",
+    "bgColor": "FFFFFF00",
+    "groupName": "Our"
+  }
+]

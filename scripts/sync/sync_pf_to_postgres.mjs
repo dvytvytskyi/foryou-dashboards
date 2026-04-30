@@ -1,8 +1,62 @@
 import 'dotenv/config';
 import { Client } from 'pg';
+import * as fs from 'fs';
+import * as path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const API_URL = 'https://atlas.propertyfinder.com/v1';
 const PF_CREDITS_TX_TYPE = 'credits';
+
+// Load broker permits mapping (full details)
+let brokerPermitsList = [];
+try {
+  const mapPath = path.resolve(__dirname, '../../pf_broker_permits_mapping.json');
+  if (fs.existsSync(mapPath)) {
+    brokerPermitsList = JSON.parse(fs.readFileSync(mapPath, 'utf8'));
+    console.log(`[INIT] Loaded broker permits mapping: ${brokerPermitsList.length} permits`);
+  }
+} catch (err) {
+  console.warn('[WARN] Could not load broker permits mapping:', err.message);
+}
+
+// Build a project name -> groupName lookup for better matching
+function getGroupNameForListing(listing) {
+  // Try matching by listing reference first
+  if (listing.reference) {
+    const ref = String(listing.reference).trim();
+    for (const permit of brokerPermitsList) {
+      if (permit.permit === ref) return permit.groupName;
+    }
+  }
+
+  // Try matching by project name (title contains project name)
+  if (listing.title?.en) {
+    const title = listing.title.en.toLowerCase();
+    for (const permit of brokerPermitsList) {
+      if (permit.project) {
+        const projectName = permit.project.toLowerCase();
+        if (title.includes(projectName)) return permit.groupName;
+      }
+    }
+  }
+
+  // Try matching by reference after removing leading zeros
+  if (listing.reference) {
+    const ref = String(listing.reference);
+    const refNum = ref.replace(/^0+/, ''); // Remove leading zeros
+    if (refNum && refNum !== ref) {
+      for (const permit of brokerPermitsList) {
+        if (permit.permit === refNum) return permit.groupName;
+      }
+    }
+  }
+
+  // Default fallback
+  return 'Our';
+}
 
 const CATEGORIES = [
   { name: 'Sell', category: 'residential', offeringType: 'sale', groupName: 'Our' },
@@ -411,10 +465,13 @@ async function main() {
             (listingRef && byListingRef.get(listingRef)) ||
             { total: 0, byMonth: {} };
 
+          // Determine groupName: use permit/project matching if available, otherwise use category default
+          const groupName = getGroupNameForListing(listing) || cat.groupName;
+
           await upsertListing(client, {
             id: listing.id,
             reference: listing.reference,
-            groupName: cat.groupName,
+            groupName,
             categoryName: cat.name,
             offeringType: cat.offeringType,
             title: listing.title?.en || listing.reference || `Listing ${listing.id}`,
