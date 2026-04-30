@@ -22,40 +22,47 @@ try {
   console.warn('[WARN] Could not load broker permits mapping:', err.message);
 }
 
-// Build a project name -> groupName lookup for better matching
+// Pre-build fast lookup map from broker permits list
+const _permitLookup = {};
+for (const entry of brokerPermitsList) {
+  if (!entry.permit || entry.groupName === 'Unknown') continue;
+  const p = entry.permit;
+  // exact key
+  _permitLookup[p] = entry.groupName;
+  // strip leading zeros variation
+  const stripped = p.replace(/^0+/, '');
+  if (stripped && stripped !== p) {
+    _permitLookup[stripped] = entry.groupName;
+    // for-you-real-estate prefix
+    _permitLookup[`for-you-real-estate-${stripped}`] = entry.groupName;
+  }
+  // 13xxxxxxxx format → also as for-you-real-estate-13xxxxxxxx
+  if (/^13\d{5,}$/.test(p)) {
+    _permitLookup[`for-you-real-estate-${p}`] = entry.groupName;
+  }
+}
+
 function getGroupNameForListing(listing) {
-  // Try matching by listing reference first
-  if (listing.reference) {
-    const ref = String(listing.reference).trim();
-    for (const permit of brokerPermitsList) {
-      if (permit.permit === ref) return permit.groupName;
+  if (!listing.reference) return null;
+
+  const ref = String(listing.reference).trim();
+
+  // Format 1: direct match
+  if (_permitLookup[ref]) return _permitLookup[ref];
+
+  // Format 2: strip leading zeros from ref and try
+  const refStripped = ref.replace(/^for-you-real-estate-/, '').replace(/^0+/, '');
+  if (refStripped && _permitLookup[refStripped]) return _permitLookup[refStripped];
+
+  // Format 3: add leading zeros to numeric ref
+  if (/^\d+$/.test(ref)) {
+    for (let len = ref.length + 1; len <= 10; len++) {
+      const padded = ref.padStart(len, '0');
+      if (_permitLookup[padded]) return _permitLookup[padded];
     }
   }
 
-  // Try matching by project name (title contains project name)
-  if (listing.title?.en) {
-    const title = listing.title.en.toLowerCase();
-    for (const permit of brokerPermitsList) {
-      if (permit.project) {
-        const projectName = permit.project.toLowerCase();
-        if (title.includes(projectName)) return permit.groupName;
-      }
-    }
-  }
-
-  // Try matching by reference after removing leading zeros
-  if (listing.reference) {
-    const ref = String(listing.reference);
-    const refNum = ref.replace(/^0+/, ''); // Remove leading zeros
-    if (refNum && refNum !== ref) {
-      for (const permit of brokerPermitsList) {
-        if (permit.permit === refNum) return permit.groupName;
-      }
-    }
-  }
-
-  // Default fallback
-  return 'Our';
+  return null; // no match
 }
 
 const CATEGORIES = [
@@ -465,7 +472,7 @@ async function main() {
             (listingRef && byListingRef.get(listingRef)) ||
             { total: 0, byMonth: {} };
 
-          // Determine groupName: use permit/project matching if available, otherwise use category default
+          // Determine groupName: use permit matching if available, otherwise default Our
           const groupName = getGroupNameForListing(listing) || cat.groupName;
 
           await upsertListing(client, {
