@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const runtime = 'nodejs';
 
-type SourceName = 'Red' | 'Property Finder' | 'Klykov' | 'Oman' | 'Facebook' | 'Partners leads' | 'Own leads';
+type SourceName = 'Red' | 'Primary Plus' | 'Property Finder' | 'Klykov' | 'Oman' | 'Facebook' | 'Partners leads' | 'Own leads';
 
 type BqLeadRow = {
   lead_id: number | string;
@@ -143,6 +143,7 @@ const KL_SHOWING_STATUSES = new Set([84853942, 84853946, 84853950, 84853954, 848
 
 const SOURCE_ORDER: SourceName[] = [
   'Red',
+  'Primary Plus',
   'Property Finder',
   'Klykov',
   'Oman',

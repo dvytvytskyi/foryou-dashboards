@@ -44,6 +44,7 @@ type AmoUser = {
 
 type SourceName =
   | 'Red'
+  | 'Primary Plus'
   | 'Property Finder'
   | 'Klykov'
   | 'Oman'
@@ -127,6 +128,7 @@ const KL_SHOWING_STATUSES = new Set([84853942, 84853946, 84853950, 84853954, 848
 const SOURCE_FIELD_ID = 703131; // "Источник"
 const SOURCE_ORDER: SourceName[] = [
   'Red',
+  'Primary Plus',
   'Property Finder',
   'Klykov',
   'Oman',

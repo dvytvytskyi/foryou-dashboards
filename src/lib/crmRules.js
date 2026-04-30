@@ -2,13 +2,16 @@ export const CLOSED_DEAL_STATUS_IDS = [142, 74717798, 74717802];
 
 const RED_SIGNALS = ['red_ru', 'red_eng', 'red_arm', 'red_lux', 'red'];
 const KLYKOV_SIGNALS = ['klykov leads', 'alex klykov', 'klykov'];
+// Primary Plus = PF offplan leads — AMO tag "pf offplan" (and variants) maps to this category
+const PRIMARY_PLUS_SIGNALS = [
+  'pf offplan',
+  'pf off-plan',
+  'pf off plan',
+  'primary plus',
+];
 const PROPERTY_FINDER_SIGNALS = [
   'property finder',
   'property_finder',
-  'pf off-plan',
-  'pf offplan',
-  'pf off plan',
-  'primary plus',
   'prian',
   'bayut',
 ];
@@ -37,6 +40,7 @@ function classifyFromSignals(text, { preferMarketingBuckets = false } = {}) {
   if (!text) return null;
   if (hasAnySignal(text, KLYKOV_SIGNALS)) return 'Klykov';
   if (hasAnySignal(text, RED_SIGNALS)) return 'Red';
+  if (hasAnySignal(text, PRIMARY_PLUS_SIGNALS)) return 'Primary Plus';
   if (hasAnySignal(text, PROPERTY_FINDER_SIGNALS)) return 'Property Finder';
   if (hasAnySignal(text, PARTNER_SIGNALS)) return 'Partners leads';
   if (preferMarketingBuckets) {
@@ -89,4 +93,15 @@ export function isClosedDealStatus(statusId) {
 
 export function hasOmanTag(tags = []) {
   return tags.map(normalizeLeadText).some((tag) => hasAnySignal(tag, OMAN_SIGNALS));
+}
+
+/**
+ * Returns true if an AMO lead belongs to Primary Plus (PF offplan) channel.
+ * Rule: lead has tag "pf offplan" (or close variant) OR source field contains a Primary Plus signal.
+ */
+export function isPrimaryPlusLead({ tags = [], sourceValue = '' } = {}) {
+  const normalizedSource = normalizeLeadText(sourceValue);
+  if (hasAnySignal(normalizedSource, PRIMARY_PLUS_SIGNALS)) return true;
+  const tagBag = tags.map(normalizeLeadText).join(' | ');
+  return hasAnySignal(tagBag, PRIMARY_PLUS_SIGNALS);
 }

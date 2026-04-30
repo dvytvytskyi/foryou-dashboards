@@ -2915,3 +2915,89 @@ To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dash
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
+(node:82212) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq Error: Failed to refresh AmoCRM token: {"hint":"Check the `client_id` parameter","title":"Некорректный запрос","type":"https://developers.amocrm.ru/v3/errors/OAuthProblemJson","status":400,"detail":"В запросе отсутствует ряд параметров или параметры невалидны"}
+    at refreshTokens (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:74:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:97:23)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19)
+(node:96504) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:45580) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:58597) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:70170) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:96945) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3228) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:17658) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:23214) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28842) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:34381) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAILED: sync_plan_fact_bq TypeError: fetch failed
+    at node:internal/deps/undici/undici:13484:13
+    at async doRequest (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:86:17)
+    at async amoFetchJson (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:95:13)
+    at async fetchAllOpenTasks (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:136:18)
+    at async Promise.all (index 3)
+    at async fetchRawData (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:171:60)
+    at async main (file:///Users/vytvytskyi/foryou-dashboards/scripts/sync/sync_plan_fact_bq.mjs:232:19) {
+  [cause]: SocketError: other side closed
+      at TLSSocket.<anonymous> (node:internal/deps/undici/undici:6287:28)
+      at TLSSocket.emit (node:events:536:35)
+      at endReadableNT (node:internal/streams/readable:1698:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'UND_ERR_SOCKET',
+    socket: {
+      localAddress: '192.168.1.102',
+      localPort: 61198,
+      remoteAddress: undefined,
+      remotePort: undefined,
+      remoteFamily: undefined,
+      timeout: undefined,
+      bytesWritten: 12144,
+      bytesRead: 1358707
+    }
+  }
+}
+(node:39845) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:45681) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/vytvytskyi/foryou-dashboards/src/lib/crmRules.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/vytvytskyi/foryou-dashboards/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)

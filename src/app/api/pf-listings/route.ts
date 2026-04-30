@@ -34,6 +34,53 @@ type MatchStatsRow = {
   revenue_sum: number | string;
 };
 
+async function loadMatchStatsRowsFromPostgres(startDate: string | null, endDate: string | null) {
+  let { rows } = await queryPostgres<MatchStatsRow>(
+    `
+      SELECT DISTINCT ON (category)
+        category,
+        pf_leads,
+        matched_amo_leads,
+        spam_count,
+        qualified_count,
+        ql_actual_count,
+        meetings_count,
+        deals_count,
+        revenue_sum
+      FROM pf_amo_match_stats
+      WHERE (
+        ($1::date IS NULL OR period_start <= $1::date)
+        AND ($2::date IS NULL OR period_end >= $2::date)
+      )
+      ORDER BY category, updated_at DESC
+    `,
+    [startDate, endDate],
+  );
+
+  if (!rows.length) {
+    const fallback = await queryPostgres<MatchStatsRow>(
+      `
+        SELECT DISTINCT ON (category)
+          category,
+          pf_leads,
+          matched_amo_leads,
+          spam_count,
+          qualified_count,
+          ql_actual_count,
+          meetings_count,
+          deals_count,
+          revenue_sum
+        FROM pf_amo_match_stats
+        ORDER BY category, updated_at DESC
+      `,
+      [],
+    );
+    rows = fallback.rows;
+  }
+
+  return rows;
+}
+
 async function loadListingsFromFile() {
   const jsonPath = path.resolve(process.cwd(), 'pf_listings_report.json');
   const fileContent = await fs.readFile(jsonPath, 'utf8');
@@ -41,19 +88,27 @@ async function loadListingsFromFile() {
 }
 
 async function loadListingsFromPostgres(targetGroup: string | null) {
+  // Partner group includes AbuDhabi listings too
+  const groupFilter = targetGroup === 'Partner'
+    ? `group_name IN ('Partner', 'AbuDhabi')`
+    : targetGroup
+      ? `group_name = '${targetGroup.replace(/'/g, "''")}'`
+      : `1=1`;
+
   const { rows } = await queryPostgres<ListingSnapshotRow>(
     `
       SELECT listing_id, reference, group_name, category, offering_type, title, status,
               budget, budget_by_month, leads_count, leads_by_month, source_updated_at, payload
       FROM pf_listings_snapshot
-      WHERE ($1::text IS NULL OR group_name = $1)
+      WHERE ${groupFilter}
     `,
-    [targetGroup],
+    [],
   );
 
   return rows.map((row: ListingSnapshotRow) => ({
     Reference: row.reference || row.listing_id,
     group: row.group_name || 'Our',
+    GroupName: row.group_name || 'Our',
     Category:
       row.category ||
       (row.offering_type === 'sale' ? 'Sell' : row.offering_type === 'rent' ? 'Rent' : 'Other'),
@@ -160,6 +215,155 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const targetGroup = searchParams.get('group'); // 'Our' or 'Partner'
+    const viewMode = searchParams.get('view');
+    const startDate = searchParams.get('startDate');
+    const endDate = searchParams.get('endDate');
+
+    if (viewMode === 'amo-category-summary' && targetGroup === 'Partner' && isPostgresConfigured()) {
+      const statsRows = await loadMatchStatsRowsFromPostgres(startDate, endDate);
+      const partnerListings = await loadListingsFromPostgres('Partner');
+
+      const monthInRange = (monthKey: string) => {
+        if (!startDate || !endDate) return true;
+        if (!monthKey || monthKey.length < 7) return true;
+        const monthStart = `${monthKey.slice(0, 7)}-01`;
+        return monthStart >= startDate && monthStart <= endDate;
+      };
+
+      const dateInRange = (dateString?: string | null) => {
+        if (!startDate || !endDate) return true;
+        if (!dateString) return true;
+        const normalized = dateString.slice(0, 10);
+        return normalized >= startDate && normalized <= endDate;
+      };
+
+      const budgetByCategory: Record<string, number> = {
+        Sell: 0,
+        Rent: 0,
+        'Commercial Sell': 0,
+        'Commercial Rent': 0,
+        Other: 0,
+      };
+
+      for (const listing of partnerListings) {
+        const category =
+          listing.Category === 'Sell' || listing.Category === 'Rent' ||
+          listing.Category === 'Commercial Sell' || listing.Category === 'Commercial Rent'
+            ? listing.Category
+            : 'Other';
+
+        const budgetByMonth = listing.BudgetByMonth || {};
+        const months = Object.keys(budgetByMonth);
+
+        if (months.length > 0) {
+          const categoryBudget = months
+            .filter((m) => monthInRange(m))
+            .reduce((sum, m) => sum + Number(budgetByMonth[m] || 0), 0);
+          budgetByCategory[category] += categoryBudget;
+        } else {
+          if (dateInRange(listing.CreatedAt || null)) {
+            budgetByCategory[category] += Number(listing.Budget || 0);
+          }
+        }
+      }
+
+      const categoryAgg: Record<string, {
+        pf_leads: number;
+        matched_amo_leads: number;
+        spam_count: number;
+        qualified_count: number;
+        ql_actual_count: number;
+        meetings_count: number;
+        deals_count: number;
+        revenue_sum: number;
+      }> = {};
+
+      for (const row of statsRows) {
+        const category =
+          row.category === 'Sell' || row.category === 'Rent' ||
+          row.category === 'Commercial Sell' || row.category === 'Commercial Rent'
+            ? row.category
+            : 'Other';
+
+        if (!categoryAgg[category]) {
+          categoryAgg[category] = {
+            pf_leads: 0,
+            matched_amo_leads: 0,
+            spam_count: 0,
+            qualified_count: 0,
+            ql_actual_count: 0,
+            meetings_count: 0,
+            deals_count: 0,
+            revenue_sum: 0,
+          };
+        }
+
+        categoryAgg[category].pf_leads += Number(row.pf_leads || 0);
+        categoryAgg[category].matched_amo_leads += Number(row.matched_amo_leads || 0);
+        categoryAgg[category].spam_count += Number(row.spam_count || 0);
+        categoryAgg[category].qualified_count += Number(row.qualified_count || 0);
+        categoryAgg[category].ql_actual_count += Number(row.ql_actual_count || 0);
+        categoryAgg[category].meetings_count += Number(row.meetings_count || 0);
+        categoryAgg[category].deals_count += Number(row.deals_count || 0);
+        categoryAgg[category].revenue_sum += Number(row.revenue_sum || 0);
+      }
+
+      const categorySort: Record<string, number> = {
+        Sell: 1,
+        Rent: 2,
+        'Commercial Sell': 3,
+        'Commercial Rent': 4,
+        Other: 5,
+      };
+
+      const formattedRows = Object.entries(categoryAgg).map(([category, v]) => {
+        const matched = v.matched_amo_leads;
+        const categoryBudget = Number(budgetByCategory[category] || 0);
+        return {
+          channel: 'Property Finder',
+          level_1: category,
+          level_2: null,
+          level_3: null,
+          budget: categoryBudget,
+          leads: v.pf_leads,
+          no_answer_spam: v.spam_count,
+          // Show requested pair in table: PF Leads -> Matched AMO
+          qualified_leads: matched,
+          ql_actual: v.ql_actual_count,
+          meetings: v.meetings_count,
+          deals: v.deals_count,
+          revenue: v.revenue_sum,
+          company_revenue: 0,
+          date: '-',
+          cpl: v.pf_leads > 0 ? categoryBudget / v.pf_leads : 0,
+          sort_order: categorySort[category] || 99,
+          status: 'Active',
+          rate_answer: v.pf_leads > 0 ? matched / v.pf_leads : 0,
+          cost_per_qualified_leads: matched > 0 ? categoryBudget / matched : 0,
+          cpql_actual: v.ql_actual_count > 0 ? categoryBudget / v.ql_actual_count : 0,
+          cp_meetings: v.meetings_count > 0 ? categoryBudget / v.meetings_count : 0,
+          cost_per_deal: v.deals_count > 0 ? categoryBudget / v.deals_count : 0,
+          roi: categoryBudget > 0 ? v.revenue_sum / categoryBudget : 0,
+          cr_ql: v.pf_leads > 0 ? matched / v.pf_leads : 0,
+        };
+      });
+
+      formattedRows.sort((a, b) => a.sort_order - b.sort_order);
+
+      let lastUpdatedAt: string | null = null;
+      try {
+        const { rows: freshRows } = await queryPostgres<{ max_synced: string | null }>(
+          `SELECT MAX(updated_at)::text AS max_synced FROM pf_amo_match_stats`,
+          [],
+        );
+        lastUpdatedAt = freshRows[0]?.max_synced ?? null;
+      } catch {
+        // ignore freshness errors for summary mode
+      }
+
+      return NextResponse.json({ success: true, data: formattedRows, meta: { lastUpdatedAt } });
+    }
+
     let rawData: any[] = [];
 
     if (isPostgresConfigured()) {
@@ -172,9 +376,6 @@ export async function GET(request: Request) {
     } else {
       rawData = await loadListingsFromFile();
     }
-
-    const startDate = searchParams.get('startDate');
-    const endDate = searchParams.get('endDate');
 
     const monthInRange = (monthKey: string) => {
       if (!startDate || !endDate) return true;
@@ -201,9 +402,12 @@ export async function GET(request: Request) {
       }
     }
 
-    const filteredData = targetGroup
-      ? rawData.filter((l: any) => l.group === targetGroup)
-      : rawData;
+    // Partner group also includes AbuDhabi
+    const filteredData = targetGroup === 'Partner'
+      ? rawData.filter((l: any) => l.group === 'Partner' || l.group === 'AbuDhabi')
+      : targetGroup
+        ? rawData.filter((l: any) => l.group === targetGroup)
+        : rawData;
 
     filteredData.forEach((l: any) => {
       const listingLeadsPf = Number(l.LeadsPF || 0);
@@ -224,6 +428,7 @@ export async function GET(request: Request) {
       const listingCompRevenue = 0;
       
       const listingLabel = l.Title && l.Title.length > 30 ? `${l.Title.slice(0, 30)}...` : (l.Title || l.Reference);
+      const categoryLabel = l.Category;
       const sort_order = l.Category === 'Sell' ? 1 : l.Category === 'Rent' ? 2 : l.Category === 'Commercial Sell' ? 3 : l.Category === 'Commercial Rent' ? 4 : 5;
 
       const budgetByMonth = l.BudgetByMonth || {};
@@ -240,7 +445,7 @@ export async function GET(request: Request) {
           const monthLeads = Number(leadsByMonth[month] || 0);
           formattedRows.push({
             channel: 'Property Finder',
-            level_1: l.Category,
+            level_1: categoryLabel,
             level_2: listingLabel,
             level_3: month,
             budget: Number(budgetByMonth[month] || 0),
@@ -268,7 +473,7 @@ export async function GET(request: Request) {
         }
         formattedRows.push({
           channel: 'Property Finder',
-          level_1: l.Category,
+          level_1: categoryLabel,
           level_2: listingLabel,
           level_3: null,
           budget: Number(l.Budget || 0),

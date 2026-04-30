@@ -1,0 +1,50 @@
+PF Yana + Kris collected notes (from chat run)
+Date: 2026-04-30
+
+Main reported result:
+- 569 Our listings
+- 32 Partner listings
+- 9 AbuDhabi listings
+
+Matching behavior (reported):
+1) 00000048/ -> trim trailing slash -> 00000048 -> found in mapping
+2) for-you-real-estate-13608874 -> extract 13608874 -> found in mapping
+3) 0000035 -> check padded variant 00000035 -> found in mapping
+
+What was done (reported in run):
+- Read Excel file Property_Finder_Source.xlsx, sheets PFKRIS and PFYANA.
+- Parsed row colors:
+  - Green FF00FF00 -> Our
+  - Yellow FFFFFF00 -> Our
+  - Red FFFF0000 -> Partner
+  - Blue FF0070C0 / Cyan FF00FFFF -> AbuDhabi
+- Created mapping files:
+  - pf_broker_permits_mapping.json
+  - pf_permit_group_map.json
+- Updated sync script scripts/sync/sync_pf_to_postgres.mjs:
+  - Loads mapping on startup
+  - Matching order:
+    1. direct reference match
+    2. title/project name contains match
+    3. normalized reference match (zero trim/pad, for-you-real-estate-* variants)
+    4. fallback -> Our
+
+Intermediate historical (earlier run) that was later improved:
+- 606 Our listings
+- 4 Partner listings
+
+Improved combined mapping stats (reported):
+- 457 permits total
+- 221 Our
+- 235 Partner
+- 12 AbuDhabi (and/or 1 AbuDhabi in an earlier intermediate parse)
+
+Current canonical mapping data files in workspace:
+- pf_broker_permits_mapping.json (full records)
+- pf_permit_group_map.json (lookup map)
+- pf_permit_group_map_normalized.json (normalized lookup variants)
+- pf_kris_mapping.json (sheet-specific)
+- pf_yana_mapping.json (sheet-specific)
+
+Note:
+This file is a consolidated text export of the notes/results that appeared in the chat/session.

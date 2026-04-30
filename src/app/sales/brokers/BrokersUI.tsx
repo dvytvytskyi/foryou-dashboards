@@ -80,6 +80,7 @@ type BrokerMetrics = {
 const SOURCE_COLORS: Record<string, string> = {
   'Red': '#6366f1',
   'Property Finder': '#8b5cf6',
+  'Primary Plus': '#f97316',
   'Klykov': '#10b981',
   'Oman': '#f59e0b',
   'Facebook': '#3b82f6',
@@ -87,7 +88,7 @@ const SOURCE_COLORS: Record<string, string> = {
   'Own leads': '#94a3b8',
 };
 
-const SOURCE_ORDER = ['Red', 'Property Finder', 'Klykov', 'Oman', 'Facebook', 'Partners leads', 'Own leads'];
+const SOURCE_ORDER = ['Red', 'Primary Plus', 'Property Finder', 'Klykov', 'Oman', 'Facebook', 'Partners leads', 'Own leads'];
 
 function PlanProgress({ actual, plan, label = 'ВЫПОЛНЕНИЕ' }: { actual: number, plan: number, label?: string }) {
   const percent = plan > 0 ? Math.round((actual / plan) * 100) : 0;

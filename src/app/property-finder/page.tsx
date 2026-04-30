@@ -51,20 +51,14 @@ export default function PropertyFinderPage() {
     return { startDate: '2026-01-01', endDate: today };
   });
 
-  const nestedPartnerApiUrl = useMemo(
-    () => `/api/pf-listings?group=Partner&startDate=${encodeURIComponent(dateRange.startDate)}&endDate=${encodeURIComponent(dateRange.endDate)}`,
-    [dateRange.startDate, dateRange.endDate],
-  );
+  const nestedPartnerApiUrl = `/api/pf-listings?group=Partner&view=amo-category-summary&startDate=2026-01-01&endDate=2026-12-31`;
 
   const ourApiUrl = useMemo(
     () => `/api/pf-listings?group=Our&startDate=${encodeURIComponent(dateRange.startDate)}&endDate=${encodeURIComponent(dateRange.endDate)}`,
     [dateRange.startDate, dateRange.endDate],
   );
 
-  const nestedProjectsApiUrl = useMemo(
-    () => `/api/pf-projects?startDate=${encodeURIComponent(dateRange.startDate)}&endDate=${encodeURIComponent(dateRange.endDate)}`,
-    [dateRange.startDate, dateRange.endDate],
-  );
+  const nestedProjectsApiUrl = '/api/pf-projects?startDate=2026-01-01&endDate=2026-12-31';
 
   return (
     <DashboardPage 
@@ -88,17 +82,17 @@ export default function PropertyFinderPage() {
     >
       <div style={{ marginTop: '0' }}>
         <DashboardPage 
-          title="Property Finder Listings Performance - Partner"
+          title="Property Finder Listings Performance - Partner & Abu Dhabi"
           isNested={true}
           hideFilters={true}
-          hideTotal={true}
+          hideTotal={false}
           initialSourceFilter="all"
           hideSourceFilter={true}
           firstColumnLabel="Listings"
           customColumns={PF_COLUMNS}
           apiUrl={nestedPartnerApiUrl}
           maxDrilldownLevel={3}
-          initialExpanded={[]}
+          initialExpanded={['Sell', 'Rent', 'Commercial Sell', 'Commercial Rent']}
           tableMinWidth="100%"
           defaultChannelWidth={400}
           externalThemeMode={syncTheme}

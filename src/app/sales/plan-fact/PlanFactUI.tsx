@@ -63,6 +63,7 @@ type PlanFactResponse = {
 
 const SOURCE_COLORS: Record<string, string> = {
   Red: '#ef4444',
+  'Primary Plus': '#f97316',
   'Property Finder': '#f59e0b',
   Klykov: '#10b981',
   Oman: '#06b6d4',

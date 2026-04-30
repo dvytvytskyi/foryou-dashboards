@@ -5,6 +5,7 @@ import { isPostgresConfigured, queryPostgres } from '@/lib/postgres';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
+const CREDIT_TO_AED_RATE = 1.3;
 
 type ProjectSnapshotRow = {
   project_id: string;
@@ -55,6 +56,19 @@ export async function GET(request: Request) {
     const startDate = searchParams.get('startDate');
     const endDate = searchParams.get('endDate');
 
+    let rawData: any[] = [];
+
+    if (isPostgresConfigured()) {
+      try {
+        rawData = await loadProjectsFromPostgres();
+      } catch (pgError) {
+        console.warn('PF projects PostgreSQL read failed, fallback to JSON:', pgError);
+        rawData = await loadProjectsFromFile();
+      }
+    } else {
+      rawData = await loadProjectsFromFile();
+    }
+
     const monthInRange = (monthKey: string) => {
       if (!startDate || !endDate) return true;
       if (!monthKey || monthKey.length < 7) return true;
@@ -69,88 +83,100 @@ export async function GET(request: Request) {
       return normalized >= startDate && normalized <= endDate;
     };
 
-    let projects: any[] = [];
-    if (isPostgresConfigured()) {
-      try {
-        projects = await loadProjectsFromPostgres();
-      } catch (pgError) {
-        console.warn('PF projects PostgreSQL read failed, fallback to JSON:', pgError);
-        projects = await loadProjectsFromFile();
-      }
-    } else {
-      projects = await loadProjectsFromFile();
-    }
-
     const formattedRows: any[] = [];
 
-    for (const project of projects) {
-      const budgetByMonth = project.BudgetByMonth || {};
+    rawData.forEach((project: any) => {
+      const districtLabel = project.District || 'Other';
+      const projectLabel = project.Title || project.Reference || project.ProjectId || 'Unknown Project';
       const leadsByMonth = project.LeadsByMonth || {};
-      const months = Array.from(new Set([...Object.keys(budgetByMonth), ...Object.keys(leadsByMonth)]));
+      const budgetByMonth = project.BudgetByMonth || {};
+      const monthKeys = Array.from(new Set([
+        ...Object.keys(leadsByMonth),
+        ...Object.keys(budgetByMonth),
+      ]));
 
-      if (months.length > 0) {
-        const filteredMonths = months.filter((month) => monthInRange(month));
-        if (filteredMonths.length === 0) continue;
+      if (monthKeys.length > 0) {
+        const filteredMonths = monthKeys.filter((m) => monthInRange(m));
+        if (filteredMonths.length === 0) return;
 
-        for (const month of filteredMonths.sort((a, b) => b.localeCompare(a))) {
+        filteredMonths.forEach((month) => {
+          const leads = Number(leadsByMonth[month] || 0);
+          const budgetCredits = Number(budgetByMonth[month] || 0);
+          const budgetAed = budgetCredits * CREDIT_TO_AED_RATE;
+
           formattedRows.push({
             channel: 'Primary Plus leads',
-            level_1: project.District || 'Other',
-            level_2: project.Title,
+            level_1: districtLabel,
+            level_2: projectLabel,
             level_3: month,
-            budget: Number(budgetByMonth[month] || 0),
-            leads: Number(leadsByMonth[month] || 0),
-            leads_pf: Number(leadsByMonth[month] || 0),
-            leads_crm: 0,
-            leads_gap: 0,
+            budget: budgetAed,
+            leads,
             no_answer_spam: 0,
+            rate_answer: 0,
             qualified_leads: 0,
+            cost_per_qualified_leads: 0,
             ql_actual: 0,
+            cpql_actual: 0,
             meetings: 0,
+            cp_meetings: 0,
             deals: 0,
+            cost_per_deal: 0,
             revenue: 0,
-            company_revenue: 0,
             date: month,
-            cpl: 0,
+            cpl: leads > 0 ? budgetAed / leads : 0,
             sort_order: 1,
+            status: 'Active',
           });
-        }
-      } else {
-        formattedRows.push({
-          channel: 'Primary Plus leads',
-          level_1: project.District || 'Other',
-          level_2: project.Title,
-          level_3: null,
-          budget: Number(project.Budget || 0),
-          leads: Number(project.Leads || 0),
-          leads_pf: Number(project.Leads || 0),
-          leads_crm: 0,
-          leads_gap: 0,
-          no_answer_spam: 0,
-          qualified_leads: 0,
-          ql_actual: 0,
-          meetings: 0,
-          deals: 0,
-          revenue: 0,
-          company_revenue: 0,
-          date: dateInRange(project.CreatedAt || null) ? '-' : null,
-          cpl: 0,
-          sort_order: 1,
         });
+        return;
       }
-    }
 
-    const rows = formattedRows.filter((row) => row.date !== null);
+      if (!dateInRange(project.CreatedAt || null)) return;
 
-    rows.sort((a, b) => {
-      if (a.level_1 !== b.level_1) return a.level_1.localeCompare(b.level_1);
-      if (a.level_2 !== b.level_2) return a.level_2.localeCompare(b.level_2);
-      if (a.level_3 && b.level_3) return b.level_3.localeCompare(a.level_3);
+      const totalLeads = Number(project.Leads || 0);
+      const totalBudgetCredits = Number(project.Budget || 0);
+      const totalBudgetAed = totalBudgetCredits * CREDIT_TO_AED_RATE;
+
+      formattedRows.push({
+        channel: 'Primary Plus leads',
+        level_1: districtLabel,
+        level_2: projectLabel,
+        level_3: null,
+        budget: totalBudgetAed,
+        leads: totalLeads,
+        no_answer_spam: 0,
+        rate_answer: 0,
+        qualified_leads: 0,
+        cost_per_qualified_leads: 0,
+        ql_actual: 0,
+        cpql_actual: 0,
+        meetings: 0,
+        cp_meetings: 0,
+        deals: 0,
+        cost_per_deal: 0,
+        revenue: 0,
+        date: project.CreatedAt ? String(project.CreatedAt).slice(0, 10) : '-',
+        cpl: totalLeads > 0 ? totalBudgetAed / totalLeads : 0,
+        sort_order: 1,
+        status: 'Active',
+      });
+    });
+
+    formattedRows.sort((a, b) => {
+      if (a.level_1 !== b.level_1) return String(a.level_1).localeCompare(String(b.level_1));
+      if (a.level_2 !== b.level_2) return String(a.level_2).localeCompare(String(b.level_2));
+      if (a.level_3 && b.level_3) return String(b.level_3).localeCompare(String(a.level_3));
       return 0;
     });
 
-    return NextResponse.json({ success: true, data: rows });
-
+    return NextResponse.json({
+      success: true,
+      data: formattedRows,
+      meta: {
+        budgetUnit: 'AED',
+        creditToAedRate: CREDIT_TO_AED_RATE,
+      },
+    });
   } catch (error: any) {
     console.error('API ERROR (PF Projects):', error.message);
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
