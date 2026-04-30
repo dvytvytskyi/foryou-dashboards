@@ -34,6 +34,13 @@ jobs:
       - name: Save AMO Tokens
         run: echo '${{ secrets.AMO_TOKENS_JSON }}' > secrets/amo_tokens.json
 
+      - name: Refresh AMO Token
+        run: node scripts/kpi/refresh_amo_token.mjs
+        env:
+          AMO_DOMAIN: ${{ secrets.AMO_DOMAIN }}
+          AMO_CLIENT_ID: ${{ secrets.AMO_CLIENT_ID }}
+          AMO_CLIENT_SECRET: ${{ secrets.AMO_CLIENT_SECRET }}
+
       - name: Sync AMO channel leads raw
         run: node scripts/kpi/sync_amo_channel_leads_raw.mjs
 
