@@ -115,8 +115,9 @@ async function createUnifiedMarketingDrilldownDaily() {
                     WHEN a.pipeline_id = 10776450 THEN 'Klykov'
                         WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'${RED_STRICT_REGEX}') THEN 'RED'
                     WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'(property finder|property_finder|pf off-plan|pf offplan|primary plus|prian|bayut)') THEN 'Property Finder'
+                    WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'oman') THEN 'Facebook'
                     WHEN a.pipeline_id = 8696950
-                        AND REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'(oman|target point|facebook)') THEN 'Facebook'
+                        AND REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'(target point|facebook)') THEN 'Facebook'
                     WHEN a.pipeline_id = 8600274
                          OR a.client_type_enum_id = 695223
                          OR REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'(partner|партнер)') THEN 'Partners leads'
@@ -124,8 +125,9 @@ async function createUnifiedMarketingDrilldownDaily() {
                     WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'(klykov leads|klykov)') THEN 'Klykov'
                         WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'${RED_STRICT_REGEX}') THEN 'RED'
                     WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'(property finder|property_finder|pf off-plan|pf offplan|primary plus|prian|bayut)') THEN 'Property Finder'
+                    WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'oman') THEN 'Facebook'
                     WHEN a.pipeline_id = 8696950
-                        AND REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'(oman|target point|facebook)') THEN 'Facebook'
+                        AND REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'(target point|facebook)') THEN 'Facebook'
                     WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'(partner|партнер)') THEN 'Partners leads'
                     WHEN TRIM(COALESCE(a.tags_text, '')) != '' THEN 'Own leads'
                     ELSE 'ETC'
