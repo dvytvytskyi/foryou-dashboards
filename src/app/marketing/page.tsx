@@ -4,7 +4,7 @@ import DashboardPage, { MARKETING_COLUMNS } from '@/components/DashboardPage';
 import MarketingFilters from '@/components/dashboard/filters/MarketingFilters';
 
 // Partners leads are shown in the separate section below — exclude from main table
-const MAIN_CHANNELS = ['RED', 'Facebook', 'Klykov', 'Website', 'Own leads'];
+const MAIN_CHANNELS = ['RED', 'Facebook', 'Klykov', 'Website', 'ЮрийНедвижБош', 'Own leads'];
 
 export default function MarketingPage() {
   return (

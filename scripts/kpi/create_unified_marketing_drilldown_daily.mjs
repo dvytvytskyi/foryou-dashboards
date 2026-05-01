@@ -140,6 +140,9 @@ async function createUnifiedMarketingDrilldownDaily() {
                     -- Facebook
                     WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'(oman|target point|facebook)') THEN 'Facebook'
                     WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'(oman|target point|facebook)') THEN 'Facebook'
+                    -- ЮрийНедвижБош
+                    WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'недвижбош') THEN 'ЮрийНедвижБош'
+                    WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'недвижбош') THEN 'ЮрийНедвижБош'
                     -- RE pipeline: has source/tags → Own leads; no source/tags → ETC (same as before)
                     WHEN a.pipeline_id = 8696950
                          AND (TRIM(COALESCE(a.source_label, '')) != ''
@@ -236,6 +239,7 @@ async function createUnifiedMarketingDrilldownDaily() {
                     WHEN REGEXP_CONTAINS(LOWER(source), r'(oman|target point)') THEN 'Facebook'
                     WHEN REGEXP_CONTAINS(LOWER(source), r'(property finder|property_finder|pf off-plan|pf offplan|primary plus|prian|bayut)') THEN 'Property Finder'
                     WHEN REGEXP_CONTAINS(LOWER(source), r'partner|партнер') THEN 'Partners leads'
+                    WHEN REGEXP_CONTAINS(LOWER(source), r'недвижбош') THEN 'ЮрийНедвижБош'
                     WHEN REGEXP_CONTAINS(LOWER(source), r'(website|youtube|wz|gulnoza|artem|личн|serenia|horizon)') THEN 'Own leads'
                     ELSE 'ETC'
                 END AS channel,
@@ -252,6 +256,7 @@ async function createUnifiedMarketingDrilldownDaily() {
                     WHEN REGEXP_CONTAINS(LOWER(source), r'(oman|target point)') THEN 'Facebook'
                     WHEN REGEXP_CONTAINS(LOWER(source), r'(property finder|property_finder|pf off-plan|pf offplan|primary plus|prian|bayut)') THEN 'Property Finder'
                     WHEN REGEXP_CONTAINS(LOWER(source), r'partner|партнер') THEN 'Partners leads'
+                    WHEN REGEXP_CONTAINS(LOWER(source), r'недвижбош') THEN 'ЮрийНедвижБош'
                     WHEN REGEXP_CONTAINS(LOWER(source), r'(website|youtube|wz|gulnoza|artem|личн|serenia|horizon)') THEN 'Own leads'
                     ELSE 'ETC'
                 END AS channel,
