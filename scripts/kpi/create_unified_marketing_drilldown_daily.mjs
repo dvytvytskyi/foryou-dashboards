@@ -84,6 +84,16 @@ async function createUnifiedMarketingDrilldownDaily() {
         red_lead_ids AS (
             SELECT DISTINCT lead_id FROM latest_red
         ),
+        -- Original pipeline at lead creation (for Klykov: leads move after intake but must keep channel attribution)
+        first_pipeline AS (
+            SELECT lead_id, pipeline_id AS original_pipeline_id
+            FROM (
+                SELECT lead_id, pipeline_id,
+                    ROW_NUMBER() OVER (PARTITION BY lead_id ORDER BY created_at ASC, updated_at ASC) AS row_num
+                FROM \`${PROJECT_ID}.${DATASET_ID}.amo_channel_leads_raw\`
+            )
+            WHERE row_num = 1
+        ),
         red_base AS (
             SELECT
                 r.report_date,
@@ -112,9 +122,9 @@ async function createUnifiedMarketingDrilldownDaily() {
             SELECT
                 DATE(a.created_at) AS report_date,
                 CASE
-                    -- Klykov pipeline: always Klykov (unless RED tag/source — already excluded via red_lead_ids)
-                    WHEN a.pipeline_id = 10776450 THEN 'Klykov'
-                    -- RED by source/tag label (shouldn't happen since red_lead_ids excluded, but safety net)
+                    -- Klykov pipeline: use ORIGINAL pipeline (leads move after intake but attribution stays)
+                    WHEN fp.original_pipeline_id = 10776450 THEN 'Klykov'
+                    -- RED by source/tag label (safety net — should be excluded via red_lead_ids)
                     WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'${RED_STRICT_REGEX}') THEN 'RED'
                     WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'${RED_STRICT_REGEX}') THEN 'RED'
                     -- Facebook
@@ -136,20 +146,20 @@ async function createUnifiedMarketingDrilldownDaily() {
                    m.date_res,
                    m.date_won
             FROM latest_amo a
+            LEFT JOIN first_pipeline fp USING (lead_id)
             LEFT JOIN latest_loss l USING (lead_id)
             LEFT JOIN \`${PROJECT_ID}.${DATASET_ID}.milestones\` m
                 ON CAST(a.lead_id AS STRING) = m.deal_id
             LEFT JOIN red_lead_ids red
                 ON a.lead_id = red.lead_id
             WHERE red.lead_id IS NULL
-              -- Only RE pipeline (8696950) and Klykov pipeline (10776450)
-              AND a.pipeline_id IN (8696950, 10776450)
+              -- Include leads originally in Klykov pipeline OR currently in RE pipeline
+              AND (fp.original_pipeline_id = 10776450 OR a.pipeline_id = 8696950)
               -- Partners pipeline handled separately in partners_drilldown_daily
-              AND NOT (
-                a.pipeline_id = 8600274
-                OR a.client_type_enum_id = 695223
-                OR REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'(partner|партнер)')
-              )
+              -- NOTE: use explicit != conditions to avoid NOT(NULL) = NULL issue with nullable columns
+              AND a.pipeline_id != 8600274
+              AND COALESCE(a.client_type_enum_id, 0) != 695223
+              AND NOT REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'(partner|партнер)')
         ),
         all_leads AS (
             SELECT * FROM red_base
