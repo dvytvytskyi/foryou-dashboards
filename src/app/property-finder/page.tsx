@@ -52,10 +52,13 @@ export default function PropertyFinderPage() {
     return { startDate: '2026-01-01', endDate: today };
   });
 
-  const nestedPartnerApiUrl = `/api/pf-listings?group=Partner&view=amo-category-summary&startDate=2026-01-01&endDate=2026-12-31`;
-
   const ourApiUrl = useMemo(
     () => `/api/pf-listings?group=Our&startDate=${encodeURIComponent(dateRange.startDate)}&endDate=${encodeURIComponent(dateRange.endDate)}`,
+    [dateRange.startDate, dateRange.endDate],
+  );
+
+  const partnerApiUrl = useMemo(
+    () => `/api/pf-listings?group=Partner&startDate=${encodeURIComponent(dateRange.startDate)}&endDate=${encodeURIComponent(dateRange.endDate)}`,
     [dateRange.startDate, dateRange.endDate],
   );
 
@@ -91,9 +94,9 @@ export default function PropertyFinderPage() {
           hideSourceFilter={true}
           firstColumnLabel="Listings"
           customColumns={PF_COLUMNS}
-          apiUrl={nestedPartnerApiUrl}
+          apiUrl={partnerApiUrl}
           maxDrilldownLevel={3}
-          initialExpanded={['Sell', 'Rent', 'Commercial Sell', 'Commercial Rent']}
+          initialExpanded={[]}
           tableMinWidth="100%"
           defaultChannelWidth={400}
           externalThemeMode={syncTheme}
@@ -121,3 +124,4 @@ export default function PropertyFinderPage() {
     </DashboardPage>
   );
 }
+

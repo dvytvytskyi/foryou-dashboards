@@ -351,6 +351,7 @@ export default function DashboardPage({
   sidebarSections,
   sidebarMinimal = false,
   showDataStatus = false,
+  defaultStartDate,
 }: { 
   extraContent?: React.ReactNode, 
   initialSourceFilter?: SourceFilter,
@@ -386,6 +387,7 @@ export default function DashboardPage({
   sidebarSections?: Array<{ title: string; items: Array<{ label: string; icon: any; href?: string }> }>;
   sidebarMinimal?: boolean;
   showDataStatus?: boolean;
+  defaultStartDate?: string;
 }) {
   const activeColumns = useMemo(() => {
     const base = customColumns || MARKETING_COLUMNS;
@@ -407,7 +409,7 @@ export default function DashboardPage({
   const currency = externalCurrency || internalCurrency;
   const setCurrency = externalSetCurrency || setInternalCurrency;
   const [startDate, setStartDate] = useState(() => {
-    if (isNested) return '2026-01-01';
+    if (isNested) return defaultStartDate || '2026-01-01';
     try {
       const saved = localStorage.getItem('dashboard-startDate');
       // Ignore any saved date before 2026
@@ -1028,12 +1030,19 @@ export default function DashboardPage({
         level1Map.get(l1)!.push(r);
       });
 
-      // Sort drilldown rows by leads descending
-      const sortedLevel1 = Array.from(level1Map.entries()).sort((a, b) => {
-        const tA = aggregateRows(a[1], channel, 0);
-        const tB = aggregateRows(b[1], channel, 0);
-        return tB.leads - tA.leads || tB.no_answer_spam - tA.no_answer_spam || a[0].localeCompare(b[0]);
-      });
+      // Sort drilldown rows by active sort column (or leads desc as fallback)
+      const sortDetailEntries = <T extends [string, Row[]]>(entries: T[]): T[] => {
+        if (sortKey === 'channel') return entries;
+        return [...entries].sort((a, b) => {
+          const tA = aggregateRows(a[1], channel, 0);
+          const tB = aggregateRows(b[1], channel, 0);
+          const av = Number((tA as any)[sortKey] ?? 0);
+          const bv = Number((tB as any)[sortKey] ?? 0);
+          if (av !== bv) return sortDirection === 'asc' ? av - bv : bv - av;
+          return a[0].localeCompare(b[0]);
+        });
+      };
+      const sortedLevel1 = sortDetailEntries(Array.from(level1Map.entries()));
 
       for (const [l1Label, l1Rows] of sortedLevel1) {
         const level1Key = `${channel}|${l1Label}`;
@@ -1058,7 +1067,8 @@ export default function DashboardPage({
 
         if (maxDrilldownLevel < 2 || !expandedDetails[level1Key]) continue;
 
-        for (const [l2Label, l2Rows] of level2Map.entries()) {
+        const sortedLevel2 = sortDetailEntries(Array.from(level2Map.entries()));
+        for (const [l2Label, l2Rows] of sortedLevel2) {
           const level2Key = `${level1Key}|${l2Label}`;
 
           const level3Map = new Map<string, Row[]>();
@@ -1081,7 +1091,8 @@ export default function DashboardPage({
 
           if (maxDrilldownLevel < 3 || !expandedDetails[level2Key]) continue;
 
-          for (const [l3Label, l3Rows] of level3Map.entries()) {
+          const sortedLevel3 = sortDetailEntries(Array.from(level3Map.entries()));
+          for (const [l3Label, l3Rows] of sortedLevel3) {
             const level3Key = `${level2Key}|${l3Label}`;
 
             const level4Map = new Map<string, Row[]>();

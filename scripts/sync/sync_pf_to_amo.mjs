@@ -11,15 +11,17 @@ const SOURCE_FIELD_ID = Number(process.env.AMO_SOURCE_FIELD_ID || 703131);
 const COMMENT_FIELD_ID = Number(process.env.AMO_COMMENT_FIELD_ID || 1343875);
 
 const PF_FIELD_LEAD_ID = Number(process.env.AMO_PF_FIELD_LEAD_ID || 1516909);
-const PF_FIELD_LISTING_REF = Number(process.env.AMO_PF_FIELD_LISTING_REF || 1516911);
+const PF_FIELD_LISTING_REF = Number(process.env.AMO_PF_FIELD_LISTING_REF || 1526392);
+const PF_FIELD_LISTING_ID = Number(process.env.AMO_PF_FIELD_LISTING_ID || 1526388);
+const PF_FIELD_LISTING_URL = Number(process.env.AMO_PF_FIELD_LISTING_URL || 1526390);
+const PF_FIELD_CHANNEL_TYPE = Number(process.env.AMO_PF_FIELD_CHANNEL_TYPE || 1450527);
 const PF_FIELD_CATEGORY = Number(process.env.AMO_PF_FIELD_CATEGORY || 1516913);
-const PF_FIELD_CHANNEL_TYPE = Number(process.env.AMO_PF_FIELD_CHANNEL_TYPE || 1516915);
 const PF_FIELD_STATUS = Number(process.env.AMO_PF_FIELD_STATUS || 1516917);
-const PF_FIELD_LISTING_URL = Number(process.env.AMO_PF_FIELD_LISTING_URL || 1516919);
 
 const LOOKBACK_HOURS = Number(process.env.PF_TO_AMO_LOOKBACK_HOURS || 24);
 const MAX_PAGES = Number(process.env.PF_TO_AMO_MAX_PAGES || 40);
 const MAX_PER_RUN = Number(process.env.PF_TO_AMO_MAX_PER_RUN || 75);
+const DRY_RUN = process.env.PF_TO_AMO_DRY_RUN === '1' || process.argv.includes('--dry-run');
 
 function getConnectionString() {
   if (process.env.POSTGRES_URL) return process.env.POSTGRES_URL;
@@ -252,16 +254,34 @@ function pickPhone(lead) {
   return normalizePhone(phone?.value || '');
 }
 
+function isProjectLead(pfLead) {
+  return String(pfLead?.entityType || '').toLowerCase() === 'project';
+}
+
 function buildPfListingUrl(pfLead) {
+  if (isProjectLead(pfLead)) {
+    const projectId = String(pfLead?.project?.id || '').trim();
+    if (projectId) return `https://www.propertyfinder.ae/en/new-developments/project/${encodeURIComponent(projectId)}`;
+    return '';
+  }
   const listingRef = String(pfLead?.listing?.reference || '').trim();
   const listingId = String(pfLead?.listing?.id || '').trim();
-  if (listingRef) {
-    return `https://www.propertyfinder.ae/en/search?q=${encodeURIComponent(listingRef)}`;
-  }
-  if (listingId) {
-    return `https://www.propertyfinder.ae/en/search?q=${encodeURIComponent(listingId)}`;
-  }
+  if (listingRef) return `https://www.propertyfinder.ae/en/search?q=${encodeURIComponent(listingRef)}`;
+  if (listingId) return `https://www.propertyfinder.ae/en/search?q=${encodeURIComponent(listingId)}`;
   return '';
+}
+
+async function lookupProjectTitle(client, projectId) {
+  if (!projectId) return null;
+  try {
+    const res = await client.query(
+      `SELECT title FROM pf_projects_snapshot WHERE project_id = $1 LIMIT 1`,
+      [String(projectId)],
+    );
+    return res.rows[0]?.title || null;
+  } catch {
+    return null;
+  }
 }
 
 async function getPropertyFinderSourceEnumId(client) {
@@ -280,20 +300,28 @@ async function getPropertyFinderSourceEnumId(client) {
   return found?.id ? Number(found.id) : null;
 }
 
-function buildLeadPayload(pfLead, sourceEnumId) {
+function buildLeadPayload(pfLead, sourceEnumId, projectTitle) {
   const pfLeadId = String(pfLead?.id || '').trim();
   const senderName = String(pfLead?.sender?.name || '').trim();
   const phone = pickPhone(pfLead);
-  const listingId = pfLead?.listing?.id ? String(pfLead.listing.id) : '';
-  const listingRef = pfLead?.listing?.reference ? String(pfLead.listing.reference) : '';
-  const listingUrl = buildPfListingUrl(pfLead);
   const channelType = String(pfLead?.channel || pfLead?.type || '').trim();
   const pfStatus = String(pfLead?.status || '').trim();
   const pfCategory = String(pfLead?.entityType || '').trim() || 'listing';
+  const listingUrl = buildPfListingUrl(pfLead);
+  const isPrimPlus = isProjectLead(pfLead);
+
+  // For project leads use project.id as the reference identifier
+  const listingId = isPrimPlus
+    ? String(pfLead?.project?.id || '').trim()
+    : (pfLead?.listing?.id ? String(pfLead.listing.id) : '');
+  const listingRef = isPrimPlus
+    ? String(pfLead?.project?.id || '').trim()
+    : (pfLead?.listing?.reference ? String(pfLead.listing.reference) : '');
 
   const customFields = [
     { field_id: PF_FIELD_LEAD_ID, values: [{ value: pfLeadId }] },
     { field_id: PF_FIELD_LISTING_REF, values: [{ value: listingRef || listingId || '' }] },
+    { field_id: PF_FIELD_LISTING_ID, values: [{ value: listingId || '' }] },
     { field_id: PF_FIELD_CATEGORY, values: [{ value: pfCategory }] },
     { field_id: PF_FIELD_CHANNEL_TYPE, values: [{ value: channelType }] },
     { field_id: PF_FIELD_STATUS, values: [{ value: pfStatus }] },
@@ -303,13 +331,13 @@ function buildLeadPayload(pfLead, sourceEnumId) {
       values: [
         {
           value: [
+            isPrimPlus ? 'Type: Primary Plus (Project Lead)' : 'Type: Listing Lead',
             `PF Lead ID: ${pfLeadId}`,
             `Name: ${senderName || '-'}`,
             `Phone: ${phone || '-'}`,
-            `Listing ID: ${listingId || '-'}`,
-            `Listing Ref: ${listingRef || '-'}`,
-            `Listing URL: ${listingUrl || '-'}`,
-            `Category: ${pfCategory || '-'}`,
+            isPrimPlus ? `Project ID: ${listingId || '-'}` : `Listing ID: ${listingId || '-'}`,
+            isPrimPlus ? `Project Title: ${projectTitle || '-'}` : `Listing Ref: ${listingRef || '-'}`,
+            `URL: ${listingUrl || '-'}`,
             `Channel: ${channelType || '-'}`,
             `Status: ${pfStatus || '-'}`,
             `CreatedAt: ${pfLead?.createdAt || '-'}`,
@@ -324,7 +352,7 @@ function buildLeadPayload(pfLead, sourceEnumId) {
   }
 
   const contact = {
-    first_name: senderName || 'PF Lead',
+    first_name: senderName || (isPrimPlus ? 'PP Lead' : 'PF Lead'),
     custom_fields_values: [],
   };
 
@@ -335,27 +363,48 @@ function buildLeadPayload(pfLead, sourceEnumId) {
     });
   }
 
-  const embeddedContacts = contact.custom_fields_values.length || contact.first_name
-    ? [contact]
-    : undefined;
+  // Email
+  const emailContact = (pfLead?.sender?.contacts || []).find(
+    (c) => String(c?.type || '').toLowerCase() === 'email',
+  );
+  if (emailContact?.value) {
+    contact.custom_fields_values.push({
+      field_code: 'EMAIL',
+      values: [{ value: String(emailContact.value).trim(), enum_code: 'WORK' }],
+    });
+  }
 
-  const leadName = `PF: ${senderName || 'Lead'}${listingRef ? ` | ${listingRef}` : ''}`;
+  const tags = [
+    { name: 'property-finder' },
+    ...(isPrimPlus ? [{ name: 'primary-plus' }] : []),
+  ];
+
+  const leadName = isPrimPlus
+    ? `PP: ${senderName || 'Lead'}${projectTitle ? ` | ${projectTitle}` : (listingId ? ` | ${listingId.slice(0, 8)}` : '')}`
+    : `PF: ${senderName || 'Lead'}${listingRef ? ` | ${listingRef}` : ''}`;
 
   const payload = {
     name: leadName,
     pipeline_id: Number(process.env.AMO_PF_PIPELINE_ID || 8696950),
+    created_at: Number.isFinite(Date.parse(pfLead?.createdAt || ''))
+      ? Math.floor(Date.parse(pfLead.createdAt) / 1000)
+      : undefined,
     custom_fields_values: customFields,
+    _embedded: {
+      contacts: [contact],
+      tags,
+    },
   };
-
-  if (embeddedContacts) {
-    payload._embedded = { contacts: embeddedContacts };
-  }
 
   return payload;
 }
 
 async function createAmoLead(client, pfLead, sourceEnumId) {
-  const body = [buildLeadPayload(pfLead, sourceEnumId)];
+  let projectTitle = null;
+  if (isProjectLead(pfLead) && pfLead?.project?.id) {
+    projectTitle = await lookupProjectTitle(client, pfLead.project.id);
+  }
+  const body = [buildLeadPayload(pfLead, sourceEnumId, projectTitle)];
   const res = await amoFetch(client, '/api/v4/leads/complex', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -401,6 +450,15 @@ async function markSynced(client, pfLeadId, amoLeadId, payload) {
   );
 }
 
+async function ensureProjectsSnapshotTableExists(client) {
+  // Silently check — table may not exist in all environments
+  try {
+    await client.query(`SELECT 1 FROM pf_projects_snapshot LIMIT 1`);
+  } catch {
+    // Table doesn't exist — lookupProjectTitle will gracefully return null
+  }
+}
+
 async function main() {
   const connectionString = getConnectionString();
   const sslMode = (process.env.POSTGRES_SSL_MODE || 'require').toLowerCase();
@@ -412,6 +470,9 @@ async function main() {
 
   await client.connect();
   await ensureTables(client);
+  await ensureProjectsSnapshotTableExists(client);
+
+  if (DRY_RUN) console.log('[PF->AMO] DRY RUN mode — no leads will be created in AMO');
 
   try {
     const sourceEnumId = await getPropertyFinderSourceEnumId(client);
@@ -427,6 +488,8 @@ async function main() {
     let created = 0;
     let skipped = 0;
     let failed = 0;
+    let listingLeads = 0;
+    let projectLeads = 0;
 
     for (const lead of candidates) {
       if (created >= MAX_PER_RUN) break;
@@ -437,14 +500,27 @@ async function main() {
         continue;
       }
 
+      const isPrimPlus = isProjectLead(lead);
+      if (isPrimPlus) projectLeads += 1; else listingLeads += 1;
+
+      if (DRY_RUN) {
+        const projectTitle = isPrimPlus ? await lookupProjectTitle(client, lead?.project?.id) : null;
+        console.log(`[DRY] ${isPrimPlus ? 'PP' : 'PF'} lead ${pfLeadId} | ${lead?.sender?.name || '-'} | ${isPrimPlus ? (projectTitle || lead?.project?.id || '-') : (lead?.listing?.reference || '-')} | channel=${lead?.channel}`);
+        created += 1;
+        continue;
+      }
+
       try {
         const amoLeadId = await createAmoLead(client, lead, sourceEnumId);
         await markSynced(client, pfLeadId, amoLeadId, {
           createdAt: lead.createdAt || null,
+          entityType: lead?.entityType || 'listing',
           listingRef: lead?.listing?.reference || null,
+          projectId: lead?.project?.id || null,
           channel: lead?.channel || lead?.type || null,
         });
         created += 1;
+        console.log(`[PF->AMO] Created AMO #${amoLeadId} from PF ${pfLeadId} (${isPrimPlus ? 'primary-plus' : 'listing'})`);
       } catch (err) {
         failed += 1;
         console.error(`[PF->AMO] Failed for PF lead ${pfLeadId}:`, err.message || err);
@@ -453,9 +529,12 @@ async function main() {
 
     console.log(JSON.stringify({
       success: true,
+      dryRun: DRY_RUN,
       lookbackHours: LOOKBACK_HOURS,
       fetched: recentPfLeads.length,
       candidates: candidates.length,
+      listingLeads,
+      projectLeads,
       created,
       skipped,
       failed,

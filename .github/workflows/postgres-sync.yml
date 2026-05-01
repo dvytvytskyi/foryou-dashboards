@@ -2,7 +2,7 @@ name: PostgreSQL Near-Realtime Sync
 
 on:
   schedule:
-    - cron: '*/10 * * * *' # every 10 minutes
+    - cron: '0 * * * *' # every hour
   workflow_dispatch:
 
 jobs:
@@ -33,8 +33,8 @@ jobs:
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_SSL_MODE: ${{ secrets.POSTGRES_SSL_MODE }}
 
-      - name: Sync Property Finder to PostgreSQL
-        run: npm run sync:pf:postgres
+      - name: Seed PF AMO leads from CSV to PostgreSQL
+        run: npm run sync:pf:amo:seed
         env:
           POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
           POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
@@ -43,8 +43,6 @@ jobs:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_SSL_MODE: ${{ secrets.POSTGRES_SSL_MODE }}
-          PF_API_KEY: ${{ secrets.PF_API_KEY }}
-          PF_API_SECRET: ${{ secrets.PF_API_SECRET }}
 
       - name: Sync Property Finder leads to amoCRM
         run: npm run sync:pf:amo
@@ -63,6 +61,19 @@ jobs:
           AMO_CLIENT_SECRET: ${{ secrets.AMO_CLIENT_SECRET }}
           AMO_REDIRECT_URI: ${{ secrets.AMO_REDIRECT_URI }}
           AMO_TOKENS_JSON: ${{ secrets.AMO_TOKENS_JSON }}
+
+      - name: Sync Property Finder to PostgreSQL
+        run: npm run sync:pf:postgres
+        env:
+          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_SSL_MODE: ${{ secrets.POSTGRES_SSL_MODE }}
+          PF_API_KEY: ${{ secrets.PF_API_KEY }}
+          PF_API_SECRET: ${{ secrets.PF_API_SECRET }}
 
       - name: Sync Property Finder AMO match stats
         run: npm run sync:pf:match:stats

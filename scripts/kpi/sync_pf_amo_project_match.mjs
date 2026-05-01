@@ -1,6 +1,10 @@
 /**
  * Matches PF Primary Plus leads (entityType=project from PF API)
- * with AMO CRM leads tagged "pf offplan" by phone number.
+ * with AMO CRM leads from PF integration by phone number.
+ *
+ * Historical leads source: data/cache/pf_amo_leads_csv.json
+ *   (generated from amocrm_export_leads_2026-05-01.csv via import_pf_amo_csv.mjs)
+ * Delta sync: AMO API queried only for leads created AFTER csv_last_lead_at.
  *
  * Output: data/cache/pf_amo_project_match.json
  * Shape:  { [projectId]: { crm_leads: N, crm_leads_by_month: { "2026-01": N } } }
@@ -17,14 +21,17 @@ const PF_API_URL = 'https://atlas.propertyfinder.com/v1';
 const AMO_DOMAIN = process.env.AMO_DOMAIN || 'reforyou.amocrm.ru';
 const TOKENS_FILE = path.resolve(ROOT, 'secrets/amo_tokens.json');
 const OUT_FILE = path.resolve(ROOT, 'data/cache/pf_amo_project_match.json');
+const CSV_CACHE_FILE = path.resolve(ROOT, 'data/cache/pf_amo_leads_csv.json');
 
-const PF_OFFPLAN_SIGNALS = ['pf offplan', 'pf off-plan', 'pf off plan', 'primary plus'];
+const AMO_SOURCE_FIELD_ID = Number(process.env.AMO_SOURCE_FIELD_ID || 703131); // "Источник"
+const AMO_PF_SOURCE_ENUM_ID = Number(process.env.AMO_PF_SOURCE_ENUM_ID || 695183); // "Property finder"
+const AMO_RE_PIPELINE_ID = Number(process.env.AMO_PF_PIPELINE_ID || 8696950);
 
 // AMO status ID classification (mirrors sync_pf_amo_match_stats.mjs)
 const SPAM_STATUS = 143;
 const QUALIFIED_STATUSES = new Set([
   70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586,
-  74717798, 74717802, 70457490, 82310010, 142,
+  74717798, 74717802, 70457490, 82310010, 142, 143,
 ]);
 const QL_ACTUAL_STATUSES = new Set([70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586]);
 const MEETING_STATUSES = new Set([142, 70457474, 70457478, 70457482, 70457486, 70757586]);
@@ -45,9 +52,30 @@ function monthKey(dateStr) {
   return /^\d{4}-\d{2}$/.test(s) ? s : null;
 }
 
-function isPfOffplan(tags = []) {
-  const normalized = tags.map((t) => String(t?.name || t || '').toLowerCase().trim());
-  return normalized.some((tag) => PF_OFFPLAN_SIGNALS.some((s) => tag.includes(s)));
+function hasPfSourceEnum(lead) {
+  const sourceField = (lead?.custom_fields_values || []).find(
+    (f) => Number(f?.field_id) === AMO_SOURCE_FIELD_ID,
+  );
+  if (!sourceField) return false;
+  return (sourceField.values || []).some((v) => Number(v?.enum_id) === AMO_PF_SOURCE_ENUM_ID);
+}
+
+// ── CSV historical cache ─────────────────────────────────────────────────────
+
+/**
+ * Load historical AMO leads from CSV cache (data/cache/pf_amo_leads_csv.json).
+ * Returns { leads: NormalizedLead[], csvLastLeadAt: number|null }
+ *
+ * NormalizedLead = { id, created_at, created_month, phones[], isSpam, isQualified,
+ *                    isQlActual, isMeeting, isDeal }
+ */
+function loadCsvCache() {
+  if (!fs.existsSync(CSV_CACHE_FILE)) return { leads: [], csvLastLeadAt: null };
+  const raw = JSON.parse(fs.readFileSync(CSV_CACHE_FILE, 'utf8'));
+  return {
+    leads: raw.leads || [],
+    csvLastLeadAt: raw.csv_last_lead_at || null,
+  };
 }
 
 // ── PF API ──────────────────────────────────────────────────────────────────
@@ -101,20 +129,24 @@ async function amoGet(url, token) {
   return res.json();
 }
 
-async function fetchAllAmoLeadsWithTag(token) {
-  // Fetch from RE pipeline with contacts embedded
-  const RE_PIPELINE = 8696950;
+/**
+ * Fetch AMO leads from the RE pipeline that:
+ *  - have PF source enum
+ *  - were created AFTER deltaFromTs (to avoid re-fetching CSV leads)
+ */
+async function fetchDeltaAmoLeads(token, deltaFromTs) {
   const all = [];
   let page = 1;
+  // AMO filter[created_at][from] = unix timestamp
+  const fromParam = deltaFromTs ? `&filter[created_at][from]=${deltaFromTs}` : '';
   while (true) {
-    process.stdout.write(`  AMO leads page ${page} (${all.length} loaded)\r`);
-    const url = `https://${AMO_DOMAIN}/api/v4/leads?filter[pipeline_id]=${RE_PIPELINE}&limit=250&page=${page}&with=tags,contacts`;
+    process.stdout.write(`  AMO delta page ${page} (${all.length} loaded)\r`);
+    const url = `https://${AMO_DOMAIN}/api/v4/leads?filter[pipeline_id]=${AMO_RE_PIPELINE_ID}&limit=250&page=${page}&with=contacts${fromParam}`;
     const data = await amoGet(url, token);
     const rows = data?._embedded?.leads || [];
     if (!rows.length) break;
-    // filter pf offplan tag
-    const tagged = rows.filter((l) => isPfOffplan(l._embedded?.tags || []));
-    all.push(...tagged);
+    const pfLeads = rows.filter((l) => hasPfSourceEnum(l));
+    all.push(...pfLeads);
     if (rows.length < 250) break;
     page += 1;
   }
@@ -180,85 +212,113 @@ async function main() {
   }
   console.log(`    Unique phones in PF: ${phoneToProjectIds.size}`);
 
-  // 2. AMO leads with pf offplan tag → phones
-  console.log('\n[2] Fetching AMO leads with "pf offplan" tag...');
+  // 2. Load historical leads from CSV cache
+  console.log('\n[2] Loading historical leads from CSV cache...');
+  const { leads: csvLeads, csvLastLeadAt } = loadCsvCache();
+  console.log(`    Loaded ${csvLeads.length} historical leads from CSV (last: ${csvLastLeadAt ? new Date(csvLastLeadAt * 1000).toISOString() : 'n/a'})`);
+
+  // 3. Fetch new AMO leads created AFTER the CSV export cutoff
+  // Add a small overlap buffer (60s) to avoid missing leads at boundary
+  const deltaFromTs = csvLastLeadAt ? csvLastLeadAt - 60 : null;
   const amoToken = getAmoToken();
-  const amoLeads = await fetchAllAmoLeadsWithTag(amoToken);
-  console.log(`    Found ${amoLeads.length} AMO leads with pf offplan tag`);
+  let deltaLeads = [];
+  if (deltaFromTs) {
+    console.log(`\n[3] Fetching AMO delta leads after ${new Date(deltaFromTs * 1000).toISOString()}...`);
+    deltaLeads = await fetchDeltaAmoLeads(amoToken, deltaFromTs);
+    console.log(`    Found ${deltaLeads.length} new AMO leads since CSV export`);
+  } else {
+    console.log('\n[3] No CSV cache cutoff — skipping AMO delta fetch');
+  }
 
-  const allContactIds = [
-    ...new Set(
-      amoLeads
-        .flatMap((l) => (l._embedded?.contacts || []).map((c) => Number(c.id)))
-        .filter((id) => id > 0),
-    ),
-  ];
-  console.log(`\n[3] Fetching ${allContactIds.length} AMO contact phone numbers...`);
-  const contactPhones = await fetchAmoContactPhones(allContactIds, amoToken);
-  console.log(`    Contacts with phones: ${contactPhones.size}`);
+  // Fetch phones for delta AMO leads (CSV leads already have phones)
+  let contactPhones = new Map();
+  if (deltaLeads.length > 0) {
+    const allContactIds = [
+      ...new Set(
+        deltaLeads
+          .flatMap((l) => (l._embedded?.contacts || []).map((c) => Number(c.id)))
+          .filter((id) => id > 0),
+      ),
+    ];
+    console.log(`    Fetching ${allContactIds.length} contact phones for delta leads...`);
+    contactPhones = await fetchAmoContactPhones(allContactIds, amoToken);
+    console.log(`    Contacts with phones: ${contactPhones.size}`);
+  }
 
-  // 3. Match by phone → accumulate per projectId
+  // 4. Match by phone → accumulate per projectId
   console.log('\n[4] Matching...');
-  // projectId → { crm_leads, spam, qualified_leads, ql_actual, meetings, deals, crm_leads_by_month }
   const result = {};
   let totalMatched = 0;
 
-  for (const amoLead of amoLeads) {
-    const cids = (amoLead._embedded?.contacts || []).map((c) => Number(c.id)).filter(Boolean);
-    const createdMonth = monthKey(new Date(amoLead.created_at * 1000).toISOString());
-    const statusId = Number(amoLead.status_id || 0);
-
-    const isSpam = statusId === SPAM_STATUS;
-    const isQualified = QUALIFIED_STATUSES.has(statusId);
-    const isQlActual = QL_ACTUAL_STATUSES.has(statusId);
-    const isMeeting = MEETING_STATUSES.has(statusId);
-    const isDeal = DEAL_STATUSES.has(statusId);
-
+  function accumulateLead(phones, createdMonth, isSpam, isQualified, isQlActual, isMeeting, isDeal) {
     let matched = false;
-    for (const cid of cids) {
-      for (const phone of contactPhones.get(cid) || []) {
-        const projectIds = phoneToProjectIds.get(phone);
-        if (!projectIds) continue;
-        for (const pid of projectIds) {
-          if (!result[pid]) result[pid] = {
-            crm_leads: 0,
-            spam: 0,
-            qualified_leads: 0,
-            ql_actual: 0,
-            meetings: 0,
-            deals: 0,
-            crm_leads_by_month: {},
-            spam_by_month: {},
-            qualified_leads_by_month: {},
-            ql_actual_by_month: {},
-            meetings_by_month: {},
-            deals_by_month: {},
-          };
-          if (!matched) {
-            const r = result[pid];
-            const month = createdMonth || phoneToMonth.get(phone) || 'unknown';
-            r.crm_leads += 1;
-            r.crm_leads_by_month[month] = (r.crm_leads_by_month[month] || 0) + 1;
-            if (isSpam) { r.spam += 1; r.spam_by_month[month] = (r.spam_by_month[month] || 0) + 1; }
-            if (isQualified) { r.qualified_leads += 1; r.qualified_leads_by_month[month] = (r.qualified_leads_by_month[month] || 0) + 1; }
-            if (isQlActual) { r.ql_actual += 1; r.ql_actual_by_month[month] = (r.ql_actual_by_month[month] || 0) + 1; }
-            if (isMeeting) { r.meetings += 1; r.meetings_by_month[month] = (r.meetings_by_month[month] || 0) + 1; }
-            if (isDeal) { r.deals += 1; r.deals_by_month[month] = (r.deals_by_month[month] || 0) + 1; }
-            matched = true;
-            totalMatched += 1;
-          }
+    for (const phone of phones) {
+      const projectIds = phoneToProjectIds.get(phone);
+      if (!projectIds) continue;
+      for (const pid of projectIds) {
+        if (!result[pid]) result[pid] = {
+          crm_leads: 0, spam: 0, qualified_leads: 0, ql_actual: 0, meetings: 0, deals: 0,
+          crm_leads_by_month: {}, spam_by_month: {}, qualified_leads_by_month: {},
+          ql_actual_by_month: {}, meetings_by_month: {}, deals_by_month: {},
+        };
+        if (!matched) {
+          const r = result[pid];
+          const month = createdMonth || phoneToMonth.get(phone) || 'unknown';
+          r.crm_leads += 1;
+          r.crm_leads_by_month[month] = (r.crm_leads_by_month[month] || 0) + 1;
+          if (isSpam) { r.spam += 1; r.spam_by_month[month] = (r.spam_by_month[month] || 0) + 1; }
+          if (isQualified) { r.qualified_leads += 1; r.qualified_leads_by_month[month] = (r.qualified_leads_by_month[month] || 0) + 1; }
+          if (isQlActual) { r.ql_actual += 1; r.ql_actual_by_month[month] = (r.ql_actual_by_month[month] || 0) + 1; }
+          if (isMeeting) { r.meetings += 1; r.meetings_by_month[month] = (r.meetings_by_month[month] || 0) + 1; }
+          if (isDeal) { r.deals += 1; r.deals_by_month[month] = (r.deals_by_month[month] || 0) + 1; }
+          matched = true;
+          totalMatched += 1;
         }
       }
     }
   }
 
-  console.log(`    Matched AMO leads: ${totalMatched} across ${Object.keys(result).length} projects`);
+  // 4a. Match CSV historical leads (phones already normalized)
+  for (const lead of csvLeads) {
+    accumulateLead(
+      lead.phones,
+      lead.created_month,
+      lead.isSpam,
+      lead.isQualified,
+      lead.isQlActual,
+      lead.isMeeting,
+      lead.isDeal,
+    );
+  }
 
-  // 4. Save
+  // 4b. Match AMO delta leads (phones via contacts API)
+  for (const amoLead of deltaLeads) {
+    const cids = (amoLead._embedded?.contacts || []).map((c) => Number(c.id)).filter(Boolean);
+    const phones = [...new Set(
+      cids.flatMap((cid) => contactPhones.get(cid) || []),
+    )];
+    const createdMonth = monthKey(new Date(amoLead.created_at * 1000).toISOString());
+    const statusId = Number(amoLead.status_id || 0);
+    accumulateLead(
+      phones,
+      createdMonth,
+      statusId === SPAM_STATUS,
+      QUALIFIED_STATUSES.has(statusId),
+      QL_ACTUAL_STATUSES.has(statusId),
+      MEETING_STATUSES.has(statusId),
+      DEAL_STATUSES.has(statusId),
+    );
+  }
+
+  console.log(`    Matched leads: ${totalMatched} across ${Object.keys(result).length} projects (${csvLeads.length} historical + ${deltaLeads.length} delta)`);
+
+  // 5. Save
   fs.mkdirSync(path.dirname(OUT_FILE), { recursive: true });
   const output = {
     generatedAt: new Date().toISOString(),
-    totalAmoLeads: amoLeads.length,
+    totalAmoLeads: csvLeads.length + deltaLeads.length,
+    historicalLeads: csvLeads.length,
+    deltaLeads: deltaLeads.length,
     totalPfLeads: pfLeads.length,
     matchedAmoLeads: totalMatched,
     matchedProjects: Object.keys(result).length,

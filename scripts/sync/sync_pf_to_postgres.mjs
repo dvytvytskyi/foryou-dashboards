@@ -9,6 +9,7 @@ const __dirname = path.dirname(__filename);
 
 const API_URL = 'https://atlas.propertyfinder.com/v1';
 const PF_CREDITS_TX_TYPE = 'credits';
+const EXCLUDED_GROUPS = new Set(['Partner', 'AbuDhabi']);
 
 // Load broker permits mapping (full details)
 let brokerPermitsList = [];
@@ -263,6 +264,74 @@ function buildListingLeadMaps(leads) {
   return { byListingId, byListingRef, detailsByKey, listingWithoutKeyCount };
 }
 
+function normalizeListingRef(value) {
+  const ref = String(value || '').trim();
+  if (!ref || ref === '-') return null;
+  return ref.replace(/\/+$/, '');
+}
+
+function monthFromSyncPayload(payload, syncedAt) {
+  const monthDirect = String(payload?.created_month || '').trim();
+  if (/^\d{4}-\d{2}$/.test(monthDirect)) return monthDirect;
+
+  const createdAtIso = String(payload?.createdAt || payload?.created_at_iso || '').trim();
+  if (createdAtIso.length >= 7) {
+    const monthIso = createdAtIso.slice(0, 7);
+    if (/^\d{4}-\d{2}$/.test(monthIso)) return monthIso;
+  }
+
+  const createdAtUnix = Number(payload?.created_at || 0);
+  if (Number.isFinite(createdAtUnix) && createdAtUnix > 0) {
+    return new Date(createdAtUnix * 1000).toISOString().slice(0, 7);
+  }
+
+  if (syncedAt) {
+    const fallback = String(syncedAt).slice(0, 7);
+    if (/^\d{4}-\d{2}$/.test(fallback)) return fallback;
+  }
+
+  return null;
+}
+
+async function loadOurListingLeadsFromSyncState(client) {
+  const { rows } = await client.query(
+    `
+      SELECT payload, synced_at
+      FROM pf_amo_sync_state
+      WHERE amo_lead_id IS NOT NULL
+    `,
+  );
+
+  const byRef = new Map();
+  const noRefByMonth = {};
+  let noRefTotal = 0;
+  let noRefRows = 0;
+
+  for (const row of rows) {
+    const payload = row?.payload || {};
+    const ref = normalizeListingRef(payload?.pf_listing_ref || payload?.listingRef || payload?.listing_ref || '');
+    const leadWeight = Math.max(1, Number(payload?.duplicate_count || 1));
+
+    const month = monthFromSyncPayload(payload, row?.synced_at);
+
+    if (!ref) {
+      noRefTotal += leadWeight;
+      noRefRows += leadWeight;
+      if (month) noRefByMonth[month] = (noRefByMonth[month] || 0) + leadWeight;
+      continue;
+    }
+
+    if (!byRef.has(ref)) {
+      byRef.set(ref, { total: 0, byMonth: {} });
+    }
+    const agg = byRef.get(ref);
+    agg.total += leadWeight;
+    if (month) agg.byMonth[month] = (agg.byMonth[month] || 0) + leadWeight;
+  }
+
+  return { byRef, noRefTotal, noRefByMonth, noRefRows };
+}
+
 function aggregateCredits(txs) {
   const byReferenceTotal = {};
   const byReferenceMonth = {};
@@ -453,8 +522,11 @@ async function main() {
 
     const { byReferenceTotal, byReferenceMonth } = aggregateCredits(credits);
     const projectCreditsById = aggregateProjectCredits(credits);
-    const { byListingId, byListingRef, detailsByKey, listingWithoutKeyCount } = buildListingLeadMaps(leads);
-    const knownListingKeys = new Set();
+    const { byRef: ourLeadsByRef, noRefTotal, noRefByMonth, noRefRows } = await loadOurListingLeadsFromSyncState(client);
+    const knownListingRefs = new Set();
+
+    const purgeRes = await client.query(`DELETE FROM pf_listings_snapshot`);
+    const purgedExcludedRows = Number(purgeRes.rowCount || 0);
 
     let totalListings = 0;
     for (const cat of CATEGORIES) {
@@ -462,18 +534,20 @@ async function main() {
       for (const state of states) {
         const listings = await fetchAllListings(cat.category, cat.offeringType, state, token);
         for (const listing of listings) {
-          const listingId = listing?.id ? String(listing.id) : null;
-          const listingRef = listing?.reference ? String(listing.reference) : null;
-          if (listingId) knownListingKeys.add(listingId);
-          if (listingRef) knownListingKeys.add(`ref:${listingRef}`);
-
-          const leadAgg =
-            (listingId && byListingId.get(listingId)) ||
-            (listingRef && byListingRef.get(listingRef)) ||
-            { total: 0, byMonth: {} };
-
+          const listingRef = normalizeListingRef(listing?.reference);
           // Determine groupName: use permit matching if available, otherwise default Our
           const groupName = getGroupNameForListing(listing) || cat.groupName;
+
+          if (EXCLUDED_GROUPS.has(groupName)) {
+            continue;
+          }
+
+          if (!listingRef || !ourLeadsByRef.has(listingRef)) {
+            continue;
+          }
+
+          knownListingRefs.add(listingRef);
+          const leadAgg = ourLeadsByRef.get(listingRef) || { total: 0, byMonth: {} };
 
           await upsertListing(client, {
             id: listing.id,
@@ -496,19 +570,18 @@ async function main() {
     }
 
     let unmatchedListingRefs = 0;
-    let unattributedLeadsTotal = 0;
-    const unattributedLeadsByMonth = {};
-    for (const detail of detailsByKey.values()) {
-      const key = detail.listingId || `ref:${detail.listingRef}`;
-      if (!key || knownListingKeys.has(key)) continue;
+    let unattributedLeadsTotal = noRefTotal;
+    const unattributedLeadsByMonth = { ...noRefByMonth };
+    for (const [ref, agg] of ourLeadsByRef.entries()) {
+      if (knownListingRefs.has(ref)) continue;
       unmatchedListingRefs += 1;
-      unattributedLeadsTotal += Number(detail.count || 0);
-      for (const [month, count] of Object.entries(detail.byMonth || {})) {
+      unattributedLeadsTotal += Number(agg.total || 0);
+      for (const [month, count] of Object.entries(agg.byMonth || {})) {
         unattributedLeadsByMonth[month] = (unattributedLeadsByMonth[month] || 0) + Number(count || 0);
       }
     }
 
-    if (unattributedLeadsTotal > 0) {
+    if (unattributedLeadsTotal > 0 && !EXCLUDED_GROUPS.has('Our')) {
       await upsertListing(client, {
         id: 'pf-unattributed-listing-leads',
         reference: null,
@@ -575,9 +648,11 @@ async function main() {
         JSON.stringify({
           listings: totalListings,
           projects: projects.length,
+          purged_excluded_rows: purgedExcludedRows,
+          excluded_groups: Array.from(EXCLUDED_GROUPS),
           unmatched_listing_refs: unmatchedListingRefs,
           unattributed_listing_leads: unattributedLeadsTotal,
-          listing_without_key_leads: listingWithoutKeyCount,
+          listing_without_key_leads: noRefRows,
           credits_transactions_filter: { type: PF_CREDITS_TX_TYPE },
           project_budget_source: 'direct_project_credit_transactions_only',
           leads_total: leads.length,

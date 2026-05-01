@@ -12,12 +12,8 @@ const DATASET_ID = 'foryou_analytics';
 const TABLE_ID = 'partners_drilldown_daily';
 const CLOSED_DEAL_STATUS_SQL = CLOSED_DEAL_STATUS_IDS.join(', ');
 
-// Partners pipeline 8600274, client type 695223, or "partner/партнер" source label
-const PARTNERS_FILTER = `(
-    a.pipeline_id = 8600274
-    OR a.client_type_enum_id = 695223
-    OR REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'(partner|партнер)')
-)`;
+// Partners pipeline 8600274 only
+const PARTNERS_FILTER = `a.pipeline_id = 8600274`;
 
 const bq = new BigQuery({
     projectId: PROJECT_ID,
@@ -71,17 +67,15 @@ async function createPartnersTable() {
                 utm_campaign,
                 utm_content,
                 COUNT(DISTINCT lead_id) AS leads,
+                -- Закрыто и не реализовано
                 COUNTIF(status_id = 143) AS no_answer_spam,
-                COUNTIF(status_id IN (
-                    142, 70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586,
-                    74717798, 74717802, 70457490, 82310010
-                )) AS qualified_leads,
-                COUNTIF(status_id IN (
-                    70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586
-                )) AS ql_actual,
-                COUNTIF(status_id IN (
-                    70457474, 70457478, 70457482, 70457486, 70757586, 142
-                )) AS meetings,
+                -- Квалифицирован + активный партнер + Отложенный интерес + Холодные/ETC + Успешно реализовано + Закрыто и не реализовано
+                COUNTIF(status_id IN (69778170, 85193922, 85193926, 85192326, 142, 143)) AS qualified_leads,
+                -- Квалифицирован + активный партнер + Холодные/ETC + Успешно реализовано
+                COUNTIF(status_id IN (69778170, 85193922, 85192326, 142)) AS ql_actual,
+                -- не використовується у Partners (залишаємо 0)
+                COUNTIF(FALSE) AS meetings,
+                -- Успешно реализовано
                 COUNTIF(status_id IN (${CLOSED_DEAL_STATUS_SQL})) AS deals,
                 SUM(IF(status_id IN (${CLOSED_DEAL_STATUS_SQL}), price, 0)) AS revenue
             FROM partners_raw

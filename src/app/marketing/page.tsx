@@ -26,6 +26,7 @@ export default function MarketingPage() {
         showDataStatus={true}
         hideFilters={false}
         hideCurrency={true}
+        defaultStartDate="2024-01-01"
       />
     </DashboardPage>
   );

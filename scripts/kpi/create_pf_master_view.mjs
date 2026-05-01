@@ -6,6 +6,8 @@ const PROJECT_ID = 'crypto-world-epta';
 const DATASET_ID = 'foryou_analytics';
 const SERVICE_ACCOUNT_FILE = path.resolve('./secrets/crypto-world-epta-2db29829d55d.json');
 const credentials = process.env.GOOGLE_AUTH_JSON ? JSON.parse(process.env.GOOGLE_AUTH_JSON) : undefined;
+const AMO_PF_SOURCE_ENUM_ID = Number(process.env.AMO_PF_SOURCE_ENUM_ID || 695183);
+const AMO_PF_INTEGRATION_FROM = process.env.AMO_PF_INTEGRATION_FROM || '2026-04-22T00:00:00Z';
 
 const bq = new BigQuery({
     projectId: PROJECT_ID,
@@ -48,9 +50,11 @@ async function createPFView() {
                 price,
                 created_at AS crm_created_at,
                 updated_at,
-                source_label
+                source_label,
+                source_enum_id
             FROM \`${PROJECT_ID}.${DATASET_ID}.amo_channel_leads_raw\`
-            WHERE source_label LIKE '%Property%'
+            WHERE source_enum_id = ${AMO_PF_SOURCE_ENUM_ID}
+              AND created_at >= TIMESTAMP('${AMO_PF_INTEGRATION_FROM}')
             QUALIFY ROW_NUMBER() OVER (
                 PARTITION BY lead_id
                 ORDER BY updated_at DESC, created_at DESC

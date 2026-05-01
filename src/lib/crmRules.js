@@ -14,6 +14,7 @@ export const RE_QL_STATUS_IDS = [
   70457490, // отложенный спрос
   82310010, // Реанимация
   142,      // квартира оплачена
+  143,      // закрыто и не реализовано
 ];
 // Narrow "active" subset — currently in active qualification (excludes deferred/reanimation/won)
 export const RE_QL_ACTUAL_STATUS_IDS = [

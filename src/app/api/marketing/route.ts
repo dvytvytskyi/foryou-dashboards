@@ -8,11 +8,13 @@ export const revalidate = 0;
 const KNOWN_CHANNELS = ['RED', 'Facebook', 'Klykov', 'Website', 'Own leads', 'ЮрийНедвижБош', 'Partners leads', 'Old leads', 'OKK', 'ETC', 'TOTAL', 'Property Finder'];
 const RED_FIXED_CPL_USD = 58;
 const AED_PER_USD = 3.6725;
-const RED_RE_QL_STATUSES = [70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802, 70457490, 82310010, 142];
+const RED_RE_QL_STATUSES = [70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802, 70457490, 82310010, 142, 143];
+const RED_RE_QL_ACTUAL_STATUSES = [70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802, 70457490, 142];
 const RED_RE_MEETING_STATUSES = [70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802];
 const RED_WON_STATUSES = [142, 70457486, 70757586];
 
 const RED_QL_SQL = RED_RE_QL_STATUSES.join(', ');
+const RED_QL_ACTUAL_SQL = RED_RE_QL_ACTUAL_STATUSES.join(', ');
 const RED_MEETING_SQL = RED_RE_MEETING_STATUSES.join(', ');
 const RED_WON_SQL = RED_WON_STATUSES.join(', ');
 const MAX_MARKETING_FRESHNESS_HOURS = Number(process.env.MAX_MARKETING_FRESHNESS_HOURS || 3);
@@ -45,7 +47,7 @@ async function loadRedRows(startDate: string, endDate: string) {
       COUNTIF(status_id NOT IN (${RED_QL_SQL}) AND status_id NOT IN (${RED_WON_SQL}))
                                                   AS no_answer_spam,
       COUNTIF(status_id IN (${RED_QL_SQL}))       AS qualified_leads,
-      COUNTIF(status_id IN (${RED_QL_SQL}))       AS ql_actual,
+      COUNTIF(status_id IN (${RED_QL_ACTUAL_SQL})) AS ql_actual,
       COUNTIF(status_id IN (${RED_MEETING_SQL}))  AS meetings,
       COUNTIF(status_id IN (${RED_WON_SQL}))      AS deals,
       SUM(IF(status_id IN (${RED_WON_SQL}), COALESCE(price, 0), 0))

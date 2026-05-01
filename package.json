@@ -12,6 +12,8 @@
     "db:init": "node scripts/db/init_postgres.mjs",
     "sync:pf:postgres": "node scripts/sync/sync_pf_to_postgres.mjs",
     "sync:pf:amo": "node scripts/sync/sync_pf_to_amo.mjs",
+    "sync:pf:amo:seed": "node scripts/kpi/import_pf_amo_csv.mjs && node scripts/kpi/upsert_pf_amo_leads_to_db.mjs",
+    "sync:pf:amo:backfill": "node scripts/sync/backfill_pf_amo_fields_from_pf.mjs",
     "sync:sales:postgres": "node scripts/sync/sync_sales_excel_to_postgres.mjs",
     "sync:pf:match:phone": "node scripts/kpi/create_pf_master_view.mjs",
     "sync:pf:match:stats": "node scripts/sync/sync_pf_amo_match_stats.mjs",

@@ -17,10 +17,10 @@ const PF_API_SECRET = process.env.PF_API_SECRET || '';
 const PF_API_URL = 'https://atlas.propertyfinder.com/v1';
 
 const LISTING_FILTERS = [
-    { category: 'residential', offeringType: 'sale', label: 'Sale' },
+    { category: 'residential', offeringType: 'sale', label: 'Sell' },
     { category: 'residential', offeringType: 'rent', label: 'Rent' },
-    { category: 'commercial', offeringType: 'sale', label: 'Sale' },
-    { category: 'commercial', offeringType: 'rent', label: 'Rent' }
+    { category: 'commercial', offeringType: 'sale', label: 'Commercial Sell' },
+    { category: 'commercial', offeringType: 'rent', label: 'Commercial Rent' }
 ];
 
 const LISTING_STATES = ['live', 'archived', 'unpublished', 'takendown'];
