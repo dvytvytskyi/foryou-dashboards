@@ -153,6 +153,8 @@ async function createUnifiedMarketingDrilldownDaily() {
             LEFT JOIN red_lead_ids red
                 ON a.lead_id = red.lead_id
             WHERE red.lead_id IS NULL
+              -- Only RE pipeline (8696950) and Klykov pipeline (10776450)
+              AND a.pipeline_id IN (8696950, 10776450)
               -- Partners pipeline handled separately in partners_drilldown_daily
               AND NOT (
                 a.pipeline_id = 8600274
