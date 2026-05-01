@@ -13,9 +13,100 @@ import 'dotenv/config';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { Client } from 'pg';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..', '..');
+
+function getConnectionString() {
+  if (process.env.POSTGRES_URL) return process.env.POSTGRES_URL;
+  const host = process.env.POSTGRES_HOST;
+  const port = process.env.POSTGRES_PORT || '5432';
+  const database = process.env.POSTGRES_DB;
+  const user = process.env.POSTGRES_USER;
+  const password = process.env.POSTGRES_PASSWORD;
+  if (!host || !database || !user || !password) throw new Error('Missing PostgreSQL env');
+  return `postgresql://${encodeURIComponent(user)}:${encodeURIComponent(password)}@${host}:${port}/${database}?sslmode=require`;
+}
+
+async function upsertProjectStatsToDb(byProject) {
+  if (!process.env.POSTGRES_URL && !process.env.POSTGRES_HOST) {
+    console.log('  [DB] No Postgres config — skipping DB upsert');
+    return;
+  }
+  const client = new Client({
+    connectionString: getConnectionString(),
+    ssl: (process.env.POSTGRES_SSL_MODE || 'require').toLowerCase() === 'disable'
+      ? false
+      : { rejectUnauthorized: false },
+  });
+  await client.connect();
+  try {
+    // Ensure table exists
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS pf_amo_project_match_stats (
+        project_id TEXT PRIMARY KEY,
+        crm_leads INT NOT NULL DEFAULT 0,
+        spam INT NOT NULL DEFAULT 0,
+        qualified_leads INT NOT NULL DEFAULT 0,
+        ql_actual INT NOT NULL DEFAULT 0,
+        meetings INT NOT NULL DEFAULT 0,
+        deals INT NOT NULL DEFAULT 0,
+        crm_leads_by_month JSONB NOT NULL DEFAULT '{}',
+        spam_by_month JSONB NOT NULL DEFAULT '{}',
+        qualified_leads_by_month JSONB NOT NULL DEFAULT '{}',
+        ql_actual_by_month JSONB NOT NULL DEFAULT '{}',
+        meetings_by_month JSONB NOT NULL DEFAULT '{}',
+        deals_by_month JSONB NOT NULL DEFAULT '{}',
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      )
+    `);
+
+    let upserted = 0;
+    for (const [projectId, stats] of Object.entries(byProject)) {
+      await client.query(
+        `INSERT INTO pf_amo_project_match_stats
+           (project_id, crm_leads, spam, qualified_leads, ql_actual, meetings, deals,
+            crm_leads_by_month, spam_by_month, qualified_leads_by_month,
+            ql_actual_by_month, meetings_by_month, deals_by_month, updated_at)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,NOW())
+         ON CONFLICT (project_id) DO UPDATE SET
+           crm_leads = EXCLUDED.crm_leads,
+           spam = EXCLUDED.spam,
+           qualified_leads = EXCLUDED.qualified_leads,
+           ql_actual = EXCLUDED.ql_actual,
+           meetings = EXCLUDED.meetings,
+           deals = EXCLUDED.deals,
+           crm_leads_by_month = EXCLUDED.crm_leads_by_month,
+           spam_by_month = EXCLUDED.spam_by_month,
+           qualified_leads_by_month = EXCLUDED.qualified_leads_by_month,
+           ql_actual_by_month = EXCLUDED.ql_actual_by_month,
+           meetings_by_month = EXCLUDED.meetings_by_month,
+           deals_by_month = EXCLUDED.deals_by_month,
+           updated_at = NOW()`,
+        [
+          projectId,
+          stats.crm_leads || 0,
+          stats.spam || 0,
+          stats.qualified_leads || 0,
+          stats.ql_actual || 0,
+          stats.meetings || 0,
+          stats.deals || 0,
+          JSON.stringify(stats.crm_leads_by_month || {}),
+          JSON.stringify(stats.spam_by_month || {}),
+          JSON.stringify(stats.qualified_leads_by_month || {}),
+          JSON.stringify(stats.ql_actual_by_month || {}),
+          JSON.stringify(stats.meetings_by_month || {}),
+          JSON.stringify(stats.deals_by_month || {}),
+        ],
+      );
+      upserted += 1;
+    }
+    console.log(`  [DB] Upserted ${upserted} project match rows into pf_amo_project_match_stats`);
+  } finally {
+    await client.end();
+  }
+}
 
 const PF_API_URL = 'https://atlas.propertyfinder.com/v1';
 const AMO_DOMAIN = process.env.AMO_DOMAIN || 'reforyou.amocrm.ru';
@@ -312,7 +403,7 @@ async function main() {
 
   console.log(`    Matched leads: ${totalMatched} across ${Object.keys(result).length} projects (${csvLeads.length} historical + ${deltaLeads.length} delta)`);
 
-  // 5. Save
+  // 5. Save to JSON file
   fs.mkdirSync(path.dirname(OUT_FILE), { recursive: true });
   const output = {
     generatedAt: new Date().toISOString(),
@@ -326,6 +417,11 @@ async function main() {
   };
   fs.writeFileSync(OUT_FILE, JSON.stringify(output, null, 2));
   console.log(`\n✓ Saved to ${OUT_FILE}`);
+
+  // 6. Upsert to PostgreSQL DB
+  console.log('\n[6] Upserting to DB...');
+  await upsertProjectStatsToDb(result);
+  console.log('✓ Done');
 }
 
 main().catch((err) => {

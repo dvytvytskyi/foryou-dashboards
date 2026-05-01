@@ -23,6 +23,51 @@ type AmoProjectMatch = {
 };
 
 async function loadAmoProjectMatch(): Promise<Record<string, AmoProjectMatch>> {
+  // 1. Try PostgreSQL first (preferred, always up-to-date)
+  if (isPostgresConfigured()) {
+    try {
+      const { rows } = await queryPostgres<{
+        project_id: string;
+        crm_leads: number;
+        spam: number;
+        qualified_leads: number;
+        ql_actual: number;
+        meetings: number;
+        deals: number;
+        crm_leads_by_month: Record<string, number>;
+        spam_by_month: Record<string, number>;
+        qualified_leads_by_month: Record<string, number>;
+        ql_actual_by_month: Record<string, number>;
+        meetings_by_month: Record<string, number>;
+        deals_by_month: Record<string, number>;
+      }>(`SELECT * FROM pf_amo_project_match_stats`);
+
+      if (rows.length > 0) {
+        const result: Record<string, AmoProjectMatch> = {};
+        for (const row of rows) {
+          result[row.project_id] = {
+            crm_leads: Number(row.crm_leads || 0),
+            spam: Number(row.spam || 0),
+            qualified_leads: Number(row.qualified_leads || 0),
+            ql_actual: Number(row.ql_actual || 0),
+            meetings: Number(row.meetings || 0),
+            deals: Number(row.deals || 0),
+            crm_leads_by_month: (row.crm_leads_by_month as Record<string, number>) || {},
+            spam_by_month: (row.spam_by_month as Record<string, number>) || {},
+            qualified_leads_by_month: (row.qualified_leads_by_month as Record<string, number>) || {},
+            ql_actual_by_month: (row.ql_actual_by_month as Record<string, number>) || {},
+            meetings_by_month: (row.meetings_by_month as Record<string, number>) || {},
+            deals_by_month: (row.deals_by_month as Record<string, number>) || {},
+          };
+        }
+        return result;
+      }
+    } catch {
+      // fall through to JSON file
+    }
+  }
+
+  // 2. Fallback: JSON file cache
   try {
     const matchPath = path.resolve(process.cwd(), 'data/cache/pf_amo_project_match.json');
     const raw = await fs.readFile(matchPath, 'utf8');

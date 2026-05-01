@@ -82,6 +82,23 @@ CREATE TABLE IF NOT EXISTS sales_deals_raw (
 
 CREATE INDEX IF NOT EXISTS idx_sales_deals_source_file ON sales_deals_raw(source_file);
 CREATE INDEX IF NOT EXISTS idx_sales_deals_deal_date ON sales_deals_raw(deal_date);
+
+CREATE TABLE IF NOT EXISTS pf_amo_project_match_stats (
+  project_id TEXT PRIMARY KEY,
+  crm_leads INT NOT NULL DEFAULT 0,
+  spam INT NOT NULL DEFAULT 0,
+  qualified_leads INT NOT NULL DEFAULT 0,
+  ql_actual INT NOT NULL DEFAULT 0,
+  meetings INT NOT NULL DEFAULT 0,
+  deals INT NOT NULL DEFAULT 0,
+  crm_leads_by_month JSONB NOT NULL DEFAULT '{}',
+  spam_by_month JSONB NOT NULL DEFAULT '{}',
+  qualified_leads_by_month JSONB NOT NULL DEFAULT '{}',
+  ql_actual_by_month JSONB NOT NULL DEFAULT '{}',
+  meetings_by_month JSONB NOT NULL DEFAULT '{}',
+  deals_by_month JSONB NOT NULL DEFAULT '{}',
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
 `;
 
 async function main() {
