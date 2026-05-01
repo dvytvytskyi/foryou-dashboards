@@ -2541,3 +2541,12 @@ Prepared 6502 leads and 4377 tasks
 Inserted 500/6502 into plan_fact_crm_leadsInserted 1000/6502 into plan_fact_crm_leadsInserted 1500/6502 into plan_fact_crm_leadsInserted 2000/6502 into plan_fact_crm_leadsInserted 2500/6502 into plan_fact_crm_leadsInserted 3000/6502 into plan_fact_crm_leadsInserted 3500/6502 into plan_fact_crm_leadsInserted 4000/6502 into plan_fact_crm_leadsInserted 4500/6502 into plan_fact_crm_leadsInserted 5000/6502 into plan_fact_crm_leadsInserted 5500/6502 into plan_fact_crm_leadsInserted 6000/6502 into plan_fact_crm_leadsInserted 6500/6502 into plan_fact_crm_leadsInserted 6502/6502 into plan_fact_crm_leads
 Inserted 500/4377 into plan_fact_crm_tasksInserted 1000/4377 into plan_fact_crm_tasksInserted 1500/4377 into plan_fact_crm_tasksInserted 2000/4377 into plan_fact_crm_tasksInserted 2500/4377 into plan_fact_crm_tasksInserted 3000/4377 into plan_fact_crm_tasksInserted 3500/4377 into plan_fact_crm_tasksInserted 4000/4377 into plan_fact_crm_tasksInserted 4377/4377 into plan_fact_crm_tasks
 SUCCESS: plan-fact source data synced to BigQuery
+
+> foryou-dashboards@1.0.0 sync:plan-fact:bq
+> node scripts/sync/sync_plan_fact_bq.mjs
+
+--- Syncing plan-fact source data to BigQuery ---
+Prepared 6503 leads and 4378 tasks
+Inserted 500/6503 into plan_fact_crm_leadsInserted 1000/6503 into plan_fact_crm_leadsInserted 1500/6503 into plan_fact_crm_leadsInserted 2000/6503 into plan_fact_crm_leadsInserted 2500/6503 into plan_fact_crm_leadsInserted 3000/6503 into plan_fact_crm_leadsInserted 3500/6503 into plan_fact_crm_leadsInserted 4000/6503 into plan_fact_crm_leadsInserted 4500/6503 into plan_fact_crm_leadsInserted 5000/6503 into plan_fact_crm_leadsInserted 5500/6503 into plan_fact_crm_leadsInserted 6000/6503 into plan_fact_crm_leadsInserted 6500/6503 into plan_fact_crm_leadsInserted 6503/6503 into plan_fact_crm_leads
+Inserted 500/4378 into plan_fact_crm_tasksInserted 1000/4378 into plan_fact_crm_tasksInserted 1500/4378 into plan_fact_crm_tasksInserted 2000/4378 into plan_fact_crm_tasksInserted 2500/4378 into plan_fact_crm_tasksInserted 3000/4378 into plan_fact_crm_tasksInserted 3500/4378 into plan_fact_crm_tasksInserted 4000/4378 into plan_fact_crm_tasksInserted 4378/4378 into plan_fact_crm_tasks
+SUCCESS: plan-fact source data synced to BigQuery

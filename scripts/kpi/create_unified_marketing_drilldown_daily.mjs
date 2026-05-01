@@ -112,27 +112,16 @@ async function createUnifiedMarketingDrilldownDaily() {
             SELECT
                 DATE(a.created_at) AS report_date,
                 CASE
-                    WHEN a.pipeline_id = 10776450
-                        AND NOT REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'${RED_STRICT_REGEX}')
-                        AND NOT REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'${RED_STRICT_REGEX}')
-                        THEN 'Klykov'
+                    -- Klykov pipeline: always Klykov (unless RED tag/source — already excluded via red_lead_ids)
+                    WHEN a.pipeline_id = 10776450 THEN 'Klykov'
+                    -- RED by source/tag label (shouldn't happen since red_lead_ids excluded, but safety net)
                     WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'${RED_STRICT_REGEX}') THEN 'RED'
-                    WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'(property finder|property_finder|pf off-plan|pf offplan|primary plus|prian|bayut)') THEN 'Property Finder'
-                    WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'oman') THEN 'Facebook'
-                    WHEN a.pipeline_id = 8696950
-                        AND REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'(target point|facebook)') THEN 'Facebook'
-                    WHEN a.pipeline_id = 8600274
-                         OR a.client_type_enum_id = 695223
-                         OR REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'(partner|партнер)') THEN 'Partners leads'
-                    WHEN TRIM(COALESCE(a.source_label, '')) != '' THEN 'Own leads'
-                    WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'(klykov leads|klykov)') THEN 'Klykov'
-                        WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'${RED_STRICT_REGEX}') THEN 'RED'
-                    WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'(property finder|property_finder|pf off-plan|pf offplan|primary plus|prian|bayut)') THEN 'Property Finder'
-                    WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'oman') THEN 'Facebook'
-                    WHEN a.pipeline_id = 8696950
-                        AND REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'(target point|facebook)') THEN 'Facebook'
-                    WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'(partner|партнер)') THEN 'Partners leads'
-                    WHEN TRIM(COALESCE(a.tags_text, '')) != '' THEN 'Own leads'
+                    WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'${RED_STRICT_REGEX}') THEN 'RED'
+                    -- Facebook
+                    WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'(oman|target point|facebook)') THEN 'Facebook'
+                    WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'(oman|target point|facebook)') THEN 'Facebook'
+                    -- RE pipeline catch-all → Own leads
+                    WHEN a.pipeline_id = 8696950 THEN 'Own leads'
                     ELSE 'ETC'
                 END AS channel,
                 a.lead_id,
