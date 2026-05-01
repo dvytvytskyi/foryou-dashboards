@@ -5,7 +5,7 @@ import path from 'path';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-const KNOWN_CHANNELS = ['RED', 'Facebook', 'Klykov', 'Website', 'Own leads', 'Partners leads', 'Old leads', 'OKK', 'ETC', 'TOTAL', 'Property Finder'];
+const KNOWN_CHANNELS = ['RED', 'Facebook', 'Klykov', 'Website', 'Own leads', 'ЮрийНедвижБош', 'Partners leads', 'Old leads', 'OKK', 'ETC', 'TOTAL', 'Property Finder'];
 const RED_FIXED_CPL_USD = 58;
 const AED_PER_USD = 3.6725;
 const RED_RE_QL_STATUSES = [70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802, 70457490, 82310010, 142];

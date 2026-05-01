@@ -121,7 +121,7 @@ type Row = {
   leads_wa?: number;
 };
 
-const CHANNELS = ['RED', 'Facebook', 'Klykov', 'Website', 'Own leads', 'Partners leads', 'ETC'] as const;
+const CHANNELS = ['RED', 'Facebook', 'Klykov', 'Website', 'ЮрийНедвижБош', 'Own leads', 'Partners leads', 'ETC'] as const;
 
 type ChannelName = (typeof CHANNELS)[number];
 type SourceFilter = 'all' | Exclude<ChannelName, 'TOTAL'>;
