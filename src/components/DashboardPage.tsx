@@ -287,7 +287,7 @@ const MONTH_OPTIONS: SelectOption[] = Array.from({ length: 12 }, (_, i) => {
   return { value: month, label: month };
 });
 
-const YEAR_OPTIONS: SelectOption[] = ['2026', '2025', '2024', '2023', '2022'].map((year) => ({
+const YEAR_OPTIONS: SelectOption[] = ['2026'].map((year) => ({
   value: year,
   label: year,
 }));
@@ -407,16 +407,23 @@ export default function DashboardPage({
   const currency = externalCurrency || internalCurrency;
   const setCurrency = externalSetCurrency || setInternalCurrency;
   const [startDate, setStartDate] = useState(() => {
-    if (isNested) return '2024-01-01';
-    try { return localStorage.getItem('dashboard-startDate') || '2024-01-01'; } catch { return '2024-01-01'; }
+    if (isNested) return '2026-01-01';
+    try {
+      const saved = localStorage.getItem('dashboard-startDate');
+      // Ignore any saved date before 2026
+      return (saved && saved >= '2026-01-01') ? saved : '2026-01-01';
+    } catch { return '2026-01-01'; }
   });
   const [endDate, setEndDate] = useState(() => {
     if (isNested) return today;
     try { return localStorage.getItem('dashboard-endDate') || today; } catch { return today; }
   });
   const [draftStartDate, setDraftStartDate] = useState(() => {
-    if (isNested) return '2024-01-01';
-    try { return localStorage.getItem('dashboard-startDate') || '2024-01-01'; } catch { return '2024-01-01'; }
+    if (isNested) return '2026-01-01';
+    try {
+      const saved = localStorage.getItem('dashboard-startDate');
+      return (saved && saved >= '2026-01-01') ? saved : '2026-01-01';
+    } catch { return '2026-01-01'; }
   });
   const [draftEndDate, setDraftEndDate] = useState(() => {
     if (isNested) return today;

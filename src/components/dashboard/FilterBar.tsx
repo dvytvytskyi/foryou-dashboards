@@ -73,7 +73,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
   const [datePreset, setDatePreset] = useState('All time');
 
   const presets = [
-    { label: 'All time', start: '2024-01-01', end: today },
+    { label: '2026', start: '2026-01-01', end: today },
     { label: 'Today', start: today, end: today },
     { label: 'Last 7 days', start: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10), end: today },
     { label: 'Last 30 days', start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10), end: today },
