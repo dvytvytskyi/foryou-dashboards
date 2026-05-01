@@ -20,6 +20,16 @@ const OUT_FILE = path.resolve(ROOT, 'data/cache/pf_amo_project_match.json');
 
 const PF_OFFPLAN_SIGNALS = ['pf offplan', 'pf off-plan', 'pf off plan', 'primary plus'];
 
+// AMO status ID classification (mirrors sync_pf_amo_match_stats.mjs)
+const SPAM_STATUS = 143;
+const QUALIFIED_STATUSES = new Set([
+  70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586,
+  74717798, 74717802, 70457490, 82310010, 142,
+]);
+const QL_ACTUAL_STATUSES = new Set([70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586]);
+const MEETING_STATUSES = new Set([142, 70457474, 70457478, 70457482, 70457486, 70757586]);
+const DEAL_STATUSES = new Set([142, 70457486, 70757586]);
+
 function normalizePhone(v) {
   if (!v) return null;
   const digits = String(v).replace(/\D/g, '');
@@ -189,13 +199,20 @@ async function main() {
 
   // 3. Match by phone → accumulate per projectId
   console.log('\n[4] Matching...');
-  // projectId → { crm_leads: N, crm_leads_by_month: { "2026-04": N } }
+  // projectId → { crm_leads, spam, qualified_leads, ql_actual, meetings, deals, crm_leads_by_month }
   const result = {};
   let totalMatched = 0;
 
   for (const amoLead of amoLeads) {
     const cids = (amoLead._embedded?.contacts || []).map((c) => Number(c.id)).filter(Boolean);
     const createdMonth = monthKey(new Date(amoLead.created_at * 1000).toISOString());
+    const statusId = Number(amoLead.status_id || 0);
+
+    const isSpam = statusId === SPAM_STATUS;
+    const isQualified = QUALIFIED_STATUSES.has(statusId);
+    const isQlActual = QL_ACTUAL_STATUSES.has(statusId);
+    const isMeeting = MEETING_STATUSES.has(statusId);
+    const isDeal = DEAL_STATUSES.has(statusId);
 
     let matched = false;
     for (const cid of cids) {
@@ -203,11 +220,30 @@ async function main() {
         const projectIds = phoneToProjectIds.get(phone);
         if (!projectIds) continue;
         for (const pid of projectIds) {
-          if (!result[pid]) result[pid] = { crm_leads: 0, crm_leads_by_month: {} };
+          if (!result[pid]) result[pid] = {
+            crm_leads: 0,
+            spam: 0,
+            qualified_leads: 0,
+            ql_actual: 0,
+            meetings: 0,
+            deals: 0,
+            crm_leads_by_month: {},
+            spam_by_month: {},
+            qualified_leads_by_month: {},
+            ql_actual_by_month: {},
+            meetings_by_month: {},
+            deals_by_month: {},
+          };
           if (!matched) {
-            result[pid].crm_leads += 1;
+            const r = result[pid];
             const month = createdMonth || phoneToMonth.get(phone) || 'unknown';
-            result[pid].crm_leads_by_month[month] = (result[pid].crm_leads_by_month[month] || 0) + 1;
+            r.crm_leads += 1;
+            r.crm_leads_by_month[month] = (r.crm_leads_by_month[month] || 0) + 1;
+            if (isSpam) { r.spam += 1; r.spam_by_month[month] = (r.spam_by_month[month] || 0) + 1; }
+            if (isQualified) { r.qualified_leads += 1; r.qualified_leads_by_month[month] = (r.qualified_leads_by_month[month] || 0) + 1; }
+            if (isQlActual) { r.ql_actual += 1; r.ql_actual_by_month[month] = (r.ql_actual_by_month[month] || 0) + 1; }
+            if (isMeeting) { r.meetings += 1; r.meetings_by_month[month] = (r.meetings_by_month[month] || 0) + 1; }
+            if (isDeal) { r.deals += 1; r.deals_by_month[month] = (r.deals_by_month[month] || 0) + 1; }
             matched = true;
             totalMatched += 1;
           }

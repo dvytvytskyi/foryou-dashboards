@@ -9,7 +9,17 @@ const CREDIT_TO_AED_RATE = 1.3;
 
 type AmoProjectMatch = {
   crm_leads: number;
+  spam: number;
+  qualified_leads: number;
+  ql_actual: number;
+  meetings: number;
+  deals: number;
   crm_leads_by_month: Record<string, number>;
+  spam_by_month: Record<string, number>;
+  qualified_leads_by_month: Record<string, number>;
+  ql_actual_by_month: Record<string, number>;
+  meetings_by_month: Record<string, number>;
+  deals_by_month: Record<string, number>;
 };
 
 async function loadAmoProjectMatch(): Promise<Record<string, AmoProjectMatch>> {
@@ -110,6 +120,11 @@ export async function GET(request: Request) {
       const projectId = String(project.ProjectId || project.Reference || '');
       const amoData = projectId ? (amoMatch[projectId] || null) : null;
       const amoCrmLeadsByMonth = amoData?.crm_leads_by_month || {};
+      const amoSpamByMonth = amoData?.spam_by_month || {};
+      const amoQualifiedByMonth = amoData?.qualified_leads_by_month || {};
+      const amoQlActualByMonth = amoData?.ql_actual_by_month || {};
+      const amoMeetingsByMonth = amoData?.meetings_by_month || {};
+      const amoDealsByMonth = amoData?.deals_by_month || {};
       const monthKeys = Array.from(new Set([
         ...Object.keys(leadsByMonth),
         ...Object.keys(budgetByMonth),
@@ -124,6 +139,11 @@ export async function GET(request: Request) {
           const budgetCredits = Number(budgetByMonth[month] || 0);
           const budgetAed = budgetCredits * CREDIT_TO_AED_RATE;
           const crm_leads = Number(amoCrmLeadsByMonth[month] || 0);
+          const spam = Number(amoSpamByMonth[month] || 0);
+          const qualified_leads = Number(amoQualifiedByMonth[month] || 0);
+          const ql_actual = Number(amoQlActualByMonth[month] || 0);
+          const meetings = Number(amoMeetingsByMonth[month] || 0);
+          const deals = Number(amoDealsByMonth[month] || 0);
 
           formattedRows.push({
             channel: 'Primary Plus leads',
@@ -133,16 +153,16 @@ export async function GET(request: Request) {
             budget: budgetAed,
             leads,
             crm_leads,
-            no_answer_spam: 0,
-            rate_answer: 0,
-            qualified_leads: 0,
-            cost_per_qualified_leads: 0,
-            ql_actual: 0,
-            cpql_actual: 0,
-            meetings: 0,
-            cp_meetings: 0,
-            deals: 0,
-            cost_per_deal: 0,
+            no_answer_spam: spam,
+            rate_answer: crm_leads > 0 ? (crm_leads - spam) / crm_leads : 0,
+            qualified_leads,
+            cost_per_qualified_leads: qualified_leads > 0 ? budgetAed / qualified_leads : 0,
+            ql_actual,
+            cpql_actual: ql_actual > 0 ? budgetAed / ql_actual : 0,
+            meetings,
+            cp_meetings: meetings > 0 ? budgetAed / meetings : 0,
+            deals,
+            cost_per_deal: deals > 0 ? budgetAed / deals : 0,
             revenue: 0,
             date: month,
             cpl: leads > 0 ? budgetAed / leads : 0,
@@ -159,6 +179,11 @@ export async function GET(request: Request) {
       const totalBudgetCredits = Number(project.Budget || 0);
       const totalBudgetAed = totalBudgetCredits * CREDIT_TO_AED_RATE;
       const crm_leads = amoData?.crm_leads || 0;
+      const spam = amoData?.spam || 0;
+      const qualified_leads = amoData?.qualified_leads || 0;
+      const ql_actual = amoData?.ql_actual || 0;
+      const meetings = amoData?.meetings || 0;
+      const deals = amoData?.deals || 0;
 
       formattedRows.push({
         channel: 'Primary Plus leads',
@@ -168,16 +193,16 @@ export async function GET(request: Request) {
         budget: totalBudgetAed,
         leads: totalLeads,
         crm_leads,
-        no_answer_spam: 0,
-        rate_answer: 0,
-        qualified_leads: 0,
-        cost_per_qualified_leads: 0,
-        ql_actual: 0,
-        cpql_actual: 0,
-        meetings: 0,
-        cp_meetings: 0,
-        deals: 0,
-        cost_per_deal: 0,
+        no_answer_spam: spam,
+        rate_answer: crm_leads > 0 ? (crm_leads - spam) / crm_leads : 0,
+        qualified_leads,
+        cost_per_qualified_leads: qualified_leads > 0 ? totalBudgetAed / qualified_leads : 0,
+        ql_actual,
+        cpql_actual: ql_actual > 0 ? totalBudgetAed / ql_actual : 0,
+        meetings,
+        cp_meetings: meetings > 0 ? totalBudgetAed / meetings : 0,
+        deals,
+        cost_per_deal: deals > 0 ? totalBudgetAed / deals : 0,
         revenue: 0,
         date: project.CreatedAt ? String(project.CreatedAt).slice(0, 10) : '-',
         cpl: totalLeads > 0 ? totalBudgetAed / totalLeads : 0,
