@@ -140,8 +140,10 @@ async function createUnifiedMarketingDrilldownDaily() {
                     -- Facebook
                     WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'(oman|target point|facebook)') THEN 'Facebook'
                     WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'(oman|target point|facebook)') THEN 'Facebook'
-                    -- RE pipeline catch-all → Own leads
-                    WHEN a.pipeline_id = 8696950 THEN 'Own leads'
+                    -- RE pipeline: has source/tags → Own leads; no source/tags → ETC (same as before)
+                    WHEN a.pipeline_id = 8696950
+                         AND (TRIM(COALESCE(a.source_label, '')) != ''
+                              OR TRIM(COALESCE(a.tags_text, '')) != '') THEN 'Own leads'
                     ELSE 'ETC'
                 END AS channel,
                 a.lead_id,
