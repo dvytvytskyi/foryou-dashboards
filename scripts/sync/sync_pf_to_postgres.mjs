@@ -591,15 +591,19 @@ async function main() {
           // Determine groupName: use permit matching if available, otherwise default Our
           const groupName = getGroupNameForListing(listing) || cat.groupName;
 
-          if (EXCLUDED_GROUPS.has(groupName)) {
+          const isPartnerGroup = groupName === 'Partner' || groupName === 'AbuDhabi';
+
+          // Our group: only save if we have leads for this listing
+          if (!isPartnerGroup && (!listingRef || !ourLeadsByRef.has(listingRef))) {
             continue;
           }
 
-          if (!listingRef || !ourLeadsByRef.has(listingRef)) {
+          // Partner/AbuDhabi: only save if there are credit transactions (has budget)
+          if (isPartnerGroup && !(byReferenceTotal[listing.reference] > 0)) {
             continue;
           }
 
-          knownListingRefs.add(listingRef);
+          if (!isPartnerGroup) knownListingRefs.add(listingRef);
           const leadAgg = ourLeadsByRef.get(listingRef) || { total: 0, byMonth: {} };
 
           await upsertListing(client, {
@@ -634,7 +638,7 @@ async function main() {
       }
     }
 
-    if (unattributedLeadsTotal > 0 && !EXCLUDED_GROUPS.has('Our')) {
+    if (unattributedLeadsTotal > 0) {
       await upsertListing(client, {
         id: 'pf-unattributed-listing-leads',
         reference: null,
