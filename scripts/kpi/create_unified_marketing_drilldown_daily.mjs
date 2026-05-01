@@ -112,8 +112,11 @@ async function createUnifiedMarketingDrilldownDaily() {
             SELECT
                 DATE(a.created_at) AS report_date,
                 CASE
-                    WHEN a.pipeline_id = 10776450 THEN 'Klykov'
-                        WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'${RED_STRICT_REGEX}') THEN 'RED'
+                    WHEN a.pipeline_id = 10776450
+                        AND NOT REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'${RED_STRICT_REGEX}')
+                        AND NOT REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'${RED_STRICT_REGEX}')
+                        THEN 'Klykov'
+                    WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'${RED_STRICT_REGEX}') THEN 'RED'
                     WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'(property finder|property_finder|pf off-plan|pf offplan|primary plus|prian|bayut)') THEN 'Property Finder'
                     WHEN REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'oman') THEN 'Facebook'
                     WHEN a.pipeline_id = 8696950
