@@ -4,6 +4,8 @@ import { isPostgresConfigured, queryPostgres } from '@/lib/postgres';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
+const CREDIT_TO_AED_RATE = 1.9;
+
 type ListingSnapshotRow = {
   listing_id: string;
   reference: string | null;
@@ -184,8 +186,9 @@ async function loadListingsFromPostgres(targetGroup: string | null) {
       (row.offering_type === 'sale' ? 'Sell' : row.offering_type === 'rent' ? 'Rent' : 'Other'),
     Title: row.title || row.reference || row.listing_id,
     status: row.status || 'Active',
-    Budget: Number(row.budget || 0) || 0,
-    BudgetByMonth: row.budget_by_month || {},
+    Budget: (Number(row.budget || 0) || 0) * CREDIT_TO_AED_RATE,
+    BudgetByMonth: Object.fromEntries(Object.entries(row.budget_by_month || {}).map(([k, v]) => [k, Number(v) * CREDIT_TO_AED_RATE])),
+
     LeadsPF: Number(row.leads_count || 0) || 0,
     LeadsByMonth: row.leads_by_month || {},
     CreatedAt:
@@ -254,7 +257,10 @@ export async function GET(request: Request) {
         const meetingsByMonth: Record<string, number> = stat.meetings_by_month || {};
         const dealsByMonth: Record<string, number> = stat.deals_by_month || {};
         const revenueByMonth: Record<string, number> = stat.revenue_by_month || {};
-        const budgetByMonth: Record<string, number> = stat.budget_by_month || {};
+        const budgetByMonthRaw: Record<string, number> = stat.budget_by_month || {};
+        const budgetByMonth: Record<string, number> = Object.fromEntries(
+          Object.entries(budgetByMonthRaw).map(([k, v]) => [k, Number(v) * CREDIT_TO_AED_RATE])
+        );
 
         // Get all months that have data
         const allMonths = Array.from(new Set([
@@ -304,7 +310,7 @@ export async function GET(request: Request) {
           const spam = Number(stat.spam_count || 0);
           const qualified = Number(stat.qualified_count || 0);
           const qlActual = Number(stat.ql_actual_count || 0);
-          const budget = Number(stat.budget || 0);
+          const budget = Number(stat.budget || 0) * CREDIT_TO_AED_RATE;
           formattedRows.push({
             channel: 'Property Finder',
             level_1: category,
@@ -378,7 +384,10 @@ export async function GET(request: Request) {
         const meetingsByMonth: Record<string, number> = stat.meetings_by_month || {};
         const dealsByMonth: Record<string, number> = stat.deals_by_month || {};
         const revenueByMonth: Record<string, number> = stat.revenue_by_month || {};
-        const budgetByMonth: Record<string, number> = stat.budget_by_month || {};
+        const budgetByMonthRawP: Record<string, number> = stat.budget_by_month || {};
+        const budgetByMonth: Record<string, number> = Object.fromEntries(
+          Object.entries(budgetByMonthRawP).map(([k, v]) => [k, Number(v) * CREDIT_TO_AED_RATE])
+        );
 
         const allMonths = Array.from(new Set([
           ...Object.keys(leadsByMonth),
@@ -425,7 +434,7 @@ export async function GET(request: Request) {
           const spam = Number(stat.spam_count || 0);
           const qualified = Number(stat.qualified_count || 0);
           const qlActual = Number(stat.ql_actual_count || 0);
-          const budget = Number(stat.budget || 0);
+          const budget = Number(stat.budget || 0) * CREDIT_TO_AED_RATE;
           formattedRows.push({
             channel: 'Property Finder',
             level_1: category,
