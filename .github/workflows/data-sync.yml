@@ -66,6 +66,26 @@ jobs:
       - name: Rebuild unified marketing mart
         run: node scripts/kpi/create_unified_marketing_drilldown_daily.mjs
 
+      - name: Sync PF ↔ AMO project phone match
+        run: node scripts/kpi/sync_pf_amo_project_match.mjs
+        continue-on-error: true
+        env:
+          AMO_DOMAIN: ${{ secrets.AMO_DOMAIN }}
+          PF_API_KEY: ${{ secrets.PF_API_KEY }}
+          PF_API_SECRET: ${{ secrets.PF_API_SECRET }}
+
+      - name: Commit PF AMO match cache
+        continue-on-error: true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/cache/pf_amo_project_match.json
+          git diff --cached --quiet || git commit -m "chore: update pf amo match cache [skip ci]"
+          git push
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+
       - name: Sync Unified Master Leads
         run: node scripts/sync/sync_unified_leads.mjs
 

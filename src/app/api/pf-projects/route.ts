@@ -7,6 +7,22 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 const CREDIT_TO_AED_RATE = 1.3;
 
+type AmoProjectMatch = {
+  crm_leads: number;
+  crm_leads_by_month: Record<string, number>;
+};
+
+async function loadAmoProjectMatch(): Promise<Record<string, AmoProjectMatch>> {
+  try {
+    const matchPath = path.resolve(process.cwd(), 'data/cache/pf_amo_project_match.json');
+    const raw = await fs.readFile(matchPath, 'utf8');
+    const parsed = JSON.parse(raw);
+    return parsed.byProject || {};
+  } catch {
+    return {};
+  }
+}
+
 type ProjectSnapshotRow = {
   project_id: string;
   reference: string | null;
@@ -57,6 +73,7 @@ export async function GET(request: Request) {
     const endDate = searchParams.get('endDate');
 
     let rawData: any[] = [];
+    const amoMatch = await loadAmoProjectMatch();
 
     if (isPostgresConfigured()) {
       try {
@@ -90,6 +107,9 @@ export async function GET(request: Request) {
       const projectLabel = project.Title || project.Reference || project.ProjectId || 'Unknown Project';
       const leadsByMonth = project.LeadsByMonth || {};
       const budgetByMonth = project.BudgetByMonth || {};
+      const projectId = String(project.ProjectId || project.Reference || '');
+      const amoData = projectId ? (amoMatch[projectId] || null) : null;
+      const amoCrmLeadsByMonth = amoData?.crm_leads_by_month || {};
       const monthKeys = Array.from(new Set([
         ...Object.keys(leadsByMonth),
         ...Object.keys(budgetByMonth),
@@ -103,6 +123,7 @@ export async function GET(request: Request) {
           const leads = Number(leadsByMonth[month] || 0);
           const budgetCredits = Number(budgetByMonth[month] || 0);
           const budgetAed = budgetCredits * CREDIT_TO_AED_RATE;
+          const crm_leads = Number(amoCrmLeadsByMonth[month] || 0);
 
           formattedRows.push({
             channel: 'Primary Plus leads',
@@ -111,6 +132,7 @@ export async function GET(request: Request) {
             level_3: month,
             budget: budgetAed,
             leads,
+            crm_leads,
             no_answer_spam: 0,
             rate_answer: 0,
             qualified_leads: 0,
@@ -136,6 +158,7 @@ export async function GET(request: Request) {
       const totalLeads = Number(project.Leads || 0);
       const totalBudgetCredits = Number(project.Budget || 0);
       const totalBudgetAed = totalBudgetCredits * CREDIT_TO_AED_RATE;
+      const crm_leads = amoData?.crm_leads || 0;
 
       formattedRows.push({
         channel: 'Primary Plus leads',
@@ -144,6 +167,7 @@ export async function GET(request: Request) {
         level_3: null,
         budget: totalBudgetAed,
         leads: totalLeads,
+        crm_leads,
         no_answer_spam: 0,
         rate_answer: 0,
         qualified_leads: 0,
