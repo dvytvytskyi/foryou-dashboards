@@ -386,6 +386,57 @@ function aggregateProjectCredits(txs) {
   return byProjectId;
 }
 
+// PF does not expose per-project breakdown for Primary Plus "Ad Campaign" charges.
+// We aggregate the total PP budget by month and distribute it proportionally
+// among projects based on their leads count in each month.
+function aggregatePrimaryPlusBudget(txs) {
+  const byMonth = {};
+  let total = 0;
+
+  for (const tx of txs) {
+    const isCharge = tx.transactionInfo?.action === 'charge' && tx.transactionInfo?.type === 'credits';
+    if (!isCharge) continue;
+    // Ad Campaign charges with no listing reference = Primary Plus spend
+    if (tx.listingInfo?.reference) continue;
+    if (tx.description !== 'Ad Campaign') continue;
+
+    const amount = Math.abs(Number(tx.transactionInfo?.amount || 0));
+    const month = String(tx.createdAt || '').slice(0, 7);
+    total += amount;
+    if (month) byMonth[month] = (byMonth[month] || 0) + amount;
+  }
+
+  return { total, byMonth };
+}
+
+function distributeBudgetByLeads(ppBudget, projects) {
+  // ppBudget = { total, byMonth: { 'YYYY-MM': credits } }
+  // For each month, distribute credits proportionally by each project's leads that month.
+  // Projects that have 0 leads in a given month get 0 budget for that month.
+  const result = new Map(); // projectId -> { totalCredits, byMonth }
+
+  for (const project of projects) {
+    result.set(String(project.projectId), { totalCredits: 0, byMonth: {} });
+  }
+
+  for (const [month, totalCredits] of Object.entries(ppBudget.byMonth)) {
+    // Total leads across all projects in this month
+    const totalLeads = projects.reduce((sum, p) => sum + Number(p.leadsByMonth?.[month] || 0), 0);
+    if (totalLeads === 0) continue;
+
+    for (const project of projects) {
+      const projectLeads = Number(project.leadsByMonth?.[month] || 0);
+      if (projectLeads === 0) continue;
+      const share = (projectLeads / totalLeads) * totalCredits;
+      const row = result.get(String(project.projectId));
+      row.totalCredits += share;
+      row.byMonth[month] = (row.byMonth[month] || 0) + share;
+    }
+  }
+
+  return result;
+}
+
 async function upsertListing(client, row) {
   await client.query(`ALTER TABLE pf_listings_snapshot ADD COLUMN IF NOT EXISTS leads_by_month JSONB DEFAULT '{}'::jsonb`);
   await client.query(
@@ -522,6 +573,8 @@ async function main() {
 
     const { byReferenceTotal, byReferenceMonth } = aggregateCredits(credits);
     const projectCreditsById = aggregateProjectCredits(credits);
+    const ppBudget = aggregatePrimaryPlusBudget(credits);
+    console.log(`[PROJECTS] PP Ad Campaign budget: ${ppBudget.total} credits across months: ${JSON.stringify(ppBudget.byMonth)}`);
     const { byRef: ourLeadsByRef, noRefTotal, noRefByMonth, noRefRows } = await loadOurListingLeadsFromSyncState(client);
     const knownListingRefs = new Set();
 
@@ -607,12 +660,19 @@ async function main() {
     const projectIds = new Set(projects.map((project) => String(project.projectId)));
     const projectDetails = await fetchProjectDetails(projectIds, token);
 
+    // Distribute PP budget proportionally by leads (fallback to per-project credits if available)
+    const distributedBudget = distributeBudgetByLeads(ppBudget, projects);
+
     await client.query(`DELETE FROM pf_projects_snapshot`);
 
     for (const project of projects) {
       const projectId = String(project.projectId);
       const detail = projectDetails.get(projectId) || {};
-      const budgetAgg = projectCreditsById.get(projectId) || { totalCredits: 0, byMonth: {} };
+      // Use per-project credits if available (future-proof), else use proportional distribution
+      const directAgg = projectCreditsById.get(projectId);
+      const budgetAgg = directAgg?.totalCredits > 0
+        ? directAgg
+        : (distributedBudget.get(projectId) || { totalCredits: 0, byMonth: {} });
 
       await upsertProject(client, {
         projectId,

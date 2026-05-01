@@ -5,7 +5,7 @@ import { isPostgresConfigured, queryPostgres } from '@/lib/postgres';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
-const CREDIT_TO_AED_RATE = 1.3;
+const CREDIT_TO_AED_RATE = 1.9;
 
 type AmoProjectMatch = {
   crm_leads: number;
