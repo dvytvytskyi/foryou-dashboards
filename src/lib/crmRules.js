@@ -1,5 +1,25 @@
 export const CLOSED_DEAL_STATUS_IDS = [142, 74717798, 74717802];
 
+// All statuses at "квалификация пройдена" and beyond (inc. отложенный спрос, Реанимация, won)
+export const RE_QL_STATUS_IDS = [
+  70457466, // квалификация пройдена
+  70457470, // презентация назначена
+  70457474, // презентация проведена
+  70457478, // показ назначен
+  70457482, // EOI / чек получен
+  70457486, // Документы подписаны (F/SPA)
+  70757586, // POST SALES
+  74717798, // ПАРТНЕРЫ
+  74717802, // ЛИСТИНГ
+  70457490, // отложенный спрос
+  82310010, // Реанимация
+  142,      // квартира оплачена
+];
+// Narrow "active" subset — currently in active qualification (excludes deferred/reanimation/won)
+export const RE_QL_ACTUAL_STATUS_IDS = [
+  70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586,
+];
+
 const RED_SIGNALS = ['red_ru', 'red_eng', 'red_arm', 'red_lux', 'red'];
 const KLYKOV_SIGNALS = ['klykov leads', 'alex klykov', 'klykov'];
 // Primary Plus = PF offplan leads — AMO tag "pf offplan" (and variants) maps to this category

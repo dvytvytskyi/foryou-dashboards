@@ -79,7 +79,8 @@ async function createRedChannelDaily() {
                 m.date_qual,
                 m.date_meet,
                 IF(
-                    c.status_id IN (142, 70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586)
+                    c.status_id IN (142, 70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586,
+                                    74717798, 74717802, 70457490, 82310010)
                     OR m.date_qual IS NOT NULL,
                     1,
                     0

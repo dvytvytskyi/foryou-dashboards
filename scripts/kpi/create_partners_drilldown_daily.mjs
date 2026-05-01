@@ -73,7 +73,8 @@ async function createPartnersTable() {
                 COUNT(DISTINCT lead_id) AS leads,
                 COUNTIF(status_id = 143) AS no_answer_spam,
                 COUNTIF(status_id IN (
-                    142, 70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586
+                    142, 70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586,
+                    74717798, 74717802, 70457490, 82310010
                 )) AS qualified_leads,
                 COUNTIF(status_id IN (
                     70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586

@@ -1,7 +1,7 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { BigQuery } from '@google-cloud/bigquery';
-import { CLOSED_DEAL_STATUS_IDS } from '../../src/lib/crmRules.js';
+import { CLOSED_DEAL_STATUS_IDS, RE_QL_STATUS_IDS } from '../../src/lib/crmRules.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -171,7 +171,7 @@ async function createUnifiedMarketingDrilldownDaily() {
                 level_2,
                 level_3,
                 IF(
-                    status_id IN (142, 70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586)
+                    status_id IN (${RE_QL_STATUS_IDS.join(', ')})
                        OR date_qual IS NOT NULL
                        OR date_meet IS NOT NULL
                        OR date_res IS NOT NULL

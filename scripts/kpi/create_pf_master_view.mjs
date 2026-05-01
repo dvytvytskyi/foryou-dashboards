@@ -94,11 +94,13 @@ async function createPFView() {
             c.status_id AS crm_status_id,
             CASE
                 WHEN c.status_id = 143 THEN 'Junk'
-                WHEN c.status_id IN (142, 70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586) THEN 'Qualified'
+                WHEN c.status_id IN (142, 70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586,
+                                     74717798, 74717802, 70457490, 82310010) THEN 'Qualified'
                 WHEN c.status_id IS NULL THEN 'Unmatched'
                 ELSE 'New'
             END AS qual_category,
-            IF(c.status_id IN (142, 70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586), 1, 0) AS is_qualified,
+            IF(c.status_id IN (142, 70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586,
+                               74717798, 74717802, 70457490, 82310010), 1, 0) AS is_qualified,
             IF(p.pf_type LIKE '%whatsapp%', 1, 0) AS is_whatsapp,
             IF(p.pf_type LIKE '%call%', 1, 0) AS is_call,
             c.price AS potential_value
