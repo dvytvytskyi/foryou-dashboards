@@ -90,6 +90,7 @@ type Row = {
   level_1: string | null;
   level_2: string | null;
   level_3: string | null;
+  level_4?: string | null;
   budget: number;
   date: string;
   leads: number;
@@ -142,6 +143,7 @@ const EMPTY_ROW = (channel: string, sort_order: number): Row => ({
   level_1: null,
   level_2: null,
   level_3: null,
+  level_4: null,
   budget: 0,
   date: '-',
   leads: 0,
@@ -1073,6 +1075,15 @@ export default function DashboardPage({
 
           for (const [l3Label, l3Rows] of level3Map.entries()) {
             const level3Key = `${level2Key}|${l3Label}`;
+
+            const level4Map = new Map<string, Row[]>();
+            l3Rows.forEach((r) => {
+              const level4 = r.level_4?.trim();
+              if (!level4) return;
+              if (!level4Map.has(level4)) level4Map.set(level4, []);
+              level4Map.get(level4)!.push(r);
+            });
+
             out.push({
               type: 'detail',
               row: aggregateRows(l3Rows, channel, index + 1),
@@ -1080,8 +1091,23 @@ export default function DashboardPage({
               label: l3Label,
               detailDepth: 3,
               detailKey: level3Key,
-              hasChildren: false,
+              hasChildren: maxDrilldownLevel > 3 && level4Map.size > 0,
             });
+
+            if (maxDrilldownLevel < 4 || !expandedDetails[level3Key]) continue;
+
+            for (const [l4Label, l4Rows] of level4Map.entries()) {
+              const level4Key = `${level3Key}|${l4Label}`;
+              out.push({
+                type: 'detail',
+                row: aggregateRows(l4Rows, channel, index + 1),
+                key: `detail-${level4Key}`,
+                label: l4Label,
+                detailDepth: 4,
+                detailKey: level4Key,
+                hasChildren: false,
+              });
+            }
           }
         }
       }

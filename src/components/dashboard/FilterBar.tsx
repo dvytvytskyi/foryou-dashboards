@@ -184,7 +184,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           {!hideSourceFilter && (
             <div className={styles.channels}>
               {sourceChannels.map((ch) => (
-                <button key={ch.value} className={`${styles.channelChip} ${sourceFilter === ch.value ? styles.channelChipActive : ''}`} onClick={() => setSourceFilter(ch.value)}>{ch.label}</button>
+                <button key={ch.value} className={`${styles.channelChip} ${sourceFilter === ch.value ? styles.channelChipActive : ''}`} onClick={() => setSourceFilter(sourceFilter === ch.value ? 'all' : ch.value)}>{ch.label}</button>
               ))}
             </div>
           )}

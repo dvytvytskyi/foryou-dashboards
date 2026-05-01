@@ -150,6 +150,12 @@ async function createUnifiedMarketingDrilldownDaily() {
             LEFT JOIN red_lead_ids red
                 ON a.lead_id = red.lead_id
             WHERE red.lead_id IS NULL
+              -- Partners pipeline handled separately in partners_drilldown_daily
+              AND NOT (
+                a.pipeline_id = 8600274
+                OR a.client_type_enum_id = 695223
+                OR REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'(partner|партнер)')
+              )
         ),
         all_leads AS (
             SELECT * FROM red_base

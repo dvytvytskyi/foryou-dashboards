@@ -66,6 +66,9 @@ jobs:
       - name: Rebuild unified marketing mart
         run: node scripts/kpi/create_unified_marketing_drilldown_daily.mjs
 
+      - name: Rebuild Partners UTM drilldown
+        run: node scripts/kpi/create_partners_drilldown_daily.mjs
+
       - name: Sync PF ↔ AMO project phone match
         run: node scripts/kpi/sync_pf_amo_project_match.mjs
         continue-on-error: true
