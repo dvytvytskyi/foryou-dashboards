@@ -1022,6 +1022,7 @@ export default function DashboardPage({
       const level1Map = new Map<string, Row[]>();
       grouped.forEach((r) => {
         if (channel === 'RED' && !r.level_1?.trim()) return;
+        if (r.level_1 === '(budget only)') return;
         const l1 = levelLabel(r.level_1);
         if (!level1Map.has(l1)) level1Map.set(l1, []);
         level1Map.get(l1)!.push(r);
