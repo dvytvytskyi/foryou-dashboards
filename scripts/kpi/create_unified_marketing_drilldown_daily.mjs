@@ -14,6 +14,16 @@ const CLOSED_DEAL_STATUS_SQL = CLOSED_DEAL_STATUS_IDS.join(', ');
 const RED_STRICT_REGEX = '(red_ru|red_eng|red_arm|red_lux)';
 const FB_EXCLUDED_LEVEL1_REGEX = '(190k[ _-]*oman|radik[ _-]*oman|svetlana[ _-]*oman)';
 
+// Klykov pipeline (10776450) own status IDs
+const KLYKOV_QL_STATUS_IDS    = [84853934, 84853938, 84853942, 84853946, 84853950, 84853954, 84853958, 84853962, 84853966, 84853970, 84853974, 142];
+const KLYKOV_QL_ACTUAL_IDS    = [84853934, 84853938, 84853942, 84853946, 84853950, 84853954, 84853958];
+const KLYKOV_MEETING_IDS      = [84853942, 84853946, 84853950, 84853954, 84853958, 142];
+const KLYKOV_NO_ANSWER_IDS    = [84854454, 84854458, 84854462, 143];
+const KLYKOV_QL_SQL           = KLYKOV_QL_STATUS_IDS.join(', ');
+const KLYKOV_QL_ACTUAL_SQL    = KLYKOV_QL_ACTUAL_IDS.join(', ');
+const KLYKOV_MEETING_SQL      = KLYKOV_MEETING_IDS.join(', ');
+const KLYKOV_NO_ANSWER_SQL    = KLYKOV_NO_ANSWER_IDS.join(', ');
+
 const bq = new BigQuery({
     projectId: PROJECT_ID,
     keyFilename: path.resolve(rootDir, 'secrets/crypto-world-epta-2db29829d55d.json')
@@ -175,27 +185,42 @@ async function createUnifiedMarketingDrilldownDaily() {
                 level_2,
                 level_3,
                 IF(
-                    status_id IN (${RE_QL_STATUS_IDS.join(', ')})
-                       OR date_qual IS NOT NULL
-                       OR date_meet IS NOT NULL
-                       OR date_res IS NOT NULL
-                       OR date_won IS NOT NULL,
-                    1,
-                    0
+                    CASE
+                        WHEN channel = 'Klykov' THEN status_id IN (${KLYKOV_QL_SQL})
+                        ELSE status_id IN (${RE_QL_STATUS_IDS.join(', ')})
+                             OR date_qual IS NOT NULL
+                             OR date_meet IS NOT NULL
+                             OR date_res IS NOT NULL
+                             OR date_won IS NOT NULL
+                    END,
+                    1, 0
                 ) AS is_qualified,
-                IF(status_id IN (70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586), 1, 0) AS is_ql_actual,
                 IF(
-                    status_id IN (70457474, 70457478, 70457482, 70457486, 70757586, 142)
-                    OR date_meet IS NOT NULL,
-                    1,
-                    0
+                    CASE
+                        WHEN channel = 'Klykov' THEN status_id IN (${KLYKOV_QL_ACTUAL_SQL})
+                        ELSE status_id IN (70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586)
+                    END,
+                    1, 0
+                ) AS is_ql_actual,
+                IF(
+                    CASE
+                        WHEN channel = 'Klykov' THEN status_id IN (${KLYKOV_MEETING_SQL})
+                        ELSE status_id IN (70457474, 70457478, 70457482, 70457486, 70757586, 142)
+                             OR date_meet IS NOT NULL
+                    END,
+                    1, 0
                 ) AS is_meeting,
-                IF(status_id IN (${CLOSED_DEAL_STATUS_SQL}) AND (channel != 'RED' OR COALESCE(price, 0) > 0), 1, 0) AS is_deal,
-                IF(status_id IN (${CLOSED_DEAL_STATUS_SQL}), price, 0) AS revenue,
                 IF(
-                    status_id = 143,
-                    1,
-                    0
+                    status_id = 142 AND (channel != 'RED' OR COALESCE(price, 0) > 0),
+                    1, 0
+                ) AS is_deal,
+                IF(status_id = 142, price, 0) AS revenue,
+                IF(
+                    CASE
+                        WHEN channel = 'Klykov' THEN status_id IN (${KLYKOV_NO_ANSWER_SQL})
+                        ELSE status_id = 143
+                    END,
+                    1, 0
                 ) AS is_no_answer_spam
             FROM all_leads
             WHERE report_date IS NOT NULL
