@@ -124,7 +124,7 @@ const DataTable: React.FC<DataTableProps> = ({
       )}
       <div className={styles.cardBody}>
         <div className={styles.tableContainer}>
-          {stickyHeaderVisible ? (
+          {false && stickyHeaderVisible ? (
             <div
               ref={stickyHeaderRef}
               className={styles.floatingHeader}
