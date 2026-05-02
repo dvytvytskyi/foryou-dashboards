@@ -492,7 +492,6 @@ function applyLeadToBucket(bucket: MetricBucket, lead: AmoLead, leadDate: Date, 
   if (showingEverLike) bucket.allShowings += 1;
   if (won) {
     bucket.allDeals += 1;
-    bucket.revenueWon += Number(lead.price || 0);
   }
 
   if (active) {
@@ -509,7 +508,10 @@ function applyLeadToBucket(bucket: MetricBucket, lead: AmoLead, leadDate: Date, 
     bucket.received += 1;
     if (qlEverLike) bucket.ql += 1;
     if (showingEverLike) bucket.showings += 1;
-    if (won) bucket.deals += 1;
+    if (won) {
+      bucket.deals += 1;
+      bucket.revenueWon += Number(lead.price || 0);
+    }
   }
 
   if (inRange(leadDate, prevStart, prevEnd)) {
