@@ -657,37 +657,47 @@ export async function GET(request: NextRequest) {
       totalPlanDeals += brokerPlan.deals;
     }
 
+    const hasAnyPlanValue = Object.values(planByBroker).some(
+      (p) => (p.lids || 0) > 0 || (p.ql || 0) > 0 || (p.revenue || 0) > 0 || (p.deals || 0) > 0,
+    );
+
+    // If monthly plan sheet is empty (all zeros), show empty state instead of CRM factuals.
+    const effectiveBrokers = hasAnyPlanValue ? brokers : [];
+    const effectiveTotals = hasAnyPlanValue
+      ? totals
+      : { received: 0, ql: 0, deals: 0, revenueWon: 0 };
+
     // Calculate fulfillment percentages
-    const fulfillmentLids = totalPlanLids > 0 ? Math.round((totals.received / totalPlanLids) * 100) : 0;
-    const fulfillmentQl = totalPlanQl > 0 ? Math.round((totals.ql / totalPlanQl) * 100) : 0;
-    const fulfillmentRevenue = totalPlanRevenue > 0 ? Math.round((totals.revenueWon / totalPlanRevenue) * 100) : 0;
-    const fulfillmentDeals = totalPlanDeals > 0 ? Math.round((totals.deals / totalPlanDeals) * 100) : 0;
+    const fulfillmentLids = totalPlanLids > 0 ? Math.round((effectiveTotals.received / totalPlanLids) * 100) : 0;
+    const fulfillmentQl = totalPlanQl > 0 ? Math.round((effectiveTotals.ql / totalPlanQl) * 100) : 0;
+    const fulfillmentRevenue = totalPlanRevenue > 0 ? Math.round((effectiveTotals.revenueWon / totalPlanRevenue) * 100) : 0;
+    const fulfillmentDeals = totalPlanDeals > 0 ? Math.round((effectiveTotals.deals / totalPlanDeals) * 100) : 0;
 
     const kpis = [
       { 
         label: 'ЛИДЫ (ПЛАН / ФАКТ)', 
-        actual: totals.received, 
+        actual: effectiveTotals.received,
         plan: totalPlanLids, 
         fulfillment: fulfillmentLids,
         suffix: '' 
       },
       { 
         label: 'QL LEADS (ПЛАН / ФАКТ)', 
-        actual: totals.ql, 
+        actual: effectiveTotals.ql,
         plan: totalPlanQl, 
         fulfillment: fulfillmentQl,
         suffix: '' 
       },
       { 
         label: 'ВЫРУЧКА (ПЛАН / ФАКТ)', 
-        actual: totals.revenueWon, 
+        actual: effectiveTotals.revenueWon,
         plan: totalPlanRevenue, 
         fulfillment: fulfillmentRevenue,
         suffix: ' AED' 
       },
       { 
         label: 'СДЕЛКИ (ПЛАН / ФАКТ)', 
-        actual: totals.deals, 
+        actual: effectiveTotals.deals,
         plan: totalPlanDeals, 
         fulfillment: fulfillmentDeals,
         suffix: '' 
@@ -704,10 +714,11 @@ export async function GET(request: NextRequest) {
         prevStartDate: dateKey(prevStart),
         prevEndDate: dateKey(prevEnd),
         leadsCount: leads.length,
-        brokersCount: brokers.length,
+        brokersCount: effectiveBrokers.length,
+        hasAnyPlanValue,
       },
       kpis,
-      brokers,
+      brokers: effectiveBrokers,
     };
 
     return NextResponse.json(response);
