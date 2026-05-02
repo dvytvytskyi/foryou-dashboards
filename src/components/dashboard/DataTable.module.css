@@ -93,7 +93,8 @@
 }
 
 .table thead th {
-  position: static;
+  position: sticky;
+  top: 0;
   z-index: 5;
   border-bottom: 1px solid var(--line);
   border-right: 0;
@@ -112,6 +113,7 @@
 .leftHead {
   text-align: left !important;
   position: sticky !important;
+  top: 0;
   left: 0;
   z-index: 6 !important;
   min-width: var(--channel-col-width);
