@@ -119,7 +119,8 @@ let _bqReadCache: RawData | null = null;
 
 const RE_PIPELINE_ID = 8696950;
 const KLYKOV_PIPELINE_ID = 10776450;
-const INCLUDED_PIPELINES = new Set([RE_PIPELINE_ID, KLYKOV_PIPELINE_ID]);
+const PARTNERS_PIPELINE_ID = Number(process.env.AMO_PARTNERS_PIPELINE_ID || 8600274);
+const INCLUDED_PIPELINES = new Set([RE_PIPELINE_ID, KLYKOV_PIPELINE_ID, PARTNERS_PIPELINE_ID]);
 
 // Won in sales includes classic Sold plus SPA and POST SALES document stages.
 const WON_STATUS_IDS = new Set(CLOSED_DEAL_STATUS_IDS);
@@ -135,6 +136,12 @@ const RE_QL_STATUSES = new Set([
 ]);
 const KL_QL_STATUSES = new Set([
   84853934, 84853938, 84853942, 84853946, 84853950, 84853954, 84853958, 84853962, 84853966,
+]);
+const RE_QL_ACTUAL_STATUSES = new Set([
+  70457466, 70457470, 70457474, 70457478, 70457482, 70457486,
+]);
+const KL_QL_ACTUAL_STATUSES = new Set([
+  84853934, 84853938, 84853942, 84853946, 84853950, 84853954, 84853958,
 ]);
 
 const RE_SHOWING_STATUSES = new Set([70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802]);
@@ -153,7 +160,7 @@ const SOURCE_ORDER: SourceName[] = [
 ];
 
 function isQlStatus(lead: AmoLead) {
-  if (lead.pipeline_id === RE_PIPELINE_ID) {
+  if (lead.pipeline_id === RE_PIPELINE_ID || lead.pipeline_id === PARTNERS_PIPELINE_ID) {
     if (RE_QL_STATUSES.has(lead.status_id)) return true;
     // Status 143 counts as QL only if lead previously passed qualification (milestone date_qual exists)
     if (lead.status_id === 143) return Boolean((lead as RawLead).had_qual);
@@ -163,8 +170,16 @@ function isQlStatus(lead: AmoLead) {
   return false;
 }
 
+function isQlActualStatus(lead: AmoLead) {
+  if (lead.pipeline_id === RE_PIPELINE_ID || lead.pipeline_id === PARTNERS_PIPELINE_ID) {
+    return RE_QL_ACTUAL_STATUSES.has(lead.status_id);
+  }
+  if (lead.pipeline_id === KLYKOV_PIPELINE_ID) return KL_QL_ACTUAL_STATUSES.has(lead.status_id);
+  return false;
+}
+
 function isShowingStatus(lead: AmoLead) {
-  if (lead.pipeline_id === RE_PIPELINE_ID) return RE_SHOWING_STATUSES.has(lead.status_id);
+  if (lead.pipeline_id === RE_PIPELINE_ID || lead.pipeline_id === PARTNERS_PIPELINE_ID) return RE_SHOWING_STATUSES.has(lead.status_id);
   if (lead.pipeline_id === KLYKOV_PIPELINE_ID) return KL_SHOWING_STATUSES.has(lead.status_id);
   return false;
 }
@@ -328,14 +343,15 @@ async function getOrFetchRawData(): Promise<RawData> {
 
   _rawDataFetchPromise = (async () => {
     try {
-      const [usersResponse, reLeads, klykovLeads, openTasks] = await Promise.all([
+      const [usersResponse, reLeads, klykovLeads, partnersLeads, openTasks] = await Promise.all([
         amoFetchJson<{ _embedded?: { users?: AmoUser[] } }>(`/api/v4/users?limit=250`),
         fetchAllLeadsByPipeline(RE_PIPELINE_ID),
         fetchAllLeadsByPipeline(KLYKOV_PIPELINE_ID),
+        fetchAllLeadsByPipeline(PARTNERS_PIPELINE_ID),
         fetchAllOpenTasks(),
       ]);
       const result: RawData = {
-        leads: [...reLeads, ...klykovLeads].filter((l) => INCLUDED_PIPELINES.has(l.pipeline_id)),
+        leads: [...reLeads, ...klykovLeads, ...partnersLeads].filter((l) => INCLUDED_PIPELINES.has(l.pipeline_id)),
         tasks: openTasks,
         users: usersResponse?._embedded?.users || [],
         createdAt: Date.now(),
@@ -480,6 +496,7 @@ function applyLeadToBucket(bucket: MetricBucket, lead: AmoLead, leadDate: Date, 
   const lost = lead.status_id === LOST_STATUS_ID;
   const active = !won && !lost;
   const qlNow = isQlStatus(lead);
+  const qlActualNow = isQlActualStatus(lead);
   const showingNow = isShowingStatus(lead);
 
   // For historical columns we count current QL/showing stages + won.
@@ -496,7 +513,7 @@ function applyLeadToBucket(bucket: MetricBucket, lead: AmoLead, leadDate: Date, 
 
   if (active) {
     bucket.activeTotal += 1;
-    if (qlNow) bucket.activeQl += 1;
+    if (qlActualNow) bucket.activeQl += 1;
     if (showingNow) bucket.activeShowings += 1;
   }
 
@@ -552,6 +569,7 @@ export async function GET(request: NextRequest) {
     const { leads, tasks: openTasks, users } = rawData;
     const userMap = new Map<number, string>(users.map((u) => [u.id, u.name]));
     const includedLeadIds = new Set<number>(leads.map((l) => l.id));
+    const qlActualLeadIds = new Set<number>(leads.filter((l) => isQlActualStatus(l)).map((l) => l.id));
 
     const brokerMap = new Map<number, BrokerAggregate>();
 
@@ -576,6 +594,7 @@ export async function GET(request: NextRequest) {
       if (task.entity_type !== 'leads') continue;
       if (!task.complete_till || task.complete_till >= nowSec) continue;
       if (!includedLeadIds.has(task.entity_id)) continue;
+      if (!qlActualLeadIds.has(task.entity_id)) continue;
 
       const broker = brokerMap.get(task.responsible_user_id);
       if (broker) {
@@ -735,7 +754,7 @@ export async function GET(request: NextRequest) {
       success: true,
       meta: {
         dataSource,
-        pipelines: [RE_PIPELINE_ID, KLYKOV_PIPELINE_ID],
+        pipelines: [RE_PIPELINE_ID, KLYKOV_PIPELINE_ID, PARTNERS_PIPELINE_ID],
         startDate: dateKey(startDate),
         endDate: dateKey(endDate),
         prevStartDate: dateKey(prevStart),

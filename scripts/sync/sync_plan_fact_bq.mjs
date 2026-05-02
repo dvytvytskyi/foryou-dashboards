@@ -20,7 +20,8 @@ const CACHE_TTL_MS = 30 * 60 * 1000;
 
 const RE_PIPELINE_ID = 8696950;
 const KLYKOV_PIPELINE_ID = 10776450;
-const INCLUDED_PIPELINES = new Set([RE_PIPELINE_ID, KLYKOV_PIPELINE_ID]);
+const PARTNERS_PIPELINE_ID = Number(process.env.AMO_PARTNERS_PIPELINE_ID || 8600274);
+const INCLUDED_PIPELINES = new Set([RE_PIPELINE_ID, KLYKOV_PIPELINE_ID, PARTNERS_PIPELINE_ID]);
 const SOURCE_FIELD_ID = 703131;
 
 const bq = new BigQuery({
@@ -168,15 +169,16 @@ async function fetchRawData() {
   }
 
   const tokens = await readTokensFile();
-  const [usersResponse, reLeads, klykovLeads, openTasks] = await Promise.all([
+  const [usersResponse, reLeads, klykovLeads, partnersLeads, openTasks] = await Promise.all([
     amoFetchJson('/api/v4/users?limit=250', tokens),
     fetchAllLeadsByPipeline(RE_PIPELINE_ID, tokens),
     fetchAllLeadsByPipeline(KLYKOV_PIPELINE_ID, tokens),
+    fetchAllLeadsByPipeline(PARTNERS_PIPELINE_ID, tokens),
     fetchAllOpenTasks(tokens),
   ]);
 
   return {
-    leads: [...reLeads, ...klykovLeads].filter((lead) => INCLUDED_PIPELINES.has(lead.pipeline_id)),
+    leads: [...reLeads, ...klykovLeads, ...partnersLeads].filter((lead) => INCLUDED_PIPELINES.has(lead.pipeline_id)),
     tasks: openTasks,
     users: usersResponse?._embedded?.users || [],
   };

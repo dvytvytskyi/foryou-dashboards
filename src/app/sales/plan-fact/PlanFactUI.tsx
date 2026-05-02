@@ -213,11 +213,11 @@ export default function PlanFactUI({ startDate, endDate }: { startDate: string; 
             <div className={styles.kpiTitle}>{k.label}</div>
             <div className={styles.kpiMainValue}>
               <span className={styles.actualValue} style={{ color: 'var(--white-soft)' }}>
-                {formatNumber(k.actual)}
+                {formatNumber(k.plan)}
                 <span style={{ fontSize: '12px', marginLeft: '2px' }}>{k.suffix}</span>
               </span>
               <span className={styles.planValue}>
-                / {formatNumber(k.plan)}
+                / {formatNumber(k.actual)}
                 {k.suffix}
               </span>
             </div>
