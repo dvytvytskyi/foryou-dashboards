@@ -21,6 +21,8 @@ const FIELD_UTM_SOURCE = 683939;
 const FIELD_UTM_CAMPAIGN = 683937;
 const FIELD_UTM_MEDIUM = 683935;
 const FIELD_UTM_CONTENT = 683933;
+const AMO_PAGE_LIMIT = 250;
+const AMO_MAX_PAGES_PER_PIPELINE = Number(process.env.AMO_MAX_PAGES_PER_PIPELINE || 120);
 
 const bq = new BigQuery({
     projectId: PROJECT_ID,
@@ -101,9 +103,17 @@ async function syncAmoChannelLeadsRaw() {
     for (const pipeline of pipelines) {
         let page = 1;
         let keepPaging = true;
+        const seenLeadIds = new Set();
 
         while (keepPaging) {
-            const url = `https://${AMO_DOMAIN}/api/v4/leads?filter[pipeline_id]=${pipeline.id}&limit=250&page=${page}&with=tags`;
+            if (page > AMO_MAX_PAGES_PER_PIPELINE) {
+                console.warn(
+                    `WARN: pipeline ${pipeline.id} reached page cap (${AMO_MAX_PAGES_PER_PIPELINE}). Stopping pagination to avoid infinite loop.`,
+                );
+                break;
+            }
+
+            const url = `https://${AMO_DOMAIN}/api/v4/leads?filter[pipeline_id]=${pipeline.id}&limit=${AMO_PAGE_LIMIT}&page=${page}&with=tags`;
             const data = await fetchWithRetry(url, accessToken);
             const leads = data?._embedded?.leads || [];
 
@@ -112,7 +122,14 @@ async function syncAmoChannelLeadsRaw() {
                 break;
             }
 
-            leads.forEach((lead) => {
+            const newLeads = leads.filter((lead) => !seenLeadIds.has(lead.id));
+            if (newLeads.length === 0) {
+                console.warn(`WARN: pipeline ${pipeline.id} page ${page} returned only already-seen leads; stopping pagination.`);
+                break;
+            }
+
+            newLeads.forEach((lead) => {
+                seenLeadIds.add(lead.id);
                 const source = getFieldValue(lead.custom_fields_values, FIELD_SOURCE);
                 const clientType = getFieldValue(lead.custom_fields_values, FIELD_CLIENT_TYPE);
                 const utmSource = getFieldValue(lead.custom_fields_values, FIELD_UTM_SOURCE);
@@ -145,7 +162,13 @@ async function syncAmoChannelLeadsRaw() {
                 });
             });
 
-            process.stdout.write(`Pipeline ${pipeline.id} page ${page}, rows: ${rows.length}\n`);
+            process.stdout.write(
+                `Pipeline ${pipeline.id} page ${page}, new rows: ${newLeads.length}, total rows: ${rows.length}\n`,
+            );
+
+            if (leads.length < AMO_PAGE_LIMIT) {
+                break;
+            }
 
             page += 1;
             await sleep(150);
