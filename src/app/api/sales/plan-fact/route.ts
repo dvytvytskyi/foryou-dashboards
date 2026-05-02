@@ -67,7 +67,19 @@ const BQ_DATASET = 'foryou_analytics';
 const BQ_LEADS_TABLE = 'plan_fact_crm_leads';
 const BQ_TASKS_TABLE = 'plan_fact_crm_tasks';
 
-const bqCredentials = process.env.GOOGLE_AUTH_JSON ? JSON.parse(process.env.GOOGLE_AUTH_JSON) : undefined;
+function getValidatedBqCredentials() {
+  try {
+    if (!process.env.GOOGLE_AUTH_JSON) return undefined;
+    const parsed = JSON.parse(process.env.GOOGLE_AUTH_JSON);
+    if (!parsed || typeof parsed !== 'object') return undefined;
+    if (!parsed.client_email || !parsed.private_key) return undefined;
+    return parsed;
+  } catch {
+    return undefined;
+  }
+}
+
+const bqCredentials = getValidatedBqCredentials();
 const bq = new BigQuery({
   projectId: BQ_PROJECT_ID,
   credentials: bqCredentials,
@@ -241,9 +253,10 @@ async function readRawDataFromBigQuery(): Promise<RawData | null> {
     // Needed to count status=143 leads as QL if they previously passed qualification
     const [[milestoneRows]] = await bq.query({
       query: `
-        SELECT CAST(deal_id AS INT64) AS lead_id
+        SELECT SAFE_CAST(deal_id AS INT64) AS lead_id
         FROM \`${BQ_PROJECT_ID}.${BQ_DATASET}.milestones\`
         WHERE date_qual IS NOT NULL
+          AND SAFE_CAST(deal_id AS INT64) IS NOT NULL
       `,
       useLegacySql: false,
     });

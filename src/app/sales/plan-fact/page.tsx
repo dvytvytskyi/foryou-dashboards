@@ -14,7 +14,7 @@ export default function PlanFactPage() {
       if (s && e) return { startDate: s, endDate: e };
     }
     const today = new Date().toISOString().slice(0, 10);
-    return { startDate: '2024-01-01', endDate: today };
+    return { startDate: '2026-05-01', endDate: today };
   });
 
   useEffect(() => {
@@ -32,6 +32,7 @@ export default function PlanFactPage() {
       currency={currency}
       setCurrency={setCurrency}
       onDateChange={(start, end) => setDateRange({ startDate: start, endDate: end })}
+      datePresetMode="plan-fact-months"
     >
       <PlanFactUI startDate={dateRange.startDate} endDate={dateRange.endDate} />
     </DashboardPage>

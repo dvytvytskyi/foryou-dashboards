@@ -352,6 +352,7 @@ export default function DashboardPage({
   sidebarMinimal = false,
   showDataStatus = false,
   defaultStartDate,
+  datePresetMode = 'default',
 }: { 
   extraContent?: React.ReactNode, 
   initialSourceFilter?: SourceFilter,
@@ -388,6 +389,7 @@ export default function DashboardPage({
   sidebarMinimal?: boolean;
   showDataStatus?: boolean;
   defaultStartDate?: string;
+  datePresetMode?: 'default' | 'plan-fact-months';
 }) {
   const activeColumns = useMemo(() => {
     const base = customColumns || MARKETING_COLUMNS;
@@ -1250,6 +1252,7 @@ export default function DashboardPage({
                 yearOptions={YEAR_OPTIONS}
                 mergeDate={mergeDate}
                 layoutVariant={layoutVariant}
+                datePresetMode={datePresetMode}
               />
             )}
           </div>

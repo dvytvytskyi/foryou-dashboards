@@ -38,6 +38,7 @@ interface FilterBarProps {
   yearOptions: { label: string; value: string }[];
   mergeDate: (parts: { day: string; month: string; year: string }) => string;
   layoutVariant?: 'marketing' | 'red';
+  datePresetMode?: 'default' | 'plan-fact-months';
 }
 
 const FilterBar: React.FC<FilterBarProps> = ({
@@ -68,17 +69,37 @@ const FilterBar: React.FC<FilterBarProps> = ({
   monthOptions,
   yearOptions,
   mergeDate,
-  layoutVariant = 'marketing'
+  layoutVariant = 'marketing',
+  datePresetMode = 'default',
 }) => {
   const [datePreset, setDatePreset] = useState('All time');
 
-  const presets = [
-    { label: '2026', start: '2026-01-01', end: today },
-    { label: 'Today', start: today, end: today },
-    { label: 'Last 7 days', start: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10), end: today },
-    { label: 'Last 30 days', start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10), end: today },
-    { label: 'Custom', start: startDate, end: endDate }
-  ];
+  const monthRange = (year: string, month: number) => {
+    const mm = String(month).padStart(2, '0');
+    const lastDay = new Date(Number(year), month, 0).getDate();
+    const dd = String(lastDay).padStart(2, '0');
+    return {
+      start: `${year}-${mm}-01`,
+      end: `${year}-${mm}-${dd}`,
+    };
+  };
+
+  const presets = datePresetMode === 'plan-fact-months'
+    ? [
+        { label: 'May', ...monthRange('2026', 5) },
+        { label: 'June', ...monthRange('2026', 6) },
+        { label: 'July', ...monthRange('2026', 7) },
+        { label: 'August', ...monthRange('2026', 8) },
+        { label: 'September', ...monthRange('2026', 9) },
+        { label: 'Custom', start: startDate, end: endDate },
+      ]
+    : [
+        { label: '2026', start: '2026-01-01', end: today },
+        { label: 'Today', start: today, end: today },
+        { label: 'Last 7 days', start: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10), end: today },
+        { label: 'Last 30 days', start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10), end: today },
+        { label: 'Custom', start: startDate, end: endDate },
+      ];
 
   useEffect(() => {
     const matching = presets.find(p => p.start === startDate && p.end === endDate);
