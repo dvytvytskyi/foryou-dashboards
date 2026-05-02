@@ -53,16 +53,7 @@ function getCacheFilePath(month: number, year: number = 2026): string {
 
 export async function readPlanDataFromSheets(month: number, year: number = 2026): Promise<PlanByBroker> {
   try {
-    // Try to read from cache first
     const cachePath = getCacheFilePath(month, year);
-    try {
-      const cached = await fs.readFile(cachePath, 'utf-8');
-      const parsed = JSON.parse(cached);
-      console.log(`✓ Read plan data from cache: "${getMonthSheetName(month, year)}"`);
-      return parsed;
-    } catch (e) {
-      // Cache miss — continue to read from sheets
-    }
 
     // Get service account credentials from environment or file
     let credentials;
@@ -129,6 +120,16 @@ export async function readPlanDataFromSheets(month: number, year: number = 2026)
     return planByBroker;
   } catch (error) {
     console.error('Error reading plan from sheets:', error instanceof Error ? error.message : String(error));
-    return {};
+
+    // Fallback to cache only when Sheets read fails.
+    try {
+      const cachePath = getCacheFilePath(month, year);
+      const cached = await fs.readFile(cachePath, 'utf-8');
+      const parsed = JSON.parse(cached);
+      console.log(`⚠ Using cached plan data fallback: "${getMonthSheetName(month, year)}"`);
+      return parsed;
+    } catch {
+      return {};
+    }
   }
 }
