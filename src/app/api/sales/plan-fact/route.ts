@@ -55,6 +55,7 @@ type SourceName =
 type RawLead = AmoLead & {
   source_name?: SourceName;
   broker_name?: string;
+  had_qual?: boolean;
 };
 
 const CACHE_DIR = path.resolve(process.cwd(), 'data/cache/plan-fact');
@@ -89,6 +90,7 @@ type BqLeadRow = {
   broker_name: string;
   source_name: SourceName;
   price: number | string;
+  had_qual?: boolean;
 };
 
 type BqTaskRow = {
@@ -116,6 +118,7 @@ function isWonStatus(statusId: number) {
 }
 
 const RE_QL_STATUSES = new Set([
+  // Statuses from "квалификация пройдена" and beyond (status 143 uses milestone check — see isQlStatus)
   70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802, 70457490, 82310010, 142,
 ]);
 const KL_QL_STATUSES = new Set([
@@ -138,7 +141,12 @@ const SOURCE_ORDER: SourceName[] = [
 ];
 
 function isQlStatus(lead: AmoLead) {
-  if (lead.pipeline_id === RE_PIPELINE_ID) return RE_QL_STATUSES.has(lead.status_id);
+  if (lead.pipeline_id === RE_PIPELINE_ID) {
+    if (RE_QL_STATUSES.has(lead.status_id)) return true;
+    // Status 143 counts as QL only if lead previously passed qualification (milestone date_qual exists)
+    if (lead.status_id === 143) return Boolean((lead as RawLead).had_qual);
+    return false;
+  }
   if (lead.pipeline_id === KLYKOV_PIPELINE_ID) return KL_QL_STATUSES.has(lead.status_id);
   return false;
 }
@@ -229,6 +237,20 @@ async function readRawDataFromBigQuery(): Promise<RawData | null> {
       }),
     ]);
 
+    // Fetch leads that ever reached "квалификация пройдена" stage
+    // Needed to count status=143 leads as QL if they previously passed qualification
+    const [[milestoneRows]] = await bq.query({
+      query: `
+        SELECT CAST(deal_id AS INT64) AS lead_id
+        FROM \`${BQ_PROJECT_ID}.${BQ_DATASET}.milestones\`
+        WHERE date_qual IS NOT NULL
+      `,
+      useLegacySql: false,
+    });
+    const qualLeadIds = new Set<number>(
+      (milestoneRows as Array<{ lead_id: number | string }>).map(r => Number(r.lead_id))
+    );
+
     const leads: RawLead[] = (leadRows as BqLeadRow[]).map((row) => ({
       id: toNumber(row.lead_id),
       name: '',
@@ -239,6 +261,7 @@ async function readRawDataFromBigQuery(): Promise<RawData | null> {
       responsible_user_id: toNumber(row.responsible_user_id),
       source_name: row.source_name,
       broker_name: row.broker_name,
+      had_qual: qualLeadIds.has(toNumber(row.lead_id)),
       custom_fields_values: [],
       _embedded: { tags: [] },
     }));

@@ -192,7 +192,10 @@ async function createUnifiedMarketingDrilldownDaily() {
                 IF(
                     CASE
                         WHEN channel = 'Klykov' THEN status_id IN (${KLYKOV_QL_SQL})
-                        ELSE status_id IN (${RE_QL_STATUS_IDS.join(', ')})
+                        -- 143 (закрыто и не реализовано) is qualified ONLY if a milestone date exists
+                        -- (meaning the lead previously passed through qualification)
+                        -- If a lead went from pre-qual stages directly to 143 — NOT qualified
+                        ELSE status_id IN (${RE_QL_STATUS_IDS.filter(id => id !== 143).join(', ')})
                              OR date_qual IS NOT NULL
                              OR date_meet IS NOT NULL
                              OR date_res IS NOT NULL
@@ -203,7 +206,9 @@ async function createUnifiedMarketingDrilldownDaily() {
                 IF(
                     CASE
                         WHEN channel = 'Klykov' THEN status_id IN (${KLYKOV_QL_ACTUAL_SQL})
-                        ELSE status_id IN (70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586)
+                        -- QL Actual: only active qualification stages (excl. POST SALES, ПАРТНЕРЫ, ЛИСТИНГ,
+                        -- отложенный спрос, Реанимация, квартира оплачена, закрыто и не реализовано)
+                        ELSE status_id IN (70457466, 70457470, 70457474, 70457478, 70457482, 70457486)
                     END,
                     1, 0
                 ) AS is_ql_actual,

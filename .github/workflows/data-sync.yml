@@ -92,6 +92,19 @@ jobs:
       - name: Sync Unified Master Leads
         run: node scripts/sync/sync_unified_leads.mjs
 
+      - name: Sync Plan/Fact leads to BigQuery
+        run: npm run sync:plan-fact:bq
+        env:
+          AMO_DOMAIN: ${{ secrets.AMO_DOMAIN }}
+          AMO_CLIENT_ID: ${{ secrets.AMO_CLIENT_ID }}
+          AMO_CLIENT_SECRET: ${{ secrets.AMO_CLIENT_SECRET }}
+          AMO_TOKENS_JSON: ${{ secrets.AMO_TOKENS_JSON }}
+
+      - name: Sync milestones to BigQuery
+        run: node scripts/sync/sync_milestones_bq.mjs
+        env:
+          AMO_DOMAIN: ${{ secrets.AMO_DOMAIN }}
+
       - name: Check marketing freshness
         run: npm run check:marketing:freshness
         env:

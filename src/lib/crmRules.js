@@ -16,9 +16,10 @@ export const RE_QL_STATUS_IDS = [
   142,      // квартира оплачена
   143,      // закрыто и не реализовано
 ];
-// Narrow "active" subset — currently in active qualification (excludes deferred/reanimation/won)
+// Narrow "active" subset — currently in active qualification stages only
+// Excludes: POST SALES, ПАРТНЕРЫ, ЛИСТИНГ, отложенный спрос, Реанимация, квартира оплачена, закрыто
 export const RE_QL_ACTUAL_STATUS_IDS = [
-  70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586,
+  70457466, 70457470, 70457474, 70457478, 70457482, 70457486,
 ];
 
 const RED_SIGNALS = ['red_ru', 'red_eng', 'red_arm', 'red_lux', 'red'];
