@@ -7,14 +7,9 @@ import PlanFactUI from './PlanFactUI';
 export default function PlanFactPage() {
   const [currency, setCurrency] = useState<'usd' | 'aed'>('aed');
   
-  const [dateRange, setDateRange] = useState<{ startDate: string; endDate: string }>(() => {
-    if (typeof window !== 'undefined') {
-      const s = localStorage.getItem('dashboard-startDate');
-      const e = localStorage.getItem('dashboard-endDate');
-      if (s && e) return { startDate: s, endDate: e };
-    }
-    const today = new Date().toISOString().slice(0, 10);
-    return { startDate: '2026-05-01', endDate: today };
+  const [dateRange, setDateRange] = useState<{ startDate: string; endDate: string }>({
+    startDate: '2026-05-01',
+    endDate: '2026-05-31',
   });
 
   useEffect(() => {
@@ -33,6 +28,9 @@ export default function PlanFactPage() {
       setCurrency={setCurrency}
       onDateChange={(start, end) => setDateRange({ startDate: start, endDate: end })}
       datePresetMode="plan-fact-months"
+      defaultStartDate="2026-05-01"
+      defaultEndDate="2026-05-31"
+      forceDefaultDateRange={true}
     >
       <PlanFactUI startDate={dateRange.startDate} endDate={dateRange.endDate} />
     </DashboardPage>

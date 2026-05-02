@@ -352,6 +352,8 @@ export default function DashboardPage({
   sidebarMinimal = false,
   showDataStatus = false,
   defaultStartDate,
+  defaultEndDate,
+  forceDefaultDateRange = false,
   datePresetMode = 'default',
 }: { 
   extraContent?: React.ReactNode, 
@@ -389,6 +391,8 @@ export default function DashboardPage({
   sidebarMinimal?: boolean;
   showDataStatus?: boolean;
   defaultStartDate?: string;
+  defaultEndDate?: string;
+  forceDefaultDateRange?: boolean;
   datePresetMode?: 'default' | 'plan-fact-months';
 }) {
   const activeColumns = useMemo(() => {
@@ -411,7 +415,9 @@ export default function DashboardPage({
   const currency = externalCurrency || internalCurrency;
   const setCurrency = externalSetCurrency || setInternalCurrency;
   const [startDate, setStartDate] = useState(() => {
+    if (defaultStartDate && forceDefaultDateRange) return defaultStartDate;
     if (isNested) return defaultStartDate || '2026-01-01';
+    if (defaultStartDate) return defaultStartDate;
     try {
       const saved = localStorage.getItem('dashboard-startDate');
       // Ignore any saved date before 2026
@@ -419,18 +425,24 @@ export default function DashboardPage({
     } catch { return '2026-01-01'; }
   });
   const [endDate, setEndDate] = useState(() => {
-    if (isNested) return today;
+    if (defaultEndDate && forceDefaultDateRange) return defaultEndDate;
+    if (isNested) return defaultEndDate || today;
+    if (defaultEndDate) return defaultEndDate;
     try { return localStorage.getItem('dashboard-endDate') || today; } catch { return today; }
   });
   const [draftStartDate, setDraftStartDate] = useState(() => {
-    if (isNested) return '2026-01-01';
+    if (defaultStartDate && forceDefaultDateRange) return defaultStartDate;
+    if (isNested) return defaultStartDate || '2026-01-01';
+    if (defaultStartDate) return defaultStartDate;
     try {
       const saved = localStorage.getItem('dashboard-startDate');
       return (saved && saved >= '2026-01-01') ? saved : '2026-01-01';
     } catch { return '2026-01-01'; }
   });
   const [draftEndDate, setDraftEndDate] = useState(() => {
-    if (isNested) return today;
+    if (defaultEndDate && forceDefaultDateRange) return defaultEndDate;
+    if (isNested) return defaultEndDate || today;
+    if (defaultEndDate) return defaultEndDate;
     try { return localStorage.getItem('dashboard-endDate') || today; } catch { return today; }
   });
   const [sourceFilter, setSourceFilter] = useState<SourceFilter>(() => {
@@ -1236,11 +1248,13 @@ export default function DashboardPage({
                 endDate={endDate}
                 today={today}
                 onResetFilters={() => {
-                  setStartDate('2024-01-01');
-                  setEndDate(today);
-                  setDraftStartDate('2024-01-01');
-                  setDraftEndDate(today);
-                  onDateChange?.('2024-01-01', today);
+                  const resetStart = defaultStartDate || '2024-01-01';
+                  const resetEnd = defaultEndDate || today;
+                  setStartDate(resetStart);
+                  setEndDate(resetEnd);
+                  setDraftStartDate(resetStart);
+                  setDraftEndDate(resetEnd);
+                  onDateChange?.(resetStart, resetEnd);
                 }}
                 hideCurrency={hideCurrency}
                 currency={currency}
