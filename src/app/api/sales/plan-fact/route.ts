@@ -582,19 +582,17 @@ export async function GET(request: NextRequest) {
           rawData = staleRaw;
           dataSource = 'crm-cache-stale';
         } else {
-          try {
-            rawData = await getOrFetchRawData();
-            dataSource = 'crm-cache';
-          } catch (fetchErr) {
-            console.warn('Plan/Fact fallback to empty dataset:', fetchErr instanceof Error ? fetchErr.message : String(fetchErr));
-            rawData = {
-              leads: [],
-              tasks: [],
-              users: [],
-              createdAt: Date.now(),
-            };
-            dataSource = 'empty-fallback';
-          }
+          // Never block API response on live CRM fetch: return fast fallback and warm cache in background.
+          void getOrFetchRawData().catch((fetchErr) => {
+            console.warn('Plan/Fact background CRM warmup failed:', fetchErr instanceof Error ? fetchErr.message : String(fetchErr));
+          });
+          rawData = {
+            leads: [],
+            tasks: [],
+            users: [],
+            createdAt: Date.now(),
+          };
+          dataSource = 'empty-fallback';
         }
       }
     }
