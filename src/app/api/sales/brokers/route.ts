@@ -191,7 +191,8 @@ const BQ_TASKS_TABLE = 'plan_fact_crm_tasks';
 
 const RE_PIPELINE_ID = 8696950;
 const KLYKOV_PIPELINE_ID = 10776450;
-const PARTNERS_PIPELINE_ID = 8600274;
+const PARTNERS_PIPELINE_ID = Number(process.env.AMO_PARTNERS_PIPELINE_ID || 8600274);
+const INCLUDED_PIPELINES = new Set([RE_PIPELINE_ID, KLYKOV_PIPELINE_ID, PARTNERS_PIPELINE_ID]);
 
 const RE_QL_ACTUAL_STATUSES = new Set([
   70457466, 70457470, 70457474, 70457478, 70457482, 70457486,
@@ -263,13 +264,13 @@ function toBoolean(value: unknown): boolean {
 }
 
 function isQlStatus(lead: { status_id: number; pipeline_id: number }): boolean {
-  if (lead.pipeline_id === RE_PIPELINE_ID) return RE_QL_STATUSES.has(lead.status_id);
+  if (lead.pipeline_id === RE_PIPELINE_ID || lead.pipeline_id === PARTNERS_PIPELINE_ID) return RE_QL_STATUSES.has(lead.status_id);
   if (lead.pipeline_id === KLYKOV_PIPELINE_ID) return KL_QL_STATUSES.has(lead.status_id);
   return false;
 }
 
 function isShowingStatus(lead: { status_id: number; pipeline_id: number }): boolean {
-  if (lead.pipeline_id === RE_PIPELINE_ID) return RE_SHOWING_STATUSES.has(lead.status_id);
+  if (lead.pipeline_id === RE_PIPELINE_ID || lead.pipeline_id === PARTNERS_PIPELINE_ID) return RE_SHOWING_STATUSES.has(lead.status_id);
   if (lead.pipeline_id === KLYKOV_PIPELINE_ID) return KL_SHOWING_STATUSES.has(lead.status_id);
   return false;
 }
@@ -346,7 +347,40 @@ function buildPeriodMetrics(leads: LeadRecord[]): PeriodMetrics {
 }
 
 async function loadLeadsAndTasks(brokerId: number): Promise<{ leads: LeadRecord[]; rawTasks: CacheTask[] }> {
-  // Try BigQuery first
+  // Use the same source preference as plan-fact for parity: CRM cache first.
+  const cache = await readCacheFile();
+  if (cache) {
+    const userMap = new Map<number, string>(cache.users.map((u) => [u.id, u.name]));
+
+    const leads: LeadRecord[] = cache.leads
+      .filter((l) => l.responsible_user_id === brokerId && INCLUDED_PIPELINES.has(l.pipeline_id))
+      .map((l) => {
+        const statusId = l.status_id;
+        const pipelineId = l.pipeline_id;
+        const resolvedBrokerName = l.broker_name || userMap.get(l.responsible_user_id) || `User #${l.responsible_user_id}`;
+        const sourceName = classifySourceFromRaw(l, pipelineId, l.source_name);
+        return {
+          lead_id: l.id,
+          broker_name: resolvedBrokerName,
+          source_name: sourceName,
+          status_id: statusId,
+          pipeline_id: pipelineId,
+          price: l.price || 0,
+          created_at_unix: l.created_at,
+          is_ql: isQlStatus({ status_id: statusId, pipeline_id: pipelineId }),
+          is_showing: isShowingStatus({ status_id: statusId, pipeline_id: pipelineId }),
+          is_won: isWonStatus(statusId),
+        };
+      });
+
+    const rawTasks = cache.tasks.filter(
+      (t) => t.responsible_user_id === brokerId && t.entity_type === 'leads' && !t.is_completed,
+    );
+
+    return { leads, rawTasks };
+  }
+
+  // Fallback: BigQuery
   try {
     const [[leadRows], [taskRows]] = await Promise.all([
       bq.query({
@@ -362,29 +396,31 @@ async function loadLeadsAndTasks(brokerId: number): Promise<{ leads: LeadRecord[
         query: `
           SELECT task_id, entity_id, responsible_user_id, entity_type, is_completed, complete_till
           FROM \`${BQ_PROJECT_ID}.${BQ_DATASET}.${BQ_TASKS_TABLE}\`
-          WHERE responsible_user_id = @brokerId AND is_completed = FALSE
+          WHERE responsible_user_id = @brokerId AND is_completed = FALSE AND entity_type = 'leads'
         `,
         params: { brokerId },
         useLegacySql: false,
       }),
     ]);
 
-    const leads: LeadRecord[] = (leadRows as any[]).map((row) => {
-      const statusId = toNumber(row.status_id);
-      const pipelineId = toNumber(row.pipeline_id);
-      return {
-        lead_id: toNumber(row.lead_id),
-        broker_name: String(row.broker_name),
-        source_name: (String(row.source_name) as SourceName) || 'Own leads',
-        status_id: statusId,
-        pipeline_id: pipelineId,
-        price: toNumber(row.price),
-        created_at_unix: timestampToUnix(row.created_at),
-        is_ql: isQlStatus({ status_id: statusId, pipeline_id: pipelineId }),
-        is_showing: isShowingStatus({ status_id: statusId, pipeline_id: pipelineId }),
-        is_won: isWonStatus(statusId),
-      };
-    });
+    const leads: LeadRecord[] = (leadRows as any[])
+      .filter((row) => INCLUDED_PIPELINES.has(toNumber(row.pipeline_id)))
+      .map((row) => {
+        const statusId = toNumber(row.status_id);
+        const pipelineId = toNumber(row.pipeline_id);
+        return {
+          lead_id: toNumber(row.lead_id),
+          broker_name: String(row.broker_name),
+          source_name: (String(row.source_name) as SourceName) || 'Own leads',
+          status_id: statusId,
+          pipeline_id: pipelineId,
+          price: toNumber(row.price),
+          created_at_unix: timestampToUnix(row.created_at),
+          is_ql: isQlStatus({ status_id: statusId, pipeline_id: pipelineId }),
+          is_showing: isShowingStatus({ status_id: statusId, pipeline_id: pipelineId }),
+          is_won: isWonStatus(statusId),
+        };
+      });
 
     const rawTasks: CacheTask[] = (taskRows as any[]).map((row) => ({
       id: toNumber(row.task_id),
@@ -397,41 +433,9 @@ async function loadLeadsAndTasks(brokerId: number): Promise<{ leads: LeadRecord[
 
     return { leads, rawTasks };
   } catch (bqErr) {
-    console.warn('BQ unavailable, falling back to cache:', bqErr instanceof Error ? bqErr.message : String(bqErr));
+    console.warn('BQ unavailable and no cache available:', bqErr instanceof Error ? bqErr.message : String(bqErr));
+    return { leads: [], rawTasks: [] };
   }
-
-  // Fallback: plan-fact CRM cache
-  const cache = await readCacheFile();
-  if (!cache) return { leads: [], rawTasks: [] };
-
-  const userMap = new Map<number, string>(cache.users.map((u) => [u.id, u.name]));
-
-  const leads: LeadRecord[] = cache.leads
-    .filter((l) => l.responsible_user_id === brokerId)
-    .map((l) => {
-      const statusId = l.status_id;
-      const pipelineId = l.pipeline_id;
-      const resolvedBrokerName = l.broker_name || userMap.get(l.responsible_user_id) || `User #${l.responsible_user_id}`;
-      const sourceName = classifySourceFromRaw(l, pipelineId, l.source_name);
-      return {
-        lead_id: l.id,
-        broker_name: resolvedBrokerName,
-        source_name: sourceName,
-        status_id: statusId,
-        pipeline_id: pipelineId,
-        price: l.price || 0,
-        created_at_unix: l.created_at,
-        is_ql: isQlStatus({ status_id: statusId, pipeline_id: pipelineId }),
-        is_showing: isShowingStatus({ status_id: statusId, pipeline_id: pipelineId }),
-        is_won: isWonStatus(statusId),
-      };
-    });
-
-  const rawTasks = cache.tasks.filter(
-    (t) => t.responsible_user_id === brokerId && t.entity_type === 'leads' && !t.is_completed,
-  );
-
-  return { leads, rawTasks };
 }
 
 async function getBrokerMetrics(
@@ -444,15 +448,41 @@ async function getBrokerMetrics(
 ): Promise<BrokerMetrics> {
   const { leads, rawTasks } = await loadLeadsAndTasks(brokerId);
 
-  // QL Actual lead IDs for overdue filter
-  const qlActualLeadIds = new Set<number>(
-    leads.filter((l) => isQlActualStatus({ status_id: l.status_id, pipeline_id: l.pipeline_id })).map((l) => l.lead_id),
-  );
+  // Match plan-fact overdue rule exactly:
+  // count overdue tasks assigned to broker for leads from included pipelines,
+  // where lead is in QL Actual stage (global lead set, not only broker-owned leads).
+  const cacheForOverdue = await readCacheFile();
+  const includedLeadIdsGlobal = new Set<number>();
+  const qlActualLeadIdsGlobal = new Set<number>();
+
+  if (cacheForOverdue) {
+    for (const l of cacheForOverdue.leads) {
+      if (!INCLUDED_PIPELINES.has(l.pipeline_id)) continue;
+      includedLeadIdsGlobal.add(l.id);
+      if (isQlActualStatus({ status_id: l.status_id, pipeline_id: l.pipeline_id })) {
+        qlActualLeadIdsGlobal.add(l.id);
+      }
+    }
+  }
+
+  // Fallback when cache is unavailable
+  if (includedLeadIdsGlobal.size === 0) {
+    for (const l of leads) {
+      includedLeadIdsGlobal.add(l.lead_id);
+      if (isQlActualStatus({ status_id: l.status_id, pipeline_id: l.pipeline_id })) {
+        qlActualLeadIdsGlobal.add(l.lead_id);
+      }
+    }
+  }
 
   // Build overdue tasks (only for QL Actual leads)
   const now = Math.floor(Date.now() / 1000);
   const overdueTasks: OverdueTask[] = rawTasks
-    .filter((t) => t.complete_till && t.complete_till < now && qlActualLeadIds.has(t.entity_id))
+    .filter((t) => t.entity_type === 'leads'
+      && t.complete_till
+      && t.complete_till < now
+      && includedLeadIdsGlobal.has(t.entity_id)
+      && qlActualLeadIdsGlobal.has(t.entity_id))
     .map((t) => ({
       task_id: t.id,
       lead_id: t.entity_id,
