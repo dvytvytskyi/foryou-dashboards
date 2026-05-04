@@ -5,7 +5,7 @@ import DashboardPage from '@/components/DashboardPage';
 import PlanFactUI from './PlanFactUI';
 
 export default function PlanFactPage() {
-  const [currency, setCurrency] = useState<'usd' | 'aed'>('aed');
+  const [currency, setCurrency] = useState<'usd' | 'aed'>('usd');
   
   const [dateRange, setDateRange] = useState<{ startDate: string; endDate: string }>({
     startDate: '2026-05-01',

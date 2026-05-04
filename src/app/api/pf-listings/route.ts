@@ -77,6 +77,116 @@ function normalizeListingRef(value: string | null | undefined) {
   return String(value || '').trim().toLowerCase();
 }
 
+function parseDateRangeToUnix(startDate: string | null, endDate: string | null) {
+  if (!startDate || !endDate) return { startUnix: null as number | null, endUnix: null as number | null };
+
+  const start = new Date(`${startDate}T00:00:00.000Z`);
+  const end = new Date(`${endDate}T23:59:59.999Z`);
+  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+    return { startUnix: null as number | null, endUnix: null as number | null };
+  }
+
+  return {
+    startUnix: Math.floor(start.getTime() / 1000),
+    endUnix: Math.floor(end.getTime() / 1000),
+  };
+}
+
+type ExactListingMetrics = {
+  crm_leads: number;
+  spam: number;
+  qualified_leads: number;
+  ql_actual: number;
+  meetings: number;
+  deals: number;
+};
+
+async function loadExactListingMetricsFromSyncState(
+  listingRefs: string[],
+  startDate: string | null,
+  endDate: string | null,
+) {
+  if (listingRefs.length === 0) return new Map<string, ExactListingMetrics>();
+
+  const { startUnix, endUnix } = parseDateRangeToUnix(startDate, endDate);
+
+  const { rows } = await queryPostgres<{
+    listing_ref: string;
+    crm_leads: number | string;
+    spam_count: number | string;
+    qualified_count: number | string;
+    ql_actual_count: number | string;
+    meetings_count: number | string;
+    deals_count: number | string;
+  }>(
+    `
+      SELECT
+        LOWER(TRIM(payload->>'pf_listing_ref')) AS listing_ref,
+        COUNT(*)::int AS crm_leads,
+        SUM(CASE WHEN LOWER(COALESCE(payload->>'isSpam', 'false')) = 'true' THEN 1 ELSE 0 END)::int AS spam_count,
+        SUM(CASE WHEN LOWER(COALESCE(payload->>'isQualified', 'false')) = 'true' THEN 1 ELSE 0 END)::int AS qualified_count,
+        SUM(CASE WHEN LOWER(COALESCE(payload->>'isQlActual', 'false')) = 'true' THEN 1 ELSE 0 END)::int AS ql_actual_count,
+        SUM(CASE WHEN LOWER(COALESCE(payload->>'isMeeting', 'false')) = 'true' THEN 1 ELSE 0 END)::int AS meetings_count,
+        SUM(CASE WHEN LOWER(COALESCE(payload->>'isDeal', 'false')) = 'true' THEN 1 ELSE 0 END)::int AS deals_count
+      FROM pf_amo_sync_state
+      WHERE LOWER(TRIM(COALESCE(payload->>'pf_listing_ref', ''))) = ANY($1::text[])
+        AND LOWER(COALESCE(payload->>'pf_category', '')) = 'listing'
+        AND (
+          $2::bigint IS NULL
+          OR (
+            (payload->>'created_at') ~ '^[0-9]+$'
+            AND (payload->>'created_at')::bigint >= $2::bigint
+          )
+        )
+        AND (
+          $3::bigint IS NULL
+          OR (
+            (payload->>'created_at') ~ '^[0-9]+$'
+            AND (payload->>'created_at')::bigint <= $3::bigint
+          )
+        )
+      GROUP BY 1
+    `,
+    [listingRefs, startUnix, endUnix],
+  );
+
+  const out = new Map<string, ExactListingMetrics>();
+  for (const row of rows) {
+    out.set(String(row.listing_ref || '').toLowerCase(), {
+      crm_leads: Number(row.crm_leads || 0),
+      spam: Number(row.spam_count || 0),
+      qualified_leads: Number(row.qualified_count || 0),
+      ql_actual: Number(row.ql_actual_count || 0),
+      meetings: Number(row.meetings_count || 0),
+      deals: Number(row.deals_count || 0),
+    });
+  }
+  return out;
+}
+
+function monthKeyOverlapsRange(monthKey: string, startDate: string | null, endDate: string | null) {
+  if (!monthKey || monthKey.length < 7) return true;
+  if (!startDate || !endDate) return true;
+
+  const normalizedMonth = monthKey.slice(0, 7);
+  const monthStart = `${normalizedMonth}-01`;
+
+  const [yearStr, monthStr] = normalizedMonth.split('-');
+  const year = Number(yearStr);
+  const month = Number(monthStr);
+  if (!Number.isFinite(year) || !Number.isFinite(month) || month < 1 || month > 12) return true;
+
+  const monthEnd = new Date(Date.UTC(year, month, 0)).toISOString().slice(0, 10);
+
+  // Prevent mixing custom day ranges with monthly buckets:
+  // a month bucket is used only when the whole month is inside selected range.
+  // Strict mode for non-plan-fact pages: include a month bucket only when
+  // the entire month is inside the requested date range.
+  if (startDate && monthStart < startDate) return false;
+  if (endDate && monthEnd > endDate) return false;
+  return true;
+}
+
 async function loadListingMatchStatsFromPostgres(targetGroup: string | null) {
   const { rows } = await queryPostgres<ListingMatchStatsRow>(
     `
@@ -216,22 +326,17 @@ export async function GET(request: Request) {
     const startDate = searchParams.get('startDate');
     const endDate = searchParams.get('endDate');
 
-    // Special handling for "Our" group: return per-listing per-month rows
+    // Exact day-range metrics for "Our" group (no monthly aggregation in UI responses)
     if (targetGroup === 'Our') {
-      // Fetch per-listing stats with month breakdowns
-      const { rows: listingStats } = await queryPostgres<any>(
-        `SELECT s.listing_key, s.reference, s.category,
-                s.matched_amo_leads, s.spam_count, s.qualified_count,
-                s.ql_actual_count, s.meetings_count, s.deals_count, s.revenue_sum,
-                s.matched_amo_leads_by_month, s.spam_by_month, s.qualified_by_month,
-                s.ql_actual_by_month, s.meetings_by_month, s.deals_by_month, s.revenue_by_month,
-                snap.title, snap.budget::numeric as budget, snap.budget_by_month
-         FROM pf_amo_match_listing_stats s
-         LEFT JOIN pf_listings_snapshot snap
-           ON snap.reference = s.reference AND snap.group_name = 'Our'
-         WHERE s.group_name = 'Our' AND s.matched_amo_leads > 0`,
-        [],
+      const ourListings = await loadListingsFromPostgres('Our');
+      const referenceSet = Array.from(
+        new Set(
+          ourListings
+            .map((l: any) => normalizeListingRef(l.Reference))
+            .filter(Boolean),
+        ),
       );
+      const exactMetrics = await loadExactListingMetricsFromSyncState(referenceSet, startDate, endDate);
 
       const categorySort: Record<string, number> = {
         'Sell': 1, 'Rent': 2, 'Commercial Sell': 3, 'Commercial Rent': 4, 'Other': 5,
@@ -239,230 +344,117 @@ export async function GET(request: Request) {
 
       const formattedRows: any[] = [];
 
-      const monthInRange = (m: string) => {
-        if (!startDate || !endDate) return true;
-        if (!m || m.length < 7) return true;
-        return `${m}-01` >= startDate && `${m}-01` <= endDate;
-      };
+      for (const listing of ourListings) {
+        const ref = normalizeListingRef(listing.Reference);
+        const metrics = ref ? exactMetrics.get(ref) : null;
+        const crmLeads = Number(metrics?.crm_leads || 0);
+        if (crmLeads <= 0) continue;
 
-      for (const stat of listingStats) {
-        const category = stat.category || 'Other';
-        const listingTitle = stat.title || stat.reference || stat.listing_key;
+        const spam = Number(metrics?.spam || 0);
+        const qualified = Number(metrics?.qualified_leads || 0);
+        const qlActual = Number(metrics?.ql_actual || 0);
+        const meetings = Number(metrics?.meetings || 0);
+        const deals = Number(metrics?.deals || 0);
+        const budget = Number(listing.Budget || 0);
+
+        const category = listing.Category || 'Other';
+        const listingTitle = listing.Title || listing.Reference || listing.ListingId;
         const sortOrder = categorySort[category] || 99;
 
-        const leadsByMonth: Record<string, number> = stat.matched_amo_leads_by_month || {};
-        const spamByMonth: Record<string, number> = stat.spam_by_month || {};
-        const qualifiedByMonth: Record<string, number> = stat.qualified_by_month || {};
-        const qlActualByMonth: Record<string, number> = stat.ql_actual_by_month || {};
-        const meetingsByMonth: Record<string, number> = stat.meetings_by_month || {};
-        const dealsByMonth: Record<string, number> = stat.deals_by_month || {};
-        const revenueByMonth: Record<string, number> = stat.revenue_by_month || {};
-        const budgetByMonthRaw: Record<string, number> = stat.budget_by_month || {};
-        const budgetByMonth: Record<string, number> = Object.fromEntries(
-          Object.entries(budgetByMonthRaw).map(([k, v]) => [k, Number(v) * CREDIT_TO_AED_RATE])
-        );
-
-        // Get all months that have data
-        const allMonths = Array.from(new Set([
-          ...Object.keys(leadsByMonth),
-          ...Object.keys(budgetByMonth),
-        ])).filter(monthInRange).sort();
-
-        if (allMonths.length > 0) {
-          // Per-month rows (level_3)
-          for (const month of allMonths) {
-            const leads = Number(leadsByMonth[month] || 0);
-            const spam = Number(spamByMonth[month] || 0);
-            const qualified = Number(qualifiedByMonth[month] || 0);
-            const qlActual = Number(qlActualByMonth[month] || 0);
-            const budget = Number(budgetByMonth[month] || 0);
-            formattedRows.push({
-              channel: 'Property Finder',
-              level_1: category,
-              level_2: listingTitle,
-              level_3: month,
-              budget,
-              leads,
-              crm_leads: leads,
-              no_answer_spam: spam,
-              qualified_leads: qualified,
-              ql_actual: qlActual,
-              meetings: Number(meetingsByMonth[month] || 0),
-              deals: Number(dealsByMonth[month] || 0),
-              revenue: Number(revenueByMonth[month] || 0),
-              company_revenue: 0,
-              date: month,
-              cpl: leads > 0 ? budget / leads : 0,
-              rate_answer: leads > 0 ? (leads - spam) / leads : 0,
-              cost_per_qualified_leads: qualified > 0 ? budget / qualified : 0,
-              cpql_actual: qlActual > 0 ? budget / qlActual : 0,
-              cp_meetings: Number(meetingsByMonth[month] || 0) > 0 ? budget / Number(meetingsByMonth[month] || 0) : 0,
-              cost_per_deal: Number(dealsByMonth[month] || 0) > 0 ? budget / Number(dealsByMonth[month] || 0) : 0,
-              roi: budget > 0 ? Number(revenueByMonth[month] || 0) / budget : 0,
-              cr_ql: leads > 0 ? qualified / leads : 0,
-              sort_order: sortOrder,
-              status: 'Active',
-            });
-          }
-        } else {
-          // No month breakdown — single listing row
-          const leads = Number(stat.matched_amo_leads || 0);
-          const spam = Number(stat.spam_count || 0);
-          const qualified = Number(stat.qualified_count || 0);
-          const qlActual = Number(stat.ql_actual_count || 0);
-          const budget = Number(stat.budget || 0) * CREDIT_TO_AED_RATE;
-          formattedRows.push({
-            channel: 'Property Finder',
-            level_1: category,
-            level_2: listingTitle,
-            level_3: null,
-            budget,
-            leads,
-            crm_leads: leads,
-            no_answer_spam: spam,
-            qualified_leads: qualified,
-            ql_actual: qlActual,
-            meetings: Number(stat.meetings_count || 0),
-            deals: Number(stat.deals_count || 0),
-            revenue: Number(stat.revenue_sum || 0),
-            company_revenue: 0,
-            date: '-',
-            cpl: leads > 0 ? budget / leads : 0,
-            rate_answer: leads > 0 ? (leads - spam) / leads : 0,
-            cost_per_qualified_leads: qualified > 0 ? budget / qualified : 0,
-            cpql_actual: qlActual > 0 ? budget / qlActual : 0,
-            cp_meetings: Number(stat.meetings_count || 0) > 0 ? budget / Number(stat.meetings_count || 0) : 0,
-            cost_per_deal: Number(stat.deals_count || 0) > 0 ? budget / Number(stat.deals_count || 0) : 0,
-            roi: budget > 0 ? Number(stat.revenue_sum || 0) / budget : 0,
-            cr_ql: leads > 0 ? qualified / leads : 0,
-            sort_order: sortOrder,
-            status: 'Active',
-          });
-        }
+        formattedRows.push({
+          channel: 'Property Finder',
+          level_1: category,
+          level_2: listingTitle,
+          level_3: null,
+          budget,
+          leads: crmLeads,
+          crm_leads: crmLeads,
+          no_answer_spam: spam,
+          qualified_leads: qualified,
+          ql_actual: qlActual,
+          meetings,
+          deals,
+          revenue: 0,
+          company_revenue: 0,
+          date: startDate && endDate ? `${startDate}..${endDate}` : '-',
+          cpl: crmLeads > 0 ? budget / crmLeads : 0,
+          rate_answer: crmLeads > 0 ? (crmLeads - spam) / crmLeads : 0,
+          cost_per_qualified_leads: qualified > 0 ? budget / qualified : 0,
+          cpql_actual: qlActual > 0 ? budget / qlActual : 0,
+          cp_meetings: meetings > 0 ? budget / meetings : 0,
+          cost_per_deal: deals > 0 ? budget / deals : 0,
+          roi: 0,
+          cr_ql: crmLeads > 0 ? qualified / crmLeads : 0,
+          sort_order: sortOrder,
+          status: listing.status || 'Active',
+        });
       }
 
       return NextResponse.json({ success: true, data: formattedRows, meta: { lastUpdatedAt: new Date().toISOString() } });
     }
 
-    // For Partner group - per-listing per-month drill-down (same as Our)
+    // Exact day-range metrics for Partner group (no monthly aggregation in UI responses)
     if (targetGroup === 'Partner') {
-      const { rows: listingStats } = await queryPostgres<any>(
-        `SELECT s.listing_key, s.reference, s.category, s.group_name,
-                s.matched_amo_leads, s.spam_count, s.qualified_count,
-                s.ql_actual_count, s.meetings_count, s.deals_count, s.revenue_sum,
-                s.matched_amo_leads_by_month, s.spam_by_month, s.qualified_by_month,
-                s.ql_actual_by_month, s.meetings_by_month, s.deals_by_month, s.revenue_by_month,
-                snap.title, snap.budget::numeric as budget, snap.budget_by_month
-         FROM pf_amo_match_listing_stats s
-         LEFT JOIN pf_listings_snapshot snap
-           ON snap.reference = s.reference AND snap.group_name = s.group_name
-         WHERE s.group_name IN ('Partner', 'AbuDhabi') AND s.matched_amo_leads > 0`,
-        [],
+      const partnerListings = await loadListingsFromPostgres('Partner');
+      const referenceSet = Array.from(
+        new Set(
+          partnerListings
+            .map((l: any) => normalizeListingRef(l.Reference))
+            .filter(Boolean),
+        ),
       );
+      const exactMetrics = await loadExactListingMetricsFromSyncState(referenceSet, startDate, endDate);
 
       const categorySort: Record<string, number> = {
         'Sell': 1, 'Rent': 2, 'Commercial Sell': 3, 'Commercial Rent': 4, 'Other': 5,
       };
 
-      const monthInRange = (m: string) => {
-        if (!startDate || !endDate) return true;
-        if (!m || m.length < 7) return true;
-        return `${m}-01` >= startDate && `${m}-01` <= endDate;
-      };
-
       const formattedRows: any[] = [];
 
-      for (const stat of listingStats) {
-        const category = stat.category || 'Other';
-        const listingTitle = stat.title || stat.reference || stat.listing_key;
+      for (const listing of partnerListings) {
+        const ref = normalizeListingRef(listing.Reference);
+        const metrics = ref ? exactMetrics.get(ref) : null;
+        const crmLeads = Number(metrics?.crm_leads || 0);
+        if (crmLeads <= 0) continue;
+
+        const spam = Number(metrics?.spam || 0);
+        const qualified = Number(metrics?.qualified_leads || 0);
+        const qlActual = Number(metrics?.ql_actual || 0);
+        const meetings = Number(metrics?.meetings || 0);
+        const deals = Number(metrics?.deals || 0);
+        const budget = Number(listing.Budget || 0);
+
+        const category = listing.Category || 'Other';
+        const listingTitle = listing.Title || listing.Reference || listing.ListingId;
         const sortOrder = categorySort[category] || 99;
 
-        const leadsByMonth: Record<string, number> = stat.matched_amo_leads_by_month || {};
-        const spamByMonth: Record<string, number> = stat.spam_by_month || {};
-        const qualifiedByMonth: Record<string, number> = stat.qualified_by_month || {};
-        const qlActualByMonth: Record<string, number> = stat.ql_actual_by_month || {};
-        const meetingsByMonth: Record<string, number> = stat.meetings_by_month || {};
-        const dealsByMonth: Record<string, number> = stat.deals_by_month || {};
-        const revenueByMonth: Record<string, number> = stat.revenue_by_month || {};
-        const budgetByMonthRawP: Record<string, number> = stat.budget_by_month || {};
-        const budgetByMonth: Record<string, number> = Object.fromEntries(
-          Object.entries(budgetByMonthRawP).map(([k, v]) => [k, Number(v) * CREDIT_TO_AED_RATE])
-        );
-
-        const allMonths = Array.from(new Set([
-          ...Object.keys(leadsByMonth),
-          ...Object.keys(budgetByMonth),
-        ])).filter(monthInRange).sort();
-
-        if (allMonths.length > 0) {
-          for (const month of allMonths) {
-            const leads = Number(leadsByMonth[month] || 0);
-            const spam = Number(spamByMonth[month] || 0);
-            const qualified = Number(qualifiedByMonth[month] || 0);
-            const qlActual = Number(qlActualByMonth[month] || 0);
-            const budget = Number(budgetByMonth[month] || 0);
-            formattedRows.push({
-              channel: 'Property Finder',
-              level_1: category,
-              level_2: listingTitle,
-              level_3: month,
-              budget,
-              leads,
-              crm_leads: leads,
-              no_answer_spam: spam,
-              qualified_leads: qualified,
-              ql_actual: qlActual,
-              meetings: Number(meetingsByMonth[month] || 0),
-              deals: Number(dealsByMonth[month] || 0),
-              revenue: Number(revenueByMonth[month] || 0),
-              company_revenue: 0,
-              date: month,
-              cpl: leads > 0 ? budget / leads : 0,
-              rate_answer: leads > 0 ? (leads - spam) / leads : 0,
-              cost_per_qualified_leads: qualified > 0 ? budget / qualified : 0,
-              cpql_actual: qlActual > 0 ? budget / qlActual : 0,
-              cp_meetings: Number(meetingsByMonth[month] || 0) > 0 ? budget / Number(meetingsByMonth[month] || 0) : 0,
-              cost_per_deal: Number(dealsByMonth[month] || 0) > 0 ? budget / Number(dealsByMonth[month] || 0) : 0,
-              roi: budget > 0 ? Number(revenueByMonth[month] || 0) / budget : 0,
-              cr_ql: leads > 0 ? qualified / leads : 0,
-              sort_order: sortOrder,
-              status: 'Active',
-            });
-          }
-        } else {
-          const leads = Number(stat.matched_amo_leads || 0);
-          const spam = Number(stat.spam_count || 0);
-          const qualified = Number(stat.qualified_count || 0);
-          const qlActual = Number(stat.ql_actual_count || 0);
-          const budget = Number(stat.budget || 0) * CREDIT_TO_AED_RATE;
-          formattedRows.push({
-            channel: 'Property Finder',
-            level_1: category,
-            level_2: listingTitle,
-            level_3: null,
-            budget,
-            leads,
-            crm_leads: leads,
-            no_answer_spam: spam,
-            qualified_leads: qualified,
-            ql_actual: qlActual,
-            meetings: Number(stat.meetings_count || 0),
-            deals: Number(stat.deals_count || 0),
-            revenue: Number(stat.revenue_sum || 0),
-            company_revenue: 0,
-            date: '-',
-            cpl: leads > 0 ? budget / leads : 0,
-            rate_answer: leads > 0 ? (leads - spam) / leads : 0,
-            cost_per_qualified_leads: qualified > 0 ? budget / qualified : 0,
-            cpql_actual: qlActual > 0 ? budget / qlActual : 0,
-            cp_meetings: Number(stat.meetings_count || 0) > 0 ? budget / Number(stat.meetings_count || 0) : 0,
-            cost_per_deal: Number(stat.deals_count || 0) > 0 ? budget / Number(stat.deals_count || 0) : 0,
-            roi: budget > 0 ? Number(stat.revenue_sum || 0) / budget : 0,
-            cr_ql: leads > 0 ? qualified / leads : 0,
-            sort_order: sortOrder,
-            status: 'Active',
-          });
-        }
+        formattedRows.push({
+          channel: 'Property Finder',
+          level_1: category,
+          level_2: listingTitle,
+          level_3: null,
+          budget,
+          leads: crmLeads,
+          crm_leads: crmLeads,
+          no_answer_spam: spam,
+          qualified_leads: qualified,
+          ql_actual: qlActual,
+          meetings,
+          deals,
+          revenue: 0,
+          company_revenue: 0,
+          date: startDate && endDate ? `${startDate}..${endDate}` : '-',
+          cpl: crmLeads > 0 ? budget / crmLeads : 0,
+          rate_answer: crmLeads > 0 ? (crmLeads - spam) / crmLeads : 0,
+          cost_per_qualified_leads: qualified > 0 ? budget / qualified : 0,
+          cpql_actual: qlActual > 0 ? budget / qlActual : 0,
+          cp_meetings: meetings > 0 ? budget / meetings : 0,
+          cost_per_deal: deals > 0 ? budget / deals : 0,
+          roi: 0,
+          cr_ql: crmLeads > 0 ? qualified / crmLeads : 0,
+          sort_order: sortOrder,
+          status: listing.status || 'Active',
+        });
       }
 
       return NextResponse.json({ success: true, data: formattedRows, meta: { lastUpdatedAt: new Date().toISOString() } });
@@ -474,10 +466,7 @@ export async function GET(request: Request) {
       const partnerListings = await loadListingsFromPostgres('Partner');
 
       const monthInRange = (monthKey: string) => {
-        if (!startDate || !endDate) return true;
-        if (!monthKey || monthKey.length < 7) return true;
-        const monthStart = `${monthKey.slice(0, 7)}-01`;
-        return monthStart >= startDate && monthStart <= endDate;
+        return monthKeyOverlapsRange(monthKey, startDate, endDate);
       };
 
       const dateInRange = (dateString?: string | null) => {
@@ -621,10 +610,7 @@ export async function GET(request: Request) {
     // since Our group is handled above and returns early
 
     const monthInRange = (monthKey: string) => {
-      if (!startDate || !endDate) return true;
-      if (!monthKey || monthKey.length < 7) return true;
-      const monthStart = `${monthKey.slice(0, 7)}-01`;
-      return monthStart >= startDate && monthStart <= endDate;
+      return monthKeyOverlapsRange(monthKey, startDate, endDate);
     };
 
     const dateInRange = (dateString?: string | null) => {

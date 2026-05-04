@@ -36,8 +36,17 @@ function monthRange(startDate: string, endDate: string): Set<string> {
   const last = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), 1));
 
   while (cursor <= last) {
-    const key = `${cursor.getUTCFullYear()}-${String(cursor.getUTCMonth() + 1).padStart(2, '0')}`;
-    out.add(key);
+    const year = cursor.getUTCFullYear();
+    const month = cursor.getUTCMonth() + 1;
+    const monthStart = `${year}-${String(month).padStart(2, '0')}-01`;
+    const monthEnd = new Date(Date.UTC(year, month, 0)).toISOString().slice(0, 10);
+
+    // Strict non-mixing rule for non-plan-fact pages:
+    // include only months fully covered by selected range.
+    if (monthStart >= startDate && monthEnd <= endDate) {
+      const key = `${year}-${String(month).padStart(2, '0')}`;
+      out.add(key);
+    }
     cursor.setUTCMonth(cursor.getUTCMonth() + 1);
   }
 

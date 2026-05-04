@@ -7,6 +7,27 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 const CREDIT_TO_AED_RATE = 1.9;
 
+function monthKeyOverlapsRange(monthKey: string, startDate: string | null, endDate: string | null) {
+  if (!monthKey || monthKey.length < 7) return true;
+  if (!startDate || !endDate) return true;
+
+  const normalizedMonth = monthKey.slice(0, 7);
+  const monthStart = `${normalizedMonth}-01`;
+
+  const [yearStr, monthStr] = normalizedMonth.split('-');
+  const year = Number(yearStr);
+  const month = Number(monthStr);
+  if (!Number.isFinite(year) || !Number.isFinite(month) || month < 1 || month > 12) return true;
+
+  const monthEnd = new Date(Date.UTC(year, month, 0)).toISOString().slice(0, 10);
+
+  // Prevent mixing custom day ranges with monthly buckets:
+  // a month bucket is used only when the whole month is inside selected range.
+  if (monthStart < startDate) return false;
+  if (monthEnd > endDate) return false;
+  return true;
+}
+
 type AmoProjectMatch = {
   crm_leads: number;
   spam: number;
@@ -142,10 +163,7 @@ export async function GET(request: Request) {
     }
 
     const monthInRange = (monthKey: string) => {
-      if (!startDate || !endDate) return true;
-      if (!monthKey || monthKey.length < 7) return true;
-      const monthStart = `${monthKey.slice(0, 7)}-01`;
-      return monthStart >= startDate && monthStart <= endDate;
+      return monthKeyOverlapsRange(monthKey, startDate, endDate);
     };
 
     const dateInRange = (dateString?: string | null) => {

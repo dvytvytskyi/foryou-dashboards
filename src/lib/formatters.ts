@@ -1,6 +1,6 @@
 export type CurrencyCode = 'aed' | 'usd';
 
-export function formatMoney(value: number, currency: CurrencyCode = 'aed') {
+export function formatMoney(value: number, currency: CurrencyCode = 'usd') {
   const symbol = currency === 'usd' ? '$' : 'AED';
   return `${symbol} ${Math.round(value || 0).toLocaleString('en-US')}`;
 }

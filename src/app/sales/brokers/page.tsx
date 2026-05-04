@@ -9,7 +9,7 @@ export default function BrokersPage() {
   const [brokers, setBrokers] = useState<Array<{ id: number; name: string }>>([]);
   const [selectedBroker, setSelectedBroker] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [currency, setCurrency] = useState<'usd' | 'aed'>('aed');
+  const [currency, setCurrency] = useState<'usd' | 'aed'>('usd');
   
   const [dateRange, setDateRange] = useState<{ startDate: string; endDate: string }>(() => {
     if (typeof window !== 'undefined') {

@@ -37,7 +37,7 @@ const EMPTY_DATA: InvoicesOverviewData = {
 
 export default function InvoicesOverviewPage() {
   const [loading, setLoading] = useState(false);
-  const [currency, setCurrency] = useState<'aed' | 'usd'>('aed');
+  const [currency, setCurrency] = useState<'aed' | 'usd'>('usd');
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<InvoicesOverviewData>(EMPTY_DATA);
   const [tableTab, setTableTab] = useState<'short' | 'long'>('short');

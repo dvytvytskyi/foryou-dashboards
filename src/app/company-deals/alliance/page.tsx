@@ -29,7 +29,7 @@ function shouldExcludeSource(source: string): boolean {
 export default function CompanyAlliancePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [currency, setCurrency] = useState<'aed' | 'usd'>('aed');
+  const [currency, setCurrency] = useState<'aed' | 'usd'>('usd');
   const [deals, setDeals] = useState<any[]>([]);
   const [dealType, setDealType] = useState<DealType>('Все');
   const [dateRange, setDateRange] = useState<{ startDate: string; endDate: string }>(() => {

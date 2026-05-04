@@ -140,7 +140,7 @@ export default function CompanyRatingsPage() {
   const [brokerRatings, setBrokerRatings] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [currency, setCurrency] = useState<'aed' | 'usd'>('aed');
+  const [currency, setCurrency] = useState<'aed' | 'usd'>('usd');
   const [dateRange, setDateRange] = useState<{ startDate: string; endDate: string }>(() => {
     if (typeof window !== 'undefined') {
       const startDate = localStorage.getItem('dashboard-startDate');
