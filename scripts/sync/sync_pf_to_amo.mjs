@@ -18,9 +18,9 @@ const PF_FIELD_CHANNEL_TYPE = Number(process.env.AMO_PF_FIELD_CHANNEL_TYPE || 14
 const PF_FIELD_CATEGORY = Number(process.env.AMO_PF_FIELD_CATEGORY || 1516913);
 const PF_FIELD_STATUS = Number(process.env.AMO_PF_FIELD_STATUS || 1516917);
 
-const LOOKBACK_HOURS = Number(process.env.PF_TO_AMO_LOOKBACK_HOURS || 24);
-const MAX_PAGES = Number(process.env.PF_TO_AMO_MAX_PAGES || 40);
-const MAX_PER_RUN = Number(process.env.PF_TO_AMO_MAX_PER_RUN || 75);
+const LOOKBACK_HOURS = Number(process.env.PF_TO_AMO_LOOKBACK_HOURS || 168); // 7 days — safe due to pf_amo_sync_state dedup
+const MAX_PAGES = Number(process.env.PF_TO_AMO_MAX_PAGES || 200);
+const MAX_PER_RUN = Number(process.env.PF_TO_AMO_MAX_PER_RUN || 500);
 const DRY_RUN = process.env.PF_TO_AMO_DRY_RUN === '1' || process.argv.includes('--dry-run');
 
 function getConnectionString() {
