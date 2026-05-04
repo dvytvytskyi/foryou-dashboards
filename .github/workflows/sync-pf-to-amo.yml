@@ -1,0 +1,74 @@
+name: Sync PF → AMO
+
+on:
+  schedule:
+    - cron: '*/30 * * * *' # Every 30 minutes
+  workflow_dispatch:
+    inputs:
+      lookback_hours:
+        description: 'Lookback window in hours (default: 168 = 7 days)'
+        required: false
+        default: '168'
+      dry_run:
+        description: 'Dry run (1 = yes, 0 = no)'
+        required: false
+        default: '0'
+
+concurrency:
+  group: sync-pf-to-amo
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create secrets directory
+        run: mkdir -p secrets
+
+      - name: Save AMO Tokens
+        run: echo '${{ secrets.AMO_TOKENS_JSON }}' > secrets/amo_tokens.json
+
+      - name: Refresh AMO Token
+        run: node scripts/kpi/refresh_amo_token.mjs
+        env:
+          AMO_DOMAIN: ${{ secrets.AMO_DOMAIN }}
+          AMO_CLIENT_ID: ${{ secrets.AMO_CLIENT_ID }}
+          AMO_CLIENT_SECRET: ${{ secrets.AMO_CLIENT_SECRET }}
+
+      - name: Update AMO_TOKENS_JSON secret with refreshed token
+        run: gh secret set AMO_TOKENS_JSON < ./secrets/amo_tokens.json
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+
+      - name: Sync PF leads → AMO
+        run: node scripts/sync/sync_pf_to_amo.mjs
+        env:
+          AMO_DOMAIN: ${{ secrets.AMO_DOMAIN }}
+          AMO_CLIENT_ID: ${{ secrets.AMO_CLIENT_ID }}
+          AMO_CLIENT_SECRET: ${{ secrets.AMO_CLIENT_SECRET }}
+          AMO_TOKENS_JSON: ${{ secrets.AMO_TOKENS_JSON }}
+          PF_API_KEY: ${{ secrets.PF_API_KEY }}
+          PF_API_SECRET: ${{ secrets.PF_API_SECRET }}
+          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_SSL_MODE: ${{ secrets.POSTGRES_SSL_MODE }}
+          AMO_SOURCE_FIELD_ID: ${{ secrets.AMO_SOURCE_FIELD_ID }}
+          AMO_SOURCE_PROPERTY_FINDER_ENUM_ID: ${{ secrets.AMO_SOURCE_PROPERTY_FINDER_ENUM_ID }}
+          PF_TO_AMO_LOOKBACK_HOURS: ${{ github.event.inputs.lookback_hours || '168' }}
+          PF_TO_AMO_DRY_RUN: ${{ github.event.inputs.dry_run || '0' }}
