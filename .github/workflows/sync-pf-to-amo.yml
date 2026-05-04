@@ -60,3 +60,19 @@ jobs:
           AMO_SOURCE_PROPERTY_FINDER_ENUM_ID: ${{ secrets.AMO_SOURCE_PROPERTY_FINDER_ENUM_ID }}
           PF_TO_AMO_LOOKBACK_HOURS: ${{ github.event.inputs.lookback_hours || '168' }}
           PF_TO_AMO_DRY_RUN: ${{ github.event.inputs.dry_run || '0' }}
+
+      - name: Rebuild PF ↔ AMO match stats (dashboard tables)
+        if: ${{ github.event.inputs.dry_run != '1' }}
+        run: node scripts/sync/sync_pf_amo_match_stats.mjs
+        env:
+          AMO_DOMAIN: ${{ secrets.AMO_DOMAIN }}
+          AMO_CLIENT_ID: ${{ secrets.AMO_CLIENT_ID }}
+          AMO_CLIENT_SECRET: ${{ secrets.AMO_CLIENT_SECRET }}
+          AMO_TOKENS_JSON: ${{ secrets.AMO_TOKENS_JSON }}
+          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_SSL_MODE: ${{ secrets.POSTGRES_SSL_MODE }}
