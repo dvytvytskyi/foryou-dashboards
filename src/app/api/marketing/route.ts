@@ -18,6 +18,7 @@ const RED_QL_ACTUAL_SQL = RED_RE_QL_ACTUAL_STATUSES.join(', ');
 const RED_MEETING_SQL = RED_RE_MEETING_STATUSES.join(', ');
 const RED_WON_SQL = RED_WON_STATUSES.join(', ');
 const MAX_MARKETING_FRESHNESS_HOURS = Number(process.env.MAX_MARKETING_FRESHNESS_HOURS || 3);
+const MAX_RED_FRESHNESS_HOURS = Number(process.env.MAX_RED_FRESHNESS_HOURS || 6);
 
 function asIso(value: any): string | null {
   if (!value) return null;
@@ -274,7 +275,7 @@ export async function GET(request: NextRequest) {
       } else {
         freshnessTimestamps.push(redLastSyncedAt);
         const redLag = lagHours(redLastSyncedAt);
-        if (redLag > MAX_MARKETING_FRESHNESS_HOURS) {
+        if (redLag > MAX_RED_FRESHNESS_HOURS) {
           freshnessIssues.push(`RED: stale by ${redLag.toFixed(1)}h`);
         }
       }
