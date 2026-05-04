@@ -355,6 +355,7 @@ export default function DashboardPage({
   defaultEndDate,
   forceDefaultDateRange = false,
   datePresetMode = 'default',
+  maxEndDate,
 }: { 
   extraContent?: React.ReactNode, 
   initialSourceFilter?: SourceFilter,
@@ -394,6 +395,7 @@ export default function DashboardPage({
   defaultEndDate?: string;
   forceDefaultDateRange?: boolean;
   datePresetMode?: 'default' | 'plan-fact-months';
+  maxEndDate?: string;
 }) {
   const activeColumns = useMemo(() => {
     const base = customColumns || MARKETING_COLUMNS;
@@ -858,15 +860,21 @@ export default function DashboardPage({
     setLoading(true);
     setError(null);
     try {
-      const qs = new URLSearchParams({
-        currency: requestCurrency,
-        startDate: requestStartDate,
-        endDate: requestEndDate,
-      });
+      const buildRequestUrl = (baseApiUrl: string, extra?: Record<string, string>) => {
+        const url = new URL(baseApiUrl, window.location.origin);
+        url.searchParams.set('currency', requestCurrency);
+        url.searchParams.set('startDate', requestStartDate);
+        url.searchParams.set('endDate', requestEndDate);
+        if (extra) {
+          Object.entries(extra).forEach(([key, value]) => {
+            url.searchParams.set(key, value);
+          });
+        }
+        return `${url.pathname}?${url.searchParams.toString()}`;
+      };
 
       if (isNested) {
-        const separator = apiUrl.includes('?') ? '&' : '?';
-        const res = await fetch(`${apiUrl}${separator}${qs.toString()}`, { cache: 'no-store' });
+        const res = await fetch(buildRequestUrl(apiUrl), { cache: 'no-store' });
 
         if (res.status === 401) {
           window.location.replace('/login');
@@ -891,15 +899,10 @@ export default function DashboardPage({
         name === 'Facebook / Target Point' ? 'Facebook' : name
       );
 
-      const mainQs = new URLSearchParams({
-        currency: requestCurrency,
-        startDate: requestStartDate,
-        endDate: requestEndDate,
-        channels: activeChannels.join(','),
-      });
-
-      const separator = apiUrl.includes('?') ? '&' : '?';
-      const res = await fetch(`${apiUrl}${separator}${mainQs.toString()}`, { cache: 'no-store' });
+      const res = await fetch(
+        buildRequestUrl(apiUrl, { channels: activeChannels.join(',') }),
+        { cache: 'no-store' },
+      );
 
       if (res.status === 401) {
         window.location.replace('/login');
@@ -1274,6 +1277,7 @@ export default function DashboardPage({
                 mergeDate={mergeDate}
                 layoutVariant={layoutVariant}
                 datePresetMode={datePresetMode}
+                maxEndDate={maxEndDate}
               />
             )}
           </div>

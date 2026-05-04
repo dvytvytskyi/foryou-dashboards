@@ -52,20 +52,11 @@ export default function PropertyFinderPage() {
     return { startDate: '2026-01-01', endDate: today };
   });
 
-  const ourApiUrl = useMemo(
-    () => `/api/pf-listings?group=Our&startDate=${encodeURIComponent(dateRange.startDate)}&endDate=${encodeURIComponent(dateRange.endDate)}`,
-    [dateRange.startDate, dateRange.endDate],
-  );
+  const ourApiUrl = useMemo(() => '/api/pf-listings?group=Our', []);
 
-  const partnerApiUrl = useMemo(
-    () => `/api/pf-listings?group=Partner&startDate=${encodeURIComponent(dateRange.startDate)}&endDate=${encodeURIComponent(dateRange.endDate)}`,
-    [dateRange.startDate, dateRange.endDate],
-  );
+  const partnerApiUrl = useMemo(() => '/api/pf-listings?group=Partner', []);
 
-  const nestedProjectsApiUrl = useMemo(
-    () => `/api/pf-projects?startDate=${encodeURIComponent(dateRange.startDate)}&endDate=${encodeURIComponent(dateRange.endDate)}`,
-    [dateRange.startDate, dateRange.endDate],
-  );
+  const nestedProjectsApiUrl = useMemo(() => '/api/pf-projects', []);
 
   return (
     <DashboardPage 
@@ -81,6 +72,7 @@ export default function PropertyFinderPage() {
       tableMinWidth="100%"
       defaultChannelWidth={400}
       FilterComponent={RedFilters}
+      maxEndDate="2026-04-22"
       externalThemeMode={syncTheme}
       onThemeChange={setSyncTheme}
       onDateChange={(start, end) => setDateRange({ startDate: start, endDate: end })}

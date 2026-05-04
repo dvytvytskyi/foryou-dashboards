@@ -39,6 +39,7 @@ interface FilterBarProps {
   mergeDate: (parts: { day: string; month: string; year: string }) => string;
   layoutVariant?: 'marketing' | 'red';
   datePresetMode?: 'default' | 'plan-fact-months';
+  maxEndDate?: string;
 }
 
 const FilterBar: React.FC<FilterBarProps> = ({
@@ -71,6 +72,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
   mergeDate,
   layoutVariant = 'marketing',
   datePresetMode = 'default',
+  maxEndDate,
 }) => {
   const [datePreset, setDatePreset] = useState('All time');
 
@@ -153,9 +155,19 @@ const FilterBar: React.FC<FilterBarProps> = ({
         {openDateDropdown === 'to' && (
           <div className={styles.dateDropdownMenu}>
             <div className={styles.dateSelects}>
-              <Select instanceId="end-day" inputId="end-day" styles={selectStyles} menuPortalTarget={selectPortalTarget} options={dayOptions} value={dayOptions.find(o => o.value === draftEndParts.day)} onChange={(opt: any) => setDraftEndDate(mergeDate({ ...draftEndParts, day: opt.value }))} isSearchable={false} />
-              <Select instanceId="end-month" inputId="end-month" styles={selectStyles} menuPortalTarget={selectPortalTarget} options={monthOptions} value={monthOptions.find(o => o.value === draftEndParts.month)} onChange={(opt: any) => setDraftEndDate(mergeDate({ ...draftEndParts, month: opt.value }))} isSearchable={false} />
-              <Select instanceId="end-year" inputId="end-year" styles={selectStyles} menuPortalTarget={selectPortalTarget} options={yearOptions} value={yearOptions.find(o => o.value === draftEndParts.year)} onChange={(opt: any) => setDraftEndDate(mergeDate({ ...draftEndParts, year: opt.value }))} isSearchable={false} />
+              <Select instanceId="end-day" inputId="end-day" styles={selectStyles} menuPortalTarget={selectPortalTarget} options={dayOptions} value={dayOptions.find(o => o.value === draftEndParts.day)} onChange={(opt: any) => setDraftEndDate(mergeDate({ ...draftEndParts, day: opt.value }))} isSearchable={false} isOptionDisabled={maxEndDate ? (opt: any) => {
+                const [maxY, maxM, maxD] = maxEndDate.split('-');
+                const sameYearMonth = draftEndParts.year === maxY && draftEndParts.month === maxM;
+                return sameYearMonth && opt.value > maxD;
+              } : undefined} />
+              <Select instanceId="end-month" inputId="end-month" styles={selectStyles} menuPortalTarget={selectPortalTarget} options={monthOptions} value={monthOptions.find(o => o.value === draftEndParts.month)} onChange={(opt: any) => setDraftEndDate(mergeDate({ ...draftEndParts, month: opt.value }))} isSearchable={false} isOptionDisabled={maxEndDate ? (opt: any) => {
+                const [maxY, maxM] = maxEndDate.split('-');
+                return draftEndParts.year === maxY && opt.value > maxM;
+              } : undefined} />
+              <Select instanceId="end-year" inputId="end-year" styles={selectStyles} menuPortalTarget={selectPortalTarget} options={yearOptions} value={yearOptions.find(o => o.value === draftEndParts.year)} onChange={(opt: any) => setDraftEndDate(mergeDate({ ...draftEndParts, year: opt.value }))} isSearchable={false} isOptionDisabled={maxEndDate ? (opt: any) => {
+                const [maxY] = maxEndDate.split('-');
+                return opt.value > maxY;
+              } : undefined} />
             </div>
             <div className={styles.dateSelectHints}>
               <div className={styles.dateSelectHint}>Day</div>
