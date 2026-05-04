@@ -570,7 +570,7 @@ export async function GET(request: NextRequest) {
     ]);
 
     let rawData = bqRawData;
-    let dataSource: 'bigquery' | 'crm-cache' | 'crm-cache-stale' = bqRawData ? 'bigquery' : 'crm-cache';
+    let dataSource: 'bigquery' | 'crm-cache' | 'crm-cache-stale' | 'empty-fallback' = bqRawData ? 'bigquery' : 'crm-cache';
     if (!rawData) {
       const cachedRaw = await readRawCache();
       if (cachedRaw) {
@@ -582,8 +582,19 @@ export async function GET(request: NextRequest) {
           rawData = staleRaw;
           dataSource = 'crm-cache-stale';
         } else {
-          rawData = await getOrFetchRawData();
-          dataSource = 'crm-cache';
+          try {
+            rawData = await getOrFetchRawData();
+            dataSource = 'crm-cache';
+          } catch (fetchErr) {
+            console.warn('Plan/Fact fallback to empty dataset:', fetchErr instanceof Error ? fetchErr.message : String(fetchErr));
+            rawData = {
+              leads: [],
+              tasks: [],
+              users: [],
+              createdAt: Date.now(),
+            };
+            dataSource = 'empty-fallback';
+          }
         }
       }
     }
