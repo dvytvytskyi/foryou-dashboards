@@ -19,26 +19,37 @@ jobs:
 
       - name: Fetch Token from Production
         run: |
-          echo "📥 Fetching AMO token from production server..."
+          echo "Fetching AMO token from production server..."
           scp root@135.181.201.185:/root/foryou-dashboards-prod/secrets/amo_tokens.json ./prod_amo_tokens.json
-          echo "✓ Token fetched"
-          
-          echo ""
-          echo "📊 Token info:"
+          echo "Token fetched"
+
+          echo "Token info:"
           jq -c '{token_type, expires_in, server_time, access_token: (.access_token | .[0:30] + "...")}' ./prod_amo_tokens.json
-          
-          echo ""
-          echo "🧪 Testing token..."
+
+          echo "Testing token..."
           ACCESS_TOKEN=$(jq -r '.access_token' ./prod_amo_tokens.json)
           STATUS=$(curl -s -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $ACCESS_TOKEN" 'https://reforyou.amocrm.ru/api/v4/account')
           echo "Auth test status: $STATUS"
-          
-          if [ "$STATUS" = "200" ]; then
-            echo "✅ Token is VALID!"
-            echo ""
-            echo "💾 Token content (to copy to local secrets/amo_tokens.json):"
-            cat ./prod_amo_tokens.json
-          else
-            echo "⚠️ Token returned status $STATUS - might not be valid"
-            cat ./prod_amo_tokens.json
+
+          if [ "$STATUS" != "200" ]; then
+            echo "ERROR: Token is invalid (status $STATUS). Aborting."
+            exit 1
           fi
+
+          echo "Token is VALID"
+
+      - name: Save Token to GitHub Secret
+        run: |
+          echo "Saving AMO_TOKENS_JSON secret..."
+          gh secret set AMO_TOKENS_JSON < ./prod_amo_tokens.json
+          echo "Secret AMO_TOKENS_JSON updated successfully"
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+
+      - name: Trigger Data Sync
+        run: |
+          echo "Triggering data-sync workflow..."
+          gh workflow run data-sync.yml --ref main
+          echo "data-sync triggered"
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}

@@ -35,7 +35,11 @@ async function refreshToken() {
     } else {
         const err = await res.text();
         console.error('REFRESH FAILED:', res.status, err);
+        process.exit(1);
     }
 }
 
-refreshToken().catch(console.error);
+refreshToken().catch((err) => {
+    console.error(err);
+    process.exit(1);
+});
