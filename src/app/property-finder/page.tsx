@@ -4,6 +4,8 @@ import React, { useMemo, useState } from 'react';
 import DashboardPage from '@/components/DashboardPage';
 import RedFilters from '@/components/dashboard/filters/RedFilters';
 
+type Currency = 'aed' | 'usd';
+
 const PF_COLUMNS = [
   { key: 'channel', label: 'Listings' },
   { key: 'budget', label: 'Budget' },
@@ -47,6 +49,9 @@ const PROJECT_COLUMNS = [
 
 export default function PropertyFinderPage() {
   const [syncTheme, setSyncTheme] = useState<'light' | 'night' | null>(null);
+  const [currency, setCurrency] = useState<Currency>(() => {
+    try { return (localStorage.getItem('dashboard-currency') as Currency) || 'usd'; } catch { return 'usd'; }
+  });
   const [dateRange, setDateRange] = useState(() => {
     const today = new Date().toISOString().slice(0, 10);
     return { startDate: '2026-01-01', endDate: today };
@@ -78,6 +83,8 @@ export default function PropertyFinderPage() {
       onDateChange={(start, end) => setDateRange({ startDate: start, endDate: end })}
       customTableStyle={{ marginTop: '23px' }}
       showDataStatus={true}
+      currency={currency}
+      setCurrency={setCurrency}
     >
       <div style={{ marginTop: '0' }}>
         <DashboardPage 
@@ -99,6 +106,9 @@ export default function PropertyFinderPage() {
           forceDefaultDateRange={true}
           externalThemeMode={syncTheme}
           customTableStyle={{ marginTop: '8px' }}
+          currency={currency}
+          setCurrency={setCurrency}
+          hideCurrency={true}
         />
       </div>
 
@@ -120,6 +130,9 @@ export default function PropertyFinderPage() {
           forceDefaultDateRange={true}
           externalThemeMode={syncTheme}
           customTableStyle={{ marginTop: '8px' }}
+          currency={currency}
+          setCurrency={setCurrency}
+          hideCurrency={true}
         />
       </div>
     </DashboardPage>

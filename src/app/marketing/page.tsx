@@ -1,12 +1,19 @@
 'use client';
 
+import { useState } from 'react';
 import DashboardPage, { MARKETING_COLUMNS } from '@/components/DashboardPage';
 import MarketingFilters from '@/components/dashboard/filters/MarketingFilters';
+
+type Currency = 'aed' | 'usd';
 
 // Partners leads are shown in the separate section below — exclude from main table
 const MAIN_CHANNELS = ['RED', 'Facebook', 'Klykov', 'Website', 'ЮрийНедвижБош', 'Own leads'];
 
 export default function MarketingPage() {
+  const [currency, setCurrency] = useState<Currency>(() => {
+    try { return (localStorage.getItem('dashboard-currency') as Currency) || 'usd'; } catch { return 'usd'; }
+  });
+
   return (
     <DashboardPage 
       title="Marketing Analytics" 
@@ -14,6 +21,8 @@ export default function MarketingPage() {
       FilterComponent={MarketingFilters}
       showDataStatus={true}
       queryChannels={MAIN_CHANNELS}
+      currency={currency}
+      setCurrency={setCurrency}
     >
       {/* Partners section — UTM hierarchy: source → medium → campaign → content */}
       <DashboardPage
@@ -27,6 +36,8 @@ export default function MarketingPage() {
         hideFilters={false}
         hideCurrency={true}
         defaultStartDate="2024-01-01"
+        currency={currency}
+        setCurrency={setCurrency}
       />
     </DashboardPage>
   );
