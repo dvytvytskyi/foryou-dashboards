@@ -13,6 +13,7 @@
  *   amoFetch(path, opts)    → Promise<Response>   — auto-auth + 401 retry with refresh
  */
 
+import 'dotenv/config';
 import fs from 'fs';
 import path from 'path';
 import pg from 'pg';
