@@ -34,6 +34,7 @@ jobs:
           POSTGRES_SSL_MODE: ${{ secrets.POSTGRES_SSL_MODE }}
 
       - name: Seed PF AMO leads from CSV to PostgreSQL
+        continue-on-error: true
         run: npm run sync:pf:amo:seed
         env:
           POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
