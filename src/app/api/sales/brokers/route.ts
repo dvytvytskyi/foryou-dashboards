@@ -202,7 +202,7 @@ const KL_QL_ACTUAL_STATUSES = new Set([
 ]);
 
 function isQlActualStatus(lead: { status_id: number; pipeline_id: number }): boolean {
-  if (lead.pipeline_id === RE_PIPELINE_ID || lead.pipeline_id === PARTNERS_PIPELINE_ID)
+  if (lead.pipeline_id === RE_PIPELINE_ID)
     return RE_QL_ACTUAL_STATUSES.has(lead.status_id);
   if (lead.pipeline_id === KLYKOV_PIPELINE_ID) return KL_QL_ACTUAL_STATUSES.has(lead.status_id);
   return false;
