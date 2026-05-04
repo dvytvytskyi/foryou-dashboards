@@ -14,6 +14,9 @@ COPY . .
 
 # Build step
 RUN npm run build
+# Ensure optional glob files exist so runner COPY doesn't fail
+RUN ls *.csv 2>/dev/null | grep -q . || touch .placeholder.csv
+RUN ls *.xlsx 2>/dev/null | grep -q . || touch .placeholder.xlsx
 
 # Runner stage
 FROM node:20-alpine AS runner
@@ -33,6 +36,7 @@ COPY --from=builder /app/next.config.ts ./next.config.ts
 COPY --from=builder /app/scripts ./scripts
 COPY --from=builder /app/data ./data
 COPY --from=builder /app/*.json ./
+# xlsx and csv are optional (may not exist); placeholders ensure glob matches
 COPY --from=builder /app/*.xlsx ./
 COPY --from=builder /app/*.csv ./
 
