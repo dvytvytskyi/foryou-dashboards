@@ -8,6 +8,7 @@ const REFRESH_SKEW_SECONDS = Number(process.env.AMO_REFRESH_SKEW_SECONDS || 600)
 const AMO_MAX_RPS = Math.max(1, Number(process.env.AMO_MAX_RPS || 3));
 const AMO_MIN_INTERVAL_MS = Math.ceil(1000 / AMO_MAX_RPS);
 const AMO_MAX_429_RETRIES = Math.max(0, Number(process.env.AMO_MAX_429_RETRIES || 4));
+const AMO_REQUEST_TIMEOUT_MS = Math.max(3000, Number(process.env.AMO_REQUEST_TIMEOUT_MS || 15000));
 
 type AmoTokens = {
   access_token?: string;
@@ -377,15 +378,22 @@ export async function amoFetch(pathname: string, init?: RequestInit): Promise<Re
   const doFetch = async (accessToken?: string) => {
     let attempt = 0;
     while (true) {
-      const res = await enqueueAmoRequest(() =>
-        fetch(`https://${getAmoDomain()}${pathOnly}`, {
-          ...init,
-          headers: {
-            ...(init?.headers || {}),
-            Authorization: `Bearer ${accessToken || ''}`,
-          },
-        }),
-      );
+      const res = await enqueueAmoRequest(async () => {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), AMO_REQUEST_TIMEOUT_MS);
+        try {
+          return await fetch(`https://${getAmoDomain()}${pathOnly}`, {
+            ...init,
+            signal: controller.signal,
+            headers: {
+              ...(init?.headers || {}),
+              Authorization: `Bearer ${accessToken || ''}`,
+            },
+          });
+        } finally {
+          clearTimeout(timeout);
+        }
+      });
 
       if (res.status !== 429 || attempt >= AMO_MAX_429_RETRIES) {
         return res;

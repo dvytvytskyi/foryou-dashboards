@@ -93,6 +93,10 @@ type RawData = {
   createdAt: number;
 };
 
+type RawCacheReadOptions = {
+  allowStale?: boolean;
+};
+
 type BqLeadRow = {
   lead_id: number | string;
   created_at: string | { value?: string };
@@ -319,11 +323,11 @@ async function readRawDataFromBigQuery(): Promise<RawData | null> {
   }
 }
 
-async function readRawCache(): Promise<RawData | null> {
+async function readRawCache(options?: RawCacheReadOptions): Promise<RawData | null> {
   try {
     const raw = await fs.readFile(RAW_CACHE_FILE, 'utf8');
     const parsed = JSON.parse(raw) as RawData;
-    if (Date.now() - parsed.createdAt > CACHE_TTL_MS) return null;
+    if (!options?.allowStale && Date.now() - parsed.createdAt > CACHE_TTL_MS) return null;
     return parsed;
   } catch {
     return null;
@@ -359,6 +363,13 @@ async function getOrFetchRawData(): Promise<RawData> {
       await writeRawCache(result);
       console.log(`✓ Raw CRM data cached: ${result.leads.length} leads, ${result.tasks.length} tasks`);
       return result;
+    } catch (error) {
+      const stale = await readRawCache({ allowStale: true });
+      if (stale) {
+        console.warn('Plan/Fact CRM fetch failed, returning stale cache:', error instanceof Error ? error.message : String(error));
+        return stale;
+      }
+      throw error;
     } finally {
       _rawDataFetchPromise = null;
     }
@@ -559,11 +570,22 @@ export async function GET(request: NextRequest) {
     ]);
 
     let rawData = bqRawData;
-    let dataSource: 'bigquery' | 'crm-cache' = bqRawData ? 'bigquery' : 'crm-cache';
+    let dataSource: 'bigquery' | 'crm-cache' | 'crm-cache-stale' = bqRawData ? 'bigquery' : 'crm-cache';
     if (!rawData) {
       const cachedRaw = await readRawCache();
-      rawData = cachedRaw || (await getOrFetchRawData());
-      dataSource = 'crm-cache';
+      if (cachedRaw) {
+        rawData = cachedRaw;
+        dataSource = 'crm-cache';
+      } else {
+        const staleRaw = await readRawCache({ allowStale: true });
+        if (staleRaw) {
+          rawData = staleRaw;
+          dataSource = 'crm-cache-stale';
+        } else {
+          rawData = await getOrFetchRawData();
+          dataSource = 'crm-cache';
+        }
+      }
     }
 
     const { leads, tasks: openTasks, users } = rawData;
