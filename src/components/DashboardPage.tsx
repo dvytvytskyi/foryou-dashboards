@@ -256,11 +256,34 @@ function pickRedRowsByLevel(groupId: 'level_1' | 'level_2' | 'level_3', rows: Ro
   return rows;
 }
 
+function formatDateDisplay(value: unknown): string {
+  if (value === null || value === undefined) return '-';
+  const raw = String(value).trim();
+  if (!raw || raw === '-') return '-';
+
+  const formatIsoDate = (iso: string) => {
+    const match = iso.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!match) return iso;
+    const [, y, m, d] = match;
+    return `${d}.${m}.${y}`;
+  };
+
+  if (raw.includes('..')) {
+    const [startRaw, endRaw] = raw.split('..');
+    const start = formatIsoDate((startRaw || '').trim());
+    const end = formatIsoDate((endRaw || '').trim());
+    if (start && end) return `${start} - ${end}`;
+  }
+
+  return formatIsoDate(raw);
+}
+
 function renderValue(val: any, type: 'money' | 'num' | 'pct' | 'date' | 'time', currency?: Currency, decimals?: number) {
   const isZero = val === 0 || val === '0' || val === '0.0%' || val === '-' || val === 'AED 0' || val === '$ 0';
   const display = type === 'money' ? formatMoney(val, currency) : 
                   type === 'num' ? formatNumber(val) : 
                   type === 'pct' ? formatPercentRatio(val, decimals) : 
+                  type === 'date' ? formatDateDisplay(val) :
                   type === 'time' ? formatDurationSeconds(val) : val;
   
   if (isZero || !val || val === 0) {
