@@ -35,6 +35,7 @@ jobs:
         run: echo '${{ secrets.AMO_TOKENS_JSON }}' > secrets/amo_tokens.json
 
       - name: Refresh AMO Token
+        continue-on-error: true
         run: node scripts/kpi/refresh_amo_token.mjs
         env:
           AMO_DOMAIN: ${{ secrets.AMO_DOMAIN }}
@@ -42,6 +43,7 @@ jobs:
           AMO_CLIENT_SECRET: ${{ secrets.AMO_CLIENT_SECRET }}
 
       - name: Update AMO_TOKENS_JSON secret with refreshed token
+        continue-on-error: true
         run: gh secret set AMO_TOKENS_JSON < ./secrets/amo_tokens.json
         env:
           GH_TOKEN: ${{ secrets.GH_PAT }}
