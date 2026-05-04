@@ -119,6 +119,7 @@ const CSV_CACHE_FILE = path.resolve(ROOT, 'data/cache/pf_amo_leads_csv.json');
 const AMO_SOURCE_FIELD_ID = Number(process.env.AMO_SOURCE_FIELD_ID || 703131); // "Источник"
 const AMO_PF_SOURCE_ENUM_ID = Number(process.env.AMO_PF_SOURCE_ENUM_ID || 695183); // "Property finder"
 const AMO_RE_PIPELINE_ID = Number(process.env.AMO_PF_PIPELINE_ID || 8696950);
+const PF_MATCH_ALLOW_PARTIAL_ON_AMO_ERROR = process.env.PF_MATCH_ALLOW_PARTIAL_ON_AMO_ERROR !== '0';
 
 // AMO status ID classification (mirrors sync_pf_amo_match_stats.mjs)
 const SPAM_STATUS = 143;
@@ -317,8 +318,15 @@ async function main() {
   let deltaLeads = [];
   if (deltaFromTs) {
     console.log(`\n[3] Fetching AMO delta leads after ${new Date(deltaFromTs * 1000).toISOString()}...`);
-    deltaLeads = await fetchDeltaAmoLeads(amoToken, deltaFromTs);
-    console.log(`    Found ${deltaLeads.length} new AMO leads since CSV export`);
+    try {
+      deltaLeads = await fetchDeltaAmoLeads(amoToken, deltaFromTs);
+      console.log(`    Found ${deltaLeads.length} new AMO leads since CSV export`);
+    } catch (err) {
+      if (!PF_MATCH_ALLOW_PARTIAL_ON_AMO_ERROR) throw err;
+      const message = err instanceof Error ? err.message : String(err);
+      console.warn(`    AMO delta fetch failed, continuing with historical CSV only: ${message}`);
+      deltaLeads = [];
+    }
   } else {
     console.log('\n[3] No CSV cache cutoff — skipping AMO delta fetch');
   }
@@ -334,8 +342,16 @@ async function main() {
       ),
     ];
     console.log(`    Fetching ${allContactIds.length} contact phones for delta leads...`);
-    contactPhones = await fetchAmoContactPhones(allContactIds, amoToken);
-    console.log(`    Contacts with phones: ${contactPhones.size}`);
+    try {
+      contactPhones = await fetchAmoContactPhones(allContactIds, amoToken);
+      console.log(`    Contacts with phones: ${contactPhones.size}`);
+    } catch (err) {
+      if (!PF_MATCH_ALLOW_PARTIAL_ON_AMO_ERROR) throw err;
+      const message = err instanceof Error ? err.message : String(err);
+      console.warn(`    AMO contacts fetch failed, skipping delta contacts: ${message}`);
+      contactPhones = new Map();
+      deltaLeads = [];
+    }
   }
 
   // 4. Match by phone → accumulate per projectId
