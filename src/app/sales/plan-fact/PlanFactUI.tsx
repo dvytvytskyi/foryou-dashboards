@@ -145,8 +145,15 @@ function PlanFactSkeleton() {
   );
 }
 
+type SourceAggregate = {
+  source: string;
+  totals: SourceRow;
+  brokers: Array<{ id: number; name: string } & SourceRow>;
+};
+
 export default function PlanFactUI({ startDate, endDate }: { startDate: string; endDate: string }) {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  const [expandedSrc, setExpandedSrc] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [kpis, setKpis] = useState<KpiRow[]>([]);
@@ -200,6 +207,52 @@ export default function PlanFactUI({ startDate, endDate }: { startDate: string; 
   const toggleExpanded = (name: string) => {
     setExpanded((prev) => ({ ...prev, [name]: !prev[name] }));
   };
+
+  const toggleExpandedSrc = (name: string) => {
+    setExpandedSrc((prev) => ({ ...prev, [name]: !prev[name] }));
+  };
+
+  // Build source-first aggregation: source → { totals, brokers[] }
+  const sourceAgg = useMemo<SourceAggregate[]>(() => {
+    const map = new Map<string, SourceAggregate>();
+    const emptyMetrics = (): Omit<SourceRow, 'source'> => ({
+      received: 0, prevReceived: 0, ql: 0, showings: 0, deals: 0,
+      activeTotal: 0, activeQl: 0, activeShowings: 0, missed: 0,
+      allTotal: 0, allLost: 0, allQl: 0, allShowings: 0, allDeals: 0,
+      revenueWon: 0, overdue: 0,
+    });
+    const addMetrics = (dest: Omit<SourceRow, 'source'>, src: Omit<SourceRow, 'source'>) => {
+      dest.received += src.received;
+      dest.prevReceived += src.prevReceived;
+      dest.ql += src.ql;
+      dest.showings += src.showings;
+      dest.deals += src.deals;
+      dest.activeTotal += src.activeTotal;
+      dest.activeQl += src.activeQl;
+      dest.activeShowings += src.activeShowings;
+      dest.missed += src.missed;
+      dest.allTotal += src.allTotal;
+      dest.allLost += src.allLost;
+      dest.allQl += src.allQl;
+      dest.allShowings += src.allShowings;
+      dest.allDeals += src.allDeals;
+      dest.revenueWon += src.revenueWon;
+      dest.overdue += src.overdue;
+    };
+
+    for (const broker of brokers) {
+      for (const sr of broker.sourceRows) {
+        if (!map.has(sr.source)) {
+          map.set(sr.source, { source: sr.source, totals: { source: sr.source, ...emptyMetrics() }, brokers: [] });
+        }
+        const agg = map.get(sr.source)!;
+        addMetrics(agg.totals, sr);
+        agg.brokers.push({ id: broker.id, name: broker.name, ...sr });
+      }
+    }
+
+    return Array.from(map.values()).sort((a, b) => b.totals.received - a.totals.received);
+  }, [brokers]);
 
   if (loading && brokers.length === 0 && !error) {
     return <PlanFactSkeleton />;
@@ -408,6 +461,144 @@ export default function PlanFactUI({ startDate, endDate }: { startDate: string; 
                               </tr>
                             );
                           })}
+                      </React.Fragment>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Source-first table ── */}
+      <div className={styles.section} style={{ marginTop: '24px' }}>
+        <div className={styles.sectionHeader}>
+          <div className={styles.sectionTitle}>
+            <BarChart3 size={14} />
+            <span>Эффективность источников (брокеры в дропдауне)</span>
+          </div>
+        </div>
+
+        <div className={styles.tableWrapper} style={{ overflowX: 'auto' }}>
+          <div className={styles.tableScroll} style={{ maxHeight: 'none' }}>
+            <table className={styles.table}>
+              <thead>
+                <tr>
+                  <th
+                    rowSpan={2}
+                    className={styles.stickyCell}
+                    style={{ minWidth: '220px' }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Target size={14} />
+                      <span>Источник</span>
+                    </div>
+                  </th>
+                  <th colSpan={8} style={{ textAlign: 'left', borderBottom: '1px solid var(--line)', background: 'var(--bg-0)', padding: '12px' }}>&nbsp;</th>
+                  <th colSpan={5} className={styles.group2Cell} style={{ textAlign: 'left', borderBottom: '1px solid var(--line)', color: 'var(--white-soft)', padding: '12px' }}>ЧТО СЕЙЧАС В РАБОТЕ</th>
+                  <th colSpan={7} className={styles.group3Cell} style={{ textAlign: 'left', borderBottom: '1px solid var(--line)', color: 'var(--white-soft)', padding: '12px' }}>В ЦЕЛОМ ЗА ВЕСЬ СРОК РАБОТЫ</th>
+                </tr>
+                <tr>
+                  <th style={{ minWidth: '100px', background: 'var(--panel-2)' }}>Всего получил</th>
+                  <th style={{ minWidth: '120px', background: 'var(--panel-2)' }}>Всего получил (прош.)</th>
+                  <th style={{ minWidth: '150px', background: 'var(--panel-2)' }}>Сравнение</th>
+                  <th style={{ minWidth: '100px', background: 'var(--panel-2)' }}>QL leads</th>
+                  <th style={{ minWidth: '120px', background: 'var(--panel-2)' }}>CR Lead - QL</th>
+                  <th style={{ minWidth: '100px', background: 'var(--panel-2)' }}>ПП/Показ+</th>
+                  <th style={{ minWidth: '120px', background: 'var(--panel-2)' }}>CR Lead - Показ</th>
+                  <th style={{ minWidth: '80px', background: 'var(--panel-2)' }}>Сделка</th>
+                  <th style={{ minWidth: '100px', background: 'rgba(128,128,128,0.08)' }}>Total leads</th>
+                  <th style={{ minWidth: '100px', background: 'rgba(128,128,128,0.08)' }}>QL Leads</th>
+                  <th style={{ minWidth: '100px', background: 'rgba(128,128,128,0.08)' }}>Показ+</th>
+                  <th style={{ minWidth: '150px', background: 'rgba(128,128,128,0.08)' }}>Просроченых задач</th>
+                  <th style={{ minWidth: '100px', background: 'rgba(128,128,128,0.08)' }}>Упущено</th>
+                  <th style={{ minWidth: '100px', background: 'rgba(128,128,128,0.15)' }}>Total leads</th>
+                  <th style={{ minWidth: '180px', background: 'rgba(128,128,128,0.15)' }}>Закрыто и не реализовано</th>
+                  <th style={{ minWidth: '100px', background: 'rgba(128,128,128,0.15)' }}>QL Leads</th>
+                  <th style={{ minWidth: '120px', background: 'rgba(128,128,128,0.15)' }}>CR Lead - QL</th>
+                  <th style={{ minWidth: '100px', background: 'rgba(128,128,128,0.15)' }}>Показ+</th>
+                  <th style={{ minWidth: '120px', background: 'rgba(128,128,128,0.15)' }}>CR Lead - Показ</th>
+                  <th style={{ minWidth: '80px', background: 'rgba(128,128,128,0.15)' }}>Сделка</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sourceAgg.length === 0 ? (
+                  <tr>
+                    <td className={styles.stickyCell} colSpan={21} style={{ textAlign: 'center', padding: '24px' }}>
+                      Нет данных за выбранный период.
+                    </td>
+                  </tr>
+                ) : (
+                  sourceAgg.map((sa) => {
+                    const isExpSrc = !!expandedSrc[sa.source];
+                    const t = sa.totals;
+                    return (
+                      <React.Fragment key={sa.source}>
+                        <tr style={{ cursor: 'pointer' }} onClick={() => toggleExpandedSrc(sa.source)}>
+                          <td className={styles.stickyCell}>
+                            <div style={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              {isExpSrc ? <ChevronDown size={14} className={styles.dimmed} /> : <ChevronRight size={14} className={styles.dimmed} />}
+                              <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: SOURCE_COLORS[sa.source] || '#94a3b8', flexShrink: 0 }} />
+                              {sa.source}
+                            </div>
+                          </td>
+                          <td style={{ fontWeight: 700 }}>{t.received}</td>
+                          <td>{t.prevReceived}</td>
+                          <GrowthCell current={t.received} prev={t.prevReceived} />
+                          <td style={{ color: 'var(--white-soft)', fontWeight: 600 }}>{t.ql}</td>
+                          <td>{formatPercent(calcRate(t.ql, t.received))}</td>
+                          <td>{t.showings}</td>
+                          <td>{formatPercent(calcRate(t.showings, t.received))}</td>
+                          <td>{t.deals}</td>
+                          <td className={styles.group2Cell}>{t.activeTotal}</td>
+                          <td className={styles.group2Cell} style={{ color: 'var(--white-soft)', fontWeight: 600 }}>{t.activeQl}</td>
+                          <td className={styles.group2Cell}>{t.activeShowings}</td>
+                          <td className={styles.group2Cell}>—</td>
+                          <td className={styles.group2Cell}>{t.missed}</td>
+                          <td className={styles.group3Cell}>{t.allTotal}</td>
+                          <td className={styles.group3Cell}>{t.allLost}</td>
+                          <td className={styles.group3Cell} style={{ color: 'var(--white-soft)', fontWeight: 600 }}>{t.allQl}</td>
+                          <td className={styles.group3Cell}>{formatPercent(calcRate(t.allQl, t.allTotal))}</td>
+                          <td className={styles.group3Cell}>{t.allShowings}</td>
+                          <td className={styles.group3Cell}>{formatPercent(calcRate(t.allShowings, t.allTotal))}</td>
+                          <td className={styles.group3Cell} style={{ fontWeight: 700, color: 'var(--white-soft)' }}>{t.allDeals}</td>
+                        </tr>
+
+                        {isExpSrc &&
+                          sa.brokers
+                            .slice()
+                            .sort((a, b) => b.received - a.received)
+                            .map((br) => (
+                              <tr key={`${sa.source}-${br.id}`} className={styles.subRowCell}>
+                                <td className={styles.subRowSticky}>
+                                  <div style={{ fontSize: '12px', color: 'var(--white-soft)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--muted)', flexShrink: 0 }} />
+                                    {br.name}
+                                  </div>
+                                </td>
+                                <td>{br.received}</td>
+                                <td>{br.prevReceived}</td>
+                                <GrowthCell current={br.received} prev={br.prevReceived} />
+                                <td>{br.ql}</td>
+                                <td>{formatPercent(calcRate(br.ql, br.received))}</td>
+                                <td>{br.showings}</td>
+                                <td>{formatPercent(calcRate(br.showings, br.received))}</td>
+                                <td>{br.deals}</td>
+                                <td className={styles.group2Cell}>{br.activeTotal}</td>
+                                <td className={styles.group2Cell}>{br.activeQl}</td>
+                                <td className={styles.group2Cell}>{br.activeShowings}</td>
+                                <td className={styles.group2Cell}>—</td>
+                                <td className={styles.group2Cell}>{br.missed}</td>
+                                <td className={styles.group3Cell}>{br.allTotal}</td>
+                                <td className={styles.group3Cell}>{br.allLost}</td>
+                                <td className={styles.group3Cell}>{br.allQl}</td>
+                                <td className={styles.group3Cell}>{formatPercent(calcRate(br.allQl, br.allTotal))}</td>
+                                <td className={styles.group3Cell}>{br.allShowings}</td>
+                                <td className={styles.group3Cell}>{formatPercent(calcRate(br.allShowings, br.allTotal))}</td>
+                                <td className={styles.group3Cell}>{br.allDeals}</td>
+                              </tr>
+                            ))}
                       </React.Fragment>
                     );
                   })

@@ -680,38 +680,8 @@ export async function GET(request: NextRequest) {
       (p) => (p.lids || 0) > 0 || (p.ql || 0) > 0 || (p.revenue || 0) > 0 || (p.deals || 0) > 0,
     );
 
-    // If monthly plan sheet is empty (all zeros), keep broker list visible from plan sheet
-    // but suppress factual metrics in scorecards/table to avoid misleading numbers.
-    const zeroBrokersFromPlan = Object.entries(planByBroker).map(([name, plan], index) => {
-      const zero = createBucket();
-      return {
-        id: -(index + 1),
-        name,
-        ...zero,
-        plan: {
-          lids: plan.lids || 0,
-          ql: plan.ql || 0,
-          revenue: plan.revenue || 0,
-          deals: plan.deals || 0,
-        },
-        fulfillment: {
-          lids: 0,
-          ql: 0,
-          revenue: 0,
-          deals: 0,
-        },
-        sourceRows: [],
-        crQl: 0,
-        crShowing: 0,
-        allCrQl: 0,
-        allCrShowing: 0,
-      };
-    });
-
-    const effectiveBrokers = hasAnyPlanValue ? brokers : zeroBrokersFromPlan;
-    const effectiveTotals = hasAnyPlanValue
-      ? totals
-      : { received: 0, ql: 0, deals: 0, revenueWon: 0 };
+    const effectiveBrokers = brokers;
+    const effectiveTotals = totals;
 
     // Calculate fulfillment percentages
     const fulfillmentLids = totalPlanLids > 0 ? Math.round((effectiveTotals.received / totalPlanLids) * 100) : 0;

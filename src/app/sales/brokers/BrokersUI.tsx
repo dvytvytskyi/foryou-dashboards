@@ -150,21 +150,33 @@ export default function BrokersUI({ selectedBroker, startDate, endDate }: Broker
 
   useEffect(() => {
     if (!selectedBroker?.id) return;
+    let alive = true;
 
-    (async () => {
-      setLoading(true);
+    async function load() {
       try {
         const res = await fetch(
-          `/api/sales/brokers?brokerId=${selectedBroker.id}&brokerName=${encodeURIComponent(selectedBroker.label)}&startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`
+          `/api/sales/brokers?brokerId=${selectedBroker!.id}&brokerName=${encodeURIComponent(selectedBroker!.label)}&startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`,
+          { cache: 'no-store' }
         );
         const data = await res.json();
-        setMetrics(data);
+        if (alive) setMetrics(data);
       } catch (err) {
         console.error('Failed to fetch broker metrics:', err);
       } finally {
-        setLoading(false);
+        if (alive) setLoading(false);
       }
-    })();
+    }
+
+    setLoading(true);
+    load();
+
+    // Auto-refresh every hour
+    const interval = setInterval(load, 60 * 60 * 1000);
+
+    return () => {
+      alive = false;
+      clearInterval(interval);
+    };
   }, [selectedBroker?.id, selectedBroker?.label, startDate, endDate]);
 
   if (!selectedBroker) {

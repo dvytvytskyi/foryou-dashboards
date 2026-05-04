@@ -3,6 +3,75 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
 import { readPlanDataFromSheets, PlanByBroker } from '@/lib/sheets/planReader';
+import { classifyLeadSource } from '@/lib/crmRules.js';
+
+const RAW_CACHE_FILE = path.resolve(process.cwd(), 'data/cache/plan-fact/raw_leads.json');
+
+// Raw amoCRM lead as stored in the plan-fact CRM cache
+type CacheLead = {
+  id: number;
+  name: string;
+  price: number;
+  created_at: number;
+  status_id: number;
+  pipeline_id: number;
+  responsible_user_id: number;
+  had_qual?: boolean;
+  custom_fields_values?: Array<{
+    field_id?: number;
+    field_code?: string;
+    values?: Array<{ value?: string }>;
+  }>;
+  _embedded?: {
+    tags?: Array<{ name: string }>;
+  };
+  // Pre-classified fields (present when loaded from BQ-derived cache)
+  source_name?: string;
+  broker_name?: string;
+};
+
+type CacheTask = {
+  id: number;
+  responsible_user_id: number;
+  entity_id: number;
+  entity_type: string;
+  is_completed: boolean;
+  complete_till?: number;
+};
+
+type RawCacheFile = {
+  leads: CacheLead[];
+  tasks: CacheTask[];
+  users: { id: number; name: string }[];
+  createdAt: number;
+};
+
+const SOURCE_FIELD_ID_BROKERS = 703131; // "Источник"
+
+function classifySourceFromRaw(lead: CacheLead, pipelineId: number, userDefinedSourceName?: string): SourceName {
+  if (userDefinedSourceName) return userDefinedSourceName as SourceName;
+  const customFields = lead.custom_fields_values || [];
+  const sourceValue = customFields.find((f) => f.field_id === SOURCE_FIELD_ID_BROKERS)?.values?.[0]?.value || '';
+  const utmSource = customFields.find((f) => f.field_code === 'UTM_SOURCE')?.values?.[0]?.value || '';
+  const tags = (lead._embedded?.tags || []).map((t) => t.name || '');
+  return classifyLeadSource({
+    pipelineId,
+    sourceValue,
+    tags,
+    utmSource,
+    leadName: lead.name,
+    defaultCategory: 'Own leads',
+  }) as SourceName;
+}
+
+async function readCacheFile(): Promise<RawCacheFile | null> {
+  try {
+    const raw = await fs.readFile(RAW_CACHE_FILE, 'utf8');
+    return JSON.parse(raw) as RawCacheFile;
+  } catch {
+    return null;
+  }
+}
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -122,6 +191,21 @@ const BQ_TASKS_TABLE = 'plan_fact_crm_tasks';
 
 const RE_PIPELINE_ID = 8696950;
 const KLYKOV_PIPELINE_ID = 10776450;
+const PARTNERS_PIPELINE_ID = 8600274;
+
+const RE_QL_ACTUAL_STATUSES = new Set([
+  70457466, 70457470, 70457474, 70457478, 70457482, 70457486,
+]);
+const KL_QL_ACTUAL_STATUSES = new Set([
+  84853934, 84853938, 84853942, 84853946, 84853950, 84853954, 84853958,
+]);
+
+function isQlActualStatus(lead: { status_id: number; pipeline_id: number }): boolean {
+  if (lead.pipeline_id === RE_PIPELINE_ID || lead.pipeline_id === PARTNERS_PIPELINE_ID)
+    return RE_QL_ACTUAL_STATUSES.has(lead.status_id);
+  if (lead.pipeline_id === KLYKOV_PIPELINE_ID) return KL_QL_ACTUAL_STATUSES.has(lead.status_id);
+  return false;
+}
 
 // Won in sales includes classic Sold plus SPA and POST SALES document stages.
 const WON_STATUS_IDS = new Set([142, 74717798, 74717802]);
@@ -261,6 +345,95 @@ function buildPeriodMetrics(leads: LeadRecord[]): PeriodMetrics {
   };
 }
 
+async function loadLeadsAndTasks(brokerId: number): Promise<{ leads: LeadRecord[]; rawTasks: CacheTask[] }> {
+  // Try BigQuery first
+  try {
+    const [[leadRows], [taskRows]] = await Promise.all([
+      bq.query({
+        query: `
+          SELECT lead_id, created_at, status_id, pipeline_id, responsible_user_id, broker_name, source_name, price
+          FROM \`${BQ_PROJECT_ID}.${BQ_DATASET}.${BQ_LEADS_TABLE}\`
+          WHERE responsible_user_id = @brokerId
+        `,
+        params: { brokerId },
+        useLegacySql: false,
+      }),
+      bq.query({
+        query: `
+          SELECT task_id, entity_id, responsible_user_id, entity_type, is_completed, complete_till
+          FROM \`${BQ_PROJECT_ID}.${BQ_DATASET}.${BQ_TASKS_TABLE}\`
+          WHERE responsible_user_id = @brokerId AND is_completed = FALSE
+        `,
+        params: { brokerId },
+        useLegacySql: false,
+      }),
+    ]);
+
+    const leads: LeadRecord[] = (leadRows as any[]).map((row) => {
+      const statusId = toNumber(row.status_id);
+      const pipelineId = toNumber(row.pipeline_id);
+      return {
+        lead_id: toNumber(row.lead_id),
+        broker_name: String(row.broker_name),
+        source_name: (String(row.source_name) as SourceName) || 'Own leads',
+        status_id: statusId,
+        pipeline_id: pipelineId,
+        price: toNumber(row.price),
+        created_at_unix: timestampToUnix(row.created_at),
+        is_ql: isQlStatus({ status_id: statusId, pipeline_id: pipelineId }),
+        is_showing: isShowingStatus({ status_id: statusId, pipeline_id: pipelineId }),
+        is_won: isWonStatus(statusId),
+      };
+    });
+
+    const rawTasks: CacheTask[] = (taskRows as any[]).map((row) => ({
+      id: toNumber(row.task_id),
+      responsible_user_id: toNumber(row.responsible_user_id),
+      entity_id: toNumber(row.entity_id),
+      entity_type: String(row.entity_type || 'leads'),
+      is_completed: toBoolean(row.is_completed),
+      complete_till: row.complete_till ? timestampToUnix(row.complete_till) : undefined,
+    }));
+
+    return { leads, rawTasks };
+  } catch (bqErr) {
+    console.warn('BQ unavailable, falling back to cache:', bqErr instanceof Error ? bqErr.message : String(bqErr));
+  }
+
+  // Fallback: plan-fact CRM cache
+  const cache = await readCacheFile();
+  if (!cache) return { leads: [], rawTasks: [] };
+
+  const userMap = new Map<number, string>(cache.users.map((u) => [u.id, u.name]));
+
+  const leads: LeadRecord[] = cache.leads
+    .filter((l) => l.responsible_user_id === brokerId)
+    .map((l) => {
+      const statusId = l.status_id;
+      const pipelineId = l.pipeline_id;
+      const resolvedBrokerName = l.broker_name || userMap.get(l.responsible_user_id) || `User #${l.responsible_user_id}`;
+      const sourceName = classifySourceFromRaw(l, pipelineId, l.source_name);
+      return {
+        lead_id: l.id,
+        broker_name: resolvedBrokerName,
+        source_name: sourceName,
+        status_id: statusId,
+        pipeline_id: pipelineId,
+        price: l.price || 0,
+        created_at_unix: l.created_at,
+        is_ql: isQlStatus({ status_id: statusId, pipeline_id: pipelineId }),
+        is_showing: isShowingStatus({ status_id: statusId, pipeline_id: pipelineId }),
+        is_won: isWonStatus(statusId),
+      };
+    });
+
+  const rawTasks = cache.tasks.filter(
+    (t) => t.responsible_user_id === brokerId && t.entity_type === 'leads' && !t.is_completed,
+  );
+
+  return { leads, rawTasks };
+}
+
 async function getBrokerMetrics(
   brokerId: number,
   brokerName: string,
@@ -269,69 +442,26 @@ async function getBrokerMetrics(
   startDate?: string,
   endDate?: string,
 ): Promise<BrokerMetrics> {
-  // Fetch leads from BigQuery
-  const [leadRows] = await bq.query({
-    query: `
-      SELECT 
-        lead_id, created_at, status_id, pipeline_id, responsible_user_id, 
-        broker_name, source_name, price
-      FROM \`${BQ_PROJECT_ID}.${BQ_DATASET}.${BQ_LEADS_TABLE}\`
-      WHERE responsible_user_id = @brokerId
-    `,
-    params: { brokerId },
-    useLegacySql: false,
-  });
+  const { leads, rawTasks } = await loadLeadsAndTasks(brokerId);
 
-  // Fetch overdue tasks with more details
-  const [taskDetailsRows] = await bq.query({
-    query: `
-      SELECT 
-        t.task_id,
-        t.entity_id as lead_id,
-        t.complete_till
-      FROM \`${BQ_PROJECT_ID}.${BQ_DATASET}.${BQ_TASKS_TABLE}\` t
-      WHERE t.responsible_user_id = @brokerId 
-        AND t.is_completed = FALSE 
-        AND CAST(t.complete_till AS TIMESTAMP) < CURRENT_TIMESTAMP()
-      ORDER BY t.complete_till ASC
-      LIMIT 100
-    `,
-    params: { brokerId },
-    useLegacySql: false,
-  });
+  // QL Actual lead IDs for overdue filter
+  const qlActualLeadIds = new Set<number>(
+    leads.filter((l) => isQlActualStatus({ status_id: l.status_id, pipeline_id: l.pipeline_id })).map((l) => l.lead_id),
+  );
 
-  const leads: LeadRecord[] = (leadRows as any[]).map((row) => {
-    const statusId = toNumber(row.status_id);
-    const pipelineId = toNumber(row.pipeline_id);
-    return {
-      lead_id: toNumber(row.lead_id),
-      broker_name: String(row.broker_name),
-      source_name: (String(row.source_name) as SourceName) || 'Own leads',
-      status_id: statusId,
-      pipeline_id: pipelineId,
-      price: toNumber(row.price),
-      created_at_unix: timestampToUnix(row.created_at),
-      is_ql: isQlStatus({ status_id: statusId, pipeline_id: pipelineId }),
-      is_showing: isShowingStatus({ status_id: statusId, pipeline_id: pipelineId }),
-      is_won: isWonStatus(statusId),
-    };
-  });
-
-  // Process overdue tasks
+  // Build overdue tasks (only for QL Actual leads)
   const now = Math.floor(Date.now() / 1000);
-  const overdueTasks: OverdueTask[] = (taskDetailsRows as any[])
-    .map((row) => {
-      const completeTillUnix = timestampToUnix(row.complete_till);
-      const daysOverdue = Math.ceil((now - completeTillUnix) / (24 * 3600));
-      return {
-        task_id: toNumber(row.task_id),
-        lead_id: toNumber(row.lead_id),
-        task_text: '',
-        complete_till_unix: completeTillUnix,
-        days_overdue: Math.max(0, daysOverdue),
-      };
-    })
-    .slice(0, 20);
+  const overdueTasks: OverdueTask[] = rawTasks
+    .filter((t) => t.complete_till && t.complete_till < now && qlActualLeadIds.has(t.entity_id))
+    .map((t) => ({
+      task_id: t.id,
+      lead_id: t.entity_id,
+      task_text: '',
+      complete_till_unix: t.complete_till!,
+      days_overdue: Math.max(0, Math.ceil((now - t.complete_till!) / (24 * 3600))),
+    }))
+    .sort((a, b) => a.complete_till_unix - b.complete_till_unix)
+    .slice(0, 50);
 
   const leadSourceById = new Map<number, SourceName>();
   for (const lead of leads) {
@@ -390,12 +520,13 @@ async function getBrokerMetrics(
     ? ((currentPeriod.total_leads - previousPeriod.total_leads) / previousPeriod.total_leads) * 100
     : 0;
 
-  const totalLeads = leads.length;
-  const totalQl = leads.filter((l) => l.is_ql).length;
-  const totalShowing = leads.filter((l) => l.is_showing).length;
-  const totalWon = leads.filter((l) => l.is_won).length;
-  const totalLost = leads.filter((l) => l.status_id === LOST_STATUS_ID).length;
-  const totalRevenue = leads.reduce((sum, l) => sum + l.price, 0);
+  // Period-based totals for KPI plan/fact comparison
+  const totalLeads = currentPeriodLeads.length;
+  const totalQl = currentPeriodLeads.filter((l) => l.is_ql).length;
+  const totalShowing = currentPeriodLeads.filter((l) => l.is_showing).length;
+  const totalWon = currentPeriodLeads.filter((l) => l.is_won).length;
+  const totalLost = currentPeriodLeads.filter((l) => l.status_id === LOST_STATUS_ID).length;
+  const totalRevenue = currentPeriodLeads.filter((l) => l.is_won).reduce((sum, l) => sum + l.price, 0);
 
   // Read plan data from Sheets
   let planData: PlanByBroker = {};
@@ -436,7 +567,6 @@ async function getBrokerMetrics(
 
 async function getAllBrokers(): Promise<Array<{ id: number; name: string }>> {
   try {
-    // Get unique brokers from BigQuery leads table
     const [rows] = await bq.query({
       query: `
         SELECT DISTINCT responsible_user_id, broker_name
@@ -445,19 +575,28 @@ async function getAllBrokers(): Promise<Array<{ id: number; name: string }>> {
       `,
       useLegacySql: false,
     });
-
-    if (!Array.isArray(rows)) {
-      console.warn('BigQuery rows is not array:', typeof rows);
-      return [];
-    }
-
+    if (!Array.isArray(rows)) return [];
     return rows.map((row: any) => ({
       id: toNumber(row.responsible_user_id),
       name: String(row.broker_name),
     }));
-  } catch (error) {
-    console.warn('Failed to fetch brokers from BigQuery:', error instanceof Error ? error.message : String(error));
-    return [];
+  } catch {
+    // Fallback to cache — use the users array for clean names
+    const cache = await readCacheFile();
+    if (!cache) return [];
+    const userMap = new Map<number, string>(cache.users.map((u) => [u.id, u.name]));
+    // Also pull names from leads as fallback
+    for (const l of cache.leads) {
+      if (l.responsible_user_id && l.broker_name && !userMap.has(l.responsible_user_id)) {
+        userMap.set(l.responsible_user_id, l.broker_name);
+      }
+    }
+    // Only return broker IDs that actually have leads
+    const brokerIds = new Set<number>(cache.leads.map((l) => l.responsible_user_id));
+    return Array.from(brokerIds)
+      .filter((id) => userMap.has(id))
+      .map((id) => ({ id, name: userMap.get(id)! }))
+      .sort((a, b) => a.name.localeCompare(b.name));
   }
 }
 
