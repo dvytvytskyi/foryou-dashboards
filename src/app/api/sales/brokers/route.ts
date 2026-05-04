@@ -67,7 +67,11 @@ function classifySourceFromRaw(lead: CacheLead, pipelineId: number, userDefinedS
 async function readCacheFile(): Promise<RawCacheFile | null> {
   try {
     const raw = await fs.readFile(RAW_CACHE_FILE, 'utf8');
-    return JSON.parse(raw) as RawCacheFile;
+    const parsed = JSON.parse(raw) as RawCacheFile;
+    // Reject stale cache (older than 2 hours) so BQ is used instead
+    const CACHE_TTL_MS = 2 * 60 * 60 * 1000;
+    if (Date.now() - parsed.createdAt > CACHE_TTL_MS) return null;
+    return parsed;
   } catch {
     return null;
   }
