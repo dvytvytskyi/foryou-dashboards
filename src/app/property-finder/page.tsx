@@ -54,7 +54,7 @@ export default function PropertyFinderPage() {
   });
   const [dateRange, setDateRange] = useState(() => {
     const today = new Date().toISOString().slice(0, 10);
-    return { startDate: '2026-01-01', endDate: today };
+    return { startDate: '2026-04-22', endDate: today };
   });
 
   const ourApiUrl = useMemo(() => '/api/pf-listings?group=Our', []);
@@ -77,7 +77,9 @@ export default function PropertyFinderPage() {
       tableMinWidth="100%"
       defaultChannelWidth={400}
       FilterComponent={RedFilters}
-      maxEndDate="2026-04-22"
+      defaultStartDate="2026-04-22"
+      forceDefaultDateRange={true}
+      isolateLocalStorage={true}
       externalThemeMode={syncTheme}
       onThemeChange={setSyncTheme}
       onDateChange={(start, end) => setDateRange({ startDate: start, endDate: end })}

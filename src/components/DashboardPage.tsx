@@ -354,6 +354,7 @@ export default function DashboardPage({
   defaultStartDate,
   defaultEndDate,
   forceDefaultDateRange = false,
+  isolateLocalStorage = false,
   datePresetMode = 'default',
   maxEndDate,
 }: { 
@@ -394,6 +395,7 @@ export default function DashboardPage({
   defaultStartDate?: string;
   defaultEndDate?: string;
   forceDefaultDateRange?: boolean;
+  isolateLocalStorage?: boolean;
   datePresetMode?: 'default' | 'plan-fact-months';
   maxEndDate?: string;
 }) {
@@ -695,12 +697,12 @@ export default function DashboardPage({
   }, [themeMode, isNested]);
 
   useEffect(() => {
-    if (isNested) return;
+    if (isNested || isolateLocalStorage) return;
     try {
       localStorage.setItem('dashboard-startDate', startDate);
       localStorage.setItem('dashboard-endDate', endDate);
     } catch {}
-  }, [startDate, endDate, isNested]);
+  }, [startDate, endDate, isNested, isolateLocalStorage]);
 
   useEffect(() => {
     if (isNested) return;
