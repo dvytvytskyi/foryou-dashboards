@@ -62,7 +62,10 @@ export default function PropertyFinderPage() {
     [dateRange.startDate, dateRange.endDate],
   );
 
-  const nestedProjectsApiUrl = '/api/pf-projects?startDate=2026-01-01&endDate=2026-12-31';
+  const nestedProjectsApiUrl = useMemo(
+    () => `/api/pf-projects?startDate=${encodeURIComponent(dateRange.startDate)}&endDate=${encodeURIComponent(dateRange.endDate)}`,
+    [dateRange.startDate, dateRange.endDate],
+  );
 
   return (
     <DashboardPage 
@@ -99,6 +102,9 @@ export default function PropertyFinderPage() {
           initialExpanded={[]}
           tableMinWidth="100%"
           defaultChannelWidth={400}
+          defaultStartDate={dateRange.startDate}
+          defaultEndDate={dateRange.endDate}
+          forceDefaultDateRange={true}
           externalThemeMode={syncTheme}
           customTableStyle={{ marginTop: '8px' }}
         />
@@ -117,6 +123,9 @@ export default function PropertyFinderPage() {
           initialExpanded={[]}
           tableMinWidth="100%"
           defaultChannelWidth={400}
+          defaultStartDate={dateRange.startDate}
+          defaultEndDate={dateRange.endDate}
+          forceDefaultDateRange={true}
           externalThemeMode={syncTheme}
           customTableStyle={{ marginTop: '8px' }}
         />

@@ -654,6 +654,13 @@ export default function DashboardPage({
 
   const isFirstMount = useRef(true);
 
+  // Sync internal date state when parent forces a new date range (e.g. nested tables on Property Finder)
+  useEffect(() => {
+    if (!forceDefaultDateRange || !isNested) return;
+    if (defaultStartDate) setStartDate(defaultStartDate);
+    if (defaultEndDate) setEndDate(defaultEndDate);
+  }, [forceDefaultDateRange, isNested, defaultStartDate, defaultEndDate]);
+
   useEffect(() => {
     if (!isNested && !authChecked) return;
     if (!isNested && !user) return;
