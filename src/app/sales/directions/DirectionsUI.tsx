@@ -9,8 +9,7 @@ import { formatMoney as sysFormatMoney } from '@/lib/formatters';
 const formatPct = (v: number) => `${((v || 0) * 100).toFixed(1)}%`;
 
 function DisplayMoney({ value, currency }: { value: number, currency: 'aed' | 'usd' }) {
-  const finalValue = currency === 'usd' ? value / 3.673 : value;
-  return <span>{sysFormatMoney(finalValue, currency)}</span>;
+  return <span>{sysFormatMoney(value, currency)}</span>;
 }
 
 export function DirectionCard({ title, data, currency }: { title: string, data: any, currency: 'aed' | 'usd' }) {

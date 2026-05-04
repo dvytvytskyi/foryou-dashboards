@@ -9,8 +9,7 @@ import { formatMoney as sysFormatMoney } from '@/lib/formatters';
 const formatPct = (v: number) => `${Math.round(v || 0)}%`;
 
 function DisplayMoney({ value, currency }: { value: number, currency: 'aed' | 'usd' }) {
-  const finalValue = currency === 'usd' ? value / 3.673 : value;
-  return <span>{sysFormatMoney(finalValue, currency)}</span>;
+  return <span>{sysFormatMoney(value, currency)}</span>;
 }
 
 function formatDealDate(value: string) {

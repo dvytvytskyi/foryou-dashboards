@@ -6,8 +6,7 @@ import { Activity, TrendingDown, TrendingUp } from 'lucide-react';
 import { formatMoney as sysFormatMoney, formatPercentRatio } from '@/lib/formatters';
 
 function DisplayMoney({ value, currency }: { value: number; currency: 'aed' | 'usd' }) {
-  const finalValue = currency === 'usd' ? value / 3.673 : value;
-  return <span>{sysFormatMoney(finalValue, currency)}</span>;
+  return <span>{sysFormatMoney(value, currency)}</span>;
 }
 
 function TrendBadge({ value }: { value: number }) {

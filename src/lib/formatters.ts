@@ -1,8 +1,11 @@
 export type CurrencyCode = 'aed' | 'usd';
 
+const AED_TO_USD = 3.673;
+
 export function formatMoney(value: number, currency: CurrencyCode = 'usd') {
+  const converted = currency === 'usd' ? (value || 0) / AED_TO_USD : (value || 0);
   const symbol = currency === 'usd' ? '$' : 'AED';
-  return `${symbol} ${Math.round(value || 0).toLocaleString('en-US')}`;
+  return `${symbol} ${Math.round(converted).toLocaleString('en-US')}`;
 }
 
 export function formatNumber(value: number) {

@@ -3,15 +3,7 @@
 import React from 'react';
 import styles from './sales.module.css';
 import { ArrowUpRight, ArrowDownRight, Info, User, Search, X, Filter, PieChart, Trophy, TrendingUp, HeartHandshake, Briefcase } from 'lucide-react';
-
-const RATE = 3.673;
-
-const formatMoney = (v: number, currency: string = 'aed') => {
-  const amount = currency === 'usd' ? v / RATE : v;
-  const rounded = Math.round(amount);
-  const formatted = rounded.toLocaleString();
-  return currency === 'usd' ? `$${formatted}` : `${formatted} AED`;
-};
+import { formatMoney } from '@/lib/formatters';
 
 const formatNum = (v: number) => v.toLocaleString();
 const formatPct = (v: number) => `${(v * 100).toFixed(2)}%`;

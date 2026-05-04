@@ -6,8 +6,7 @@ import { Activity, Search } from 'lucide-react';
 import { formatMoney as sysFormatMoney } from '@/lib/formatters';
 
 function DisplayMoney({ value, currency }: { value: number; currency: 'aed' | 'usd' }) {
-  const finalValue = currency === 'usd' ? value / 3.673 : value;
-  return <span>{sysFormatMoney(finalValue, currency)}</span>;
+  return <span>{sysFormatMoney(value, currency)}</span>;
 }
 
 export function InvoiceCard({ 
