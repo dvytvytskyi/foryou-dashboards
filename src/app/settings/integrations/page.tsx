@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-const AMO_CLIENT_ID = '2912780f-a1e4-4d5d-a069-ee01422d8bef';
+const AMO_CLIENT_ID = '36f61b3d-349d-48e8-850a-08ed66021ec6';
 const AMO_REDIRECT_URI = 'https://dashboards.foryou-realestate.com/api/amo/oauth-callback';
 const AMO_DOMAIN = 'reforyou.amocrm.ru';
 
