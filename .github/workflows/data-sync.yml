@@ -49,9 +49,11 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_PAT }}
 
       - name: Sync AMO channel leads raw
+        continue-on-error: true
         run: node scripts/kpi/sync_amo_channel_leads_raw.mjs
 
       - name: Sync RED leads
+        continue-on-error: true
         run: node scripts/sync/sync_red_to_bq.mjs
         env:
           AMO_DOMAIN: ${{ secrets.AMO_DOMAIN }}
@@ -59,6 +61,7 @@ jobs:
           AMO_CLIENT_SECRET: ${{ secrets.AMO_CLIENT_SECRET }}
 
       - name: Sync Klykov leads
+        continue-on-error: true
         run: node scripts/sync/sync_klykov_to_bq.mjs
         env:
           AMO_DOMAIN: ${{ secrets.AMO_DOMAIN }}
@@ -66,9 +69,11 @@ jobs:
           AMO_CLIENT_SECRET: ${{ secrets.AMO_CLIENT_SECRET }}
 
       - name: Rebuild unified marketing mart
+        continue-on-error: true
         run: node scripts/kpi/create_unified_marketing_drilldown_daily.mjs
 
       - name: Rebuild Partners UTM drilldown
+        continue-on-error: true
         run: node scripts/kpi/create_partners_drilldown_daily.mjs
 
       - name: Sync PF ↔ AMO project phone match
