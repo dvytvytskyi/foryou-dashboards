@@ -121,7 +121,7 @@ async function loadExactListingMetricsFromSyncState(
   }>(
     `
       SELECT
-        LOWER(TRIM(payload->>'pf_listing_ref')) AS listing_ref,
+        LOWER(TRIM(COALESCE(payload->>'pf_listing_ref', payload->>'listingRef', ''))) AS listing_ref,
         COUNT(*)::int AS crm_leads,
         SUM(CASE WHEN LOWER(COALESCE(payload->>'isSpam', 'false')) = 'true' THEN 1 ELSE 0 END)::int AS spam_count,
         SUM(CASE WHEN LOWER(COALESCE(payload->>'isQualified', 'false')) = 'true' THEN 1 ELSE 0 END)::int AS qualified_count,
@@ -129,20 +129,33 @@ async function loadExactListingMetricsFromSyncState(
         SUM(CASE WHEN LOWER(COALESCE(payload->>'isMeeting', 'false')) = 'true' THEN 1 ELSE 0 END)::int AS meetings_count,
         SUM(CASE WHEN LOWER(COALESCE(payload->>'isDeal', 'false')) = 'true' THEN 1 ELSE 0 END)::int AS deals_count
       FROM pf_amo_sync_state
-      WHERE LOWER(TRIM(COALESCE(payload->>'pf_listing_ref', ''))) = ANY($1::text[])
-        AND LOWER(COALESCE(payload->>'pf_category', '')) = 'listing'
+      WHERE LOWER(TRIM(COALESCE(payload->>'pf_listing_ref', payload->>'listingRef', ''))) = ANY($1::text[])
+        AND (
+          LOWER(COALESCE(payload->>'pf_category', '')) = 'listing'
+          OR LOWER(COALESCE(payload->>'entityType', '')) = 'listing'
+        )
         AND (
           $2::bigint IS NULL
           OR (
-            (payload->>'created_at') ~ '^[0-9]+$'
-            AND (payload->>'created_at')::bigint >= $2::bigint
+            CASE
+              WHEN (payload->>'created_at') ~ '^[0-9]+$'
+                THEN (payload->>'created_at')::bigint >= $2::bigint
+              WHEN payload->>'createdAt' IS NOT NULL
+                THEN EXTRACT(EPOCH FROM (payload->>'createdAt')::timestamptz)::bigint >= $2::bigint
+              ELSE true
+            END
           )
         )
         AND (
           $3::bigint IS NULL
           OR (
-            (payload->>'created_at') ~ '^[0-9]+$'
-            AND (payload->>'created_at')::bigint <= $3::bigint
+            CASE
+              WHEN (payload->>'created_at') ~ '^[0-9]+$'
+                THEN (payload->>'created_at')::bigint <= $3::bigint
+              WHEN payload->>'createdAt' IS NOT NULL
+                THEN EXTRACT(EPOCH FROM (payload->>'createdAt')::timestamptz)::bigint <= $3::bigint
+              ELSE true
+            END
           )
         )
       GROUP BY 1

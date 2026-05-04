@@ -21,10 +21,10 @@ function monthKeyOverlapsRange(monthKey: string, startDate: string | null, endDa
 
   const monthEnd = new Date(Date.UTC(year, month, 0)).toISOString().slice(0, 10);
 
-  // Prevent mixing custom day ranges with monthly buckets:
-  // a month bucket is used only when the whole month is inside selected range.
-  if (monthStart < startDate) return false;
-  if (monthEnd > endDate) return false;
+  // Include a month bucket when it overlaps with the selected range
+  // (even partially — avoids empty results for short date ranges like Apr 22 – May 4)
+  if (monthEnd < startDate) return false;
+  if (monthStart > endDate) return false;
   return true;
 }
 
