@@ -41,3 +41,17 @@ yarn-error.log*
 next-env.d.ts
 
 /secrets
+
+# Generated data files
+data/exports/
+data/logs/
+data/cache/
+
+# Temporary scripts
+tmp_*.mjs
+tmp_*.cjs
+
+# Raw CSV/HTML data dumps
+*.csv
+*.html
+scratch/*.csv
