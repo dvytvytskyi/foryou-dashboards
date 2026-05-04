@@ -273,21 +273,11 @@ async function refreshAmoTokens(
 async function readTokensPreferDb(): Promise<{ tokens: AmoTokens; fromEnv: boolean }> {
   const dbTokens = await readTokensFromPostgres();
   if (dbTokens && typeof dbTokens === 'object') {
-    try {
-      const fallback = readAmoTokens();
-      if (shouldPreferTokens(fallback.tokens, dbTokens)) {
-        if (isPostgresConfigured()) {
-          await writeTokensToPostgres(fallback.tokens);
-        }
-        return fallback;
-      }
-    } catch {
-      // Ignore local fallback read errors when Postgres already has tokens.
-    }
-
+    // DB is canonical — always trust it when tokens are present
     return { tokens: dbTokens, fromEnv: false };
   }
 
+  // DB empty — bootstrap from file/env and persist to DB
   const fallback = readAmoTokens();
   if (isPostgresConfigured()) {
     await writeTokensToPostgres(fallback.tokens);
@@ -365,6 +355,10 @@ async function getValidTokens(forceRefresh: boolean): Promise<AmoTokens> {
     });
   }
   return inProcessRefreshPromise;
+}
+
+export async function getValidAmoTokens(): Promise<AmoTokens> {
+  return getValidTokens(false);
 }
 
 export async function amoFetch(pathname: string, init?: RequestInit): Promise<Response> {

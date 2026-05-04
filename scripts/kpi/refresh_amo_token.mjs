@@ -1,11 +1,39 @@
 import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
+import pg from 'pg';
 
 dotenv.config({ path: path.resolve('./.env') });
 
 const AMO_TOKENS_FILE = path.resolve('./secrets/amo_tokens.json');
 const domain = process.env.AMO_DOMAIN || 'reforyou.amocrm.ru';
+
+async function writeTokensToDb(tokens) {
+  const connStr = process.env.POSTGRES_URL || process.env.DATABASE_URL || process.env.NEON_DATABASE_URL;
+  if (!connStr) return;
+  const pool = new pg.Pool({ connectionString: connStr, ssl: { rejectUnauthorized: false }, max: 1 });
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS integration_tokens (
+        provider TEXT PRIMARY KEY,
+        tokens JSONB NOT NULL,
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      )
+    `);
+    await pool.query(
+      `INSERT INTO integration_tokens(provider, tokens, updated_at)
+       VALUES ('amo', $1::jsonb, NOW())
+       ON CONFLICT (provider)
+       DO UPDATE SET tokens = EXCLUDED.tokens, updated_at = NOW()`,
+      [JSON.stringify(tokens)]
+    );
+    console.log('[DB] Tokens written to Postgres.');
+  } catch (err) {
+    console.warn('[DB] Failed to write tokens to Postgres:', err.message);
+  } finally {
+    await pool.end();
+  }
+}
 
 async function isAccessTokenValid(accessToken) {
     if (!accessToken) return false;
@@ -49,10 +77,10 @@ async function refreshToken() {
 
     if (res.ok) {
         const newTokens = await res.json();
-        // Add server time for checking later
         newTokens.server_time = Math.floor(Date.now() / 1000);
         fs.writeFileSync(AMO_TOKENS_FILE, JSON.stringify(newTokens, null, 2));
         console.log('SUCCESS! Tokens refreshed.');
+        await writeTokensToDb(newTokens);
     } else {
         const err = await res.text();
         console.error('REFRESH FAILED:', res.status, err);

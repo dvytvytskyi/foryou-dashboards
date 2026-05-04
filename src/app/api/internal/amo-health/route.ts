@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { amoFetch, readAmoTokens } from '@/lib/amo';
+import { amoFetch, getValidAmoTokens } from '@/lib/amo';
 
 function parseTokenExpirySeconds(accessToken?: string): number | null {
   if (!accessToken) return null;
@@ -16,7 +16,7 @@ function parseTokenExpirySeconds(accessToken?: string): number | null {
 export async function GET() {
   try {
     const nowSec = Math.floor(Date.now() / 1000);
-    const { tokens } = readAmoTokens();
+    const tokens = await getValidAmoTokens();
     const exp = parseTokenExpirySeconds(tokens.access_token);
     const secondsToExpiry = exp ? exp - nowSec : null;
 
