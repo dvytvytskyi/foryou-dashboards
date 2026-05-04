@@ -5,8 +5,8 @@ import path from 'path';
 const PROJECT_ID = 'crypto-world-epta';
 const DATASET_ID = 'foryou_analytics';
 const SERVICE_ACCOUNT_FILE = path.resolve('./secrets/crypto-world-epta-2db29829d55d.json');
-const BOT_TOKEN = '8745230277:AAGhKq1wNjt-RU_MWfO_dU2bCiay5xoUVXE';
-const CHAT_ID = '-5190606289';
+const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8745230277:AAGhKq1wNjt-RU_MWfO_dU2bCiay5xoUVXE';
+const CHAT_ID = process.env.TELEGRAM_CHAT_ID || '-5190606289';
 
 const bqCredentials = process.env.GOOGLE_AUTH_JSON 
   ? JSON.parse(process.env.GOOGLE_AUTH_JSON)

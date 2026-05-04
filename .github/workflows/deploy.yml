@@ -63,6 +63,12 @@ jobs:
           POSTGRES_USER=${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_SSL_MODE=${{ secrets.POSTGRES_SSL_MODE }}
+          PF_API_KEY=${{ secrets.PF_API_KEY }}
+          PF_API_SECRET=${{ secrets.PF_API_SECRET }}
+          AMO_TOKENS_JSON=$AMO_TOKENS_JSON_COMPACT
+          TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID=${{ secrets.TELEGRAM_CHAT_ID }}
+          GH_TOKEN=${{ secrets.GH_PAT }}
           EOF_ENV
           # Remove YAML indentation spaces from env file keys/values.
           sed -i 's/^[[:space:]]*//' .env

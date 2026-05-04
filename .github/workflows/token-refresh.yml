@@ -1,0 +1,59 @@
+name: AMO Token Refresh
+
+on:
+  schedule:
+    - cron: '*/20 * * * *'  # Every 20 minutes
+  workflow_dispatch:
+
+concurrency:
+  group: amo-token-refresh
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Create secrets directory
+        run: mkdir -p secrets
+
+      - name: Save AMO Tokens
+        run: echo '${{ secrets.AMO_TOKENS_JSON }}' > secrets/amo_tokens.json
+
+      - name: Refresh AMO Token
+        id: refresh
+        continue-on-error: true
+        run: node scripts/kpi/refresh_amo_token.mjs
+        env:
+          AMO_DOMAIN: ${{ secrets.AMO_DOMAIN }}
+          AMO_CLIENT_ID: ${{ secrets.AMO_CLIENT_ID }}
+          AMO_CLIENT_SECRET: ${{ secrets.AMO_CLIENT_SECRET }}
+          AMO_REDIRECT_URI: ${{ secrets.AMO_REDIRECT_URI }}
+          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+          DATABASE_URL: ${{ secrets.POSTGRES_URL }}
+          NEON_DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+
+      - name: Update AMO_TOKENS_JSON secret
+        if: steps.refresh.outcome == 'success'
+        run: gh secret set AMO_TOKENS_JSON < ./secrets/amo_tokens.json
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+
+      - name: Alert on failure
+        if: steps.refresh.outcome == 'failure'
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -H "Content-Type: application/json" \
+            -d "{\"chat_id\":\"${{ secrets.TELEGRAM_CHAT_ID }}\",\"text\":\"⚠️ <b>AMO Token Refresh FAILED</b>\\n\\nRefresh token протух або інтеграція відкликана.\\n\\n👉 <a href=\\\"https://dashboards.foryou-realestate.com/settings/integrations\\\">Реавторизувати AMO</a>\",\"parse_mode\":\"HTML\"}"

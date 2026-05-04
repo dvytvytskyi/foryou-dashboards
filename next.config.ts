@@ -15,6 +15,7 @@ const nextConfig = {
     'googleapis',
     'google-auth-library',
     'exceljs',
+    'libsodium-wrappers',
   ],
 };
 
