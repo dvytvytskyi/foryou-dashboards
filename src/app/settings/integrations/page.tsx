@@ -7,8 +7,8 @@ const AMO_REDIRECT_URI = 'https://dashboards.foryou-realestate.com/api/amo/oauth
 const AMO_DOMAIN = 'reforyou.amocrm.ru';
 
 const AMO_OAUTH_URL =
-  `https://www.amocrm.ru/oauth?client_id=${AMO_CLIENT_ID}` +
-  `&state=dashboard_reauth&redirect_uri=${encodeURIComponent(AMO_REDIRECT_URI)}&response_type=code&mode=popup`;
+  `https://${AMO_DOMAIN}/oauth?client_id=${AMO_CLIENT_ID}` +
+  `&state=dashboard_reauth&redirect_uri=${encodeURIComponent(AMO_REDIRECT_URI)}&response_type=code`;
 
 type HealthData = {
   healthy: boolean;
