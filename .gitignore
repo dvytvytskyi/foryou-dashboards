@@ -58,3 +58,4 @@ unattributed_pf_leads.json
 *.csv
 *.html
 scratch/*.csv
+*.xlsx
