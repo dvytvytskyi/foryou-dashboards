@@ -270,7 +270,7 @@ async function readRawDataFromBigQuery(): Promise<RawData | null> {
 
     // Fetch leads that ever reached "квалификация пройдена" stage
     // Needed to count status=143 leads as QL if they previously passed qualification
-    const [[milestoneRows]] = await bq.query({
+    const [milestoneRows] = await bq.query({
       query: `
         SELECT SAFE_CAST(deal_id AS INT64) AS lead_id
         FROM \`${BQ_PROJECT_ID}.${BQ_DATASET}.milestones\`
