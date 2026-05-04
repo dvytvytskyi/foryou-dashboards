@@ -29,7 +29,9 @@ function shouldExcludeSource(source: string): boolean {
 export default function CompanyAlliancePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [currency, setCurrency] = useState<'aed' | 'usd'>('usd');
+  const [currency, setCurrency] = useState<'aed' | 'usd'>(() => {
+    try { return (localStorage.getItem('dashboard-currency') as 'aed' | 'usd') || 'aed'; } catch { return 'aed'; }
+  });
   const [deals, setDeals] = useState<any[]>([]);
   const [dealType, setDealType] = useState<DealType>('Все');
   const [dateRange, setDateRange] = useState<{ startDate: string; endDate: string }>(() => {

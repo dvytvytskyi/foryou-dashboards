@@ -413,8 +413,8 @@ export default function DashboardPage({
   const today = new Date().toISOString().slice(0, 10);
 
   const [internalCurrency, setInternalCurrency] = useState<Currency>(() => {
-    if (isNested) return 'usd';
-    try { return (localStorage.getItem('dashboard-currency') as Currency) || 'usd'; } catch { return 'usd'; }
+    if (isNested) return 'aed';
+    try { return (localStorage.getItem('dashboard-currency') as Currency) || 'aed'; } catch { return 'aed'; }
   });
   const currency = externalCurrency || internalCurrency;
   const setCurrency = externalSetCurrency || setInternalCurrency;

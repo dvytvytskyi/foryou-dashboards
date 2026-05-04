@@ -19,7 +19,9 @@ import RedFilters from '@/components/dashboard/filters/RedFilters';
 
 export default function SalesOverviewPage() {
   const [syncTheme, setSyncTheme] = useState<'light' | 'night' | null>(null);
-  const [currency, setCurrency] = useState<'usd' | 'aed'>('usd');
+  const [currency, setCurrency] = useState<'usd' | 'aed'>(() => {
+    try { return (localStorage.getItem('dashboard-currency') as 'usd' | 'aed') || 'aed'; } catch { return 'aed'; }
+  });
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

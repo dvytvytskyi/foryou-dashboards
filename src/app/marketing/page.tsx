@@ -11,7 +11,7 @@ const MAIN_CHANNELS = ['RED', 'Facebook', 'Klykov', 'Website', 'ЮрийНедв
 
 export default function MarketingPage() {
   const [currency, setCurrency] = useState<Currency>(() => {
-    try { return (localStorage.getItem('dashboard-currency') as Currency) || 'usd'; } catch { return 'usd'; }
+    try { return (localStorage.getItem('dashboard-currency') as Currency) || 'aed'; } catch { return 'aed'; }
   });
 
   return (

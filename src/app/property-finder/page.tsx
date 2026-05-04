@@ -50,7 +50,7 @@ const PROJECT_COLUMNS = [
 export default function PropertyFinderPage() {
   const [syncTheme, setSyncTheme] = useState<'light' | 'night' | null>(null);
   const [currency, setCurrency] = useState<Currency>(() => {
-    try { return (localStorage.getItem('dashboard-currency') as Currency) || 'usd'; } catch { return 'usd'; }
+    try { return (localStorage.getItem('dashboard-currency') as Currency) || 'aed'; } catch { return 'aed'; }
   });
   const [dateRange, setDateRange] = useState(() => {
     const today = new Date().toISOString().slice(0, 10);

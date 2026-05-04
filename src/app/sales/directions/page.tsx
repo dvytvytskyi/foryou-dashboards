@@ -10,7 +10,9 @@ export default function SalesDirectionsPage() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [currency, setCurrency] = useState<'aed' | 'usd'>('usd');
+  const [currency, setCurrency] = useState<'aed' | 'usd'>(() => {
+    try { return (localStorage.getItem('dashboard-currency') as 'aed' | 'usd') || 'aed'; } catch { return 'aed'; }
+  });
   const [dateRange, setDateRange] = useState(() => {
     const today = new Date().toISOString().slice(0, 10);
     try {

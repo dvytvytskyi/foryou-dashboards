@@ -140,7 +140,9 @@ export default function CompanyRatingsPage() {
   const [brokerRatings, setBrokerRatings] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [currency, setCurrency] = useState<'aed' | 'usd'>('usd');
+  const [currency, setCurrency] = useState<'aed' | 'usd'>(() => {
+    try { return (localStorage.getItem('dashboard-currency') as 'aed' | 'usd') || 'aed'; } catch { return 'aed'; }
+  });
   const [dateRange, setDateRange] = useState<{ startDate: string; endDate: string }>(() => {
     if (typeof window !== 'undefined') {
       const startDate = localStorage.getItem('dashboard-startDate');

@@ -126,7 +126,9 @@ export default function CompanyDealsSummaryPage() {
   const [syncTheme, setSyncTheme] = React.useState<'light' | 'night' | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [currency, setCurrency] = useState<'aed' | 'usd'>('usd');
+  const [currency, setCurrency] = useState<'aed' | 'usd'>(() => {
+    try { return (localStorage.getItem('dashboard-currency') as 'aed' | 'usd') || 'aed'; } catch { return 'aed'; }
+  });
   const [summary, setSummary] = useState(() => ({
     total: emptySummary(),
     perType: {

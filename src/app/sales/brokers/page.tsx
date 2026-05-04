@@ -9,8 +9,10 @@ export default function BrokersPage() {
   const [brokers, setBrokers] = useState<Array<{ id: number; name: string }>>([]);
   const [selectedBroker, setSelectedBroker] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [currency, setCurrency] = useState<'usd' | 'aed'>('usd');
-  
+  const [currency, setCurrency] = useState<'usd' | 'aed'>(() => {
+    try { return (localStorage.getItem('dashboard-currency') as 'usd' | 'aed') || 'aed'; } catch { return 'aed'; }
+  });
+
   const [dateRange, setDateRange] = useState<{ startDate: string; endDate: string }>(() => {
     if (typeof window !== 'undefined') {
       const s = localStorage.getItem('dashboard-startDate');
@@ -22,7 +24,7 @@ export default function BrokersPage() {
   });
 
   useEffect(() => {
-    const storedCurrency = typeof window !== 'undefined' ? localStorage.getItem('dashboard-currency') : null;
+    const storedCurrency = typeof window !== 'undefined' ? localStorage.getItem('dashboard-currency') : null; // default: aed
     if (storedCurrency === 'usd' || storedCurrency === 'aed') {
       setCurrency(storedCurrency as 'usd' | 'aed');
     }

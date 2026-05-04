@@ -44,7 +44,9 @@ const EMPTY_DATA: ExpensesOverviewPayload = {
 
 export default function ExpensesOverviewPage() {
   const [loading, setLoading] = useState(false);
-  const [currency, setCurrency] = useState<'aed' | 'usd'>('usd');
+  const [currency, setCurrency] = useState<'aed' | 'usd'>(() => {
+    try { return (localStorage.getItem('dashboard-currency') as 'aed' | 'usd') || 'aed'; } catch { return 'aed'; }
+  });
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<ExpensesOverviewPayload>(EMPTY_DATA);
 
