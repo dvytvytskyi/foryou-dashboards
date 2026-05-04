@@ -7,10 +7,31 @@ dotenv.config({ path: path.resolve('./.env') });
 const AMO_TOKENS_FILE = path.resolve('./secrets/amo_tokens.json');
 const domain = process.env.AMO_DOMAIN || 'reforyou.amocrm.ru';
 
+async function isAccessTokenValid(accessToken) {
+    if (!accessToken) return false;
+
+    const res = await fetch(`https://${domain}/api/v4/account`, {
+        headers: { Authorization: `Bearer ${accessToken}` }
+    });
+
+    return res.ok;
+}
+
 async function refreshToken() {
     console.log('--- REFRESHING AMO TOKENS ---');
     if (!fs.existsSync(AMO_TOKENS_FILE)) return;
     const tokens = JSON.parse(fs.readFileSync(AMO_TOKENS_FILE, 'utf8'));
+
+    if (!tokens.refresh_token) {
+        const valid = await isAccessTokenValid(tokens.access_token);
+        if (valid) {
+            console.log('No refresh_token found; existing access token is valid, skipping refresh.');
+            return;
+        }
+
+        console.error('REFRESH FAILED: no refresh_token and current access_token is invalid.');
+        process.exit(1);
+    }
 
     const body = {
         client_id: process.env.AMO_CLIENT_ID,
@@ -35,6 +56,13 @@ async function refreshToken() {
     } else {
         const err = await res.text();
         console.error('REFRESH FAILED:', res.status, err);
+
+        const fallbackValid = await isAccessTokenValid(tokens.access_token);
+        if (fallbackValid) {
+            console.warn('Refresh failed, but existing access token is still valid. Continuing.');
+            return;
+        }
+
         process.exit(1);
     }
 }
