@@ -47,9 +47,12 @@ data/exports/
 data/logs/
 data/cache/
 
-# Temporary scripts
+# Temporary scripts and debug dumps
 tmp_*.mjs
 tmp_*.cjs
+tmp_*.json
+extracted_listings*.json
+unattributed_pf_leads.json
 
 # Raw CSV/HTML data dumps
 *.csv
