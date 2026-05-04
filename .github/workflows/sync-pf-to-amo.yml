@@ -40,18 +40,6 @@ jobs:
       - name: Save AMO Tokens
         run: echo '${{ secrets.AMO_TOKENS_JSON }}' > secrets/amo_tokens.json
 
-      - name: Refresh AMO Token
-        run: node scripts/kpi/refresh_amo_token.mjs
-        env:
-          AMO_DOMAIN: ${{ secrets.AMO_DOMAIN }}
-          AMO_CLIENT_ID: ${{ secrets.AMO_CLIENT_ID }}
-          AMO_CLIENT_SECRET: ${{ secrets.AMO_CLIENT_SECRET }}
-
-      - name: Update AMO_TOKENS_JSON secret with refreshed token
-        run: gh secret set AMO_TOKENS_JSON < ./secrets/amo_tokens.json
-        env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
-
       - name: Sync PF leads → AMO
         run: node scripts/sync/sync_pf_to_amo.mjs
         env:
