@@ -9,6 +9,7 @@ const AMO_MAX_RPS = Math.max(1, Number(process.env.AMO_MAX_RPS || 3));
 const AMO_MIN_INTERVAL_MS = Math.ceil(1000 / AMO_MAX_RPS);
 const AMO_MAX_429_RETRIES = Math.max(0, Number(process.env.AMO_MAX_429_RETRIES || 4));
 const AMO_REQUEST_TIMEOUT_MS = Math.max(3000, Number(process.env.AMO_REQUEST_TIMEOUT_MS || 15000));
+const AMO_REFRESH_TIMEOUT_MS = Math.max(3000, Number(process.env.AMO_REFRESH_TIMEOUT_MS || 6000));
 
 type AmoTokens = {
   access_token?: string;
@@ -233,8 +234,11 @@ async function refreshAmoTokens(
 
   console.log('[AMO] Attempting token refresh...');
 
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), AMO_REFRESH_TIMEOUT_MS);
   const res = await fetch(`https://${getAmoDomain()}/oauth2/access_token`, {
     method: 'POST',
+    signal: controller.signal,
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       client_id: clientId,
@@ -243,6 +247,8 @@ async function refreshAmoTokens(
       refresh_token: currentTokens.refresh_token,
       redirect_uri: redirectUri,
     }),
+  }).finally(() => {
+    clearTimeout(timeout);
   });
 
   if (!res.ok) {
