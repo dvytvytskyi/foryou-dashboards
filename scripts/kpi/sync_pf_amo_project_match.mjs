@@ -20,6 +20,8 @@ const ROOT = path.resolve(__dirname, '..', '..');
 
 function getConnectionString() {
   if (process.env.POSTGRES_URL) return process.env.POSTGRES_URL;
+  if (process.env.DATABASE_URL) return process.env.DATABASE_URL;
+  if (process.env.NEON_DATABASE_URL) return process.env.NEON_DATABASE_URL;
   const host = process.env.POSTGRES_HOST;
   const port = process.env.POSTGRES_PORT || '5432';
   const database = process.env.POSTGRES_DB;
@@ -30,7 +32,7 @@ function getConnectionString() {
 }
 
 async function upsertProjectStatsToDb(byProject) {
-  if (!process.env.POSTGRES_URL && !process.env.POSTGRES_HOST) {
+  if (!process.env.POSTGRES_URL && !process.env.DATABASE_URL && !process.env.NEON_DATABASE_URL && !process.env.POSTGRES_HOST) {
     console.log('  [DB] No Postgres config — skipping DB upsert');
     return;
   }

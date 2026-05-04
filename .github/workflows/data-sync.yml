@@ -83,6 +83,15 @@ jobs:
           AMO_DOMAIN: ${{ secrets.AMO_DOMAIN }}
           PF_API_KEY: ${{ secrets.PF_API_KEY }}
           PF_API_SECRET: ${{ secrets.PF_API_SECRET }}
+          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NEON_DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_SSL_MODE: ${{ secrets.POSTGRES_SSL_MODE }}
 
       - name: Commit PF AMO match cache
         continue-on-error: true
