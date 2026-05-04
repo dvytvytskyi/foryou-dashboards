@@ -512,8 +512,14 @@ async function main() {
 
       try {
         const amoLeadId = await createAmoLead(client, lead, sourceEnumId);
+        // Derive created_month: prefer lead.createdAt from PF API, fallback to today
+        const createdAtMs = lead?.createdAt ? Date.parse(lead.createdAt) : NaN;
+        const createdMonth = Number.isFinite(createdAtMs) && createdAtMs > 0
+          ? new Date(createdAtMs).toISOString().slice(0, 7)
+          : new Date().toISOString().slice(0, 7);
         await markSynced(client, pfLeadId, amoLeadId, {
           createdAt: lead.createdAt || null,
+          created_month: createdMonth,
           entityType: lead?.entityType || 'listing',
           listingRef: lead?.listing?.reference || null,
           projectId: lead?.project?.id || null,
