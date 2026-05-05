@@ -374,11 +374,6 @@ async function getOrFetchRawData(): Promise<RawData> {
       console.log(`✓ Raw CRM data cached: ${result.leads.length} leads, ${result.tasks.length} tasks`);
       return result;
     } catch (error) {
-      const stale = await readRawCache({ allowStale: true });
-      if (stale) {
-        console.warn('Plan/Fact CRM fetch failed, returning stale cache:', error instanceof Error ? error.message : String(error));
-        return stale;
-      }
       throw error;
     } finally {
       _rawDataFetchPromise = null;
@@ -577,38 +572,12 @@ export async function GET(request: NextRequest) {
     const month = endDate.getUTCMonth();
     const year = endDate.getUTCFullYear();
 
-    const [bqRawData, planByBroker] = await Promise.all([
-      readRawDataFromBigQuery(),
+    const [rawData, planByBroker] = await Promise.all([
+      getOrFetchRawData(),
       readPlanDataFromSheets(month, year),
     ]);
 
-    let rawData = bqRawData;
-    let dataSource: 'bigquery' | 'crm-cache' | 'crm-cache-stale' | 'empty-fallback' = bqRawData ? 'bigquery' : 'crm-cache';
-    if (!rawData) {
-      const cachedRaw = await readRawCache();
-      if (cachedRaw) {
-        rawData = cachedRaw;
-        dataSource = 'crm-cache';
-      } else {
-        const staleRaw = await readRawCache({ allowStale: true });
-        if (staleRaw) {
-          rawData = staleRaw;
-          dataSource = 'crm-cache-stale';
-        } else {
-          // Never block API response on live CRM fetch: return fast fallback and warm cache in background.
-          void getOrFetchRawData().catch((fetchErr) => {
-            console.warn('Plan/Fact background CRM warmup failed:', fetchErr instanceof Error ? fetchErr.message : String(fetchErr));
-          });
-          rawData = {
-            leads: [],
-            tasks: [],
-            users: [],
-            createdAt: Date.now(),
-          };
-          dataSource = 'empty-fallback';
-        }
-      }
-    }
+    const dataSource: 'crm-live' = 'crm-live';
 
     const { leads, tasks: openTasks, users } = rawData;
     const userMap = new Map<number, string>(users.map((u) => [u.id, u.name]));

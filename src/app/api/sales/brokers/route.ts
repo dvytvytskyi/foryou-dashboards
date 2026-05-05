@@ -241,6 +241,70 @@ async function fetchUserRolesMap(): Promise<Map<number, number | null>> {
   }
 }
 
+async function amoFetchJson<T>(apiPath: string): Promise<T> {
+  return sharedAmoFetchJson<T>(apiPath, {
+    headers: { Accept: 'application/json' },
+  });
+}
+
+async function fetchAllLeadsByPipeline(pipelineId: number): Promise<CacheLead[]> {
+  const all: CacheLead[] = [];
+  const limit = 250;
+  let page = 1;
+  const MAX_PAGES = 80;
+  let lastFingerprint = '';
+
+  while (true) {
+    if (page > MAX_PAGES) break;
+
+    const data = await amoFetchJson<{ _embedded?: { leads?: CacheLead[] } }>(
+      `/api/v4/leads?filter[pipeline_id]=${pipelineId}&limit=${limit}&page=${page}&with=tags`,
+    );
+
+    const leads = data?._embedded?.leads || [];
+    if (!leads.length) break;
+
+    const fingerprint = `${leads[0]?.id || 0}-${leads[leads.length - 1]?.id || 0}-${leads.length}`;
+    if (fingerprint === lastFingerprint) break;
+    lastFingerprint = fingerprint;
+
+    all.push(...leads);
+    if (leads.length < limit) break;
+    page += 1;
+  }
+
+  return all;
+}
+
+async function fetchAllOpenTasksForBroker(brokerId: number): Promise<CacheTask[]> {
+  const all: CacheTask[] = [];
+  const limit = 250;
+  let page = 1;
+  const MAX_PAGES = 120;
+  let lastFingerprint = '';
+
+  while (true) {
+    if (page > MAX_PAGES) break;
+
+    const data = await amoFetchJson<{ _embedded?: { tasks?: CacheTask[] } }>(
+      `/api/v4/tasks?filter[is_completed]=0&filter[responsible_user_id]=${brokerId}&limit=${limit}&page=${page}`,
+    );
+
+    const tasks = data?._embedded?.tasks || [];
+    if (!tasks.length) break;
+
+    const fingerprint = `${tasks[0]?.id || 0}-${tasks[tasks.length - 1]?.id || 0}-${tasks.length}`;
+    if (fingerprint === lastFingerprint) break;
+    lastFingerprint = fingerprint;
+
+    all.push(...tasks);
+    if (tasks.length < limit) break;
+    page += 1;
+  }
+
+  return all;
+}
+
 function isQlActualStatus(lead: { status_id: number; pipeline_id: number }): boolean {
   if (lead.pipeline_id === RE_PIPELINE_ID)
     return RE_QL_ACTUAL_STATUSES.has(lead.status_id);
@@ -387,95 +451,40 @@ function buildPeriodMetrics(leads: LeadRecord[]): PeriodMetrics {
 }
 
 async function loadLeadsAndTasks(brokerId: number): Promise<{ leads: LeadRecord[]; rawTasks: CacheTask[] }> {
-  // Use the same source preference as plan-fact for parity: CRM cache first.
-  const cache = await readCacheFile();
-  if (cache) {
-    const userMap = new Map<number, string>(cache.users.map((u) => [u.id, u.name]));
+  const [usersResponse, reLeads, klykovLeads, openTasks] = await Promise.all([
+    amoFetchJson<{ _embedded?: { users?: Array<{ id: number; name: string }> } }>(`/api/v4/users?limit=250`),
+    fetchAllLeadsByPipeline(RE_PIPELINE_ID),
+    fetchAllLeadsByPipeline(KLYKOV_PIPELINE_ID),
+    fetchAllOpenTasksForBroker(brokerId),
+  ]);
 
-    const leads: LeadRecord[] = cache.leads
-      .filter((l) => l.responsible_user_id === brokerId && INCLUDED_PIPELINES.has(l.pipeline_id))
-      .map((l) => {
-        const statusId = l.status_id;
-        const pipelineId = l.pipeline_id;
-        const resolvedBrokerName = l.broker_name || userMap.get(l.responsible_user_id) || `User #${l.responsible_user_id}`;
-        const sourceName = classifySourceFromRaw(l, pipelineId, l.source_name);
-        return {
-          lead_id: l.id,
-          broker_name: resolvedBrokerName,
-          source_name: sourceName,
-          status_id: statusId,
-          pipeline_id: pipelineId,
-          price: l.price || 0,
-          created_at_unix: l.created_at,
-          is_ql: isQlStatus({ status_id: statusId, pipeline_id: pipelineId }),
-          is_showing: isShowingStatus({ status_id: statusId, pipeline_id: pipelineId }),
-          is_won: isWonStatus(statusId),
-        };
-      });
+  const userMap = new Map<number, string>((usersResponse?._embedded?.users || []).map((u) => [u.id, u.name]));
+  const rawLeads = [...reLeads, ...klykovLeads].filter((l) => l.responsible_user_id === brokerId);
 
-    const rawTasks = cache.tasks.filter(
-      (t) => t.responsible_user_id === brokerId && t.entity_type === 'leads' && !t.is_completed,
-    );
+  const leads: LeadRecord[] = rawLeads.map((l) => {
+    const statusId = l.status_id;
+    const pipelineId = l.pipeline_id;
+    const resolvedBrokerName = l.broker_name || userMap.get(l.responsible_user_id) || `User #${l.responsible_user_id}`;
+    const sourceName = classifySourceFromRaw(l, pipelineId, l.source_name);
+    return {
+      lead_id: l.id,
+      broker_name: resolvedBrokerName,
+      source_name: sourceName,
+      status_id: statusId,
+      pipeline_id: pipelineId,
+      price: l.price || 0,
+      created_at_unix: l.created_at,
+      is_ql: isQlStatus({ status_id: statusId, pipeline_id: pipelineId }),
+      is_showing: isShowingStatus({ status_id: statusId, pipeline_id: pipelineId }),
+      is_won: isWonStatus(statusId),
+    };
+  });
 
-    return { leads, rawTasks };
-  }
+  const rawTasks = openTasks.filter(
+    (t) => t.responsible_user_id === brokerId && t.entity_type === 'leads' && !t.is_completed,
+  );
 
-  // Fallback: BigQuery
-  try {
-    const [[leadRows], [taskRows]] = await Promise.all([
-      bq.query({
-        query: `
-          SELECT lead_id, created_at, status_id, pipeline_id, responsible_user_id, broker_name, source_name, price
-          FROM \`${BQ_PROJECT_ID}.${BQ_DATASET}.${BQ_LEADS_TABLE}\`
-          WHERE responsible_user_id = @brokerId
-        `,
-        params: { brokerId },
-        useLegacySql: false,
-      }),
-      bq.query({
-        query: `
-          SELECT task_id, entity_id, responsible_user_id, entity_type, is_completed, complete_till
-          FROM \`${BQ_PROJECT_ID}.${BQ_DATASET}.${BQ_TASKS_TABLE}\`
-          WHERE responsible_user_id = @brokerId AND is_completed = FALSE AND entity_type = 'leads'
-        `,
-        params: { brokerId },
-        useLegacySql: false,
-      }),
-    ]);
-
-    const leads: LeadRecord[] = (leadRows as any[])
-      .filter((row) => INCLUDED_PIPELINES.has(toNumber(row.pipeline_id)))
-      .map((row) => {
-        const statusId = toNumber(row.status_id);
-        const pipelineId = toNumber(row.pipeline_id);
-        return {
-          lead_id: toNumber(row.lead_id),
-          broker_name: String(row.broker_name),
-          source_name: (String(row.source_name) as SourceName) || 'Own leads',
-          status_id: statusId,
-          pipeline_id: pipelineId,
-          price: toNumber(row.price),
-          created_at_unix: timestampToUnix(row.created_at),
-          is_ql: isQlStatus({ status_id: statusId, pipeline_id: pipelineId }),
-          is_showing: isShowingStatus({ status_id: statusId, pipeline_id: pipelineId }),
-          is_won: isWonStatus(statusId),
-        };
-      });
-
-    const rawTasks: CacheTask[] = (taskRows as any[]).map((row) => ({
-      id: toNumber(row.task_id),
-      responsible_user_id: toNumber(row.responsible_user_id),
-      entity_id: toNumber(row.entity_id),
-      entity_type: String(row.entity_type || 'leads'),
-      is_completed: toBoolean(row.is_completed),
-      complete_till: row.complete_till ? timestampToUnix(row.complete_till) : undefined,
-    }));
-
-    return { leads, rawTasks };
-  } catch (bqErr) {
-    console.warn('BQ unavailable and no cache available:', bqErr instanceof Error ? bqErr.message : String(bqErr));
-    return { leads: [], rawTasks: [] };
-  }
+  return { leads, rawTasks };
 }
 
 async function getBrokerMetrics(
@@ -637,44 +646,26 @@ async function getBrokerMetrics(
 }
 
 async function getAllBrokers(): Promise<Array<{ id: number; name: string }>> {
-  // Fetch AMO user roles to filter dropdown
-  const roleMap = await fetchUserRolesMap();
+  const [roleMap, usersResponse, reLeads, klykovLeads] = await Promise.all([
+    fetchUserRolesMap(),
+    amoFetchJson<{ _embedded?: { users?: Array<{ id: number; name: string }> } }>(`/api/v4/users?limit=250`),
+    fetchAllLeadsByPipeline(RE_PIPELINE_ID),
+    fetchAllLeadsByPipeline(KLYKOV_PIPELINE_ID),
+  ]);
+
+  const userMap = new Map<number, string>((usersResponse?._embedded?.users || []).map((u) => [u.id, u.name]));
+  const brokerIds = new Set<number>([...reLeads, ...klykovLeads].map((l) => l.responsible_user_id));
 
   function isAllowedBroker(id: number): boolean {
-    if (roleMap.size === 0) return true; // AMO unavailable, show all
+    if (roleMap.size === 0) return true;
     const role = roleMap.get(id);
     return role !== undefined && ALLOWED_BROKER_ROLE_IDS.has(role as number);
   }
 
-  try {
-    const [rows] = await bq.query({
-      query: `
-        SELECT DISTINCT responsible_user_id, broker_name
-        FROM \`${BQ_PROJECT_ID}.${BQ_DATASET}.${BQ_LEADS_TABLE}\`
-        ORDER BY broker_name ASC
-      `,
-      useLegacySql: false,
-    });
-    if (!Array.isArray(rows)) return [];
-    return rows
-      .map((row: any) => ({ id: toNumber(row.responsible_user_id), name: String(row.broker_name) }))
-      .filter((b) => isAllowedBroker(b.id));
-  } catch {
-    // Fallback to cache
-    const cache = await readCacheFile();
-    if (!cache) return [];
-    const userMap = new Map<number, string>(cache.users.map((u) => [u.id, u.name]));
-    for (const l of cache.leads) {
-      if (l.responsible_user_id && l.broker_name && !userMap.has(l.responsible_user_id)) {
-        userMap.set(l.responsible_user_id, l.broker_name);
-      }
-    }
-    const brokerIds = new Set<number>(cache.leads.map((l) => l.responsible_user_id));
-    return Array.from(brokerIds)
-      .filter((id) => userMap.has(id) && isAllowedBroker(id))
-      .map((id) => ({ id, name: userMap.get(id)! }))
-      .sort((a, b) => a.name.localeCompare(b.name));
-  }
+  return Array.from(brokerIds)
+    .filter((id) => userMap.has(id) && isAllowedBroker(id))
+    .map((id) => ({ id, name: userMap.get(id)! }))
+    .sort((a, b) => a.name.localeCompare(b.name));
 }
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
