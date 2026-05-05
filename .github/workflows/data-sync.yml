@@ -31,8 +31,19 @@ jobs:
       - name: Save BigQuery Key
         run: echo '${{ secrets.GOOGLE_AUTH_JSON }}' > secrets/crypto-world-epta-2db29829d55d.json
 
-      - name: Save AMO Tokens
-        run: echo '${{ secrets.AMO_TOKENS_JSON }}' > secrets/amo_tokens.json
+      - name: Bootstrap AMO tokens from Postgres
+        run: node scripts/ci/bootstrap_amo_tokens_from_db.mjs
+        env:
+          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NEON_DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_SSL_MODE: ${{ secrets.POSTGRES_SSL_MODE }}
+          AMO_TOKENS_JSON: ${{ secrets.AMO_TOKENS_JSON }}
 
       - name: Refresh AMO Token
         continue-on-error: true
@@ -41,12 +52,16 @@ jobs:
           AMO_DOMAIN: ${{ secrets.AMO_DOMAIN }}
           AMO_CLIENT_ID: ${{ secrets.AMO_CLIENT_ID }}
           AMO_CLIENT_SECRET: ${{ secrets.AMO_CLIENT_SECRET }}
-
-      - name: Update AMO_TOKENS_JSON secret with refreshed token
-        continue-on-error: true
-        run: gh secret set AMO_TOKENS_JSON < ./secrets/amo_tokens.json
-        env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
+          AMO_REDIRECT_URI: ${{ secrets.AMO_REDIRECT_URI }}
+          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NEON_DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_SSL_MODE: ${{ secrets.POSTGRES_SSL_MODE }}
 
       - name: Sync AMO channel leads raw
         continue-on-error: true
@@ -114,7 +129,7 @@ jobs:
           AMO_DOMAIN: ${{ secrets.AMO_DOMAIN }}
           AMO_CLIENT_ID: ${{ secrets.AMO_CLIENT_ID }}
           AMO_CLIENT_SECRET: ${{ secrets.AMO_CLIENT_SECRET }}
-          AMO_TOKENS_JSON: ${{ secrets.AMO_TOKENS_JSON }}
+          AMO_REDIRECT_URI: ${{ secrets.AMO_REDIRECT_URI }}
 
       - name: Sync milestones to BigQuery
         run: node scripts/sync/sync_milestones_bq.mjs

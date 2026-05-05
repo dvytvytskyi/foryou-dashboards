@@ -1,11 +1,13 @@
 import 'dotenv/config';
 import fs from 'fs';
+import path from 'path';
 import { Client } from 'pg';
 
 const PF_API_URL = 'https://atlas.propertyfinder.com/v1';
 const AMO_DOMAIN = 'reforyou.amocrm.ru';
+const AMO_PROVIDER = 'amo';
 const RE_PIPELINE_ID = 8696950;
-const TOKENS_PATH = 'secrets/amo_tokens.json';
+const TOKENS_PATH = path.resolve('./secrets/amo_tokens.json');
 const PF_TAG = 'property-finder';
 
 const AMO_PF_FIELD_LEAD_ID = Number(process.env.AMO_PF_FIELD_LEAD_ID || 1462131);
@@ -64,6 +66,37 @@ function getConnectionString() {
     throw new Error('Missing PostgreSQL env');
   }
   return `postgresql://${encodeURIComponent(user)}:${encodeURIComponent(password)}@${host}:${port}/${database}?sslmode=require`;
+}
+
+function parseJsonSafe(value) {
+  try {
+    return JSON.parse(value);
+  } catch {
+    return null;
+  }
+}
+
+function readTokensFromFileOrEnv() {
+  if (process.env.AMO_TOKENS_JSON) {
+    const parsed = parseJsonSafe(process.env.AMO_TOKENS_JSON);
+    if (parsed && typeof parsed === 'object') return parsed;
+  }
+
+  if (fs.existsSync(TOKENS_PATH)) {
+    const parsed = parseJsonSafe(fs.readFileSync(TOKENS_PATH, 'utf8'));
+    if (parsed && typeof parsed === 'object') return parsed;
+  }
+
+  throw new Error('No AMO tokens found in Postgres, AMO_TOKENS_JSON, or secrets/amo_tokens.json');
+}
+
+function persistTokensToFile(tokens) {
+  try {
+    fs.mkdirSync(path.dirname(TOKENS_PATH), { recursive: true });
+    fs.writeFileSync(TOKENS_PATH, JSON.stringify(tokens, null, 2));
+  } catch {
+    // File persistence is only a local/bootstrap fallback.
+  }
 }
 
 function normalizePhone(v) {
@@ -141,13 +174,76 @@ async function fetchPfLeads2026() {
   });
 }
 
-function loadAmoAccessToken() {
-  if (process.env.AMO_TOKENS_JSON) {
-    const parsed = JSON.parse(process.env.AMO_TOKENS_JSON);
-    if (parsed?.access_token) return parsed.access_token;
+async function readAmoTokens(client) {
+  const row = await client.query(
+    `SELECT tokens FROM integration_tokens WHERE provider = $1 LIMIT 1`,
+    [AMO_PROVIDER],
+  );
+
+  const dbTokens = row.rows[0]?.tokens;
+  if (dbTokens && typeof dbTokens === 'object' && dbTokens.access_token) {
+    return dbTokens;
   }
-  const raw = fs.readFileSync(TOKENS_PATH, 'utf8');
-  return JSON.parse(raw).access_token;
+
+  const fallback = readTokensFromFileOrEnv();
+  await client.query(
+    `
+      INSERT INTO integration_tokens(provider, tokens, updated_at)
+      VALUES ($1, $2::jsonb, NOW())
+      ON CONFLICT (provider)
+      DO UPDATE SET tokens = EXCLUDED.tokens, updated_at = NOW()
+    `,
+    [AMO_PROVIDER, JSON.stringify(fallback)],
+  );
+  return fallback;
+}
+
+async function writeAmoTokens(client, tokens) {
+  await client.query(
+    `
+      INSERT INTO integration_tokens(provider, tokens, updated_at)
+      VALUES ($1, $2::jsonb, NOW())
+      ON CONFLICT (provider)
+      DO UPDATE SET tokens = EXCLUDED.tokens, updated_at = NOW()
+    `,
+    [AMO_PROVIDER, JSON.stringify(tokens)],
+  );
+
+  persistTokensToFile(tokens);
+}
+
+async function refreshAmoTokens(tokens) {
+  const domain = (process.env.AMO_DOMAIN || AMO_DOMAIN).replace(/^https?:\/\//i, '').replace(/\/+$/g, '');
+  const clientId = process.env.AMO_CLIENT_ID;
+  const clientSecret = process.env.AMO_CLIENT_SECRET;
+  const redirectUri = process.env.AMO_REDIRECT_URI;
+
+  if (!clientId || !clientSecret || !redirectUri || !tokens?.refresh_token) {
+    throw new Error('Missing AMO refresh credentials or refresh_token');
+  }
+
+  const res = await fetchWithTimeout(`https://${domain}/oauth2/access_token`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      client_id: clientId,
+      client_secret: clientSecret,
+      grant_type: 'refresh_token',
+      refresh_token: tokens.refresh_token,
+      redirect_uri: redirectUri,
+    }),
+  });
+
+  const data = await res.json();
+  if (!res.ok || !data?.access_token) {
+    throw new Error(`AMO refresh failed: ${JSON.stringify(data)}`);
+  }
+
+  return {
+    ...tokens,
+    ...data,
+    server_time: Math.floor(Date.now() / 1000),
+  };
 }
 
 function getCustomFieldValue(lead, fieldId) {
@@ -175,16 +271,33 @@ function hasDirectPfSignal(lead) {
   );
 }
 
-async function amoFetch(url, token) {
-  const res = await fetchWithTimeout(url, { headers: { Authorization: `Bearer ${token}` } });
+async function amoFetch(client, pathnameOrUrl) {
+  const domain = (process.env.AMO_DOMAIN || AMO_DOMAIN).replace(/^https?:\/\//i, '').replace(/\/+$/g, '');
+  const url = pathnameOrUrl.startsWith('http') ? pathnameOrUrl : `https://${domain}${pathnameOrUrl}`;
+
+  let tokens = await readAmoTokens(client);
+
+  const call = (accessToken) =>
+    fetchWithTimeout(url, {
+      headers: { Authorization: `Bearer ${accessToken || ''}` },
+    });
+
+  let res = await call(tokens.access_token);
+  if (res.status === 401) {
+    tokens = await refreshAmoTokens(tokens);
+    await writeAmoTokens(client, tokens);
+    res = await call(tokens.access_token);
+  }
+
   if (!res.ok) {
     const text = await res.text();
     throw new Error(`AMO request failed ${res.status}: ${text.slice(0, 200)}`);
   }
+
   return res.json();
 }
 
-async function fetchAmoLeadsInPipeline(token) {
+async function fetchAmoLeadsInPipeline(client) {
   const out = [];
   let page = 1;
   const from = tsStart(START);
@@ -193,7 +306,7 @@ async function fetchAmoLeadsInPipeline(token) {
   while (true) {
     if (page % 10 === 0) process.stdout.write(`AMO leads page ${page} (loaded ${out.length})      \r`);
     const url = `https://${AMO_DOMAIN}/api/v4/leads?filter[pipeline_id]=${RE_PIPELINE_ID}&filter[created_at][from]=${from}&filter[created_at][to]=${to}&limit=250&page=${page}&with=contacts,status_history`;
-    const data = await amoFetch(url, token);
+    const data = await amoFetch(client, url);
     const rows = data?._embedded?.leads || [];
     if (!rows.length) break;
     out.push(...rows);
@@ -204,7 +317,7 @@ async function fetchAmoLeadsInPipeline(token) {
   return out;
 }
 
-async function fetchAmoContactsByIds(ids, token) {
+async function fetchAmoContactsByIds(client, ids) {
   const result = new Map();
   const chunkSize = 80;
 
@@ -217,7 +330,7 @@ async function fetchAmoContactsByIds(ids, token) {
     params.set('limit', '250');
     for (const id of chunk) params.append('filter[id][]', String(id));
 
-    const data = await amoFetch(`https://${AMO_DOMAIN}/api/v4/contacts?${params.toString()}`, token);
+    const data = await amoFetch(client, `https://${AMO_DOMAIN}/api/v4/contacts?${params.toString()}`);
     const contacts = data?._embedded?.contacts || [];
 
     for (const c of contacts) {
@@ -472,6 +585,14 @@ async function main() {
 
   try {
     await client.query(`
+      CREATE TABLE IF NOT EXISTS integration_tokens (
+        provider TEXT PRIMARY KEY,
+        tokens JSONB NOT NULL,
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      )
+    `);
+
+    await client.query(`
       CREATE TABLE IF NOT EXISTS pf_amo_match_stats (
         id BIGSERIAL PRIMARY KEY,
         period_start DATE NOT NULL,
@@ -545,9 +666,8 @@ async function main() {
       }
     }
 
-    const amoToken = loadAmoAccessToken();
     console.log('Loading AMO leads...');
-    const amoLeads = await fetchAmoLeadsInPipeline(amoToken);
+    const amoLeads = await fetchAmoLeadsInPipeline(client);
     console.log(`\nAMO leads loaded: ${amoLeads.length}`);
 
     for (const lead of amoLeads) {

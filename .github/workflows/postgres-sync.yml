@@ -22,6 +22,20 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Bootstrap AMO tokens from Postgres
+        run: node scripts/ci/bootstrap_amo_tokens_from_db.mjs
+        env:
+          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NEON_DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_SSL_MODE: ${{ secrets.POSTGRES_SSL_MODE }}
+          AMO_TOKENS_JSON: ${{ secrets.AMO_TOKENS_JSON }}
+
       - name: Init PostgreSQL schema
         run: npm run db:init
         env:
@@ -61,7 +75,6 @@ jobs:
           AMO_CLIENT_ID: ${{ secrets.AMO_CLIENT_ID }}
           AMO_CLIENT_SECRET: ${{ secrets.AMO_CLIENT_SECRET }}
           AMO_REDIRECT_URI: ${{ secrets.AMO_REDIRECT_URI }}
-          AMO_TOKENS_JSON: ${{ secrets.AMO_TOKENS_JSON }}
 
       - name: Sync Property Finder to PostgreSQL
         run: npm run sync:pf:postgres
@@ -88,7 +101,10 @@ jobs:
           POSTGRES_SSL_MODE: ${{ secrets.POSTGRES_SSL_MODE }}
           PF_API_KEY: ${{ secrets.PF_API_KEY }}
           PF_API_SECRET: ${{ secrets.PF_API_SECRET }}
-          AMO_TOKENS_JSON: ${{ secrets.AMO_TOKENS_JSON }}
+          AMO_DOMAIN: ${{ secrets.AMO_DOMAIN }}
+          AMO_CLIENT_ID: ${{ secrets.AMO_CLIENT_ID }}
+          AMO_CLIENT_SECRET: ${{ secrets.AMO_CLIENT_SECRET }}
+          AMO_REDIRECT_URI: ${{ secrets.AMO_REDIRECT_URI }}
 
       - name: Sync PF Primary Plus project match stats
         run: npm run sync:pf:project:match
@@ -103,7 +119,6 @@ jobs:
           PF_API_KEY: ${{ secrets.PF_API_KEY }}
           PF_API_SECRET: ${{ secrets.PF_API_SECRET }}
           AMO_DOMAIN: ${{ secrets.AMO_DOMAIN }}
-          AMO_TOKENS_JSON: ${{ secrets.AMO_TOKENS_JSON }}
 
       - name: Sync Sales Excel to PostgreSQL
         run: npm run sync:sales:postgres

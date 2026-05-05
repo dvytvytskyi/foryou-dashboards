@@ -29,8 +29,19 @@ jobs:
       - name: Create secrets directory
         run: mkdir -p secrets
 
-      - name: Save AMO Tokens
-        run: echo '${{ secrets.AMO_TOKENS_JSON }}' > secrets/amo_tokens.json
+      - name: Bootstrap AMO tokens from Postgres
+        run: node scripts/ci/bootstrap_amo_tokens_from_db.mjs
+        env:
+          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+          DATABASE_URL: ${{ secrets.POSTGRES_URL }}
+          NEON_DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_SSL_MODE: ${{ secrets.POSTGRES_SSL_MODE }}
+          AMO_TOKENS_JSON: ${{ secrets.AMO_TOKENS_JSON }}
 
       - name: Refresh AMO Token
         id: refresh
@@ -44,12 +55,6 @@ jobs:
           POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
           DATABASE_URL: ${{ secrets.POSTGRES_URL }}
           NEON_DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
-
-      - name: Update AMO_TOKENS_JSON secret
-        if: steps.refresh.outcome == 'success'
-        run: gh secret set AMO_TOKENS_JSON < ./secrets/amo_tokens.json
-        env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
 
       - name: Alert on failure
         if: steps.refresh.outcome == 'failure'
