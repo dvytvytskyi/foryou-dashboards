@@ -752,7 +752,7 @@ export async function GET(request: NextRequest) {
       },
       { 
         label: 'ВЫРУЧКА (ПЛАН / ФАКТ)', 
-        actual: effectiveTotals.revenueWon,
+        actual: totals.revenueWon,
         plan: totalPlanRevenue, 
         fulfillment: fulfillmentRevenue,
         suffix: ' AED' 
