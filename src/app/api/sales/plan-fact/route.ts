@@ -354,6 +354,9 @@ async function writeRawCache(data: RawData) {
 }
 
 async function getOrFetchRawData(): Promise<RawData> {
+  const freshCache = await readRawCache();
+  if (freshCache) return freshCache;
+
   // Deduplicate concurrent requests — only one CRM fetch runs at a time
   if (_rawDataFetchPromise) return _rawDataFetchPromise;
 
@@ -382,6 +385,11 @@ async function getOrFetchRawData(): Promise<RawData> {
       console.log(`✓ Raw CRM data cached: ${result.leads.length} leads, ${result.tasks.length} tasks`);
       return result;
     } catch (error) {
+      const staleCache = await readRawCache({ allowStale: true });
+      if (staleCache) {
+        console.warn('Using stale raw CRM cache after fetch failure');
+        return staleCache;
+      }
       throw error;
     } finally {
       _rawDataFetchPromise = null;
