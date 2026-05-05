@@ -2,6 +2,7 @@ import { Client } from 'pg';
 import { createReadStream } from 'fs';
 import { createInterface } from 'readline';
 import path from 'path';
+import { existsSync } from 'fs';
 
 function getConnectionString() {
   if (process.env.POSTGRES_URL) return process.env.POSTGRES_URL;
@@ -93,6 +94,10 @@ function parseCsvLine(line) {
 
 async function readRowsFromCsv(fileName, mapping) {
   const filePath = path.resolve(process.cwd(), fileName);
+  if (!existsSync(filePath)) {
+    console.warn(`WARN: CSV file not found, skipping: ${fileName}`);
+    return [];
+  }
   const skipRows = mapping.skipRows || 1; // skip header rows (1-based: skip first N rows)
   const rows = [];
   let lineNumber = 0;
@@ -161,22 +166,37 @@ async function main() {
 
   try {
     const rows = [];
+    const csvImports = [
+      {
+        fileName: 'offplan.csv',
+        mapping: { dealType: 'Offplan', dateCol: 2, brokerCol: 5, partnerCol: 5, gmvCol: 7, grossCol: 10, netCol: 17, sourceCol: 3 },
+      },
+      {
+        fileName: 'secondary.csv',
+        mapping: { dealType: 'Secondary', dateCol: 1, brokerCol: 3, partnerCol: 4, gmvCol: 6, grossCol: 8, netCol: 15, sourceCol: 16 },
+      },
+      {
+        fileName: 'rental.csv',
+        mapping: { dealType: 'Rental', dateCol: 1, brokerCol: 3, partnerCol: 4, gmvCol: 6, grossCol: 8, netCol: 15, sourceCol: 16, skipRows: 2 },
+      },
+      {
+        fileName: 'support.csv',
+        mapping: { dealType: 'Support', dateCol: 1, brokerCol: 6, partnerCols: [4, 5], gmvCol: 7, grossCol: 9, netCol: 14, fixedSource: 'Support' },
+      },
+    ];
 
-    rows.push(...(await readRowsFromCsv('offplan.csv', {
-        dealType: 'Offplan', dateCol: 2, brokerCol: 5, partnerCol: 5, gmvCol: 7, grossCol: 10, netCol: 17, sourceCol: 3,
-    })));
+    for (const csv of csvImports) {
+      rows.push(...(await readRowsFromCsv(csv.fileName, csv.mapping)));
+    }
 
-    rows.push(...(await readRowsFromCsv('secondary.csv', {
-      dealType: 'Secondary', dateCol: 1, brokerCol: 3, partnerCol: 4, gmvCol: 6, grossCol: 8, netCol: 15, sourceCol: 16,
-    })));
-
-    rows.push(...(await readRowsFromCsv('rental.csv', {
-      dealType: 'Rental', dateCol: 1, brokerCol: 3, partnerCol: 4, gmvCol: 6, grossCol: 8, netCol: 15, sourceCol: 16, skipRows: 2,
-    })));
-
-    rows.push(...(await readRowsFromCsv('support.csv', {
-      dealType: 'Support', dateCol: 1, brokerCol: 6, partnerCols: [4, 5], gmvCol: 7, grossCol: 9, netCol: 14, fixedSource: 'Support',
-    })));
+    if (rows.length === 0) {
+      await client.query(
+        `UPDATE sync_runs SET status='success', ended_at=NOW(), rows_processed=0, meta = COALESCE(meta,'{}'::jsonb) || $1::jsonb WHERE id=$2`,
+        [JSON.stringify({ importedRows: 0, skipped: true, reason: 'No CSV files found' }), runId],
+      );
+      console.log('SUCCESS: sync_sales_excel_to_postgres. rows=0 (skipped: no CSV files found)');
+      return;
+    }
 
     await client.query('BEGIN');
     await client.query(`DELETE FROM sales_deals_raw`);

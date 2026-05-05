@@ -121,6 +121,7 @@ jobs:
           AMO_DOMAIN: ${{ secrets.AMO_DOMAIN }}
 
       - name: Sync Sales Excel to PostgreSQL
+        continue-on-error: true
         run: npm run sync:sales:postgres
         env:
           POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
