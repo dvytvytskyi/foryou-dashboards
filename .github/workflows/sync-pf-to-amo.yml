@@ -2,7 +2,7 @@ name: Sync PF → AMO
 
 on:
   schedule:
-    - cron: '*/30 * * * *' # Every 30 minutes
+    - cron: '*/5 * * * *' # Every 5 minutes (GitHub Actions minimum interval)
   workflow_dispatch:
     inputs:
       lookback_hours:
