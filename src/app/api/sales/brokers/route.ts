@@ -29,6 +29,7 @@ type CacheLead = {
   // Pre-classified fields (present when loaded from BQ-derived cache)
   source_name?: string;
   broker_name?: string;
+  current_status_entered_at?: number;
 };
 
 type CacheTask = {
@@ -112,6 +113,7 @@ type LeadRecord = {
   pipeline_id: number;
   price: number;
   created_at_unix: number;
+  current_status_entered_at_unix: number;
   is_ql: boolean;
   is_showing: boolean;
   is_won: boolean;
@@ -305,6 +307,39 @@ async function fetchAllOpenTasksForBroker(brokerId: number): Promise<CacheTask[]
   return all;
 }
 
+async function fetchCurrentStatusEnteredAt(leads: CacheLead[]): Promise<Map<number, number>> {
+  const result = new Map<number, number>();
+  const activeLeads = leads.filter((lead) => !isWonStatus(lead.status_id) && lead.status_id !== LOST_STATUS_ID);
+  const batchSize = 15;
+
+  for (let index = 0; index < activeLeads.length; index += batchSize) {
+    const batch = activeLeads.slice(index, index + batchSize);
+    await Promise.all(batch.map(async (lead) => {
+      try {
+        const data = await amoFetchJson<{ _embedded?: { events?: Array<{
+          created_at?: number;
+          value_after?: Array<{ lead_status?: { id?: number; pipeline_id?: number } }>;
+        }> } }>(
+          `/api/v4/events?filter[type]=lead_status_changed&filter[entity]=lead&filter[entity_id]=${lead.id}&limit=250`,
+        );
+        const events = data?._embedded?.events || [];
+        let latest = 0;
+        for (const event of events) {
+          const leadStatus = event.value_after?.[0]?.lead_status;
+          if (Number(leadStatus?.id) !== lead.status_id) continue;
+          if (leadStatus?.pipeline_id && Number(leadStatus.pipeline_id) !== lead.pipeline_id) continue;
+          latest = Math.max(latest, Number(event.created_at || 0));
+        }
+        if (latest > 0) result.set(lead.id, latest);
+      } catch {
+        // Fall back to lead.created_at when events are unavailable.
+      }
+    }));
+  }
+
+  return result;
+}
+
 function isQlActualStatus(lead: { status_id: number; pipeline_id: number }): boolean {
   if (lead.pipeline_id === RE_PIPELINE_ID)
     return RE_QL_ACTUAL_STATUSES.has(lead.status_id);
@@ -460,6 +495,7 @@ async function loadLeadsAndTasks(brokerId: number): Promise<{ leads: LeadRecord[
 
   const userMap = new Map<number, string>((usersResponse?._embedded?.users || []).map((u) => [u.id, u.name]));
   const rawLeads = [...reLeads, ...klykovLeads].filter((l) => l.responsible_user_id === brokerId);
+  const currentStatusEnteredAt = await fetchCurrentStatusEnteredAt(rawLeads);
 
   const leads: LeadRecord[] = rawLeads.map((l) => {
     const statusId = l.status_id;
@@ -474,6 +510,7 @@ async function loadLeadsAndTasks(brokerId: number): Promise<{ leads: LeadRecord[
       pipeline_id: pipelineId,
       price: l.price || 0,
       created_at_unix: l.created_at,
+      current_status_entered_at_unix: currentStatusEnteredAt.get(l.id) || l.created_at,
       is_ql: isQlStatus({ status_id: statusId, pipeline_id: pipelineId }),
       is_showing: isShowingStatus({ status_id: statusId, pipeline_id: pipelineId }),
       is_won: isWonStatus(statusId),
@@ -496,33 +533,24 @@ async function getBrokerMetrics(
   endDate?: string,
 ): Promise<BrokerMetrics> {
   const { leads, rawTasks } = await loadLeadsAndTasks(brokerId);
+  const explicitRange = startDate && endDate ? toUnixRangeForExplicitDates(startDate, endDate) : null;
+  const currentRange = explicitRange || toUnixRangeForMonth(month, year);
+  const { prevStartUnix: previousStartUnix, prevEndUnix: previousEndUnix } = getPreviousAnalogRange(
+    currentRange.startUnix,
+    currentRange.endUnix,
+  );
 
   // Match plan-fact overdue rule exactly:
   // count overdue tasks assigned to broker for leads from included pipelines,
   // where lead is in QL Actual stage (global lead set, not only broker-owned leads).
-  const cacheForOverdue = await readCacheFile();
-  const includedLeadIdsGlobal = new Set<number>();
-  const qlActualLeadIdsGlobal = new Set<number>();
-
-  if (cacheForOverdue) {
-    for (const l of cacheForOverdue.leads) {
-      if (!INCLUDED_PIPELINES.has(l.pipeline_id)) continue;
-      includedLeadIdsGlobal.add(l.id);
-      if (isQlActualStatus({ status_id: l.status_id, pipeline_id: l.pipeline_id })) {
-        qlActualLeadIdsGlobal.add(l.id);
-      }
-    }
-  }
-
-  // Fallback when cache is unavailable
-  if (includedLeadIdsGlobal.size === 0) {
-    for (const l of leads) {
-      includedLeadIdsGlobal.add(l.lead_id);
-      if (isQlActualStatus({ status_id: l.status_id, pipeline_id: l.pipeline_id })) {
-        qlActualLeadIdsGlobal.add(l.lead_id);
-      }
-    }
-  }
+  const includedLeadIdsGlobal = new Set<number>(leads.map((l) => l.lead_id));
+  const qlActualLeadIdsGlobal = new Set<number>(
+    leads
+      .filter((l) => isActiveLead(l))
+      .filter((l) => isQlActualStatus({ status_id: l.status_id, pipeline_id: l.pipeline_id }))
+      .filter((l) => l.current_status_entered_at_unix >= currentRange.startUnix && l.current_status_entered_at_unix <= currentRange.endUnix)
+      .map((l) => l.lead_id),
+  );
 
   // Build overdue tasks (only for QL Actual leads)
   const now = Math.floor(Date.now() / 1000);
@@ -561,8 +589,10 @@ async function getBrokerMetrics(
     const leadsInSource = leads.filter((l) => l.source_name === source);
     if (!leadsInSource.length) continue;
 
-    const activeLeadsInSource = leadsInSource.filter((l) => isActiveLead(l));
-    const activeQl = activeLeadsInSource.filter((l) => l.is_ql).length;
+    const activeLeadsInSource = leadsInSource.filter(
+      (l) => isActiveLead(l) && l.current_status_entered_at_unix >= currentRange.startUnix && l.current_status_entered_at_unix <= currentRange.endUnix,
+    );
+    const activeQl = activeLeadsInSource.filter((l) => isQlActualStatus({ status_id: l.status_id, pipeline_id: l.pipeline_id })).length;
     const activeShowing = activeLeadsInSource.filter((l) => l.is_showing).length;
 
     bySourceMap[source] = {
@@ -581,13 +611,6 @@ async function getBrokerMetrics(
       overdue_tasks: overdueTasksBySource.get(source) || 0,
     };
   }
-
-  const explicitRange = startDate && endDate ? toUnixRangeForExplicitDates(startDate, endDate) : null;
-  const currentRange = explicitRange || toUnixRangeForMonth(month, year);
-  const { prevStartUnix: previousStartUnix, prevEndUnix: previousEndUnix } = getPreviousAnalogRange(
-    currentRange.startUnix,
-    currentRange.endUnix,
-  );
 
   const currentPeriodLeads = leads.filter(
     (l) => l.created_at_unix >= currentRange.startUnix && l.created_at_unix <= currentRange.endUnix,

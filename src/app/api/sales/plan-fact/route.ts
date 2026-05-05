@@ -56,6 +56,7 @@ type RawLead = AmoLead & {
   source_name?: SourceName;
   broker_name?: string;
   had_qual?: boolean;
+  current_status_entered_at?: number;
 };
 
 const CACHE_DIR = path.resolve(process.cwd(), 'data/cache/plan-fact');
@@ -364,8 +365,13 @@ async function getOrFetchRawData(): Promise<RawData> {
         fetchAllLeadsByPipeline(PARTNERS_PIPELINE_ID),
         fetchAllOpenTasks(),
       ]);
+      const allLeads = [...reLeads, ...klykovLeads, ...partnersLeads].filter((l) => INCLUDED_PIPELINES.has(l.pipeline_id));
+      const currentStatusEnteredAt = await fetchCurrentStatusEnteredAt(allLeads);
       const result: RawData = {
-        leads: [...reLeads, ...klykovLeads, ...partnersLeads].filter((l) => INCLUDED_PIPELINES.has(l.pipeline_id)),
+        leads: allLeads.map((lead) => ({
+          ...lead,
+          current_status_entered_at: currentStatusEnteredAt.get(lead.id) || lead.created_at,
+        })),
         tasks: openTasks,
         users: usersResponse?._embedded?.users || [],
         createdAt: Date.now(),
@@ -447,6 +453,39 @@ async function fetchAllOpenTasks(): Promise<AmoTask[]> {
   return all;
 }
 
+async function fetchCurrentStatusEnteredAt(leads: AmoLead[]): Promise<Map<number, number>> {
+  const result = new Map<number, number>();
+  const activeLeads = leads.filter((lead) => !isWonStatus(lead.status_id) && lead.status_id !== LOST_STATUS_ID);
+  const batchSize = 15;
+
+  for (let index = 0; index < activeLeads.length; index += batchSize) {
+    const batch = activeLeads.slice(index, index + batchSize);
+    await Promise.all(batch.map(async (lead) => {
+      try {
+        const data = await amoFetchJson<{ _embedded?: { events?: Array<{
+          created_at?: number;
+          value_after?: Array<{ lead_status?: { id?: number; pipeline_id?: number } }>;
+        }> } }>(
+          `/api/v4/events?filter[type]=lead_status_changed&filter[entity]=lead&filter[entity_id]=${lead.id}&limit=250`,
+        );
+        const events = data?._embedded?.events || [];
+        let latest = 0;
+        for (const event of events) {
+          const leadStatus = event.value_after?.[0]?.lead_status;
+          if (Number(leadStatus?.id) !== lead.status_id) continue;
+          if (leadStatus?.pipeline_id && Number(leadStatus.pipeline_id) !== lead.pipeline_id) continue;
+          latest = Math.max(latest, Number(event.created_at || 0));
+        }
+        if (latest > 0) result.set(lead.id, latest);
+      } catch {
+        // Fall back to lead.created_at when events are unavailable.
+      }
+    }));
+  }
+
+  return result;
+}
+
 type MetricBucket = {
   received: number;
   prevReceived: number;
@@ -520,6 +559,7 @@ function applyLeadToBucket(bucket: MetricBucket, lead: AmoLead, leadDate: Date, 
   // For historical columns we count current QL/showing stages + won.
   const qlEverLike = qlNow || won;
   const showingEverLike = showingNow || won;
+  const currentStatusEnteredDate = toDateOnly((lead as RawLead).current_status_entered_at || lead.created_at);
 
   bucket.allTotal += 1;
   if (lost) bucket.allLost += 1;
@@ -529,7 +569,7 @@ function applyLeadToBucket(bucket: MetricBucket, lead: AmoLead, leadDate: Date, 
     bucket.allDeals += 1;
   }
 
-  if (active) {
+  if (active && inRange(currentStatusEnteredDate, start, end)) {
     bucket.activeTotal += 1;
     if (qlActualNow) bucket.activeQl += 1;
     if (showingNow) bucket.activeShowings += 1;
@@ -582,7 +622,13 @@ export async function GET(request: NextRequest) {
     const { leads, tasks: openTasks, users } = rawData;
     const userMap = new Map<number, string>(users.map((u) => [u.id, u.name]));
     const includedLeadIds = new Set<number>(leads.map((l) => l.id));
-    const qlActualLeadIds = new Set<number>(leads.filter((l) => isQlActualStatus(l)).map((l) => l.id));
+    const qlActualLeadIds = new Set<number>(
+      leads
+        .filter((lead) => !isWonStatus(lead.status_id) && lead.status_id !== LOST_STATUS_ID)
+        .filter((lead) => isQlActualStatus(lead))
+        .filter((lead) => inRange(toDateOnly((lead as RawLead).current_status_entered_at || lead.created_at), startDate, endDate))
+        .map((lead) => lead.id),
+    );
 
     // OP brokers: RE + Klykov pipelines only
     const opBrokerMap = new Map<number, BrokerAggregate>();
