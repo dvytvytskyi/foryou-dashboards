@@ -15,6 +15,7 @@ type AmoLead = {
   name: string;
   price: number;
   created_at: number;
+  updated_at?: number;
   status_id: number;
   pipeline_id: number;
   responsible_user_id: number;
@@ -366,11 +367,12 @@ async function getOrFetchRawData(): Promise<RawData> {
         fetchAllOpenTasks(),
       ]);
       const allLeads = [...reLeads, ...klykovLeads, ...partnersLeads].filter((l) => INCLUDED_PIPELINES.has(l.pipeline_id));
-      const currentStatusEnteredAt = await fetchCurrentStatusEnteredAt(allLeads);
       const result: RawData = {
         leads: allLeads.map((lead) => ({
           ...lead,
-          current_status_entered_at: currentStatusEnteredAt.get(lead.id) || lead.created_at,
+          // Avoid expensive per-lead event history fetches on every cache refresh.
+          // updated_at is a fast CRM-side proxy for when the lead last changed stage.
+          current_status_entered_at: lead.updated_at || lead.created_at,
         })),
         tasks: openTasks,
         users: usersResponse?._embedded?.users || [],
@@ -451,39 +453,6 @@ async function fetchAllOpenTasks(): Promise<AmoTask[]> {
   }
 
   return all;
-}
-
-async function fetchCurrentStatusEnteredAt(leads: AmoLead[]): Promise<Map<number, number>> {
-  const result = new Map<number, number>();
-  const activeLeads = leads.filter((lead) => !isWonStatus(lead.status_id) && lead.status_id !== LOST_STATUS_ID);
-  const batchSize = 15;
-
-  for (let index = 0; index < activeLeads.length; index += batchSize) {
-    const batch = activeLeads.slice(index, index + batchSize);
-    await Promise.all(batch.map(async (lead) => {
-      try {
-        const data = await amoFetchJson<{ _embedded?: { events?: Array<{
-          created_at?: number;
-          value_after?: Array<{ lead_status?: { id?: number; pipeline_id?: number } }>;
-        }> } }>(
-          `/api/v4/events?filter[type]=lead_status_changed&filter[entity]=lead&filter[entity_id]=${lead.id}&limit=250`,
-        );
-        const events = data?._embedded?.events || [];
-        let latest = 0;
-        for (const event of events) {
-          const leadStatus = event.value_after?.[0]?.lead_status;
-          if (Number(leadStatus?.id) !== lead.status_id) continue;
-          if (leadStatus?.pipeline_id && Number(leadStatus.pipeline_id) !== lead.pipeline_id) continue;
-          latest = Math.max(latest, Number(event.created_at || 0));
-        }
-        if (latest > 0) result.set(lead.id, latest);
-      } catch {
-        // Fall back to lead.created_at when events are unavailable.
-      }
-    }));
-  }
-
-  return result;
 }
 
 type MetricBucket = {
