@@ -150,7 +150,14 @@ async function createUnifiedMarketingDrilldownDaily() {
                     ELSE 'ETC'
                 END AS channel,
                 a.lead_id,
-                COALESCE(NULLIF(a.source_label, ''), NULLIF(a.tags_text, ''), CONCAT('pipeline_', CAST(a.pipeline_id AS STRING))) AS level_1,
+                CASE
+                    -- For Klykov leads: hide RED source/tag labels (e.g. RED_ENG) from level_1 drilldown
+                    WHEN fp.original_pipeline_id = 10776450
+                         AND (REGEXP_CONTAINS(LOWER(COALESCE(a.source_label, '')), r'${RED_STRICT_REGEX}')
+                              OR REGEXP_CONTAINS(LOWER(COALESCE(a.tags_text, '')), r'${RED_STRICT_REGEX}'))
+                         THEN 'Klykov Direct'
+                    ELSE COALESCE(NULLIF(a.source_label, ''), NULLIF(a.tags_text, ''), CONCAT('pipeline_', CAST(a.pipeline_id AS STRING)))
+                END AS level_1,
                 COALESCE(a.utm_campaign, a.utm_medium, 'Unknown campaign') AS level_2,
                 COALESCE(a.utm_content, 'Unknown creative') AS level_3,
                 a.status_id,
