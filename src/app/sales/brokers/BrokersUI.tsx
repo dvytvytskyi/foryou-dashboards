@@ -357,7 +357,7 @@ export default function BrokersUI({ selectedBroker, startDate, endDate }: Broker
                 </tr>
                 <tr>
                   <SortTh col="active_total_leads" sort={sortWork} setSort={setSortWork}>Total leads</SortTh>
-                  <SortTh col="active_ql_leads" sort={sortWork} setSort={setSortWork}>QL Leads</SortTh>
+                  <SortTh col="active_ql_leads" sort={sortWork} setSort={setSortWork}>QL Actual</SortTh>
                   <SortTh col="active_showing_leads" sort={sortWork} setSort={setSortWork}>Показ+</SortTh>
                   <SortTh col="active_reanimation_leads" sort={sortWork} setSort={setSortWork}>Реанимация</SortTh>
                   <th>Просроченых задач</th>
@@ -430,7 +430,6 @@ export default function BrokersUI({ selectedBroker, startDate, endDate }: Broker
                 <tr>
                   <th className={styles.stickyCell} style={{ minWidth: '180px' }}>ФИО брокера</th>
                   <SortTh col="total_leads" sort={sortLifetime} setSort={setSortLifetime}>Total leads</SortTh>
-                  <th>Закрыто и не реализовано</th>
                   <SortTh col="ql_leads" sort={sortLifetime} setSort={setSortLifetime}>QL Leads</SortTh>
                   <th>CR Lead - QL</th>
                   <SortTh col="showing_leads" sort={sortLifetime} setSort={setSortLifetime}>Показ+</SortTh>
@@ -447,7 +446,6 @@ export default function BrokersUI({ selectedBroker, startDate, endDate }: Broker
                     </div>
                   </td>
                   <td>{metrics.totals.leads}</td>
-                  <td>{metrics.totals.lost_leads}</td>
                   <td>{metrics.totals.ql_leads}</td>
                   <td>{metrics.totals.leads > 0 ? ((metrics.totals.ql_leads / metrics.totals.leads) * 100).toFixed(2) : 0}%</td>
                   <td>{metrics.totals.showing_leads}</td>
@@ -468,7 +466,6 @@ export default function BrokersUI({ selectedBroker, startDate, endDate }: Broker
                             </div>
                           </td>
                           <td>{data.total_leads}</td>
-                          <td>-</td>
                           <td>{data.ql_leads}</td>
                           <td>{data.cr_lead_to_ql.toFixed(2)}%</td>
                           <td>{data.showing_leads}</td>

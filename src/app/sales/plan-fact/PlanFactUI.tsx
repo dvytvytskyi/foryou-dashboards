@@ -227,7 +227,9 @@ function BrokerTable({
   sort: SortState;
   setSort: (s: SortState) => void;
 }) {
-  const sortedRows = sortRows(rows, sort, getSortValue);
+  // When any broker row is expanded, don't re-order broker rows — only sort subrows
+  const anyExpanded = Object.values(expanded).some(Boolean);
+  const sortedRows = anyExpanded ? rows : sortRows(rows, sort, getSortValue);
 
   // Build source-first aggregation for "Источники" sub-table
   const sourceAgg = useMemo<SourceAggregate[]>(() => {
@@ -289,7 +291,7 @@ function BrokerTable({
                   </th>
                   <th colSpan={8} style={{ textAlign: 'left', borderBottom: '1px solid var(--line)', background: 'var(--bg-0)', padding: '12px' }}>&nbsp;</th>
                   <th colSpan={6} className={styles.group2Cell} style={{ textAlign: 'left', borderBottom: '1px solid var(--line)', color: 'var(--white-soft)', padding: '12px' }}>ЧТО СЕЙЧАС В РАБОТЕ</th>
-                  <th colSpan={7} className={styles.group3Cell} style={{ textAlign: 'left', borderBottom: '1px solid var(--line)', color: 'var(--white-soft)', padding: '12px' }}>В ЦЕЛОМ ЗА ВЕСЬ СРОК РАБОТЫ</th>
+                  <th colSpan={6} className={styles.group3Cell} style={{ textAlign: 'left', borderBottom: '1px solid var(--line)', color: 'var(--white-soft)', padding: '12px' }}>В ЦЕЛОМ ЗА ВЕСЬ СРОК РАБОТЫ</th>
                 </tr>
                 <tr>
                   <SortTh col="received" sort={sort} setSort={setSort} style={thStyle('received', 'var(--panel-2)')}>Всего получил</SortTh>
@@ -302,14 +304,13 @@ function BrokerTable({
                   <SortTh col="deals" sort={sort} setSort={setSort} style={thStyle('deals', 'var(--panel-2)')}>Сделка</SortTh>
 
                   <SortTh col="activeTotal" sort={sort} setSort={setSort} style={thStyle('activeTotal', 'rgba(128,128,128,0.08)')}>Total leads</SortTh>
-                  <SortTh col="activeQl" sort={sort} setSort={setSort} style={thStyle('activeQl', 'rgba(128,128,128,0.08)')}>QL Leads</SortTh>
+                  <SortTh col="activeQl" sort={sort} setSort={setSort} style={thStyle('activeQl', 'rgba(128,128,128,0.08)')}>QL Actual</SortTh>
                   <SortTh col="activeShowings" sort={sort} setSort={setSort} style={thStyle('activeShowings', 'rgba(128,128,128,0.08)')}>Показ+</SortTh>
                   <SortTh col="activeReanimation" sort={sort} setSort={setSort} style={thStyle('activeReanimation', 'rgba(128,128,128,0.08)')}>Реанимация</SortTh>
                   <SortTh col="overdue" sort={sort} setSort={setSort} style={{ minWidth: '150px', background: 'rgba(128,128,128,0.08)' }}>Просроченых задач</SortTh>
                   <SortTh col="missed" sort={sort} setSort={setSort} style={thStyle('missed', 'rgba(128,128,128,0.08)')}>Упущено</SortTh>
 
                   <SortTh col="allTotal" sort={sort} setSort={setSort} style={thStyle('allTotal', 'rgba(128,128,128,0.15)')}>Total leads</SortTh>
-                  <SortTh col="allLost" sort={sort} setSort={setSort} style={{ minWidth: '180px', background: 'rgba(128,128,128,0.15)' }}>Закрыто и не реализовано</SortTh>
                   <SortTh col="allQl" sort={sort} setSort={setSort} style={thStyle('allQl', 'rgba(128,128,128,0.15)')}>QL Leads</SortTh>
                   <SortTh col="allCrQl" sort={sort} setSort={setSort} style={{ minWidth: '120px', background: 'rgba(128,128,128,0.15)' }}>CR Lead - QL</SortTh>
                   <SortTh col="allShowings" sort={sort} setSort={setSort} style={thStyle('allShowings', 'rgba(128,128,128,0.15)')}>Показ+</SortTh>
@@ -321,7 +322,7 @@ function BrokerTable({
               <tbody>
                 {sortedRows.length === 0 ? (
                   <tr>
-                    <td className={styles.stickyCell} colSpan={22} style={{ textAlign: 'center', padding: '24px' }}>
+                    <td className={styles.stickyCell} colSpan={21} style={{ textAlign: 'center', padding: '24px' }}>
                       Нет данных за выбранный период.
                     </td>
                   </tr>
@@ -355,7 +356,6 @@ function BrokerTable({
                           <td className={styles.group2Cell}>{b.missed}</td>
 
                           <td className={styles.group3Cell}>{b.allTotal}</td>
-                          <td className={styles.group3Cell}>{b.allLost}</td>
                           <td className={styles.group3Cell} style={{ color: 'var(--white-soft)', fontWeight: 600 }}>{b.allQl}</td>
                           <td className={styles.group3Cell}>{formatPercent(calcRate(b.allQl, b.allTotal))}</td>
                           <td className={styles.group3Cell}>{b.allShowings}</td>
@@ -385,7 +385,6 @@ function BrokerTable({
                             <td className={styles.group2Cell}>0</td>
                             <td className={styles.group2Cell}>{s.missed}</td>
                             <td className={styles.group3Cell}>{s.allTotal}</td>
-                            <td className={styles.group3Cell}>{s.allLost}</td>
                             <td className={styles.group3Cell}>{s.allQl}</td>
                             <td className={styles.group3Cell}>{formatPercent(calcRate(s.allQl, s.allTotal))}</td>
                             <td className={styles.group3Cell}>{s.allShowings}</td>
@@ -425,7 +424,7 @@ function BrokerTable({
                   </th>
                   <th colSpan={8} style={{ textAlign: 'left', borderBottom: '1px solid var(--line)', background: 'var(--bg-0)', padding: '12px' }}>&nbsp;</th>
                   <th colSpan={6} className={styles.group2Cell} style={{ textAlign: 'left', borderBottom: '1px solid var(--line)', color: 'var(--white-soft)', padding: '12px' }}>ЧТО СЕЙЧАС В РАБОТЕ</th>
-                  <th colSpan={7} className={styles.group3Cell} style={{ textAlign: 'left', borderBottom: '1px solid var(--line)', color: 'var(--white-soft)', padding: '12px' }}>В ЦЕЛОМ ЗА ВЕСЬ СРОК РАБОТЫ</th>
+                  <th colSpan={6} className={styles.group3Cell} style={{ textAlign: 'left', borderBottom: '1px solid var(--line)', color: 'var(--white-soft)', padding: '12px' }}>В ЦЕЛОМ ЗА ВЕСЬ СРОК РАБОТЫ</th>
                 </tr>
                 <tr>
                   <SortTh col="received" sort={sort} setSort={setSort} style={thStyle('received', 'var(--panel-2)')}>Всего получил</SortTh>
@@ -437,13 +436,12 @@ function BrokerTable({
                   <SortTh col="crShowing" sort={sort} setSort={setSort} style={{ minWidth: '120px', background: 'var(--panel-2)' }}>CR Lead - Показ</SortTh>
                   <SortTh col="deals" sort={sort} setSort={setSort} style={thStyle('deals', 'var(--panel-2)')}>Сделка</SortTh>
                   <SortTh col="activeTotal" sort={sort} setSort={setSort} style={thStyle('activeTotal', 'rgba(128,128,128,0.08)')}>Total leads</SortTh>
-                  <SortTh col="activeQl" sort={sort} setSort={setSort} style={thStyle('activeQl', 'rgba(128,128,128,0.08)')}>QL Leads</SortTh>
+                  <SortTh col="activeQl" sort={sort} setSort={setSort} style={thStyle('activeQl', 'rgba(128,128,128,0.08)')}>QL Actual</SortTh>
                   <SortTh col="activeShowings" sort={sort} setSort={setSort} style={thStyle('activeShowings', 'rgba(128,128,128,0.08)')}>Показ+</SortTh>
                   <SortTh col="activeReanimation" sort={sort} setSort={setSort} style={thStyle('activeReanimation', 'rgba(128,128,128,0.08)')}>Реанимация</SortTh>
                   <th style={{ minWidth: '150px', background: 'rgba(128,128,128,0.08)' }}>Просроченых задач</th>
                   <SortTh col="missed" sort={sort} setSort={setSort} style={thStyle('missed', 'rgba(128,128,128,0.08)')}>Упущено</SortTh>
                   <SortTh col="allTotal" sort={sort} setSort={setSort} style={thStyle('allTotal', 'rgba(128,128,128,0.15)')}>Total leads</SortTh>
-                  <SortTh col="allLost" sort={sort} setSort={setSort} style={{ minWidth: '180px', background: 'rgba(128,128,128,0.15)' }}>Закрыто и не реализовано</SortTh>
                   <SortTh col="allQl" sort={sort} setSort={setSort} style={thStyle('allQl', 'rgba(128,128,128,0.15)')}>QL Leads</SortTh>
                   <SortTh col="allCrQl" sort={sort} setSort={setSort} style={{ minWidth: '120px', background: 'rgba(128,128,128,0.15)' }}>CR Lead - QL</SortTh>
                   <SortTh col="allShowings" sort={sort} setSort={setSort} style={thStyle('allShowings', 'rgba(128,128,128,0.15)')}>Показ+</SortTh>
@@ -454,7 +452,7 @@ function BrokerTable({
               <tbody>
                 {sourceAgg.length === 0 ? (
                   <tr>
-                    <td className={styles.stickyCell} colSpan={22} style={{ textAlign: 'center', padding: '24px' }}>
+                    <td className={styles.stickyCell} colSpan={21} style={{ textAlign: 'center', padding: '24px' }}>
                       Нет данных за выбранный период.
                     </td>
                   </tr>
@@ -487,7 +485,6 @@ function BrokerTable({
                           <td className={styles.group2Cell}>—</td>
                           <td className={styles.group2Cell}>{t.missed}</td>
                           <td className={styles.group3Cell}>{t.allTotal}</td>
-                          <td className={styles.group3Cell}>{t.allLost}</td>
                           <td className={styles.group3Cell} style={{ color: 'var(--white-soft)', fontWeight: 600 }}>{t.allQl}</td>
                           <td className={styles.group3Cell}>{formatPercent(calcRate(t.allQl, t.allTotal))}</td>
                           <td className={styles.group3Cell}>{t.allShowings}</td>
@@ -518,7 +515,6 @@ function BrokerTable({
                               <td className={styles.group2Cell}>—</td>
                               <td className={styles.group2Cell}>{br.missed}</td>
                               <td className={styles.group3Cell}>{br.allTotal}</td>
-                              <td className={styles.group3Cell}>{br.allLost}</td>
                               <td className={styles.group3Cell}>{br.allQl}</td>
                               <td className={styles.group3Cell}>{formatPercent(calcRate(br.allQl, br.allTotal))}</td>
                               <td className={styles.group3Cell}>{br.allShowings}</td>
