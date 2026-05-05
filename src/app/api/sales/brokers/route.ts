@@ -4,6 +4,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { readPlanDataFromSheets, PlanByBroker } from '@/lib/sheets/planReader';
 import { classifyLeadSource } from '@/lib/crmRules.js';
+import { amoFetchJson as sharedAmoFetchJson } from '@/lib/amo';
 
 const RAW_CACHE_FILE = path.resolve(process.cwd(), 'data/cache/plan-fact/raw_leads.json');
 
@@ -138,6 +139,7 @@ type MetricsBySource = {
     active_total_leads: number;
     active_ql_leads: number;
     active_showing_leads: number;
+    active_reanimation_leads: number;
     overdue_tasks: number;
   };
 };
@@ -202,8 +204,42 @@ const RE_QL_ACTUAL_STATUSES = new Set([
   70457466, 70457470, 70457474, 70457478, 70457482, 70457486,
 ]);
 const KL_QL_ACTUAL_STATUSES = new Set([
-  84853934, 84853938, 84853942, 84853946, 84853950, 84853954, 84853958,
+  84853934, 84853938, 84853942, 84853946, 84853950, 84853954,
+  // 84853958 POST SALES excluded — beyond Документы подписаны
 ]);
+
+// Reanimation statuses
+const RE_REANIMATION_STATUSES = new Set([82310010]);
+const KL_REANIMATION_STATUSES = new Set([84853974]);
+
+function isReanimationStatus(lead: { status_id: number; pipeline_id: number }): boolean {
+  if (lead.pipeline_id === RE_PIPELINE_ID || lead.pipeline_id === PARTNERS_PIPELINE_ID) return RE_REANIMATION_STATUSES.has(lead.status_id);
+  if (lead.pipeline_id === KLYKOV_PIPELINE_ID) return KL_REANIMATION_STATUSES.has(lead.status_id);
+  return false;
+}
+
+// Allowed roles for broker dropdown: Брокер, РОП, Внутренний партнер
+const ALLOWED_BROKER_ROLE_IDS = new Set([922586, 1193706, 1192690]);
+let _userRoleCache: Map<number, number | null> | null = null;
+let _userRoleCacheTime = 0;
+const USER_ROLE_CACHE_TTL = 60 * 60 * 1000;
+
+async function fetchUserRolesMap(): Promise<Map<number, number | null>> {
+  if (_userRoleCache && Date.now() - _userRoleCacheTime < USER_ROLE_CACHE_TTL) {
+    return _userRoleCache;
+  }
+  try {
+    const data = await sharedAmoFetchJson<{ _embedded?: { users?: Array<{ id: number; rights?: { role_id?: number | null } }> } }>('/api/v4/users?limit=250', {
+      headers: { Accept: 'application/json' },
+    });
+    const users = data?._embedded?.users || [];
+    _userRoleCache = new Map(users.map(u => [u.id, u.rights?.role_id ?? null]));
+    _userRoleCacheTime = Date.now();
+    return _userRoleCache;
+  } catch {
+    return new Map();
+  }
+}
 
 function isQlActualStatus(lead: { status_id: number; pipeline_id: number }): boolean {
   if (lead.pipeline_id === RE_PIPELINE_ID)
@@ -532,6 +568,7 @@ async function getBrokerMetrics(
       active_total_leads: activeLeadsInSource.length,
       active_ql_leads: activeQl,
       active_showing_leads: activeShowing,
+      active_reanimation_leads: activeLeadsInSource.filter((l) => isReanimationStatus(l)).length,
       overdue_tasks: overdueTasksBySource.get(source) || 0,
     };
   }
@@ -600,6 +637,15 @@ async function getBrokerMetrics(
 }
 
 async function getAllBrokers(): Promise<Array<{ id: number; name: string }>> {
+  // Fetch AMO user roles to filter dropdown
+  const roleMap = await fetchUserRolesMap();
+
+  function isAllowedBroker(id: number): boolean {
+    if (roleMap.size === 0) return true; // AMO unavailable, show all
+    const role = roleMap.get(id);
+    return role !== undefined && ALLOWED_BROKER_ROLE_IDS.has(role as number);
+  }
+
   try {
     const [rows] = await bq.query({
       query: `
@@ -610,25 +656,22 @@ async function getAllBrokers(): Promise<Array<{ id: number; name: string }>> {
       useLegacySql: false,
     });
     if (!Array.isArray(rows)) return [];
-    return rows.map((row: any) => ({
-      id: toNumber(row.responsible_user_id),
-      name: String(row.broker_name),
-    }));
+    return rows
+      .map((row: any) => ({ id: toNumber(row.responsible_user_id), name: String(row.broker_name) }))
+      .filter((b) => isAllowedBroker(b.id));
   } catch {
-    // Fallback to cache — use the users array for clean names
+    // Fallback to cache
     const cache = await readCacheFile();
     if (!cache) return [];
     const userMap = new Map<number, string>(cache.users.map((u) => [u.id, u.name]));
-    // Also pull names from leads as fallback
     for (const l of cache.leads) {
       if (l.responsible_user_id && l.broker_name && !userMap.has(l.responsible_user_id)) {
         userMap.set(l.responsible_user_id, l.broker_name);
       }
     }
-    // Only return broker IDs that actually have leads
     const brokerIds = new Set<number>(cache.leads.map((l) => l.responsible_user_id));
     return Array.from(brokerIds)
-      .filter((id) => userMap.has(id))
+      .filter((id) => userMap.has(id) && isAllowedBroker(id))
       .map((id) => ({ id, name: userMap.get(id)! }))
       .sort((a, b) => a.name.localeCompare(b.name));
   }

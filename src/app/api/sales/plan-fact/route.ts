@@ -145,8 +145,18 @@ const RE_QL_ACTUAL_STATUSES = new Set([
   70457466, 70457470, 70457474, 70457478, 70457482, 70457486,
 ]);
 const KL_QL_ACTUAL_STATUSES = new Set([
-  84853934, 84853938, 84853942, 84853946, 84853950, 84853954, 84853958,
+  84853934, 84853938, 84853942, 84853946, 84853950, 84853954,
+  // 84853958 POST SALES excluded — beyond Документы подписаны
 ]);
+
+const RE_REANIMATION_STATUSES = new Set([82310010]);
+const KL_REANIMATION_STATUSES = new Set([84853974]);
+
+function isReanimationStatus(lead: AmoLead) {
+  if (lead.pipeline_id === RE_PIPELINE_ID || lead.pipeline_id === PARTNERS_PIPELINE_ID) return RE_REANIMATION_STATUSES.has(lead.status_id);
+  if (lead.pipeline_id === KLYKOV_PIPELINE_ID) return KL_REANIMATION_STATUSES.has(lead.status_id);
+  return false;
+}
 
 const RE_SHOWING_STATUSES = new Set([70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802]);
 const KL_SHOWING_STATUSES = new Set([84853942, 84853946, 84853950, 84853954, 84853958, 84853962, 84853966]);
@@ -451,6 +461,7 @@ type MetricBucket = {
   activeTotal: number;
   activeQl: number;
   activeShowings: number;
+  activeReanimation: number;
   missed: number;
   allTotal: number;
   allLost: number;
@@ -471,6 +482,7 @@ function createBucket(): MetricBucket {
     activeTotal: 0,
     activeQl: 0,
     activeShowings: 0,
+    activeReanimation: 0,
     missed: 0,
     allTotal: 0,
     allLost: 0,
@@ -526,6 +538,7 @@ function applyLeadToBucket(bucket: MetricBucket, lead: AmoLead, leadDate: Date, 
     bucket.activeTotal += 1;
     if (qlActualNow) bucket.activeQl += 1;
     if (showingNow) bucket.activeShowings += 1;
+    if (isReanimationStatus(lead)) bucket.activeReanimation += 1;
   }
 
   if (lost) {
@@ -602,22 +615,28 @@ export async function GET(request: NextRequest) {
     const includedLeadIds = new Set<number>(leads.map((l) => l.id));
     const qlActualLeadIds = new Set<number>(leads.filter((l) => isQlActualStatus(l)).map((l) => l.id));
 
-    const brokerMap = new Map<number, BrokerAggregate>();
+    // OP brokers: RE + Klykov pipelines only
+    const opBrokerMap = new Map<number, BrokerAggregate>();
+    // Partners: pipeline 8600274 only
+    const partnerBrokerMap = new Map<number, BrokerAggregate>();
 
     for (const lead of leads) {
+      const targetMap = lead.pipeline_id === PARTNERS_PIPELINE_ID ? partnerBrokerMap : opBrokerMap;
       const brokerId = lead.responsible_user_id;
       const brokerName = (lead as RawLead).broker_name || userMap.get(brokerId) || `User #${brokerId}`;
-      if (!brokerMap.has(brokerId)) {
-        brokerMap.set(brokerId, newBrokerAggregate(brokerId, brokerName));
+      if (!targetMap.has(brokerId)) {
+        targetMap.set(brokerId, newBrokerAggregate(brokerId, brokerName));
       }
 
-      const broker = brokerMap.get(brokerId)!;
+      const broker = targetMap.get(brokerId)!;
       const leadDate = toDateOnly(lead.created_at);
       const source = classifySource(lead);
 
       applyLeadToBucket(broker.metrics, lead, leadDate, startDate, endDate, prevStart, prevEnd);
       applyLeadToBucket(broker.sources[source], lead, leadDate, startDate, endDate, prevStart, prevEnd);
     }
+
+    const brokerMap = opBrokerMap;
 
     // Overdue tasks per broker for leads inside selected pipelines.
     const nowSec = Math.floor(Date.now() / 1000);
@@ -627,61 +646,60 @@ export async function GET(request: NextRequest) {
       if (!includedLeadIds.has(task.entity_id)) continue;
       if (!qlActualLeadIds.has(task.entity_id)) continue;
 
-      const broker = brokerMap.get(task.responsible_user_id);
+      const broker = opBrokerMap.get(task.responsible_user_id) || partnerBrokerMap.get(task.responsible_user_id);
       if (broker) {
         broker.metrics.overdue += 1;
       }
     }
 
-    const brokers = Array.from(brokerMap.values())
-      .map((broker) => {
-        const sourceRows = SOURCE_ORDER
-          .map((source) => ({
-            source,
-            metrics: broker.sources[source],
-          }))
-          .filter((row) => row.metrics.allTotal > 0)
-          .map((row) => ({
-            source: row.source,
-            ...row.metrics,
-          }));
+    function buildBrokerRows(map: Map<number, BrokerAggregate>) {
+      return Array.from(map.values())
+        .map((broker) => {
+          const sourceRows = SOURCE_ORDER
+            .map((source) => ({
+              source,
+              metrics: broker.sources[source],
+            }))
+            .filter((row) => row.metrics.allTotal > 0)
+            .map((row) => ({
+              source: row.source,
+              ...row.metrics,
+            }));
 
-        const brokerPlan = planByBroker[broker.name] || {
-          lids: 0,
-          ql: 0,
-          revenue: 0,
-          deals: 0,
-        };
+          const brokerPlan = planByBroker[broker.name] || { lids: 0, ql: 0, revenue: 0, deals: 0 };
+          const brokerFulfillmentLids = brokerPlan.lids > 0 ? Math.round((broker.metrics.received / brokerPlan.lids) * 100) : 0;
+          const brokerFulfillmentQl = brokerPlan.ql > 0 ? Math.round((broker.metrics.ql / brokerPlan.ql) * 100) : 0;
+          const brokerFulfillmentRevenue = brokerPlan.revenue > 0 ? Math.round((broker.metrics.revenueWon / brokerPlan.revenue) * 100) : 0;
+          const brokerFulfillmentDeals = brokerPlan.deals > 0 ? Math.round((broker.metrics.deals / brokerPlan.deals) * 100) : 0;
 
-        const brokerFulfillmentLids = brokerPlan.lids > 0 ? Math.round((broker.metrics.received / brokerPlan.lids) * 100) : 0;
-        const brokerFulfillmentQl = brokerPlan.ql > 0 ? Math.round((broker.metrics.ql / brokerPlan.ql) * 100) : 0;
-        const brokerFulfillmentRevenue = brokerPlan.revenue > 0 ? Math.round((broker.metrics.revenueWon / brokerPlan.revenue) * 100) : 0;
-        const brokerFulfillmentDeals = brokerPlan.deals > 0 ? Math.round((broker.metrics.deals / brokerPlan.deals) * 100) : 0;
+          return {
+            id: broker.id,
+            name: broker.name,
+            ...broker.metrics,
+            plan: {
+              lids: brokerPlan.lids,
+              ql: brokerPlan.ql,
+              revenue: brokerPlan.revenue,
+              deals: brokerPlan.deals,
+            },
+            fulfillment: {
+              lids: brokerFulfillmentLids,
+              ql: brokerFulfillmentQl,
+              revenue: brokerFulfillmentRevenue,
+              deals: brokerFulfillmentDeals,
+            },
+            sourceRows,
+            crQl: safePct(broker.metrics.ql, broker.metrics.received),
+            crShowing: safePct(broker.metrics.showings, broker.metrics.received),
+            allCrQl: safePct(broker.metrics.allQl, broker.metrics.allTotal),
+            allCrShowing: safePct(broker.metrics.allShowings, broker.metrics.allTotal),
+          };
+        })
+        .sort((a, b) => b.received - a.received || b.allTotal - a.allTotal);
+    }
 
-        return {
-          id: broker.id,
-          name: broker.name,
-          ...broker.metrics,
-          plan: {
-            lids: brokerPlan.lids,
-            ql: brokerPlan.ql,
-            revenue: brokerPlan.revenue,
-            deals: brokerPlan.deals,
-          },
-          fulfillment: {
-            lids: brokerFulfillmentLids,
-            ql: brokerFulfillmentQl,
-            revenue: brokerFulfillmentRevenue,
-            deals: brokerFulfillmentDeals,
-          },
-          sourceRows,
-          crQl: safePct(broker.metrics.ql, broker.metrics.received),
-          crShowing: safePct(broker.metrics.showings, broker.metrics.received),
-          allCrQl: safePct(broker.metrics.allQl, broker.metrics.allTotal),
-          allCrShowing: safePct(broker.metrics.allShowings, broker.metrics.allTotal),
-        };
-      })
-      .sort((a, b) => b.received - a.received || b.allTotal - a.allTotal);
+    const brokers = buildBrokerRows(opBrokerMap);
+    const partners = buildBrokerRows(partnerBrokerMap);
 
     const totals = brokers.reduce(
       (acc, b) => {
@@ -711,26 +729,23 @@ export async function GET(request: NextRequest) {
       (p) => (p.lids || 0) > 0 || (p.ql || 0) > 0 || (p.revenue || 0) > 0 || (p.deals || 0) > 0,
     );
 
-    const effectiveBrokers = brokers;
-    const effectiveTotals = totals;
-
     // Calculate fulfillment percentages
-    const fulfillmentLids = totalPlanLids > 0 ? Math.round((effectiveTotals.received / totalPlanLids) * 100) : 0;
-    const fulfillmentQl = totalPlanQl > 0 ? Math.round((effectiveTotals.ql / totalPlanQl) * 100) : 0;
-    const fulfillmentRevenue = totalPlanRevenue > 0 ? Math.round((effectiveTotals.revenueWon / totalPlanRevenue) * 100) : 0;
-    const fulfillmentDeals = totalPlanDeals > 0 ? Math.round((effectiveTotals.deals / totalPlanDeals) * 100) : 0;
+    const fulfillmentLids = totalPlanLids > 0 ? Math.round((totals.received / totalPlanLids) * 100) : 0;
+    const fulfillmentQl = totalPlanQl > 0 ? Math.round((totals.ql / totalPlanQl) * 100) : 0;
+    const fulfillmentRevenue = totalPlanRevenue > 0 ? Math.round((totals.revenueWon / totalPlanRevenue) * 100) : 0;
+    const fulfillmentDeals = totalPlanDeals > 0 ? Math.round((totals.deals / totalPlanDeals) * 100) : 0;
 
     const kpis = [
       { 
         label: 'ЛИДЫ (ПЛАН / ФАКТ)', 
-        actual: effectiveTotals.received,
+        actual: totals.received,
         plan: totalPlanLids, 
         fulfillment: fulfillmentLids,
         suffix: '' 
       },
       { 
         label: 'QL LEADS (ПЛАН / ФАКТ)', 
-        actual: effectiveTotals.ql,
+        actual: totals.ql,
         plan: totalPlanQl, 
         fulfillment: fulfillmentQl,
         suffix: '' 
@@ -744,7 +759,7 @@ export async function GET(request: NextRequest) {
       },
       { 
         label: 'СДЕЛКИ (ПЛАН / ФАКТ)', 
-        actual: effectiveTotals.deals,
+        actual: totals.deals,
         plan: totalPlanDeals, 
         fulfillment: fulfillmentDeals,
         suffix: '' 
@@ -761,11 +776,12 @@ export async function GET(request: NextRequest) {
         prevStartDate: dateKey(prevStart),
         prevEndDate: dateKey(prevEnd),
         leadsCount: leads.length,
-        brokersCount: effectiveBrokers.length,
+        brokersCount: brokers.length,
         hasAnyPlanValue,
       },
       kpis,
-      brokers: effectiveBrokers,
+      brokers,
+      partners,
     };
 
     return NextResponse.json(response);

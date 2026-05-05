@@ -38,6 +38,7 @@ type SourceMetrics = {
   active_total_leads: number;
   active_ql_leads: number;
   active_showing_leads: number;
+  active_reanimation_leads: number;
   overdue_tasks: number;
 };
 
@@ -121,6 +122,38 @@ function comparisonPercent(current: number, previous: number): number {
   return ((current - previous) / previous) * 100;
 }
 
+type SortState = { col: string | null; dir: 'asc' | 'desc' };
+
+function sortSourceRows<T extends Record<string, unknown>>(rows: T[], sort: SortState): T[] {
+  if (!sort.col) return rows;
+  return [...rows].sort((a, b) => {
+    const av = typeof a[sort.col!] === 'number' ? (a[sort.col!] as number) : 0;
+    const bv = typeof b[sort.col!] === 'number' ? (b[sort.col!] as number) : 0;
+    return sort.dir === 'asc' ? av - bv : bv - av;
+  });
+}
+
+function SortTh({ col, sort, setSort, children, style }: {
+  col: string;
+  sort: SortState;
+  setSort: (s: SortState) => void;
+  children: React.ReactNode;
+  style?: React.CSSProperties;
+}) {
+  const active = sort.col === col;
+  return (
+    <th
+      style={{ cursor: 'pointer', userSelect: 'none', ...style }}
+      onClick={() => setSort({ col, dir: active && sort.dir === 'desc' ? 'asc' : 'desc' })}
+    >
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+        {children}
+        {active ? (sort.dir === 'asc' ? ' ▲' : ' ▼') : <span style={{ color: 'var(--muted)', fontSize: '9px' }}> ⇅</span>}
+      </span>
+    </th>
+  );
+}
+
 function BrokersSkeleton() {
   return (
     <div className={styles.container} style={{ padding: '0 32px 32px 32px' }}>
@@ -147,6 +180,8 @@ export default function BrokersUI({ selectedBroker, startDate, endDate }: Broker
   const [loading, setLoading] = useState(false);
   const [expandedWork, setExpandedWork] = useState<Record<string, boolean>>({ main: true });
   const [expandedLifetime, setExpandedLifetime] = useState<Record<string, boolean>>({ life: true });
+  const [sortWork, setSortWork] = useState<SortState>({ col: null, dir: 'desc' });
+  const [sortLifetime, setSortLifetime] = useState<SortState>({ col: null, dir: 'desc' });
 
   useEffect(() => {
     if (!selectedBroker?.id) return;
@@ -227,6 +262,52 @@ export default function BrokersUI({ selectedBroker, startDate, endDate }: Broker
   const activeTotalLeads = Object.values(metrics.by_source).reduce((sum, s) => sum + (s.active_total_leads || 0), 0);
   const activeQlLeads = Object.values(metrics.by_source).reduce((sum, s) => sum + (s.active_ql_leads || 0), 0);
   const activeShowingLeads = Object.values(metrics.by_source).reduce((sum, s) => sum + (s.active_showing_leads || 0), 0);
+  const activeReanimationLeads = Object.values(metrics.by_source).reduce((sum, s) => sum + (s.active_reanimation_leads || 0), 0);
+
+  type WorkSourceRow = {
+    source: string;
+    srcCurrent: number;
+    srcPrevious: number;
+    srcComparison: number;
+    active_ql_leads: number;
+    active_showing_leads: number;
+    active_total_leads: number;
+    active_reanimation_leads: number;
+    overdue_tasks: number;
+    ql_leads: number;
+    showing_leads: number;
+    won_leads: number;
+    lost_leads: number;
+    cr_lead_to_ql: number;
+    cr_lead_to_showing: number;
+  };
+
+  const workSourceRows: WorkSourceRow[] = sources.map(source => {
+    const data = metrics.by_source[source];
+    const periodCurrent = metrics.period_data.current.by_source?.[source];
+    const periodPrevious = metrics.period_data.previous.by_source?.[source];
+    const srcCurrent = periodCurrent?.total_leads || 0;
+    const srcPrevious = periodPrevious?.total_leads || 0;
+    return {
+      source,
+      srcCurrent,
+      srcPrevious,
+      srcComparison: comparisonPercent(srcCurrent, srcPrevious),
+      active_total_leads: data?.active_total_leads || 0,
+      active_ql_leads: data?.active_ql_leads || 0,
+      active_showing_leads: data?.active_showing_leads || 0,
+      active_reanimation_leads: data?.active_reanimation_leads || 0,
+      overdue_tasks: data?.overdue_tasks || 0,
+      ql_leads: periodCurrent?.ql_leads || 0,
+      showing_leads: periodCurrent?.showing_leads || 0,
+      won_leads: periodCurrent?.won_leads || 0,
+      lost_leads: periodCurrent?.lost_leads || 0,
+      cr_lead_to_ql: periodCurrent ? (srcCurrent > 0 ? (periodCurrent.ql_leads / srcCurrent) * 100 : 0) : 0,
+      cr_lead_to_showing: periodCurrent ? (srcCurrent > 0 ? (periodCurrent.showing_leads / srcCurrent) * 100 : 0) : 0,
+    };
+  });
+
+  const sortedWorkSourceRows = sortSourceRows(workSourceRows, sortWork);
 
   return (
     <div className={styles.container} style={{ padding: '0 32px 32px 32px' }}>
@@ -272,14 +353,15 @@ export default function BrokersUI({ selectedBroker, startDate, endDate }: Broker
                   <th rowSpan={2}>ПП/Показ+</th>
                   <th rowSpan={2}>CR Lead - Показ</th>
                   <th rowSpan={2}>Сделка</th>
-                  <th colSpan={5}>Что сейчас в работе</th>
+                  <th colSpan={6}>Что сейчас в работе</th>
                 </tr>
                 <tr>
-                  <th>Total leads</th>
-                  <th>QL Leads</th>
-                  <th>Показ+</th>
+                  <SortTh col="active_total_leads" sort={sortWork} setSort={setSortWork}>Total leads</SortTh>
+                  <SortTh col="active_ql_leads" sort={sortWork} setSort={setSortWork}>QL Leads</SortTh>
+                  <SortTh col="active_showing_leads" sort={sortWork} setSort={setSortWork}>Показ+</SortTh>
+                  <SortTh col="active_reanimation_leads" sort={sortWork} setSort={setSortWork}>Реанимация</SortTh>
                   <th>Просроченых задач</th>
-                  <th>Упущено</th>
+                  <SortTh col="lost_leads" sort={sortWork} setSort={setSortWork}>Упущено</SortTh>
                 </tr>
               </thead>
               <tbody>
@@ -301,38 +383,34 @@ export default function BrokersUI({ selectedBroker, startDate, endDate }: Broker
                   <td>{activeTotalLeads}</td>
                   <td>{activeQlLeads}</td>
                   <td>{activeShowingLeads}</td>
+                  <td style={{ color: activeReanimationLeads > 0 ? '#f97316' : 'inherit', fontWeight: activeReanimationLeads > 0 ? 700 : 400 }}>{activeReanimationLeads}</td>
                   <td style={{ color: '#f43f5e', fontWeight: 700 }}>{metrics.overdue_tasks.length}</td>
                   <td>{metrics.period_data.current.lost_leads}</td>
                 </tr>
-                {expandedWork['main'] && sources.map(source => {
-                  const data = metrics.by_source[source];
-                  const periodCurrent = metrics.period_data.current.by_source[source];
-                  const periodPrevious = metrics.period_data.previous.by_source[source];
-                  const srcCurrent = periodCurrent?.total_leads || 0;
-                  const srcPrevious = periodPrevious?.total_leads || 0;
-                  const srcComparison = comparisonPercent(srcCurrent, srcPrevious);
-                  if (!data) return null;
+                {expandedWork['main'] && sortedWorkSourceRows.map(row => {
+                  if (!metrics.by_source[row.source]) return null;
                   return (
-                    <tr key={source} className={styles.subRowCell}>
+                    <tr key={row.source} className={styles.subRowCell}>
                       <td className={styles.subRowSticky}>
                         <div style={{ fontSize: '12px', color: 'var(--white-soft)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: SOURCE_COLORS[source] || '#94a3b8' }} />
-                          {source}
+                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: SOURCE_COLORS[row.source] || '#94a3b8' }} />
+                          {row.source}
                         </div>
                       </td>
-                      <td>{srcCurrent}</td>
-                      <td>{srcPrevious}</td>
-                      <td>{formatPercent(srcComparison, 0)}</td>
-                      <td>{periodCurrent?.ql_leads || 0}</td>
-                      <td>{formatPercent(periodCurrent?.cr_lead_to_ql || 0)}</td>
-                      <td>{periodCurrent?.showing_leads || 0}</td>
-                      <td>{formatPercent(periodCurrent?.cr_lead_to_showing || 0)}</td>
-                      <td>{periodCurrent?.won_leads || 0}</td>
-                      <td>{data.active_total_leads || 0}</td>
-                      <td>{data.active_ql_leads || 0}</td>
-                      <td>{data.active_showing_leads || 0}</td>
-                      <td style={{ color: '#f43f5e' }}>{data.overdue_tasks || 0}</td>
-                      <td>{periodCurrent?.lost_leads || 0}</td>
+                      <td>{row.srcCurrent}</td>
+                      <td>{row.srcPrevious}</td>
+                      <td>{formatPercent(row.srcComparison, 0)}</td>
+                      <td>{row.ql_leads}</td>
+                      <td>{formatPercent(row.cr_lead_to_ql)}</td>
+                      <td>{row.showing_leads}</td>
+                      <td>{formatPercent(row.cr_lead_to_showing)}</td>
+                      <td>{row.won_leads}</td>
+                      <td>{row.active_total_leads}</td>
+                      <td>{row.active_ql_leads}</td>
+                      <td>{row.active_showing_leads}</td>
+                      <td style={{ color: row.active_reanimation_leads > 0 ? '#f97316' : 'inherit' }}>{row.active_reanimation_leads}</td>
+                      <td style={{ color: '#f43f5e' }}>{row.overdue_tasks}</td>
+                      <td>{row.lost_leads}</td>
                     </tr>
                   );
                 })}
@@ -351,13 +429,13 @@ export default function BrokersUI({ selectedBroker, startDate, endDate }: Broker
               <thead>
                 <tr>
                   <th className={styles.stickyCell} style={{ minWidth: '180px' }}>ФИО брокера</th>
-                  <th>Total leads</th>
+                  <SortTh col="total_leads" sort={sortLifetime} setSort={setSortLifetime}>Total leads</SortTh>
                   <th>Закрыто и не реализовано</th>
-                  <th>QL Leads</th>
+                  <SortTh col="ql_leads" sort={sortLifetime} setSort={setSortLifetime}>QL Leads</SortTh>
                   <th>CR Lead - QL</th>
-                  <th>Показ+</th>
+                  <SortTh col="showing_leads" sort={sortLifetime} setSort={setSortLifetime}>Показ+</SortTh>
                   <th>CR Lead - Показ</th>
-                  <th>Сделка</th>
+                  <SortTh col="won_leads" sort={sortLifetime} setSort={setSortLifetime}>Сделка</SortTh>
                 </tr>
               </thead>
               <tbody>
@@ -376,27 +454,30 @@ export default function BrokersUI({ selectedBroker, startDate, endDate }: Broker
                   <td>{metrics.totals.leads > 0 ? ((metrics.totals.showing_leads / metrics.totals.leads) * 100).toFixed(2) : 0}%</td>
                   <td>{metrics.totals.won_leads}</td>
                 </tr>
-                {expandedLifetime['total'] && sources.map(source => {
-                  const data = metrics.by_source[source];
-                  if (!data) return null;
-                  return (
-                    <tr key={source} className={styles.subRowCell}>
-                      <td className={styles.subRowSticky}>
-                        <div style={{ fontSize: '12px', color: 'var(--white-soft)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: SOURCE_COLORS[source] || '#94a3b8' }} />
-                          {source}
-                        </div>
-                      </td>
-                      <td>{data.total_leads}</td>
-                      <td>-</td>
-                      <td>{data.ql_leads}</td>
-                      <td>{data.cr_lead_to_ql.toFixed(2)}%</td>
-                      <td>{data.showing_leads}</td>
-                      <td>{data.cr_lead_to_showing.toFixed(2)}%</td>
-                      <td>{data.won_leads}</td>
-                    </tr>
-                  );
-                })}
+                {expandedLifetime['total'] &&
+                  sortSourceRows(sources.map(source => ({ source, ...(metrics.by_source[source] || {}) as SourceMetrics })), sortLifetime)
+                    .filter(row => metrics.by_source[row.source])
+                    .map(row => {
+                      const data = metrics.by_source[row.source];
+                      return (
+                        <tr key={row.source} className={styles.subRowCell}>
+                          <td className={styles.subRowSticky}>
+                            <div style={{ fontSize: '12px', color: 'var(--white-soft)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: SOURCE_COLORS[row.source] || '#94a3b8' }} />
+                              {row.source}
+                            </div>
+                          </td>
+                          <td>{data.total_leads}</td>
+                          <td>-</td>
+                          <td>{data.ql_leads}</td>
+                          <td>{data.cr_lead_to_ql.toFixed(2)}%</td>
+                          <td>{data.showing_leads}</td>
+                          <td>{data.cr_lead_to_showing.toFixed(2)}%</td>
+                          <td>{data.won_leads}</td>
+                        </tr>
+                      );
+                    })
+                }
               </tbody>
             </table>
           </div>
