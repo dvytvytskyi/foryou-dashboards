@@ -1,10 +1,53 @@
 import { NextResponse } from 'next/server';
 import { isPostgresConfigured, queryPostgres } from '@/lib/postgres';
+import { BigQuery } from '@google-cloud/bigquery';
+import path from 'path';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 const CREDIT_TO_AED_RATE = 1.9;
+
+const RE_QL_DIRECT_STATUSES = new Set([
+  70457466,
+  70457470,
+  70457474,
+  70457478,
+  70457482,
+  70457486,
+  70757586,
+  74717798,
+  74717802,
+]);
+const RE_QL_HISTORY_REQUIRED_STATUSES = new Set([70457490, 82310010, 142, 143]);
+const RE_QL_ACTUAL_DIRECT_STATUSES = new Set([
+  70457466,
+  70457470,
+  70457474,
+  70457478,
+  70457482,
+  70457486,
+  70757586,
+]);
+const RE_MEETING_STATUSES = new Set([142, 70457474, 70457478, 70457482, 70457486, 70757586]);
+const RE_DEAL_STATUSES = new Set([142, 70457486, 70757586]);
+
+type LeadBqFlags = {
+  statusId: number;
+  hasProgressHistory: boolean;
+};
+
+const bqCredentials = process.env.GOOGLE_AUTH_JSON
+  ? JSON.parse(process.env.GOOGLE_AUTH_JSON)
+  : undefined;
+
+const bq = new BigQuery({
+  projectId: 'crypto-world-epta',
+  credentials: bqCredentials,
+  keyFilename: !bqCredentials
+    ? path.resolve(process.cwd(), 'secrets/crypto-world-epta-2db29829d55d.json')
+    : undefined,
+});
 
 type ListingSnapshotRow = {
   listing_id: string;
@@ -101,6 +144,62 @@ type ExactListingMetrics = {
   deals: number;
 };
 
+function computeLeadFlags(statusId: number, hasProgressHistory: boolean) {
+  const isQualified = RE_QL_DIRECT_STATUSES.has(statusId)
+    || (RE_QL_HISTORY_REQUIRED_STATUSES.has(statusId) && hasProgressHistory);
+  const isQlActual = RE_QL_ACTUAL_DIRECT_STATUSES.has(statusId);
+  const isMeeting = RE_MEETING_STATUSES.has(statusId);
+  const isDeal = RE_DEAL_STATUSES.has(statusId);
+  const isSpam = statusId === 143 && !hasProgressHistory;
+
+  return { isQualified, isQlActual, isMeeting, isDeal, isSpam };
+}
+
+async function loadLeadFlagsFromBigQuery(amoLeadIds: number[]) {
+  if (amoLeadIds.length === 0) return new Map<number, LeadBqFlags>();
+
+  const query = `
+    WITH latest_amo AS (
+      SELECT * EXCEPT(row_num)
+      FROM (
+        SELECT
+          lead_id,
+          status_id,
+          updated_at,
+          ROW_NUMBER() OVER (PARTITION BY lead_id ORDER BY updated_at DESC) AS row_num
+        FROM \`crypto-world-epta.foryou_analytics.amo_channel_leads_raw\`
+        WHERE lead_id IN UNNEST(@leadIds)
+      )
+      WHERE row_num = 1
+    )
+    SELECT
+      a.lead_id,
+      a.status_id,
+      (m.date_meet IS NOT NULL OR m.date_res IS NOT NULL OR m.date_won IS NOT NULL) AS has_progress_history
+    FROM latest_amo a
+    LEFT JOIN \`crypto-world-epta.foryou_analytics.milestones\` m
+      ON SAFE_CAST(m.deal_id AS INT64) = a.lead_id
+  `;
+
+  const [rows] = await bq.query({
+    query,
+    params: { leadIds: amoLeadIds },
+  });
+
+  const flags = new Map<number, LeadBqFlags>();
+  for (const row of rows as any[]) {
+    const leadId = Number(row?.lead_id || 0);
+    const statusId = Number(row?.status_id || 0);
+    if (!leadId || !statusId) continue;
+    flags.set(leadId, {
+      statusId,
+      hasProgressHistory: Boolean(row?.has_progress_history),
+    });
+  }
+
+  return flags;
+}
+
 async function loadExactListingMetricsFromSyncState(
   listingRefs: string[],
   startDate: string | null,
@@ -112,22 +211,22 @@ async function loadExactListingMetricsFromSyncState(
 
   const { rows } = await queryPostgres<{
     listing_ref: string;
-    crm_leads: number | string;
-    spam_count: number | string;
-    qualified_count: number | string;
-    ql_actual_count: number | string;
-    meetings_count: number | string;
-    deals_count: number | string;
+    amo_lead_id: number | string;
+    is_spam: string;
+    is_qualified: string;
+    is_ql_actual: string;
+    is_meeting: string;
+    is_deal: string;
   }>(
     `
       SELECT
         LOWER(TRIM(COALESCE(payload->>'pf_listing_ref', payload->>'listingRef', ''))) AS listing_ref,
-        COUNT(*)::int AS crm_leads,
-        SUM(CASE WHEN LOWER(COALESCE(payload->>'isSpam', 'false')) = 'true' THEN 1 ELSE 0 END)::int AS spam_count,
-        SUM(CASE WHEN LOWER(COALESCE(payload->>'isQualified', 'false')) = 'true' THEN 1 ELSE 0 END)::int AS qualified_count,
-        SUM(CASE WHEN LOWER(COALESCE(payload->>'isQlActual', 'false')) = 'true' THEN 1 ELSE 0 END)::int AS ql_actual_count,
-        SUM(CASE WHEN LOWER(COALESCE(payload->>'isMeeting', 'false')) = 'true' THEN 1 ELSE 0 END)::int AS meetings_count,
-        SUM(CASE WHEN LOWER(COALESCE(payload->>'isDeal', 'false')) = 'true' THEN 1 ELSE 0 END)::int AS deals_count
+        amo_lead_id,
+        LOWER(COALESCE(payload->>'isSpam', 'false')) AS is_spam,
+        LOWER(COALESCE(payload->>'isQualified', 'false')) AS is_qualified,
+        LOWER(COALESCE(payload->>'isQlActual', 'false')) AS is_ql_actual,
+        LOWER(COALESCE(payload->>'isMeeting', 'false')) AS is_meeting,
+        LOWER(COALESCE(payload->>'isDeal', 'false')) AS is_deal
       FROM pf_amo_sync_state
       WHERE LOWER(TRIM(COALESCE(payload->>'pf_listing_ref', payload->>'listingRef', ''))) = ANY($1::text[])
         AND (
@@ -158,21 +257,67 @@ async function loadExactListingMetricsFromSyncState(
             END
           )
         )
-      GROUP BY 1
     `,
     [listingRefs, startUnix, endUnix],
   );
 
+  const amoLeadIds = Array.from(
+    new Set(
+      rows
+        .map((row) => Number(row.amo_lead_id || 0))
+        .filter((id) => Number.isFinite(id) && id > 0),
+    ),
+  );
+
+  let bqFlags = new Map<number, LeadBqFlags>();
+  try {
+    bqFlags = await loadLeadFlagsFromBigQuery(amoLeadIds);
+  } catch (error) {
+    console.warn('PF listings BQ lead flags fetch failed, fallback to payload flags:', error);
+  }
+
   const out = new Map<string, ExactListingMetrics>();
   for (const row of rows) {
-    out.set(String(row.listing_ref || '').toLowerCase(), {
-      crm_leads: Number(row.crm_leads || 0),
-      spam: Number(row.spam_count || 0),
-      qualified_leads: Number(row.qualified_count || 0),
-      ql_actual: Number(row.ql_actual_count || 0),
-      meetings: Number(row.meetings_count || 0),
-      deals: Number(row.deals_count || 0),
-    });
+    const listingRef = String(row.listing_ref || '').toLowerCase();
+    if (!listingRef) continue;
+
+    if (!out.has(listingRef)) {
+      out.set(listingRef, {
+        crm_leads: 0,
+        spam: 0,
+        qualified_leads: 0,
+        ql_actual: 0,
+        meetings: 0,
+        deals: 0,
+      });
+    }
+
+    const agg = out.get(listingRef)!;
+    agg.crm_leads += 1;
+
+    const amoLeadId = Number(row.amo_lead_id || 0);
+    const bqLead = amoLeadId ? bqFlags.get(amoLeadId) : undefined;
+
+    let isSpam = row.is_spam === 'true';
+    let isQualified = row.is_qualified === 'true';
+    let isQlActual = row.is_ql_actual === 'true';
+    let isMeeting = row.is_meeting === 'true';
+    let isDeal = row.is_deal === 'true';
+
+    if (bqLead) {
+      const computed = computeLeadFlags(bqLead.statusId, bqLead.hasProgressHistory);
+      isSpam = computed.isSpam;
+      isQualified = computed.isQualified;
+      isQlActual = computed.isQlActual;
+      isMeeting = computed.isMeeting;
+      isDeal = computed.isDeal;
+    }
+
+    if (isSpam) agg.spam += 1;
+    if (isQualified) agg.qualified_leads += 1;
+    if (isQlActual) agg.ql_actual += 1;
+    if (isMeeting) agg.meetings += 1;
+    if (isDeal) agg.deals += 1;
   }
   return out;
 }

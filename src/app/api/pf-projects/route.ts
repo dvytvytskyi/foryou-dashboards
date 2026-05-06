@@ -43,6 +43,30 @@ type AmoProjectMatch = {
   deals_by_month: Record<string, number>;
 };
 
+function applyHistoryGateFallback(match: AmoProjectMatch): AmoProjectMatch {
+  // Source table stores aggregates only; no lead-level history is available here.
+  // To avoid inflated QL, remove spam-overlap from qualified buckets.
+  const qualified_leads = Math.max(0, Number(match.qualified_leads || 0) - Number(match.spam || 0));
+  const qualified_leads_by_month: Record<string, number> = {};
+
+  const months = new Set([
+    ...Object.keys(match.qualified_leads_by_month || {}),
+    ...Object.keys(match.spam_by_month || {}),
+  ]);
+
+  for (const month of months) {
+    const qualified = Number(match.qualified_leads_by_month?.[month] || 0);
+    const spam = Number(match.spam_by_month?.[month] || 0);
+    qualified_leads_by_month[month] = Math.max(0, qualified - spam);
+  }
+
+  return {
+    ...match,
+    qualified_leads,
+    qualified_leads_by_month,
+  };
+}
+
 async function loadAmoProjectMatch(): Promise<Record<string, AmoProjectMatch>> {
   // 1. Try PostgreSQL first (preferred, always up-to-date)
   if (isPostgresConfigured()) {
@@ -66,7 +90,7 @@ async function loadAmoProjectMatch(): Promise<Record<string, AmoProjectMatch>> {
       if (rows.length > 0) {
         const result: Record<string, AmoProjectMatch> = {};
         for (const row of rows) {
-          result[row.project_id] = {
+          const raw: AmoProjectMatch = {
             crm_leads: Number(row.crm_leads || 0),
             spam: Number(row.spam || 0),
             qualified_leads: Number(row.qualified_leads || 0),
@@ -80,6 +104,7 @@ async function loadAmoProjectMatch(): Promise<Record<string, AmoProjectMatch>> {
             meetings_by_month: (row.meetings_by_month as Record<string, number>) || {},
             deals_by_month: (row.deals_by_month as Record<string, number>) || {},
           };
+          result[row.project_id] = applyHistoryGateFallback(raw);
         }
         return result;
       }
@@ -93,7 +118,12 @@ async function loadAmoProjectMatch(): Promise<Record<string, AmoProjectMatch>> {
     const matchPath = path.resolve(process.cwd(), 'data/cache/pf_amo_project_match.json');
     const raw = await fs.readFile(matchPath, 'utf8');
     const parsed = JSON.parse(raw);
-    return parsed.byProject || {};
+    const byProject = parsed.byProject || {};
+    const corrected: Record<string, AmoProjectMatch> = {};
+    for (const [projectId, stats] of Object.entries(byProject)) {
+      corrected[projectId] = applyHistoryGateFallback(stats as AmoProjectMatch);
+    }
+    return corrected;
   } catch {
     return {};
   }
