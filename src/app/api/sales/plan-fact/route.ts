@@ -357,6 +357,13 @@ async function getOrFetchRawData(): Promise<RawData> {
   const freshCache = await readRawCache();
   if (freshCache) return freshCache;
 
+  // Fast path: use BQ snapshot before falling back to live amoCRM pagination.
+  const bqData = await readRawDataFromBigQuery();
+  if (bqData) {
+    await writeRawCache(bqData);
+    return bqData;
+  }
+
   // Deduplicate concurrent requests — only one CRM fetch runs at a time
   if (_rawDataFetchPromise) return _rawDataFetchPromise;
 

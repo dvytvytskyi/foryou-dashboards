@@ -114,6 +114,7 @@ type LeadRecord = {
   price: number;
   created_at_unix: number;
   current_status_entered_at_unix: number;
+  had_qual?: boolean;
   is_ql: boolean;
   is_showing: boolean;
   is_won: boolean;
@@ -402,8 +403,12 @@ function toBoolean(value: unknown): boolean {
   return Boolean(value);
 }
 
-function isQlStatus(lead: { status_id: number; pipeline_id: number }): boolean {
-  if (lead.pipeline_id === RE_PIPELINE_ID || lead.pipeline_id === PARTNERS_PIPELINE_ID) return RE_QL_STATUSES.has(lead.status_id);
+function isQlStatus(lead: { status_id: number; pipeline_id: number; had_qual?: boolean }): boolean {
+  if (lead.pipeline_id === RE_PIPELINE_ID || lead.pipeline_id === PARTNERS_PIPELINE_ID) {
+    if (RE_QL_STATUSES.has(lead.status_id)) return true;
+    if (lead.status_id === LOST_STATUS_ID) return Boolean(lead.had_qual);
+    return false;
+  }
   if (lead.pipeline_id === KLYKOV_PIPELINE_ID) return KL_QL_STATUSES.has(lead.status_id);
   return false;
 }
@@ -486,21 +491,81 @@ function buildPeriodMetrics(leads: LeadRecord[]): PeriodMetrics {
 }
 
 async function loadLeadsAndTasks(brokerId: number): Promise<{ leads: LeadRecord[]; rawTasks: CacheTask[] }> {
-  const [usersResponse, reLeads, klykovLeads, openTasks] = await Promise.all([
-    amoFetchJson<{ _embedded?: { users?: Array<{ id: number; name: string }> } }>(`/api/v4/users?limit=250`),
-    fetchAllLeadsByPipeline(RE_PIPELINE_ID),
-    fetchAllLeadsByPipeline(KLYKOV_PIPELINE_ID),
-    fetchAllOpenTasksForBroker(brokerId),
-  ]);
+  let rawFromCache = await readCacheFile();
 
-  const userMap = new Map<number, string>((usersResponse?._embedded?.users || []).map((u) => [u.id, u.name]));
-  const rawLeads = [...reLeads, ...klykovLeads].filter((l) => l.responsible_user_id === brokerId);
-  const currentStatusEnteredAt = await fetchCurrentStatusEnteredAt(rawLeads);
+  if (!rawFromCache) {
+    const [[leadRows], [taskRows], [milestoneRows]] = await Promise.all([
+      bq.query({
+        query: `
+          SELECT lead_id, created_at, status_id, pipeline_id, responsible_user_id, broker_name, source_name, price
+          FROM \`${BQ_PROJECT_ID}.${BQ_DATASET}.${BQ_LEADS_TABLE}\`
+        `,
+        useLegacySql: false,
+      }),
+      bq.query({
+        query: `
+          SELECT task_id, responsible_user_id, entity_id, entity_type, is_completed, complete_till
+          FROM \`${BQ_PROJECT_ID}.${BQ_DATASET}.${BQ_TASKS_TABLE}\`
+          WHERE is_completed = FALSE
+        `,
+        useLegacySql: false,
+      }),
+      bq.query({
+        query: `
+          SELECT SAFE_CAST(deal_id AS INT64) AS lead_id
+          FROM \`${BQ_PROJECT_ID}.${BQ_DATASET}.milestones\`
+          WHERE date_qual IS NOT NULL
+            AND SAFE_CAST(deal_id AS INT64) IS NOT NULL
+        `,
+        useLegacySql: false,
+      }),
+    ]);
+
+    const qualLeadIds = new Set<number>(
+      (milestoneRows as Array<{ lead_id: number | string }>).map((r) => Number(r.lead_id)).filter(Boolean),
+    );
+
+    const leads: CacheLead[] = (leadRows as BqLeadRow[]).map((row) => ({
+      id: toNumber(row.lead_id),
+      name: '',
+      price: toNumber(row.price),
+      created_at: timestampToUnix(row.created_at),
+      status_id: toNumber(row.status_id),
+      pipeline_id: toNumber(row.pipeline_id),
+      responsible_user_id: toNumber(row.responsible_user_id),
+      broker_name: row.broker_name,
+      source_name: row.source_name,
+      current_status_entered_at: timestampToUnix(row.created_at),
+      had_qual: qualLeadIds.has(toNumber(row.lead_id)),
+      custom_fields_values: [],
+      _embedded: { tags: [] },
+    }));
+
+    const tasks: CacheTask[] = (taskRows as BqTaskRow[]).map((row) => ({
+      id: toNumber(row.task_id),
+      responsible_user_id: toNumber(row.responsible_user_id),
+      entity_id: toNumber(row.entity_id),
+      entity_type: row.entity_type,
+      is_completed: toBoolean(row.is_completed),
+      complete_till: row.complete_till ? timestampToUnix(row.complete_till) : undefined,
+    }));
+
+    rawFromCache = {
+      leads,
+      tasks,
+      users: [],
+      createdAt: Date.now(),
+    };
+  }
+
+  const rawLeads = rawFromCache.leads
+    .filter((l) => INCLUDED_PIPELINES.has(l.pipeline_id))
+    .filter((l) => l.responsible_user_id === brokerId);
 
   const leads: LeadRecord[] = rawLeads.map((l) => {
     const statusId = l.status_id;
     const pipelineId = l.pipeline_id;
-    const resolvedBrokerName = l.broker_name || userMap.get(l.responsible_user_id) || `User #${l.responsible_user_id}`;
+    const resolvedBrokerName = l.broker_name || `User #${l.responsible_user_id}`;
     const sourceName = classifySourceFromRaw(l, pipelineId, l.source_name);
     return {
       lead_id: l.id,
@@ -510,14 +575,15 @@ async function loadLeadsAndTasks(brokerId: number): Promise<{ leads: LeadRecord[
       pipeline_id: pipelineId,
       price: l.price || 0,
       created_at_unix: l.created_at,
-      current_status_entered_at_unix: currentStatusEnteredAt.get(l.id) || l.created_at,
-      is_ql: isQlStatus({ status_id: statusId, pipeline_id: pipelineId }),
+      current_status_entered_at_unix: l.current_status_entered_at || l.created_at,
+      had_qual: Boolean(l.had_qual),
+      is_ql: isQlStatus({ status_id: statusId, pipeline_id: pipelineId, had_qual: l.had_qual }),
       is_showing: isShowingStatus({ status_id: statusId, pipeline_id: pipelineId }),
       is_won: isWonStatus(statusId),
     };
   });
 
-  const rawTasks = openTasks.filter(
+  const rawTasks = rawFromCache.tasks.filter(
     (t) => t.responsible_user_id === brokerId && t.entity_type === 'leads' && !t.is_completed,
   );
 
@@ -669,15 +735,43 @@ async function getBrokerMetrics(
 }
 
 async function getAllBrokers(): Promise<Array<{ id: number; name: string }>> {
-  const [roleMap, usersResponse, reLeads, klykovLeads] = await Promise.all([
+  const [roleMap, rawFromCache] = await Promise.all([
     fetchUserRolesMap(),
-    amoFetchJson<{ _embedded?: { users?: Array<{ id: number; name: string }> } }>(`/api/v4/users?limit=250`),
-    fetchAllLeadsByPipeline(RE_PIPELINE_ID),
-    fetchAllLeadsByPipeline(KLYKOV_PIPELINE_ID),
+    readCacheFile(),
   ]);
 
-  const userMap = new Map<number, string>((usersResponse?._embedded?.users || []).map((u) => [u.id, u.name]));
-  const brokerIds = new Set<number>([...reLeads, ...klykovLeads].map((l) => l.responsible_user_id));
+  let leads = rawFromCache?.leads || [];
+  if (!leads.length) {
+    const [leadRows] = await bq.query({
+      query: `
+        SELECT lead_id, created_at, status_id, pipeline_id, responsible_user_id, broker_name, source_name, price
+        FROM \`${BQ_PROJECT_ID}.${BQ_DATASET}.${BQ_LEADS_TABLE}\`
+      `,
+      useLegacySql: false,
+    });
+    leads = (leadRows as BqLeadRow[]).map((row) => ({
+      id: toNumber(row.lead_id),
+      name: '',
+      price: toNumber(row.price),
+      created_at: timestampToUnix(row.created_at),
+      status_id: toNumber(row.status_id),
+      pipeline_id: toNumber(row.pipeline_id),
+      responsible_user_id: toNumber(row.responsible_user_id),
+      broker_name: row.broker_name,
+      source_name: row.source_name,
+      custom_fields_values: [],
+      _embedded: { tags: [] },
+    }));
+  }
+
+  const scopedLeads = leads.filter((l) => INCLUDED_PIPELINES.has(l.pipeline_id));
+  const brokerIds = new Set<number>(scopedLeads.map((l) => l.responsible_user_id));
+  const brokerNameById = new Map<number, string>();
+  for (const lead of scopedLeads) {
+    if (!brokerNameById.has(lead.responsible_user_id) && lead.broker_name) {
+      brokerNameById.set(lead.responsible_user_id, lead.broker_name);
+    }
+  }
 
   function isAllowedBroker(id: number): boolean {
     if (roleMap.size === 0) return true;
@@ -686,8 +780,8 @@ async function getAllBrokers(): Promise<Array<{ id: number; name: string }>> {
   }
 
   return Array.from(brokerIds)
-    .filter((id) => userMap.has(id) && isAllowedBroker(id))
-    .map((id) => ({ id, name: userMap.get(id)! }))
+    .filter((id) => isAllowedBroker(id))
+    .map((id) => ({ id, name: brokerNameById.get(id) || `User #${id}` }))
     .sort((a, b) => a.name.localeCompare(b.name));
 }
 
