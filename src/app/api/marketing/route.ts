@@ -8,13 +8,17 @@ export const revalidate = 0;
 const KNOWN_CHANNELS = ['RED', 'Facebook', 'Klykov', 'Website', 'Own leads', 'ЮрийНедвижБош', 'Partners leads', 'Old leads', 'OKK', 'ETC', 'TOTAL', 'Property Finder'];
 const RED_FIXED_CPL_USD = 58;
 const AED_PER_USD = 3.6725;
-const RED_RE_QL_STATUSES = [70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802, 70457490, 82310010, 142, 143];
-const RED_RE_QL_ACTUAL_STATUSES = [70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802, 70457490, 142];
+const RED_RE_QL_DIRECT_STATUSES = [70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802];
+const RED_RE_QL_HISTORY_REQUIRED_STATUSES = [70457490, 82310010, 142, 143];
+const RED_RE_QL_ACTUAL_DIRECT_STATUSES = [70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802];
+const RED_RE_QL_ACTUAL_HISTORY_REQUIRED_STATUSES = [70457490, 142];
 const RED_RE_MEETING_STATUSES = [70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802];
 const RED_WON_STATUSES = [142, 70457486, 70757586];
 
-const RED_QL_SQL = RED_RE_QL_STATUSES.join(', ');
-const RED_QL_ACTUAL_SQL = RED_RE_QL_ACTUAL_STATUSES.join(', ');
+const RED_QL_DIRECT_SQL = RED_RE_QL_DIRECT_STATUSES.join(', ');
+const RED_QL_HISTORY_REQUIRED_SQL = RED_RE_QL_HISTORY_REQUIRED_STATUSES.join(', ');
+const RED_QL_ACTUAL_DIRECT_SQL = RED_RE_QL_ACTUAL_DIRECT_STATUSES.join(', ');
+const RED_QL_ACTUAL_HISTORY_REQUIRED_SQL = RED_RE_QL_ACTUAL_HISTORY_REQUIRED_STATUSES.join(', ');
 const RED_MEETING_SQL = RED_RE_MEETING_STATUSES.join(', ');
 const RED_WON_SQL = RED_WON_STATUSES.join(', ');
 const MAX_MARKETING_FRESHNESS_HOURS = Number(process.env.MAX_MARKETING_FRESHNESS_HOURS || 3);
@@ -36,6 +40,17 @@ function lagHours(iso: string | null): number {
 
 async function loadRedRows(startDate: string, endDate: string) {
   const redQuery = `
+    WITH base AS (
+      SELECT
+        r.*,
+        -- For deferred/reanimation/won/lost statuses count as QL only if lead had deeper stage history.
+        (m.date_meet IS NOT NULL OR m.date_res IS NOT NULL OR m.date_won IS NOT NULL) AS has_progress_history
+      FROM \`crypto-world-epta.foryou_analytics.red_leads_raw\` r
+      LEFT JOIN \`crypto-world-epta.foryou_analytics.milestones\` m
+        ON SAFE_CAST(m.deal_id AS INT64) = SAFE_CAST(r.lead_id AS INT64)
+      WHERE DATE(r.created_at) BETWEEN @startDate AND @endDate
+        AND r.tag IN ('RED_RU', 'RED_ENG', 'RED_ARM', 'RED_LUX')
+    )
     SELECT
       COALESCE(tag, 'UNKNOWN')                   AS tag,
       CASE WHEN REGEXP_CONTAINS(COALESCE(utm_source,''), r'^(1|0|\\{\\{.*\\}\\})$') THEN '—'
@@ -45,17 +60,26 @@ async function loadRedRows(startDate: string, endDate: string) {
       CASE WHEN REGEXP_CONTAINS(COALESCE(utm_campaign,''), r'^(1|0|\\{\\{.*\\}\\})$') THEN '—'
            ELSE COALESCE(utm_campaign, '—') END   AS level_3,
       COUNT(*)                                    AS leads,
-      COUNTIF(status_id NOT IN (${RED_QL_SQL}) AND status_id NOT IN (${RED_WON_SQL}))
-                                                  AS no_answer_spam,
-      COUNTIF(status_id IN (${RED_QL_SQL}))       AS qualified_leads,
-      COUNTIF(status_id IN (${RED_QL_ACTUAL_SQL})) AS ql_actual,
+      COUNTIF(
+        NOT (
+          status_id IN (${RED_QL_DIRECT_SQL})
+          OR (status_id IN (${RED_QL_HISTORY_REQUIRED_SQL}) AND has_progress_history)
+        )
+        AND status_id NOT IN (${RED_WON_SQL})
+      )                                           AS no_answer_spam,
+      COUNTIF(
+        status_id IN (${RED_QL_DIRECT_SQL})
+        OR (status_id IN (${RED_QL_HISTORY_REQUIRED_SQL}) AND has_progress_history)
+      )                                           AS qualified_leads,
+      COUNTIF(
+        status_id IN (${RED_QL_ACTUAL_DIRECT_SQL})
+        OR (status_id IN (${RED_QL_ACTUAL_HISTORY_REQUIRED_SQL}) AND has_progress_history)
+      )                                           AS ql_actual,
       COUNTIF(status_id IN (${RED_MEETING_SQL}))  AS meetings,
       COUNTIF(status_id IN (${RED_WON_SQL}))      AS deals,
       SUM(IF(status_id IN (${RED_WON_SQL}), COALESCE(price, 0), 0))
                                                   AS revenue
-    FROM \`crypto-world-epta.foryou_analytics.red_leads_raw\`
-    WHERE DATE(created_at) BETWEEN @startDate AND @endDate
-      AND tag IN ('RED_RU', 'RED_ENG', 'RED_ARM', 'RED_LUX')
+    FROM base
     GROUP BY tag, level_1, level_2, level_3
     ORDER BY tag, level_1, level_2, level_3
   `;
