@@ -13,10 +13,28 @@ const TABLE_ID = 'red_leads_raw';
 const RED_FIXED_CPL_USD = 58;
 const AED_PER_USD = 3.6725;
 
-const RE_QL_DIRECT_STATUSES = [70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802];
-const RE_QL_HISTORY_REQUIRED_STATUSES = [70457490, 82310010, 142, 143];
-const RE_QL_ACTUAL_DIRECT_STATUSES = [70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802];
-const RE_QL_ACTUAL_HISTORY_REQUIRED_STATUSES = [70457490, 142];
+// QL (qualified):
+// - Direct YES statuses (even if current status is there now)
+// - PLUS NO statuses only when lead had qualification milestone in history (date_qual)
+const RE_QL_DIRECT_STATUSES = [
+  70457466, // квалификация пройдена
+  70457470, // презентация назначена
+  70457474, // презентация проведена
+  70457478, // показ назначен
+  70457482, // EOI / чек получен
+  70457486, // Документы подписаны (F/SPA)
+  70757586, // POST SALES
+  142,      // Квартира оплачена
+];
+const RE_QL_HISTORY_REQUIRED_STATUSES = [
+  143,      // Закрыто и не реализовано
+];
+
+// QL Actual: only active qualification stages (exclude POST SALES and factual sale)
+const RE_QL_ACTUAL_DIRECT_STATUSES = [
+  70457466, 70457470, 70457474, 70457478, 70457482, 70457486,
+];
+const RE_QL_ACTUAL_HISTORY_REQUIRED_STATUSES: number[] = [];
 const RE_MEETING_STATUSES = [70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802];
 // Deals = Документи підписані SPA (70457486) + Post Sales (70757586) + Won (142)
 const WON_STATUSES = [142, 70457486, 70757586];
@@ -57,8 +75,8 @@ export async function GET(req: NextRequest) {
       WITH base AS (
         SELECT
           r.*,
-          -- For deferred/reanimation/won/lost statuses count as QL only if lead had deeper stage history.
-          (m.date_meet IS NOT NULL OR m.date_res IS NOT NULL OR m.date_won IS NOT NULL) AS has_progress_history
+          -- Lead is qualified in history if milestone date_qual exists.
+          (m.date_qual IS NOT NULL) AS had_qual
         FROM \`${PROJECT_ID}.${DATASET_ID}.${TABLE_ID}\` r
         LEFT JOIN \`${PROJECT_ID}.${DATASET_ID}.milestones\` m
           ON SAFE_CAST(m.deal_id AS INT64) = SAFE_CAST(r.lead_id AS INT64)
@@ -77,17 +95,17 @@ export async function GET(req: NextRequest) {
         COUNTIF(
           NOT (
             status_id IN (${QL_DIRECT_SQL})
-            OR (status_id IN (${QL_HISTORY_REQUIRED_SQL}) AND has_progress_history)
+            OR (status_id IN (${QL_HISTORY_REQUIRED_SQL}) AND had_qual)
           )
           AND status_id NOT IN (${WON_SQL})
         )                                           AS no_answer_spam,
         COUNTIF(
           status_id IN (${QL_DIRECT_SQL})
-          OR (status_id IN (${QL_HISTORY_REQUIRED_SQL}) AND has_progress_history)
+          OR (status_id IN (${QL_HISTORY_REQUIRED_SQL}) AND had_qual)
         )                                           AS qualified_leads,
         COUNTIF(
           status_id IN (${QL_ACTUAL_DIRECT_SQL})
-          OR (status_id IN (${QL_ACTUAL_HISTORY_REQUIRED_SQL}) AND has_progress_history)
+          OR (status_id IN (${QL_ACTUAL_HISTORY_REQUIRED_SQL}) AND had_qual)
         )                                           AS ql_actual,
         COUNTIF(status_id IN (${MEETING_SQL}))      AS meetings,
         COUNTIF(status_id IN (${WON_SQL}))          AS deals,

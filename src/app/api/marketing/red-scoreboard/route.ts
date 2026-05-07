@@ -12,8 +12,19 @@ const TABLE_ID = 'red_leads_raw';
 const RED_FIXED_CPL_USD = 58;
 const AED_PER_USD = 3.6725;
 
-const RE_QL_DIRECT_STATUSES = [70457466, 70457470, 70457474, 70457478, 70457482, 70457486, 70757586, 74717798, 74717802];
-const RE_QL_HISTORY_REQUIRED_STATUSES = [70457490, 82310010, 142, 143];
+const RE_QL_DIRECT_STATUSES = [
+  70457466, // квалификация пройдена
+  70457470, // презентация назначена
+  70457474, // презентация проведена
+  70457478, // показ назначен
+  70457482, // EOI / чек получен
+  70457486, // Документы подписаны (F/SPA)
+  70757586, // POST SALES
+  142,      // Квартира оплачена
+];
+const RE_QL_HISTORY_REQUIRED_STATUSES = [
+  143,      // Закрыто и не реализовано
+];
 const WON_STATUSES = [142, 70457486, 70757586];
 
 const QL_DIRECT_SQL = RE_QL_DIRECT_STATUSES.join(', ');
@@ -48,7 +59,7 @@ export async function GET(req: NextRequest) {
       WITH base AS (
         SELECT
           r.*,
-          (m.date_meet IS NOT NULL OR m.date_res IS NOT NULL OR m.date_won IS NOT NULL) AS has_progress_history
+          (m.date_qual IS NOT NULL) AS had_qual
         FROM \`${PROJECT_ID}.${DATASET_ID}.${TABLE_ID}\` r
         LEFT JOIN \`${PROJECT_ID}.${DATASET_ID}.milestones\` m
           ON SAFE_CAST(m.deal_id AS INT64) = SAFE_CAST(r.lead_id AS INT64)
@@ -59,12 +70,12 @@ export async function GET(req: NextRequest) {
         COUNT(*) as total_leads,
         COUNTIF(
           status_id IN (${QL_DIRECT_SQL})
-          OR (status_id IN (${QL_HISTORY_REQUIRED_SQL}) AND has_progress_history)
+          OR (status_id IN (${QL_HISTORY_REQUIRED_SQL}) AND had_qual)
         ) as ql_count,
         SUM(
           CASE
             WHEN status_id IN (${QL_DIRECT_SQL})
-              OR (status_id IN (${QL_HISTORY_REQUIRED_SQL}) AND has_progress_history)
+              OR (status_id IN (${QL_HISTORY_REQUIRED_SQL}) AND had_qual)
             THEN ${RED_FIXED_CPL_USD} * ${AED_PER_USD}
             ELSE 0
           END

@@ -90,6 +90,28 @@ async function ensureTables(client) {
       payload JSONB NOT NULL DEFAULT '{}'::jsonb
     )
   `);
+
+  // Add new columns if they don't exist
+  try {
+    await client.query(`
+      ALTER TABLE pf_amo_sync_state
+      ADD COLUMN IF NOT EXISTS contact_phone TEXT,
+      ADD COLUMN IF NOT EXISTS contact_name TEXT
+    `);
+  } catch {
+    // Columns may already exist, silent fail
+  }
+
+  // Add index for contact-based deduplication
+  try {
+    await client.query(`
+      CREATE INDEX IF NOT EXISTS idx_pf_amo_sync_state_contact
+      ON pf_amo_sync_state(contact_phone, contact_name)
+      WHERE contact_phone IS NOT NULL AND contact_phone != ''
+    `);
+  } catch {
+    // Index may already exist, silent fail
+  }
 }
 
 async function readAmoTokens(client) {
@@ -438,15 +460,44 @@ async function loadAlreadySynced(client, ids) {
   return new Set(res.rows.map((r) => String(r.pf_lead_id)));
 }
 
-async function markSynced(client, pfLeadId, amoLeadId, payload) {
+// Contact-based deduplication: find existing synced leads with same phone + name
+async function loadAlreadySyncedByContact(client, leads) {
+  // Filter leads with valid phones
+  const contactLeads = leads.filter(l => {
+    const phone = pickPhone(l);
+    return phone && String(l?.sender?.name || '').trim();
+  });
+
+  if (!contactLeads.length) return new Set();
+
+  // Build array of (phone, name) pairs
+  const contacts = contactLeads.map(l => ({
+    phone: pickPhone(l),
+    name: String(l?.sender?.name || '').trim().slice(0, 255), // Cap at 255 chars for DB
+  }));
+
+  // Query for existing synced leads with same contact info
+  const placeholders = contacts.map((_, i) => `($${i * 2 + 1}::text, $${i * 2 + 2}::text)`).join(',');
+  const params = contacts.flatMap(c => [c.phone, c.name]);
+
+  const res = await client.query(
+    `SELECT DISTINCT pf_lead_id FROM pf_amo_sync_state 
+     WHERE (contact_phone, contact_name) IN (${placeholders})`,
+    params,
+  );
+
+  return new Set(res.rows.map((r) => String(r.pf_lead_id)));
+}
+
+async function markSynced(client, pfLeadId, amoLeadId, payload, contactPhone, contactName) {
   await client.query(
     `
-      INSERT INTO pf_amo_sync_state(pf_lead_id, amo_lead_id, synced_at, payload)
-      VALUES ($1, $2, NOW(), $3::jsonb)
+      INSERT INTO pf_amo_sync_state(pf_lead_id, amo_lead_id, synced_at, payload, contact_phone, contact_name)
+      VALUES ($1, $2, NOW(), $3::jsonb, $4, $5)
       ON CONFLICT (pf_lead_id)
-      DO UPDATE SET amo_lead_id = EXCLUDED.amo_lead_id, synced_at = NOW(), payload = EXCLUDED.payload
+      DO UPDATE SET amo_lead_id = EXCLUDED.amo_lead_id, synced_at = NOW(), payload = EXCLUDED.payload, contact_phone = EXCLUDED.contact_phone, contact_name = EXCLUDED.contact_name
     `,
-    [String(pfLeadId), Number(amoLeadId), JSON.stringify(payload || {})],
+    [String(pfLeadId), Number(amoLeadId), JSON.stringify(payload || {}), contactPhone || null, contactName || null],
   );
 }
 
@@ -484,9 +535,11 @@ async function main() {
 
     const pfIds = candidates.map((l) => String(l.id));
     const syncedSet = await loadAlreadySynced(client, pfIds);
+    const syncedByContactSet = await loadAlreadySyncedByContact(client, candidates);
 
     let created = 0;
     let skipped = 0;
+    let skippedByContact = 0;
     let failed = 0;
     let listingLeads = 0;
     let projectLeads = 0;
@@ -495,8 +548,16 @@ async function main() {
       if (created >= MAX_PER_RUN) break;
 
       const pfLeadId = String(lead.id);
+      
+      // Skip if already synced by PF ID
       if (syncedSet.has(pfLeadId)) {
         skipped += 1;
+        continue;
+      }
+
+      // Skip if already synced by contact (phone + name)
+      if (syncedByContactSet.has(pfLeadId)) {
+        skippedByContact += 1;
         continue;
       }
 
@@ -517,6 +578,10 @@ async function main() {
         const createdMonth = Number.isFinite(createdAtMs) && createdAtMs > 0
           ? new Date(createdAtMs).toISOString().slice(0, 7)
           : new Date().toISOString().slice(0, 7);
+        
+        const contactPhone = pickPhone(lead);
+        const contactName = String(lead?.sender?.name || '').trim().slice(0, 255);
+        
         await markSynced(client, pfLeadId, amoLeadId, {
           createdAt: lead.createdAt || null,
           created_month: createdMonth,
@@ -524,7 +589,7 @@ async function main() {
           listingRef: lead?.listing?.reference || null,
           projectId: lead?.project?.id || null,
           channel: lead?.channel || lead?.type || null,
-        });
+        }, contactPhone, contactName);
         created += 1;
         console.log(`[PF->AMO] Created AMO #${amoLeadId} from PF ${pfLeadId} (${isPrimPlus ? 'primary-plus' : 'listing'})`);
       } catch (err) {
@@ -543,6 +608,7 @@ async function main() {
       projectLeads,
       created,
       skipped,
+      skippedByContact,
       failed,
       maxPerRun: MAX_PER_RUN,
       sourceEnumId: sourceEnumId || null,
