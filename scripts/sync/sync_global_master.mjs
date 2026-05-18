@@ -41,11 +41,16 @@ function parseDate(str) {
         let y = parts[2] || '2026';
         if (y.length === 2) y = '20' + y;
         
-        // Assume DD.MM if p1 > 12
+        // Assume DD.MM if p1 > 12, but also check if month ended up > 12
         let day = p1, month = p2;
         if (parseInt(p1) > 12) { day = p1; month = p2; }
+        if (parseInt(month) > 12) { 
+            const temp = day;
+            day = month;
+            month = temp;
+        }
         
-        return `${y}-${month.padStart(2,'0')}-${day.padStart(2,'0')}`;
+        return `${y}-${month.toString().padStart(2,'0')}-${day.toString().padStart(2,'0')}`;
     }
     return '2026-01-01';
 }

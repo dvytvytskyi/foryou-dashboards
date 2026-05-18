@@ -5,11 +5,13 @@ import { Client } from 'pg';
 
 const AMO_PROVIDER = 'amo';
 const AMO_TOKENS_FILE = path.resolve('./secrets/amo_tokens.json');
+const PF_PROJECT_URL_MAP_FILE = path.resolve('./pf_project_url_map.json');
 
 const PF_FIELD_LEAD_ID = Number(process.env.AMO_PF_FIELD_LEAD_ID || 1516909);
 const PF_FIELD_LISTING_REF = Number(process.env.AMO_PF_FIELD_LISTING_REF || 1526392);
 const PF_FIELD_LISTING_ID = Number(process.env.AMO_PF_FIELD_LISTING_ID || 1526388);
 const PF_FIELD_LISTING_URL = Number(process.env.AMO_PF_FIELD_LISTING_URL || 1526390);
+const PF_FIELD_RESPONSE_LINK = Number(process.env.AMO_PF_FIELD_RESPONSE_LINK || 0);
 const PF_FIELD_CHANNEL_TYPE = Number(process.env.AMO_PF_FIELD_CHANNEL_TYPE || 1450527);
 
 const MAX_BACKFILL_ROWS = Number(process.env.PF_AMO_BACKFILL_LIMIT || 1000);
@@ -39,6 +41,22 @@ function parseJsonSafe(value) {
     return null;
   }
 }
+
+function loadProjectUrlOverrides() {
+  if (process.env.PF_PROJECT_URL_MAP_JSON) {
+    const parsed = parseJsonSafe(process.env.PF_PROJECT_URL_MAP_JSON);
+    if (parsed && typeof parsed === 'object') return parsed;
+  }
+
+  if (fs.existsSync(PF_PROJECT_URL_MAP_FILE)) {
+    const parsed = parseJsonSafe(fs.readFileSync(PF_PROJECT_URL_MAP_FILE, 'utf8'));
+    if (parsed && typeof parsed === 'object') return parsed;
+  }
+
+  return {};
+}
+
+const PROJECT_URL_OVERRIDES = loadProjectUrlOverrides();
 
 function readTokensFromFileOrEnv() {
   if (process.env.AMO_TOKENS_JSON) {
@@ -183,6 +201,94 @@ function normalizeFromPayload(value) {
   return out && out !== '-' ? out : '';
 }
 
+function slugifyPfPathPart(value) {
+  return String(value || '')
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function buildPfProjectDirectUrl(projectId, projectTitle, developerName) {
+  const id = normalizeFromPayload(projectId);
+  if (id) {
+    const override = normalizeFromPayload(PROJECT_URL_OVERRIDES[id]);
+    if (override) return override;
+  }
+
+  const developerSlug = slugifyPfPathPart(developerName);
+  const projectSlug = slugifyPfPathPart(projectTitle);
+  if (developerSlug && projectSlug) {
+    return `https://www.propertyfinder.ae/en/new-projects/${developerSlug}/${projectSlug}`;
+  }
+
+  return '';
+}
+
+function firstNonEmptyString(...values) {
+  for (const value of values) {
+    const out = normalizeFromPayload(value);
+    if (out) return out;
+  }
+  return '';
+}
+
+function isLegacyProjectUrl(url) {
+  return /^https?:\/\/www\.propertyfinder\.ae\/en\/new-developments\/project\/[a-f0-9-]+(?:[/?#].*)?$/i
+    .test(String(url || '').trim());
+}
+
+function buildListingUrlFromStoredPayload(payload, listingRef, listingId, projectMeta = null) {
+  const entityType = String(payload?.entityType || payload?.pf_category || '').trim().toLowerCase();
+
+  if (entityType === 'project') {
+    const projectId = firstNonEmptyString(payload?.projectId, payload?.project_id, listingRef, listingId);
+    const projectTitle = firstNonEmptyString(
+      payload?.projectTitle,
+      payload?.project_title,
+      payload?.title,
+      payload?.projectName,
+      payload?.project_name,
+      projectMeta?.title,
+    );
+    const projectDeveloper = firstNonEmptyString(
+      payload?.projectDeveloper,
+      payload?.project_developer,
+      payload?.developer,
+      payload?.developerName,
+      projectMeta?.developerName,
+    );
+
+    const directProjectUrl = buildPfProjectDirectUrl(projectId, projectTitle, projectDeveloper);
+    if (directProjectUrl) return directProjectUrl;
+
+    const payloadProjectUrl = firstNonEmptyString(
+      payload?.pf_listing_url,
+      payload?.listingUrl,
+      payload?.projectUrl,
+      payload?.project_url,
+      payload?.url,
+    );
+    if (payloadProjectUrl && !isLegacyProjectUrl(payloadProjectUrl)) return payloadProjectUrl;
+
+    const query = projectTitle || projectId;
+    if (query) return `https://www.propertyfinder.ae/en/new-projects?search=${encodeURIComponent(query)}`;
+    return '';
+  }
+
+  const payloadListingUrl = firstNonEmptyString(
+    payload?.pf_listing_url,
+    payload?.listingUrl,
+    payload?.listing_url,
+    payload?.url,
+  );
+  if (payloadListingUrl) return payloadListingUrl;
+
+  if (listingRef) return `https://www.propertyfinder.ae/en/search?q=${encodeURIComponent(listingRef)}`;
+  if (listingId) return `https://www.propertyfinder.ae/en/search?q=${encodeURIComponent(listingId)}`;
+  return '';
+}
+
 function extractFieldFromComment(comment, label) {
   const text = String(comment || '');
   const pattern = new RegExp(`^${label}\\s*:\\s*(.+)$`, 'mi');
@@ -202,7 +308,7 @@ function getCommentText(lead) {
   return normalizeFromPayload(commentField?.values?.[0]?.value || '');
 }
 
-function buildUpdateData(pfLeadId, amoLead, payload) {
+function buildUpdateData(pfLeadId, amoLead, payload, projectMeta = null) {
   const comment = getCommentText(amoLead);
 
   const listingRef = normalizeFromPayload(
@@ -219,11 +325,19 @@ function buildUpdateData(pfLeadId, amoLead, payload) {
       extractFieldFromComment(comment, 'Listing ID'),
   );
 
+  const rebuiltListingUrl = buildListingUrlFromStoredPayload(payload, listingRef, listingId, projectMeta);
   const listingUrl = normalizeFromPayload(
-    payload?.pf_listing_url ||
-      payload?.listingUrl ||
+    rebuiltListingUrl ||
       getLeadFieldValue(amoLead, PF_FIELD_LISTING_URL) ||
-      extractFieldFromComment(comment, 'Listing URL'),
+      extractFieldFromComment(comment, 'Listing URL') ||
+      extractFieldFromComment(comment, 'URL'),
+  );
+
+  const responseLink = normalizeFromPayload(
+    payload?.responseLink ||
+      payload?.pf_response_link ||
+      (PF_FIELD_RESPONSE_LINK > 0 ? getLeadFieldValue(amoLead, PF_FIELD_RESPONSE_LINK) : '') ||
+      extractFieldFromComment(comment, 'Response Link'),
   );
 
   const channel = normalizeFromPayload(
@@ -250,8 +364,35 @@ function buildUpdateData(pfLeadId, amoLead, payload) {
     { field_id: PF_FIELD_LISTING_URL, values: [{ value: listingUrl }] },
     { field_id: PF_FIELD_CHANNEL_TYPE, values: [{ value: channel }] },
   ];
+  if (PF_FIELD_RESPONSE_LINK > 0 && responseLink) {
+    customFields.push({ field_id: PF_FIELD_RESPONSE_LINK, values: [{ value: responseLink }] });
+  }
 
   return { customFields, createdAt };
+}
+
+async function lookupProjectMeta(client, projectId) {
+  if (!projectId) return null;
+  const res = await client.query(
+    `
+      SELECT
+        title,
+        COALESCE(
+          payload->'projectDetail'->'developer'->'name'->>'en',
+          payload->'projectDetail'->'developer'->>'name',
+          ''
+        ) AS developer_name
+      FROM pf_projects_snapshot
+      WHERE project_id = $1
+      LIMIT 1
+    `,
+    [String(projectId)],
+  );
+  if (!res.rows.length) return null;
+  return {
+    title: normalizeFromPayload(res.rows[0]?.title),
+    developerName: normalizeFromPayload(res.rows[0]?.developer_name),
+  };
 }
 
 async function patchLeadWithRetry(client, amoLeadId, updateData) {
@@ -333,6 +474,7 @@ async function main() {
     let failed = 0;
     let createdAtUpdated = 0;
     let createdAtSkipped = 0;
+    const projectMetaCache = new Map();
 
     for (const row of rows) {
       const pfLeadId = String(row.pf_lead_id || '').trim();
@@ -353,7 +495,21 @@ async function main() {
         continue;
       }
 
-      const updateData = buildUpdateData(pfLeadId, amoLead, payload);
+      const entityType = String(payload?.entityType || payload?.pf_category || '').trim().toLowerCase();
+      const projectId = normalizeFromPayload(payload?.projectId || payload?.project_id || payload?.pf_listing_ref || payload?.listingRef);
+      let projectMeta = null;
+      if (entityType === 'project' && projectId) {
+        if (!projectMetaCache.has(projectId)) {
+          try {
+            projectMetaCache.set(projectId, await lookupProjectMeta(client, projectId));
+          } catch {
+            projectMetaCache.set(projectId, null);
+          }
+        }
+        projectMeta = projectMetaCache.get(projectId);
+      }
+
+      const updateData = buildUpdateData(pfLeadId, amoLead, payload, projectMeta);
 
       const patchRes = await patchLeadWithRetry(client, amoLeadId, updateData);
       if (!patchRes.ok) {
@@ -381,6 +537,7 @@ async function main() {
             listingRef: PF_FIELD_LISTING_REF,
             listingId: PF_FIELD_LISTING_ID,
             listingUrl: PF_FIELD_LISTING_URL,
+            responseLink: PF_FIELD_RESPONSE_LINK,
             channel: PF_FIELD_CHANNEL_TYPE,
           },
         },

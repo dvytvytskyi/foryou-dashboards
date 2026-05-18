@@ -15,6 +15,7 @@
     "sync:pf:amo:seed": "node scripts/kpi/import_pf_amo_csv.mjs && node scripts/kpi/upsert_pf_amo_leads_to_db.mjs",
     "sync:pf:amo:backfill": "node scripts/sync/backfill_pf_amo_fields_from_pf.mjs",
     "sync:sales:postgres": "node scripts/sync/sync_sales_excel_to_postgres.mjs",
+    "sync:sales:full": "node scripts/sync/sync_global_master.mjs && node scripts/sync/sync_master_to_postgres.mjs",
     "sync:pf:match:phone": "node scripts/kpi/create_pf_master_view.mjs",
     "sync:pf:match:stats": "node scripts/sync/sync_pf_amo_match_stats.mjs",
     "sync:pf:project:match": "node scripts/kpi/sync_pf_amo_project_match.mjs",

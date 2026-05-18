@@ -6,6 +6,7 @@ import { Client } from 'pg';
 const PF_API_URL = 'https://atlas.propertyfinder.com/v1';
 const AMO_PROVIDER = 'amo';
 const AMO_TOKENS_FILE = path.resolve('./secrets/amo_tokens.json');
+const PF_PROJECT_URL_MAP_FILE = path.resolve('./pf_project_url_map.json');
 
 const SOURCE_FIELD_ID = Number(process.env.AMO_SOURCE_FIELD_ID || 703131);
 const COMMENT_FIELD_ID = Number(process.env.AMO_COMMENT_FIELD_ID || 1343875);
@@ -14,11 +15,15 @@ const PF_FIELD_LEAD_ID = Number(process.env.AMO_PF_FIELD_LEAD_ID || 1516909);
 const PF_FIELD_LISTING_REF = Number(process.env.AMO_PF_FIELD_LISTING_REF || 1526392);
 const PF_FIELD_LISTING_ID = Number(process.env.AMO_PF_FIELD_LISTING_ID || 1526388);
 const PF_FIELD_LISTING_URL = Number(process.env.AMO_PF_FIELD_LISTING_URL || 1526390);
+const PF_FIELD_RESPONSE_LINK = Number(process.env.AMO_PF_FIELD_RESPONSE_LINK || 0);
 const PF_FIELD_CHANNEL_TYPE = Number(process.env.AMO_PF_FIELD_CHANNEL_TYPE || 1450527);
 const PF_FIELD_CATEGORY = Number(process.env.AMO_PF_FIELD_CATEGORY || 1516913);
 const PF_FIELD_STATUS = Number(process.env.AMO_PF_FIELD_STATUS || 1516917);
 
-const LOOKBACK_HOURS = Number(process.env.PF_TO_AMO_LOOKBACK_HOURS || 168); // 7 days — safe due to pf_amo_sync_state dedup
+const LOOKBACK_MINUTES = Number(
+  process.env.PF_TO_AMO_LOOKBACK_MINUTES
+    || (Number(process.env.PF_TO_AMO_LOOKBACK_HOURS || 168) * 60),
+);
 const MAX_PAGES = Number(process.env.PF_TO_AMO_MAX_PAGES || 200);
 const MAX_PER_RUN = Number(process.env.PF_TO_AMO_MAX_PER_RUN || 500);
 const DRY_RUN = process.env.PF_TO_AMO_DRY_RUN === '1' || process.argv.includes('--dry-run');
@@ -48,6 +53,22 @@ function parseJsonSafe(value) {
     return null;
   }
 }
+
+function loadProjectUrlOverrides() {
+  if (process.env.PF_PROJECT_URL_MAP_JSON) {
+    const parsed = parseJsonSafe(process.env.PF_PROJECT_URL_MAP_JSON);
+    if (parsed && typeof parsed === 'object') return parsed;
+  }
+
+  if (fs.existsSync(PF_PROJECT_URL_MAP_FILE)) {
+    const parsed = parseJsonSafe(fs.readFileSync(PF_PROJECT_URL_MAP_FILE, 'utf8'));
+    if (parsed && typeof parsed === 'object') return parsed;
+  }
+
+  return {};
+}
+
+const PROJECT_URL_OVERRIDES = loadProjectUrlOverrides();
 
 function readTokensFromFileOrEnv() {
   if (process.env.AMO_TOKENS_JSON) {
@@ -112,6 +133,42 @@ async function ensureTables(client) {
   } catch {
     // Index may already exist, silent fail
   }
+
+  await client.query(`
+    CREATE TABLE IF NOT EXISTS pf_amo_sync_cursor (
+      source TEXT PRIMARY KEY,
+      last_created_at TIMESTAMPTZ NOT NULL,
+      last_pf_lead_id TEXT NOT NULL,
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `);
+}
+
+async function readPfSyncCursor(client) {
+  const res = await client.query(
+    `SELECT last_created_at, last_pf_lead_id FROM pf_amo_sync_cursor WHERE source = 'pf_leads' LIMIT 1`,
+  );
+  if (!res.rows.length) return null;
+  return {
+    lastCreatedAt: res.rows[0].last_created_at,
+    lastPfLeadId: String(res.rows[0].last_pf_lead_id || ''),
+  };
+}
+
+async function writePfSyncCursor(client, lastCreatedAt, lastPfLeadId) {
+  if (!lastCreatedAt || !lastPfLeadId) return;
+  await client.query(
+    `
+      INSERT INTO pf_amo_sync_cursor(source, last_created_at, last_pf_lead_id, updated_at)
+      VALUES ('pf_leads', $1::timestamptz, $2::text, NOW())
+      ON CONFLICT (source)
+      DO UPDATE SET
+        last_created_at = EXCLUDED.last_created_at,
+        last_pf_lead_id = EXCLUDED.last_pf_lead_id,
+        updated_at = NOW()
+    `,
+    [lastCreatedAt, String(lastPfLeadId)],
+  );
 }
 
 async function readAmoTokens(client) {
@@ -229,9 +286,26 @@ async function getPfToken() {
   return data.accessToken;
 }
 
-async function fetchRecentPfLeads() {
+function isLeadAfterCursor(lead, cursor) {
+  if (!cursor) return true;
+
+  const createdAt = Date.parse(lead?.createdAt || '');
+  if (!Number.isFinite(createdAt)) return false;
+
+  const cursorMs = Date.parse(cursor.lastCreatedAt || '');
+  if (!Number.isFinite(cursorMs)) return true;
+
+  if (createdAt > cursorMs) return true;
+  if (createdAt < cursorMs) return false;
+
+  const pfLeadId = String(lead?.id || '');
+  return pfLeadId > String(cursor.lastPfLeadId || '');
+}
+
+async function fetchRecentPfLeads(client) {
   const token = await getPfToken();
-  const cutoffMs = Date.now() - LOOKBACK_HOURS * 60 * 60 * 1000;
+  const cutoffMs = Date.now() - LOOKBACK_MINUTES * 60 * 1000;
+  const cursor = await readPfSyncCursor(client);
   const out = [];
 
   let page = 1;
@@ -249,16 +323,28 @@ async function fetchRecentPfLeads() {
     if (!rows.length) break;
 
     let olderCount = 0;
+    let notAfterCursorCount = 0;
     for (const lead of rows) {
       const createdAtMs = Date.parse(lead?.createdAt || '');
-      if (Number.isFinite(createdAtMs) && createdAtMs >= cutoffMs) {
-        out.push(lead);
-      } else {
+      if (!Number.isFinite(createdAtMs)) continue;
+
+      if (createdAtMs < cutoffMs) {
         olderCount += 1;
+        continue;
+      }
+
+      if (!isLeadAfterCursor(lead, cursor)) {
+        notAfterCursorCount += 1;
+        continue;
+      }
+
+      if (createdAtMs >= cutoffMs) {
+        out.push(lead);
       }
     }
 
     if (olderCount === rows.length) break;
+    if (cursor && notAfterCursorCount === rows.length) break;
     if (!data.pagination?.nextPage) break;
     page = data.pagination.nextPage;
   }
@@ -268,6 +354,17 @@ async function fetchRecentPfLeads() {
 
 function normalizePhone(value) {
   return String(value || '').replace(/[^0-9+]/g, '').trim();
+}
+
+function normalizeContactName(value) {
+  return String(value || '').trim().replace(/\s+/g, ' ').toLowerCase();
+}
+
+function buildContactDedupKey(phone, name) {
+  const p = normalizePhone(phone);
+  const n = normalizeContactName(name);
+  if (!p || !n) return '';
+  return `${p}::${n}`;
 }
 
 function pickPhone(lead) {
@@ -280,27 +377,107 @@ function isProjectLead(pfLead) {
   return String(pfLead?.entityType || '').toLowerCase() === 'project';
 }
 
-function buildPfListingUrl(pfLead) {
+function firstNonEmptyString(...values) {
+  for (const value of values) {
+    const out = String(value || '').trim();
+    if (out) return out;
+  }
+  return '';
+}
+
+function slugifyPfPathPart(value) {
+  return String(value || '')
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function buildPfProjectDirectUrl(projectId, projectTitle, developerName) {
+  const id = firstNonEmptyString(projectId);
+  if (id) {
+    const override = firstNonEmptyString(PROJECT_URL_OVERRIDES[id]);
+    if (override) return override;
+  }
+
+  const developerSlug = slugifyPfPathPart(developerName);
+  const projectSlug = slugifyPfPathPart(projectTitle);
+  if (developerSlug && projectSlug) {
+    return `https://www.propertyfinder.ae/en/new-projects/${developerSlug}/${projectSlug}`;
+  }
+
+  return '';
+}
+
+function buildPfListingUrl(pfLead, projectMeta = null) {
   if (isProjectLead(pfLead)) {
-    const projectId = String(pfLead?.project?.id || '').trim();
-    if (projectId) return `https://www.propertyfinder.ae/en/new-developments/project/${encodeURIComponent(projectId)}`;
+    const projectId = firstNonEmptyString(pfLead?.project?.id);
+    const projectTitle = firstNonEmptyString(projectMeta?.title, pfLead?.project?.title, pfLead?.project?.name);
+    const projectDeveloper = firstNonEmptyString(
+      projectMeta?.developerName,
+      pfLead?.project?.developer?.name?.en,
+      pfLead?.project?.developer?.name,
+      pfLead?.project?.developerName,
+    );
+
+    const directProjectUrl = buildPfProjectDirectUrl(projectId, projectTitle, projectDeveloper);
+    if (directProjectUrl) return directProjectUrl;
+
+    const projectUrl = firstNonEmptyString(
+      pfLead?.project?.url,
+      pfLead?.project?.link,
+      pfLead?.project?.webUrl,
+      pfLead?.project?.pageUrl,
+      pfLead?.project?.permalink,
+      pfLead?.projectUrl,
+      pfLead?.url,
+    );
+    if (projectUrl) return projectUrl;
+
+    const projectName = firstNonEmptyString(projectTitle, pfLead?.project?.title, pfLead?.project?.name);
+    const searchQuery = projectName || projectId;
+    if (searchQuery) return `https://www.propertyfinder.ae/en/new-projects?search=${encodeURIComponent(searchQuery)}`;
     return '';
   }
-  const listingRef = String(pfLead?.listing?.reference || '').trim();
-  const listingId = String(pfLead?.listing?.id || '').trim();
+  const listingUrl = firstNonEmptyString(
+    pfLead?.listing?.url,
+    pfLead?.listing?.link,
+    pfLead?.listing?.webUrl,
+    pfLead?.listing?.permalink,
+    pfLead?.url,
+  );
+  if (listingUrl) return listingUrl;
+
+  const listingRef = firstNonEmptyString(pfLead?.listing?.reference);
+  const listingId = firstNonEmptyString(pfLead?.listing?.id);
   if (listingRef) return `https://www.propertyfinder.ae/en/search?q=${encodeURIComponent(listingRef)}`;
   if (listingId) return `https://www.propertyfinder.ae/en/search?q=${encodeURIComponent(listingId)}`;
   return '';
 }
 
-async function lookupProjectTitle(client, projectId) {
+async function lookupProjectMeta(client, projectId) {
   if (!projectId) return null;
   try {
     const res = await client.query(
-      `SELECT title FROM pf_projects_snapshot WHERE project_id = $1 LIMIT 1`,
+      `
+        SELECT
+          title,
+          COALESCE(
+            payload->'projectDetail'->'developer'->'name'->>'en',
+            payload->'projectDetail'->'developer'->>'name',
+            ''
+          ) AS developer_name
+        FROM pf_projects_snapshot
+        WHERE project_id = $1
+        LIMIT 1
+      `,
       [String(projectId)],
     );
-    return res.rows[0]?.title || null;
+    if (!res.rows.length) return null;
+    return {
+      title: res.rows[0]?.title || null,
+      developerName: res.rows[0]?.developer_name || null,
+    };
   } catch {
     return null;
   }
@@ -322,15 +499,15 @@ async function getPropertyFinderSourceEnumId(client) {
   return found?.id ? Number(found.id) : null;
 }
 
-function buildLeadPayload(pfLead, sourceEnumId, projectTitle) {
+function buildLeadPayload(pfLead, sourceEnumId, projectMeta = null) {
   const pfLeadId = String(pfLead?.id || '').trim();
   const senderName = String(pfLead?.sender?.name || '').trim();
   const phone = pickPhone(pfLead);
   const channelType = String(pfLead?.channel || pfLead?.type || '').trim();
   const pfStatus = String(pfLead?.status || '').trim();
   const pfCategory = String(pfLead?.entityType || '').trim() || 'listing';
-  const listingUrl = buildPfListingUrl(pfLead);
   const isPrimPlus = isProjectLead(pfLead);
+  const projectTitle = firstNonEmptyString(projectMeta?.title);
 
   // For project leads use project.id as the reference identifier
   const listingId = isPrimPlus
@@ -339,6 +516,8 @@ function buildLeadPayload(pfLead, sourceEnumId, projectTitle) {
   const listingRef = isPrimPlus
     ? String(pfLead?.project?.id || '').trim()
     : (pfLead?.listing?.reference ? String(pfLead.listing.reference) : '');
+  const listingUrl = buildPfListingUrl(pfLead, projectMeta);
+  const responseLink = firstNonEmptyString(pfLead?.responseLink);
 
   const customFields = [
     { field_id: PF_FIELD_LEAD_ID, values: [{ value: pfLeadId }] },
@@ -360,6 +539,7 @@ function buildLeadPayload(pfLead, sourceEnumId, projectTitle) {
             isPrimPlus ? `Project ID: ${listingId || '-'}` : `Listing ID: ${listingId || '-'}`,
             isPrimPlus ? `Project Title: ${projectTitle || '-'}` : `Listing Ref: ${listingRef || '-'}`,
             `URL: ${listingUrl || '-'}`,
+            `Response Link: ${responseLink || '-'}`,
             `Channel: ${channelType || '-'}`,
             `Status: ${pfStatus || '-'}`,
             `CreatedAt: ${pfLead?.createdAt || '-'}`,
@@ -371,6 +551,9 @@ function buildLeadPayload(pfLead, sourceEnumId, projectTitle) {
 
   if (sourceEnumId) {
     customFields.unshift({ field_id: SOURCE_FIELD_ID, values: [{ enum_id: sourceEnumId }] });
+  }
+  if (PF_FIELD_RESPONSE_LINK > 0 && responseLink) {
+    customFields.push({ field_id: PF_FIELD_RESPONSE_LINK, values: [{ value: responseLink }] });
   }
 
   const contact = {
@@ -422,11 +605,11 @@ function buildLeadPayload(pfLead, sourceEnumId, projectTitle) {
 }
 
 async function createAmoLead(client, pfLead, sourceEnumId) {
-  let projectTitle = null;
+  let projectMeta = null;
   if (isProjectLead(pfLead) && pfLead?.project?.id) {
-    projectTitle = await lookupProjectTitle(client, pfLead.project.id);
+    projectMeta = await lookupProjectMeta(client, pfLead.project.id);
   }
-  const body = [buildLeadPayload(pfLead, sourceEnumId, projectTitle)];
+  const body = [buildLeadPayload(pfLead, sourceEnumId, projectMeta)];
   const res = await amoFetch(client, '/api/v4/leads/complex', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -446,7 +629,7 @@ async function createAmoLead(client, pfLead, sourceEnumId) {
     throw new Error(`AMO create returned invalid lead id: ${text.slice(0, 300)}`);
   }
 
-  return amoLeadId;
+  return { amoLeadId, projectMeta };
 }
 
 async function loadAlreadySynced(client, ids) {
@@ -460,33 +643,34 @@ async function loadAlreadySynced(client, ids) {
   return new Set(res.rows.map((r) => String(r.pf_lead_id)));
 }
 
-// Contact-based deduplication: find existing synced leads with same phone + name
+// Contact-based deduplication: return existing (phone,name) keys from sync state.
 async function loadAlreadySyncedByContact(client, leads) {
-  // Filter leads with valid phones
-  const contactLeads = leads.filter(l => {
-    const phone = pickPhone(l);
-    return phone && String(l?.sender?.name || '').trim();
+  const contactLeads = leads.filter((l) => {
+    const key = buildContactDedupKey(pickPhone(l), l?.sender?.name || '');
+    return Boolean(key);
   });
 
   if (!contactLeads.length) return new Set();
 
-  // Build array of (phone, name) pairs
-  const contacts = contactLeads.map(l => ({
+  const contacts = contactLeads.map((l) => ({
     phone: pickPhone(l),
-    name: String(l?.sender?.name || '').trim().slice(0, 255), // Cap at 255 chars for DB
+    name: normalizeContactName(l?.sender?.name || '').slice(0, 255),
   }));
 
-  // Query for existing synced leads with same contact info
   const placeholders = contacts.map((_, i) => `($${i * 2 + 1}::text, $${i * 2 + 2}::text)`).join(',');
-  const params = contacts.flatMap(c => [c.phone, c.name]);
+  const params = contacts.flatMap((c) => [c.phone, c.name]);
 
   const res = await client.query(
-    `SELECT DISTINCT pf_lead_id FROM pf_amo_sync_state 
+    `SELECT DISTINCT contact_phone, contact_name FROM pf_amo_sync_state
      WHERE (contact_phone, contact_name) IN (${placeholders})`,
     params,
   );
 
-  return new Set(res.rows.map((r) => String(r.pf_lead_id)));
+  return new Set(
+    res.rows
+      .map((r) => buildContactDedupKey(r.contact_phone, r.contact_name))
+      .filter(Boolean),
+  );
 }
 
 async function markSynced(client, pfLeadId, amoLeadId, payload, contactPhone, contactName) {
@@ -527,7 +711,7 @@ async function main() {
 
   try {
     const sourceEnumId = await getPropertyFinderSourceEnumId(client);
-    const recentPfLeads = await fetchRecentPfLeads();
+    const recentPfLeads = await fetchRecentPfLeads(client);
 
     const candidates = recentPfLeads
       .filter((l) => l?.id)
@@ -543,6 +727,9 @@ async function main() {
     let failed = 0;
     let listingLeads = 0;
     let projectLeads = 0;
+    let cursorBlockedByFailure = false;
+    let cursorLastCreatedAt = null;
+    let cursorLastPfLeadId = '';
 
     for (const lead of candidates) {
       if (created >= MAX_PER_RUN) break;
@@ -552,12 +739,24 @@ async function main() {
       // Skip if already synced by PF ID
       if (syncedSet.has(pfLeadId)) {
         skipped += 1;
+        if (!cursorBlockedByFailure) {
+          cursorLastCreatedAt = lead?.createdAt || cursorLastCreatedAt;
+          cursorLastPfLeadId = pfLeadId || cursorLastPfLeadId;
+        }
         continue;
       }
 
+      const contactPhone = pickPhone(lead);
+      const contactName = normalizeContactName(lead?.sender?.name || '').slice(0, 255);
+      const contactKey = buildContactDedupKey(contactPhone, contactName);
+
       // Skip if already synced by contact (phone + name)
-      if (syncedByContactSet.has(pfLeadId)) {
+      if (contactKey && syncedByContactSet.has(contactKey)) {
         skippedByContact += 1;
+        if (!cursorBlockedByFailure) {
+          cursorLastCreatedAt = lead?.createdAt || cursorLastCreatedAt;
+          cursorLastPfLeadId = pfLeadId || cursorLastPfLeadId;
+        }
         continue;
       }
 
@@ -565,43 +764,57 @@ async function main() {
       if (isPrimPlus) projectLeads += 1; else listingLeads += 1;
 
       if (DRY_RUN) {
-        const projectTitle = isPrimPlus ? await lookupProjectTitle(client, lead?.project?.id) : null;
-        console.log(`[DRY] ${isPrimPlus ? 'PP' : 'PF'} lead ${pfLeadId} | ${lead?.sender?.name || '-'} | ${isPrimPlus ? (projectTitle || lead?.project?.id || '-') : (lead?.listing?.reference || '-')} | channel=${lead?.channel}`);
+        const projectMeta = isPrimPlus ? await lookupProjectMeta(client, lead?.project?.id) : null;
+        console.log(`[DRY] ${isPrimPlus ? 'PP' : 'PF'} lead ${pfLeadId} | ${lead?.sender?.name || '-'} | ${isPrimPlus ? (projectMeta?.title || lead?.project?.id || '-') : (lead?.listing?.reference || '-')} | channel=${lead?.channel}`);
         created += 1;
         continue;
       }
 
       try {
-        const amoLeadId = await createAmoLead(client, lead, sourceEnumId);
+        const { amoLeadId, projectMeta } = await createAmoLead(client, lead, sourceEnumId);
         // Derive created_month: prefer lead.createdAt from PF API, fallback to today
         const createdAtMs = lead?.createdAt ? Date.parse(lead.createdAt) : NaN;
         const createdMonth = Number.isFinite(createdAtMs) && createdAtMs > 0
           ? new Date(createdAtMs).toISOString().slice(0, 7)
           : new Date().toISOString().slice(0, 7);
         
-        const contactPhone = pickPhone(lead);
-        const contactName = String(lead?.sender?.name || '').trim().slice(0, 255);
-        
         await markSynced(client, pfLeadId, amoLeadId, {
           createdAt: lead.createdAt || null,
           created_month: createdMonth,
           entityType: lead?.entityType || 'listing',
           listingRef: lead?.listing?.reference || null,
+          listingUrl: buildPfListingUrl(lead, projectMeta),
+          responseLink: lead?.responseLink || null,
           projectId: lead?.project?.id || null,
+          projectTitle: projectMeta?.title || null,
+          projectDeveloper: projectMeta?.developerName || null,
           channel: lead?.channel || lead?.type || null,
+          senderName: lead?.sender?.name || null,
+          senderPhone: contactPhone || null,
         }, contactPhone, contactName);
+        if (contactKey) syncedByContactSet.add(contactKey);
         created += 1;
         console.log(`[PF->AMO] Created AMO #${amoLeadId} from PF ${pfLeadId} (${isPrimPlus ? 'primary-plus' : 'listing'})`);
+
+        if (!cursorBlockedByFailure) {
+          cursorLastCreatedAt = lead?.createdAt || cursorLastCreatedAt;
+          cursorLastPfLeadId = pfLeadId || cursorLastPfLeadId;
+        }
       } catch (err) {
         failed += 1;
+        cursorBlockedByFailure = true;
         console.error(`[PF->AMO] Failed for PF lead ${pfLeadId}:`, err.message || err);
       }
+    }
+
+    if (!DRY_RUN && cursorLastCreatedAt && cursorLastPfLeadId) {
+      await writePfSyncCursor(client, cursorLastCreatedAt, cursorLastPfLeadId);
     }
 
     console.log(JSON.stringify({
       success: true,
       dryRun: DRY_RUN,
-      lookbackHours: LOOKBACK_HOURS,
+      lookbackMinutes: LOOKBACK_MINUTES,
       fetched: recentPfLeads.length,
       candidates: candidates.length,
       listingLeads,

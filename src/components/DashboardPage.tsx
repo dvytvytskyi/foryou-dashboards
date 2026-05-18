@@ -1309,12 +1309,6 @@ export default function DashboardPage({
         )}
 
         {error ? <div className={styles.error}>{error}</div> : null}
-        {!isNested && showDataStatus ? (
-          <div className={`${styles.dataStatus} ${dataStatus.freshnessError ? styles.dataStatusError : styles.dataStatusOk}`}>
-            <span>Last update: {formatStatusDateTime(dataStatus.lastUpdatedAt)}</span>
-            <span>{dataStatus.freshnessError ? `ERROR: ${dataStatus.freshnessError}` : 'Status: OK'}</span>
-          </div>
-        ) : null}
         {!isNested && extraContent}
 
         {!hideTable && (
