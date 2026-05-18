@@ -1,6 +1,8 @@
 name: Sync PF → AMO
 
 on:
+  schedule:
+    - cron: '*/30 * * * *' # Every 30 minutes (UTC)
   workflow_dispatch:
     inputs:
       lookback_hours:
@@ -65,7 +67,7 @@ jobs:
           POSTGRES_SSL_MODE: ${{ secrets.POSTGRES_SSL_MODE }}
           AMO_SOURCE_FIELD_ID: ${{ secrets.AMO_SOURCE_FIELD_ID }}
           AMO_SOURCE_PROPERTY_FINDER_ENUM_ID: ${{ secrets.AMO_SOURCE_PROPERTY_FINDER_ENUM_ID }}
-          PF_TO_AMO_LOOKBACK_HOURS: ${{ github.event.inputs.lookback_hours || '168' }}
+          PF_TO_AMO_LOOKBACK_HOURS: ${{ github.event.inputs.lookback_hours || (github.event_name == 'schedule' && '1' || '168') }}
           PF_TO_AMO_DRY_RUN: ${{ github.event.inputs.dry_run || '0' }}
 
       - name: Rebuild PF ↔ AMO match stats (dashboard tables)

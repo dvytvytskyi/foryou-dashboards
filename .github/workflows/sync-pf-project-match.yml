@@ -1,6 +1,8 @@
-name: Sync PF Project Match (manual)
+name: Sync PF Project Match
 
 on:
+  schedule:
+    - cron: '0 */4 * * *' # Every 4 hours (UTC)
   workflow_dispatch:
 
 jobs:
