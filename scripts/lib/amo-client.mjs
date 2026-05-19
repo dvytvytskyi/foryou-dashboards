@@ -106,7 +106,7 @@ function persistTokensToFile(tokens) {
 async function refreshTokens(currentTokens) {
   const clientId = process.env.AMO_CLIENT_ID;
   const clientSecret = process.env.AMO_CLIENT_SECRET;
-  const redirectUri = process.env.AMO_REDIRECT_URI || `https://dashboards.foryou-realestate.com/api/amo/oauth-callback`;
+  const redirectUri = process.env.AMO_REDIRECT_URI || `https://foryou-admin.ru/api/amo/oauth-callback`;
 
   if (!clientId || !clientSecret) {
     throw new Error('[amo-client] AMO_CLIENT_ID / AMO_CLIENT_SECRET not set — cannot refresh');

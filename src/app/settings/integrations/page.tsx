@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react';
 
 const AMO_CLIENT_ID = '36f61b3d-349d-48e8-850a-08ed66021ec6';
-const AMO_REDIRECT_URI = 'https://dashboards.foryou-realestate.com/api/amo/oauth-callback';
+const APP_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://foryou-admin.ru';
+const AMO_REDIRECT_URI = process.env.NEXT_PUBLIC_AMO_REDIRECT_URI || `${APP_BASE_URL}/api/amo/oauth-callback`;
 const AMO_DOMAIN = 'reforyou.amocrm.ru';
 
 const AMO_OAUTH_URL =

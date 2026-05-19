@@ -5,10 +5,10 @@ import path from 'path';
 
 const conn = new Client();
 const SERVER_CONFIG = {
-  host: '135.181.201.185',
+    host: '109.73.194.70',
   port: 22,
   username: 'root',
-  password: 'xTVvPEwrpaF4'
+    password: process.env.DEPLOY_SERVER_PASSWORD || ''
 };
 
 const REMOTE_DIR = '/root/amo-sync';

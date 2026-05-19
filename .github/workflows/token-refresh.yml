@@ -61,4 +61,4 @@ jobs:
         run: |
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
             -H "Content-Type: application/json" \
-            -d "{\"chat_id\":\"${{ secrets.TELEGRAM_CHAT_ID }}\",\"text\":\"⚠️ <b>AMO Token Refresh FAILED</b>\\n\\nRefresh token протух або інтеграція відкликана.\\n\\n👉 <a href=\\\"https://dashboards.foryou-realestate.com/settings/integrations\\\">Реавторизувати AMO</a>\",\"parse_mode\":\"HTML\"}"
+            -d "{\"chat_id\":\"${{ secrets.TELEGRAM_CHAT_ID }}\",\"text\":\"⚠️ <b>AMO Token Refresh FAILED</b>\\n\\nRefresh token протух або інтеграція відкликана.\\n\\n👉 <a href=\\\"https://foryou-admin.ru/settings/integrations\\\">Реавторизувати AMO</a>\",\"parse_mode\":\"HTML\"}"

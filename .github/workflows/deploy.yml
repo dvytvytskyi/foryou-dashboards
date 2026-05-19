@@ -12,6 +12,11 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      DEPLOY_HOST: 109.73.194.70
+      DEPLOY_USER: root
+      DEPLOY_PATH: /root/foryou-admin-ru
+      APP_BASE_URL: https://foryou-admin.ru
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -21,17 +26,17 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H 135.181.201.185 >> ~/.ssh/known_hosts
+          ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
 
       - name: Sync files to server
         run: |
-          rsync -avz --exclude-from=.rsync-exclude ./ root@135.181.201.185:/root/foryou-dashboards-prod/
+          rsync -avz --exclude-from=.rsync-exclude ./ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/"
 
       - name: Update Environment and Restart
         run: |
-          ssh root@135.181.201.185 'bash -se' <<EOF_REMOTE
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" 'bash -se' <<EOF_REMOTE
           set -euo pipefail
-          cd /root/foryou-dashboards-prod
+          cd "$DEPLOY_PATH"
           mkdir -p secrets
 
           cat > secrets/crypto-world-epta-2db29829d55d.json <<'EOF_GOOGLE_AUTH_JSON'
@@ -49,12 +54,15 @@ jobs:
           NODE_ENV=production
           PORT=3000
           HOSTNAME=0.0.0.0
+          APP_BASE_URL=$APP_BASE_URL
+          NEXT_PUBLIC_BASE_URL=$APP_BASE_URL
+          NEXT_PUBLIC_AMO_REDIRECT_URI=$APP_BASE_URL/api/amo/oauth-callback
           GOOGLE_AUTH_JSON=$GOOGLE_AUTH_JSON_COMPACT
           GOOGLE_SHEETS_KEY_FILE=$GOOGLE_AUTH_JSON_COMPACT
           AMO_CLIENT_ID=${{ secrets.AMO_CLIENT_ID }}
           AMO_CLIENT_SECRET=${{ secrets.AMO_CLIENT_SECRET }}
           AMO_DOMAIN=${{ secrets.AMO_DOMAIN }}
-          AMO_REDIRECT_URI=${{ secrets.AMO_REDIRECT_URI }}
+          AMO_REDIRECT_URI=${{ secrets.AMO_REDIRECT_URI || 'https://foryou-admin.ru/api/amo/oauth-callback' }}
           AUTH_SECRET=${{ secrets.AUTH_SECRET }}
           POSTGRES_URL=${{ secrets.POSTGRES_URL }}
           POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}

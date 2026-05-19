@@ -1,6 +1,6 @@
 services:
   app:
-    container_name: foryou-dashboards-prod_app_1
+    container_name: foryou-admin-ru_app_1
     build:
       context: .
       dockerfile: Dockerfile

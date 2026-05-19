@@ -4,7 +4,7 @@ import { queryPostgres } from '@/lib/postgres';
 const AMO_DOMAIN = process.env.AMO_DOMAIN!;
 const CLIENT_ID = process.env.AMO_CLIENT_ID!;
 const CLIENT_SECRET = process.env.AMO_CLIENT_SECRET!;
-const REDIRECT_URI = 'https://dashboards.foryou-realestate.com/api/amo/oauth-callback';
+const REDIRECT_URI = process.env.AMO_REDIRECT_URI || 'https://foryou-admin.ru/api/amo/oauth-callback';
 
 async function saveTokensToDB(tokens: Record<string, unknown>) {
   await queryPostgres(

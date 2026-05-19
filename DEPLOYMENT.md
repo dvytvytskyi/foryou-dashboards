@@ -3,13 +3,13 @@
 Прод-деплой у цьому репозиторії виконується тільки через GitHub Actions. Ручний server-side deploy-скрипт більше не є частиною підтримуваного процесу.
 
 ## 1. Інформація про сервер
-- IP адреса: `135.181.201.185`
+- IP адреса: `109.73.194.70`
 - Користувач: `root`
-- Домен: `https://dashboards.foryou-realestate.com/`
+- Домен: `https://foryou-admin.ru/`
 
 ## 2. Локації на сервері
-- Основна директорія проекту: `/root/foryou-dashboards-prod/`
-- Nginx конфіг: `/etc/nginx/sites-enabled/dashboards.foryou-realestate.com`
+- Основна директорія проекту: `/root/foryou-admin-ru/`
+- Nginx конфіг: `/etc/nginx/sites-enabled/foryou-admin.ru`
 - Nginx проксіює на контейнерний порт `3007`, який мапиться на `3000` всередині app-контейнера.
 
 ## 3. Єдиний сценарій деплою
@@ -24,7 +24,7 @@
 Пайплайн працює так:
 
 1. push у `main` або ручний запуск workflow
-2. `rsync` синхронізує репозиторій у `/root/foryou-dashboards-prod/`
+2. `rsync` синхронізує репозиторій у `/root/foryou-admin-ru/`
 3. workflow оновлює `secrets/*.json` на сервері з GitHub Secrets
 4. workflow генерує `.env` для контейнера
 5. workflow запускає `docker compose` або fallback на `docker-compose`
@@ -59,7 +59,7 @@
 На сервері:
 
 ```bash
-cd /root/foryou-dashboards-prod
+cd /root/foryou-admin-ru
 docker compose ps || docker-compose ps
 docker compose logs --tail 100 app || docker-compose logs --tail 100 app
 ```
@@ -67,7 +67,7 @@ docker compose logs --tail 100 app || docker-compose logs --tail 100 app
 Перевірка health endpoint через контейнерний web port:
 
 ```bash
-curl -I https://dashboards.foryou-realestate.com/login
+curl -I https://foryou-admin.ru/login
 ```
 
 ## 7. Типові проблеми
@@ -83,7 +83,7 @@ curl -I https://dashboards.foryou-realestate.com/login
 Перевірка:
 
 ```bash
-cd /root/foryou-dashboards-prod
+cd /root/foryou-admin-ru
 docker compose logs --tail 100 app || docker-compose logs --tail 100 app
 ```
 
@@ -93,7 +93,7 @@ docker compose logs --tail 100 app || docker-compose logs --tail 100 app
 Перевірка:
 
 ```bash
-cd /root/foryou-dashboards-prod
+cd /root/foryou-admin-ru
 ls -lh pf_listings_report.json pf_projects_report.json
 ```
 

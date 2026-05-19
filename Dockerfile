@@ -1,5 +1,5 @@
 # Base image
-FROM node:20-alpine AS builder
+FROM public.ecr.aws/docker/library/node:20-alpine AS builder
 
 WORKDIR /app
 
@@ -19,7 +19,7 @@ RUN ls *.csv 2>/dev/null | grep -q . || touch .placeholder.csv
 RUN ls *.xlsx 2>/dev/null | grep -q . || touch .placeholder.xlsx
 
 # Runner stage
-FROM node:20-alpine AS runner
+FROM public.ecr.aws/docker/library/node:20-alpine AS runner
 
 WORKDIR /app
 
