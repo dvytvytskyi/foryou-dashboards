@@ -2,7 +2,7 @@ name: Sync PF → AMO
 
 on:
   schedule:
-    - cron: '*/30 * * * *' # Every 30 minutes (UTC)
+    - cron: '*/5 * * * *' # Every 5 minutes (UTC)
   workflow_dispatch:
     inputs:
       lookback_hours:
