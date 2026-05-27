@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { google } from 'googleapis';
 import { BetaAnalyticsDataClient } from '@google-analytics/data';
 import { getSession } from '@/lib/auth';
+import { readGoogleCredentials } from '@/lib/googleAuth';
 
 const GA4_PROPERTY_ID = '510214784';
-const keyFilename = 'crypto-world-epta-3d8cb91d7676.json';
 const GSC_SITE_URL = 'sc-domain:foryou-realestate.com';
 
 export const dynamic = 'force-dynamic';
@@ -34,15 +34,17 @@ export async function GET(request: NextRequest) {
             endDate = getYYYYMMDD(new Date());
         }
 
+        const credentials = readGoogleCredentials();
+
         const auth = new google.auth.GoogleAuth({
-            keyFile: keyFilename,
+            credentials,
             scopes: ['https://www.googleapis.com/auth/webmasters.readonly'],
         });
         const searchconsole = google.searchconsole({ version: 'v1', auth });
         
         // Init client with fallback: true to use REST API instead of gRPC
         const analyticsDataClient = new BetaAnalyticsDataClient({ 
-            keyFilename,
+            credentials,
             fallback: true
         });
 
