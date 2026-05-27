@@ -5,6 +5,7 @@ import { readPlanDataFromSheets, PlanByBroker } from '@/lib/sheets/planReader';
 import { classifyLeadSource } from '@/lib/crmRules.js';
 import { amoFetchJson as sharedAmoFetchJson } from '@/lib/amo';
 import { createBigQueryClient } from '@/lib/googleAuth';
+import { bigQueryQuery } from '@/lib/bigqueryClient';
 
 const RAW_CACHE_FILE = path.resolve(process.cwd(), 'data/cache/plan-fact/raw_leads.json');
 
@@ -198,7 +199,7 @@ const BQ_DATASET = 'foryou_analytics';
 const BQ_LEADS_TABLE = 'plan_fact_crm_leads';
 const BQ_TASKS_TABLE = 'plan_fact_crm_tasks';
 
-const bq = createBigQueryClient(BQ_PROJECT_ID);
+// const bq = createBigQueryClient(BQ_PROJECT_ID);
 
 const RE_PIPELINE_ID = 8696950;
 const KLYKOV_PIPELINE_ID = 10776450;
@@ -489,15 +490,15 @@ async function loadLeadsAndTasks(brokerId: number): Promise<{ leads: LeadRecord[
   let rawFromCache = await readCacheFile();
 
   if (!rawFromCache) {
-    const [[leadRows], [taskRows], [milestoneRows]] = await Promise.all([
-      bq.query({
+    const [leadRows, taskRows, milestoneRows] = await Promise.all([
+      bigQueryQuery({
         query: `
           SELECT lead_id, created_at, status_id, pipeline_id, responsible_user_id, broker_name, source_name, price
           FROM \`${BQ_PROJECT_ID}.${BQ_DATASET}.${BQ_LEADS_TABLE}\`
         `,
         useLegacySql: false,
       }),
-      bq.query({
+      bigQueryQuery({
         query: `
           SELECT task_id, responsible_user_id, entity_id, entity_type, is_completed, complete_till
           FROM \`${BQ_PROJECT_ID}.${BQ_DATASET}.${BQ_TASKS_TABLE}\`
@@ -505,7 +506,7 @@ async function loadLeadsAndTasks(brokerId: number): Promise<{ leads: LeadRecord[
         `,
         useLegacySql: false,
       }),
-      bq.query({
+      bigQueryQuery({
         query: `
           SELECT SAFE_CAST(deal_id AS INT64) AS lead_id
           FROM \`${BQ_PROJECT_ID}.${BQ_DATASET}.milestones\`
@@ -739,7 +740,7 @@ async function getAllBrokers(): Promise<Array<{ id: number; name: string }>> {
   const cacheUsers = rawFromCache?.users || [];
 
   if (!leads.length) {
-    const [leadRows] = await bq.query({
+    const leadRows = await bigQueryQuery({
       query: `
         SELECT lead_id, created_at, status_id, pipeline_id, responsible_user_id, broker_name, source_name, price
         FROM \`${BQ_PROJECT_ID}.${BQ_DATASET}.${BQ_LEADS_TABLE}\`
