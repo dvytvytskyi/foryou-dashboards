@@ -77,8 +77,8 @@ jobs:
           TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID=${{ secrets.TELEGRAM_CHAT_ID }}
           GH_TOKEN=${{ secrets.GH_PAT }}
-          BIGQUERY_PROXY_URL=${{ secrets.BIGQUERY_PROXY_URL }}
-          BIGQUERY_PROXY_SECRET=${{ secrets.BIGQUERY_PROXY_SECRET }}
+          BIGQUERY_PROXY_URL=http://89.167.91.113:3050/api/bigquery-proxy
+          BIGQUERY_PROXY_SECRET=foryou-secret-123
           EOF_ENV
           # Remove YAML indentation spaces from env file keys/values.
           sed -i 's/^[[:space:]]*//' .env

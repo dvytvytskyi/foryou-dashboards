@@ -20,7 +20,7 @@ expect {
         exp_continue
     }
     "*#*" {
-        send "cd /root/foryou-admin-ru && if docker compose version >/dev/null 2>&1; then docker compose build app && docker compose up -d --force-recreate app; else docker-compose build app && docker-compose up -d --force-recreate app; fi\r"
+        send "cd /root/foryou-admin-ru && echo 'BIGQUERY_PROXY_URL=http://89.167.91.113:3050/api/bigquery-proxy' >> .env && echo 'BIGQUERY_PROXY_SECRET=foryou-secret-123' >> .env && if docker compose version >/dev/null 2>&1; then docker compose build app && docker compose up -d --force-recreate app; else docker-compose build app && docker-compose up -d --force-recreate app; fi\r"
     }
 }
 expect "*#*" {
