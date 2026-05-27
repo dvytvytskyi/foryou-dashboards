@@ -3,7 +3,7 @@ set timeout 600
 set password "pb+-L,7#EstXEk"
 
 # First run rsync
-spawn rsync -avz --exclude=.git --exclude=node_modules --exclude=.next ./ root@109.73.194.70:/root/foryou-admin-ru/
+spawn rsync -avz --exclude=.git --exclude=node_modules --exclude=.next --exclude=.env ./ root@109.73.194.70:/root/foryou-admin-ru/
 expect {
     "*assword:*" {
         send "$password\r"
