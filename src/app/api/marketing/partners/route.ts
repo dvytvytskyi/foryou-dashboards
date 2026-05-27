@@ -177,10 +177,33 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error('Partners marketing API error:', error);
+    const sp = request.nextUrl.searchParams;
+    const currency = sp.get('currency') || 'aed';
+    const startDate = sp.get('startDate') || '2024-01-01';
+    const endDate = sp.get('endDate') || new Date().toISOString().split('T')[0];
+    const rawMessage = error instanceof Error ? error.message : 'Unknown error';
+    const isBqAccessError = /forbidden|permission|bigquery|\/bigquery\/v2\/projects/i.test(rawMessage);
+
+    if (isBqAccessError) {
+      return NextResponse.json({
+        success: true,
+        data: [],
+        meta: {
+          currency,
+          startDate,
+          endDate,
+          rowCount: 0,
+          fetchedAt: new Date().toISOString(),
+          lastUpdatedAt: null,
+          freshnessError: 'BigQuery access is unavailable on server. Showing empty dataset.',
+        },
+      });
+    }
+
     return NextResponse.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: rawMessage,
       },
       { status: 500 }
     );
