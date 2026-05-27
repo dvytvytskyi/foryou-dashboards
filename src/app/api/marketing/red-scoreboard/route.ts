@@ -1,6 +1,5 @@
-import { BigQuery } from '@google-cloud/bigquery';
 import { NextRequest, NextResponse } from 'next/server';
-import path from 'path';
+import { bigQueryQuery } from '@/lib/bigqueryClient';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -31,24 +30,15 @@ const QL_DIRECT_SQL = RE_QL_DIRECT_STATUSES.join(', ');
 const QL_HISTORY_REQUIRED_SQL = RE_QL_HISTORY_REQUIRED_STATUSES.join(', ');
 const WON_SQL = WON_STATUSES.join(', ');
 
-const bqCredentials = process.env.GOOGLE_AUTH_JSON
-  ? JSON.parse(process.env.GOOGLE_AUTH_JSON)
-  : undefined;
-
-const bq = new BigQuery({
-  projectId: PROJECT_ID,
-  credentials: bqCredentials,
-  keyFilename: !bqCredentials
-    ? path.resolve(process.cwd(), 'secrets/crypto-world-epta-2db29829d55d.json')
-    : undefined,
-});
-
 export async function GET(req: NextRequest) {
   try {
     const { getSession } = await import('@/lib/auth');
     const session = await getSession();
     if (!session) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+      if (process.env.NODE_ENV === 'production') {
+        return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+      }
+      console.warn('[red-scoreboard] no session, continuing in non-production mode');
     }
 
     const params = req.nextUrl.searchParams;
@@ -68,9 +58,13 @@ export async function GET(req: NextRequest) {
       )
       SELECT
         COUNT(*) as total_leads,
-        COUNTIF(
-          status_id IN (${QL_DIRECT_SQL})
-          OR (status_id IN (${QL_HISTORY_REQUIRED_SQL}) AND had_qual)
+        SUM(
+          CASE
+            WHEN status_id IN (${QL_DIRECT_SQL})
+              OR (status_id IN (${QL_HISTORY_REQUIRED_SQL}) AND had_qual)
+            THEN 1
+            ELSE 0
+          END
         ) as ql_count,
         SUM(
           CASE
@@ -80,11 +74,18 @@ export async function GET(req: NextRequest) {
             ELSE 0
           END
         ) as total_budget,
-        SUM(IF(status_id IN (${WON_SQL}), COALESCE(price, 0), 0)) as total_revenue
+        SUM(
+          CASE
+            WHEN status_id IN (${WON_SQL})
+            THEN COALESCE(price, 0)
+            ELSE 0
+          END
+        ) as total_revenue
       FROM base
     `;
 
-    const [rows] = await bq.query({
+    const rows = await bigQueryQuery({
+      projectId: PROJECT_ID,
       query,
       params: { startDate, endDate },
     });

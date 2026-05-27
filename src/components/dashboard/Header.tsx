@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Moon, Sun } from 'lucide-react';
+import { FeedbackIconTrigger } from '@/components/FeedbackModal';
 import styles from './Header.module.css';
 
 interface HeaderProps {
@@ -18,6 +19,11 @@ const Header: React.FC<HeaderProps> = ({
   setThemeMode,
   title = 'Performance Report'
 }) => {
+  const pathname = typeof window !== 'undefined' ? window.location.pathname : '';
+  const dateContext = typeof window !== 'undefined' ? 
+    `${localStorage.getItem('dashboard-startDate')} - ${localStorage.getItem('dashboard-endDate')}` 
+    : '';
+
   return (
     <div className={styles.topRail}>
       <div className={styles.headerLeft}>
@@ -25,6 +31,7 @@ const Header: React.FC<HeaderProps> = ({
           <span className={styles.breadcrumbMuted}>Dashboard</span>
           <span className={styles.breadcrumbSeparator}>/</span>
           <span className={styles.breadcrumbActive}>{title}</span>
+          <FeedbackIconTrigger context={{ type: 'table', title, page: pathname, date: dateContext }} />
         </div>
       </div>
       

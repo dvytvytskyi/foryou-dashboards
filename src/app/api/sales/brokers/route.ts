@@ -1,10 +1,10 @@
-import { BigQuery } from '@google-cloud/bigquery';
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
 import { readPlanDataFromSheets, PlanByBroker } from '@/lib/sheets/planReader';
 import { classifyLeadSource } from '@/lib/crmRules.js';
 import { amoFetchJson as sharedAmoFetchJson } from '@/lib/amo';
+import { createBigQueryClient } from '@/lib/googleAuth';
 
 const RAW_CACHE_FILE = path.resolve(process.cwd(), 'data/cache/plan-fact/raw_leads.json');
 
@@ -198,6 +198,8 @@ const BQ_DATASET = 'foryou_analytics';
 const BQ_LEADS_TABLE = 'plan_fact_crm_leads';
 const BQ_TASKS_TABLE = 'plan_fact_crm_tasks';
 
+const bq = createBigQueryClient(BQ_PROJECT_ID);
+
 const RE_PIPELINE_ID = 8696950;
 const KLYKOV_PIPELINE_ID = 10776450;
 const PARTNERS_PIPELINE_ID = Number(process.env.AMO_PARTNERS_PIPELINE_ID || 8600274);
@@ -223,22 +225,22 @@ function isReanimationStatus(lead: { status_id: number; pipeline_id: number }): 
 
 // Allowed roles for broker dropdown: Брокер, РОП, Внутренний партнер
 const ALLOWED_BROKER_ROLE_IDS = new Set([922586, 1193706, 1192690]);
-let _userRoleCache: Map<number, number | null> | null = null;
-let _userRoleCacheTime = 0;
-const USER_ROLE_CACHE_TTL = 60 * 60 * 1000;
+let _userInfoCache: Map<number, { roleId: number | null; name: string }> | null = null;
+let _userInfoCacheTime = 0;
+const USER_INFO_CACHE_TTL = 60 * 60 * 1000;
 
-async function fetchUserRolesMap(): Promise<Map<number, number | null>> {
-  if (_userRoleCache && Date.now() - _userRoleCacheTime < USER_ROLE_CACHE_TTL) {
-    return _userRoleCache;
+async function fetchUserInfoMap(): Promise<Map<number, { roleId: number | null; name: string }>> {
+  if (_userInfoCache && Date.now() - _userInfoCacheTime < USER_INFO_CACHE_TTL) {
+    return _userInfoCache;
   }
   try {
-    const data = await sharedAmoFetchJson<{ _embedded?: { users?: Array<{ id: number; rights?: { role_id?: number | null } }> } }>('/api/v4/users?limit=250', {
+    const data = await sharedAmoFetchJson<{ _embedded?: { users?: Array<{ id: number; name: string; rights?: { role_id?: number | null } }> } }>('/api/v4/users?limit=250', {
       headers: { Accept: 'application/json' },
     });
     const users = data?._embedded?.users || [];
-    _userRoleCache = new Map(users.map(u => [u.id, u.rights?.role_id ?? null]));
-    _userRoleCacheTime = Date.now();
-    return _userRoleCache;
+    _userInfoCache = new Map(users.map(u => [u.id, { roleId: u.rights?.role_id ?? null, name: u.name }]));
+    _userInfoCacheTime = Date.now();
+    return _userInfoCache;
   } catch {
     return new Map();
   }
@@ -376,13 +378,6 @@ const SOURCE_ORDER: SourceName[] = [
   'Partners leads',
   'Own leads',
 ];
-
-const bqCredentials = process.env.GOOGLE_AUTH_JSON ? JSON.parse(process.env.GOOGLE_AUTH_JSON) : undefined;
-const bq = new BigQuery({
-  projectId: BQ_PROJECT_ID,
-  credentials: bqCredentials,
-  keyFilename: !bqCredentials ? path.resolve(process.cwd(), 'secrets/crypto-world-epta-2db29829d55d.json') : undefined,
-});
 
 function toNumber(value: unknown): number {
   return Number(value || 0);
@@ -735,12 +730,14 @@ async function getBrokerMetrics(
 }
 
 async function getAllBrokers(): Promise<Array<{ id: number; name: string }>> {
-  const [roleMap, rawFromCache] = await Promise.all([
-    fetchUserRolesMap(),
+  const [userInfoMap, rawFromCache] = await Promise.all([
+    fetchUserInfoMap(),
     readCacheFile(),
   ]);
 
   let leads = rawFromCache?.leads || [];
+  const cacheUsers = rawFromCache?.users || [];
+
   if (!leads.length) {
     const [leadRows] = await bq.query({
       query: `
@@ -766,7 +763,16 @@ async function getAllBrokers(): Promise<Array<{ id: number; name: string }>> {
 
   const scopedLeads = leads.filter((l) => INCLUDED_PIPELINES.has(l.pipeline_id));
   const brokerIds = new Set<number>(scopedLeads.map((l) => l.responsible_user_id));
+  
   const brokerNameById = new Map<number, string>();
+  for (const u of cacheUsers) {
+    brokerNameById.set(u.id, u.name);
+  }
+  // Also use AmoCRM users if available
+  for (const [id, info] of userInfoMap.entries()) {
+    if (info.name) brokerNameById.set(id, info.name);
+  }
+
   for (const lead of scopedLeads) {
     if (!brokerNameById.has(lead.responsible_user_id) && lead.broker_name) {
       brokerNameById.set(lead.responsible_user_id, lead.broker_name);
@@ -774,9 +780,9 @@ async function getAllBrokers(): Promise<Array<{ id: number; name: string }>> {
   }
 
   function isAllowedBroker(id: number): boolean {
-    if (roleMap.size === 0) return true;
-    const role = roleMap.get(id);
-    return role !== undefined && ALLOWED_BROKER_ROLE_IDS.has(role as number);
+    if (userInfoMap.size === 0) return true;
+    const info = userInfoMap.get(id);
+    return info !== undefined && info.roleId !== null && ALLOWED_BROKER_ROLE_IDS.has(info.roleId);
   }
 
   return Array.from(brokerIds)

@@ -1,6 +1,5 @@
-import { BigQuery } from '@google-cloud/bigquery';
 import { NextRequest, NextResponse } from 'next/server';
-import path from 'path';
+import { bigQueryQuery } from '@/lib/bigqueryClient';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -35,18 +34,6 @@ function lagHours(iso: string | null): number {
   if (!Number.isFinite(ts)) return Number.POSITIVE_INFINITY;
   return (Date.now() - ts) / (1000 * 60 * 60);
 }
-
-const bqCredentials = process.env.GOOGLE_AUTH_JSON
-  ? JSON.parse(process.env.GOOGLE_AUTH_JSON)
-  : undefined;
-
-const bq = new BigQuery({
-  projectId: 'crypto-world-epta',
-  credentials: bqCredentials,
-  keyFilename: !bqCredentials
-    ? path.resolve(process.cwd(), 'secrets/crypto-world-epta-2db29829d55d.json')
-    : undefined,
-});
 
 export async function GET(request: NextRequest) {
   try {
@@ -163,7 +150,7 @@ export async function GET(request: NextRequest) {
       ORDER BY report_date DESC, leads DESC
     `;
 
-    const [rows] = await bq.query({
+    const rows = await bigQueryQuery({
       query,
       params: { startDate, endDate },
     });

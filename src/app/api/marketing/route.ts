@@ -1,6 +1,5 @@
-import { BigQuery } from '@google-cloud/bigquery';
 import { NextRequest, NextResponse } from 'next/server';
-import path from 'path';
+import { bigQueryQuery } from '@/lib/bigqueryClient';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -84,7 +83,7 @@ async function loadRedRows(startDate: string, endDate: string) {
     ORDER BY tag, level_1, level_2, level_3
   `;
 
-  const [redRows] = await bq.query({
+  const redRows = await bigQueryQuery({
     query: redQuery,
     params: { startDate, endDate },
   });
@@ -133,7 +132,7 @@ async function loadRedRows(startDate: string, endDate: string) {
 }
 
 async function loadRedLastSyncedAt() {
-  const [rows] = await bq.query({
+  const rows = await bigQueryQuery({
     query: `
       SELECT MAX(synced_at) AS last_synced_at
       FROM \`crypto-world-epta.foryou_analytics.red_leads_raw\`
@@ -146,7 +145,7 @@ async function loadRedLastSyncedAt() {
 async function loadMarketingRefreshedAtByChannel(channels: string[]) {
   if (channels.length === 0) return [] as Array<{ channel: string; last_refreshed_at: string | null }>;
 
-  const [rows] = await bq.query({
+  const rows = await bigQueryQuery({
     query: `
       SELECT channel, MAX(refreshed_at) AS last_refreshed_at
       FROM \`crypto-world-epta.foryou_analytics.marketing_channel_drilldown_daily\`
@@ -161,18 +160,6 @@ async function loadMarketingRefreshedAtByChannel(channels: string[]) {
     last_refreshed_at: asIso(row.last_refreshed_at),
   }));
 }
-
-// Ініціалізуємо BigQuery з сервіс-аккаунтом
-const bqCredentials = process.env.GOOGLE_AUTH_JSON 
-  ? JSON.parse(process.env.GOOGLE_AUTH_JSON)
-  : undefined;
-
-const bq = new BigQuery({
-  projectId: 'crypto-world-epta',
-  credentials: bqCredentials,
-  // Fallback for local development if env var is missing
-  keyFilename: !bqCredentials ? path.resolve(process.cwd(), 'secrets/crypto-world-epta-2db29829d55d.json') : undefined,
-});
 
 export async function GET(request: NextRequest) {
   try {
@@ -257,8 +244,8 @@ export async function GET(request: NextRequest) {
     `;
 
     // Виконуємо параметризований запит
-    const [rows] = nonRedChannels.length
-      ? await bq.query({
+    const rows = nonRedChannels.length
+      ? await bigQueryQuery({
           query,
           params: {
             startDate,
@@ -268,7 +255,7 @@ export async function GET(request: NextRequest) {
             aedPerUsd: AED_PER_USD,
           },
         })
-      : [[]];
+      : [];
 
     const [redRows, redLastSyncedAt, nonRedRefreshedRows] = await Promise.all([
       includeRed ? loadRedRows(startDate, endDate) : Promise.resolve([]),
@@ -277,6 +264,33 @@ export async function GET(request: NextRequest) {
     ]);
 
     const combinedRows = [...rows, ...redRows];
+
+    // Enforce fixed 47,000 AED / month budget for Property Finder
+    const diffDays = (new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24) + 1;
+    const targetPfBudgetAed = 47000 * (diffDays / 30.4375); // approx 30.44 days per month
+    
+    let pfBqBudget = 0;
+    for (const r of combinedRows) {
+      if (r.channel === 'Property Finder') {
+        pfBqBudget += Number(r.budget || 0);
+      }
+    }
+    
+    if (pfBqBudget > 0 && targetPfBudgetAed > 0) {
+      const ratio = targetPfBudgetAed / pfBqBudget;
+      for (const r of combinedRows) {
+        if (r.channel === 'Property Finder') {
+          r.budget = Math.round(Number(r.budget || 0) * ratio);
+          const budget = r.budget;
+          if (r.leads > 0) r.cpl = Math.round(budget / r.leads);
+          if (r.qualified_leads > 0) r.cost_per_qualified_leads = Math.round(budget / r.qualified_leads);
+          if (r.ql_actual > 0) r.cpql_actual = Math.round(budget / r.ql_actual);
+          if (r.meetings > 0) r.cp_meetings = Math.round(budget / r.meetings);
+          if (r.deals > 0) r.cost_per_deal = Math.round(budget / r.deals);
+          if (budget > 0) r.roi = Number(r.revenue || 0) / budget;
+        }
+      }
+    }
 
     const freshnessIssues: string[] = [];
     const freshnessTimestamps: string[] = [];
@@ -325,10 +339,33 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error('Marketing API error:', error);
+    const searchParams = request.nextUrl.searchParams;
+    const currency = searchParams.get('currency') || 'aed';
+    const startDate = searchParams.get('startDate') || '2024-01-01';
+    const endDate = searchParams.get('endDate') || new Date().toISOString().split('T')[0];
+    const rawMessage = error instanceof Error ? error.message : 'Unknown error';
+    const isBqAccessError = /forbidden|permission|bigquery|\/bigquery\/v2\/projects/i.test(rawMessage);
+
+    if (isBqAccessError) {
+      return NextResponse.json({
+        success: true,
+        data: [],
+        meta: {
+          currency,
+          startDate,
+          endDate,
+          rowCount: 0,
+          fetchedAt: new Date().toISOString(),
+          lastUpdatedAt: null,
+          freshnessError: 'BigQuery access is unavailable on server. Showing empty dataset.',
+        },
+      });
+    }
+
     return NextResponse.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: rawMessage,
       },
       { status: 500 }
     );

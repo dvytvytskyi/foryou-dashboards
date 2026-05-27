@@ -50,11 +50,22 @@ const PROJECT_COLUMNS = [
 export default function PropertyFinderPage() {
   const [syncTheme, setSyncTheme] = useState<'light' | 'night' | null>(null);
   const [currency, setCurrency] = useState<Currency>(() => {
-    try { return (localStorage.getItem('dashboard-currency') as Currency) || 'aed'; } catch { return 'aed'; }
+    if (typeof window !== 'undefined') {
+      try { return (localStorage.getItem('dashboard-currency') as Currency) || 'aed'; } catch { return 'aed'; }
+    }
+    return 'aed';
   });
+  
+  const today = typeof window !== 'undefined' ? new Date().toISOString().slice(0, 10) : '2026-05-27';
   const [dateRange, setDateRange] = useState(() => {
-    const today = new Date().toISOString().slice(0, 10);
-    return { startDate: '2026-04-22', endDate: today };
+    if (typeof window !== 'undefined') {
+      try {
+        const start = localStorage.getItem('dashboard-startDate');
+        const end = localStorage.getItem('dashboard-endDate');
+        if (start && end) return { startDate: start, endDate: end };
+      } catch {}
+    }
+    return { startDate: '2026-04-01', endDate: today };
   });
 
   const ourApiUrl = useMemo(() => '/api/pf-listings?group=Our', []);
@@ -77,9 +88,8 @@ export default function PropertyFinderPage() {
       tableMinWidth="100%"
       defaultChannelWidth={400}
       FilterComponent={RedFilters}
-      defaultStartDate="2026-04-22"
-      forceDefaultDateRange={true}
-      isolateLocalStorage={true}
+      defaultStartDate={dateRange.startDate}
+      defaultEndDate={dateRange.endDate}
       externalThemeMode={syncTheme}
       onThemeChange={setSyncTheme}
       onDateChange={(start, end) => setDateRange({ startDate: start, endDate: end })}
@@ -90,6 +100,7 @@ export default function PropertyFinderPage() {
     >
       <div style={{ marginTop: '0' }}>
         <DashboardPage 
+          key={`partner-${dateRange.startDate}-${dateRange.endDate}`}
           title="Property Finder Listings Performance - Partner & Abu Dhabi"
           isNested={true}
           hideFilters={true}
@@ -116,6 +127,7 @@ export default function PropertyFinderPage() {
 
       <div style={{ marginTop: '-4px' }}>
         <DashboardPage 
+          key={`projects-${dateRange.startDate}-${dateRange.endDate}`}
           title="Property Finder Primary Plus (By Districts)"
           isNested={true}
           hideFilters={true}

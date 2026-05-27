@@ -2,10 +2,10 @@ import { NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
 import { isPostgresConfigured, queryPostgres } from '@/lib/postgres';
+import { getDynamicPfRate } from '@/lib/pfBudget';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
-const CREDIT_TO_AED_RATE = 1.9;
 
 function monthKeyOverlapsRange(monthKey: string, startDate: string | null, endDate: string | null) {
   if (!monthKey || monthKey.length < 7) return true;
@@ -178,6 +178,8 @@ export async function GET(request: Request) {
     const startDate = searchParams.get('startDate');
     const endDate = searchParams.get('endDate');
 
+    const dynamicRate = await getDynamicPfRate(startDate, endDate);
+
     let rawData: any[] = [];
     const amoMatch = await loadAmoProjectMatch();
 
@@ -228,9 +230,21 @@ export async function GET(request: Request) {
         if (filteredMonths.length === 0) return;
 
         filteredMonths.forEach((month) => {
-          const leads = Number(leadsByMonth[month] || 0);
-          const budgetCredits = Number(budgetByMonth[month] || 0);
-          const budgetAed = budgetCredits * CREDIT_TO_AED_RATE;
+          const monthStart = `${month}-01`;
+          const [year, m] = month.split('-');
+          const monthEnd = new Date(Date.UTC(Number(year), Number(m), 0)).toISOString().slice(0, 10);
+          
+          let overlapStart = monthStart;
+          let overlapEnd = monthEnd;
+          if (startDate && startDate > overlapStart) overlapStart = startDate;
+          if (endDate && endDate < overlapEnd) overlapEnd = endDate;
+          
+          const overlapDays = (new Date(overlapEnd).getTime() - new Date(overlapStart).getTime()) / (1000 * 60 * 60 * 24) + 1;
+          const totalDays = (new Date(monthEnd).getTime() - new Date(monthStart).getTime()) / (1000 * 60 * 60 * 24) + 1;
+          
+          const leads = Number(leadsByMonth[month] || 0) * (overlapDays / totalDays);
+          const budgetCredits = Number(budgetByMonth[month] || 0) * (overlapDays / totalDays);
+          const budgetAed = budgetCredits * dynamicRate;
           const crm_leads = Number(amoCrmLeadsByMonth[month] || 0);
           const spam = Number(amoSpamByMonth[month] || 0);
           const qualified_leads = Number(amoQualifiedByMonth[month] || 0);
@@ -270,7 +284,7 @@ export async function GET(request: Request) {
 
       const totalLeads = Number(project.Leads || 0);
       const totalBudgetCredits = Number(project.Budget || 0);
-      const totalBudgetAed = totalBudgetCredits * CREDIT_TO_AED_RATE;
+      const totalBudgetAed = totalBudgetCredits * dynamicRate;
       const crm_leads = amoData?.crm_leads || 0;
       const spam = amoData?.spam || 0;
       const qualified_leads = amoData?.qualified_leads || 0;
@@ -316,7 +330,7 @@ export async function GET(request: Request) {
       data: formattedRows,
       meta: {
         budgetUnit: 'AED',
-        creditToAedRate: CREDIT_TO_AED_RATE,
+        creditToAedRate: dynamicRate,
       },
     });
   } catch (error: any) {

@@ -1,23 +1,11 @@
-import { BigQuery } from '@google-cloud/bigquery';
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
 import { amoFetch } from '@/lib/amo';
-import path from 'path';
+import { createBigQueryClient } from '@/lib/googleAuth';
 
 const PROJECT_ID = 'crypto-world-epta';
 const DATASET_ID = 'foryou_analytics';
-const SERVICE_ACCOUNT_FILE = path.resolve('./secrets/crypto-world-epta-2db29829d55d.json');
-
-// Init BQ with Cloud Support
-const bqCredentials = process.env.GOOGLE_AUTH_JSON 
-  ? JSON.parse(process.env.GOOGLE_AUTH_JSON)
-  : undefined;
-
-const bq = new BigQuery({
-  projectId: PROJECT_ID,
-  credentials: bqCredentials,
-  keyFilename: !bqCredentials ? SERVICE_ACCOUNT_FILE : undefined
-});
+const bq = createBigQueryClient(PROJECT_ID);
 
 type Props = {
     params: Promise<{ slug: string }>;

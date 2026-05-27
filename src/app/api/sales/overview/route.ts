@@ -218,6 +218,7 @@ export async function GET(request: NextRequest) {
         type,
         source: sourceRaw,
         info: row.payload?.sheetName || '-',
+        originalCategory: row.payload?.originalCategory || '',
         id: `${row.source_file}-${row.row_number}`,
       });
     }

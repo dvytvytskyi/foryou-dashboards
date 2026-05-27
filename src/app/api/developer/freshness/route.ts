@@ -1,8 +1,8 @@
-import { BigQuery } from '@google-cloud/bigquery';
 import { NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
 import { getSession } from '@/lib/auth';
+import { createBigQueryClient } from '@/lib/googleAuth';
 import { FRESHNESS_SOURCES, FreshnessSource } from '@/lib/freshnessConfig';
 
 export const dynamic = 'force-dynamic';
@@ -22,15 +22,7 @@ type FreshnessRow = {
   error?: string;
 };
 
-const bqCredentials = process.env.GOOGLE_AUTH_JSON
-  ? JSON.parse(process.env.GOOGLE_AUTH_JSON)
-  : undefined;
-
-const bq = new BigQuery({
-  projectId: 'crypto-world-epta',
-  credentials: bqCredentials,
-  keyFilename: !bqCredentials ? path.resolve(process.cwd(), 'secrets/crypto-world-epta-2db29829d55d.json') : undefined,
-});
+const bq = createBigQueryClient('crypto-world-epta');
 
 function statusFromLag(lagMinutes: number | null, expectedRefreshMinutes: number | null): FreshnessStatus {
   if (lagMinutes === null) return 'unknown';

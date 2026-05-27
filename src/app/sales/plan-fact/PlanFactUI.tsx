@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import styles from './plan-fact.module.css';
 import { BarChart3, ChevronDown, ChevronRight, Target, Trophy, Activity, Users } from 'lucide-react';
 import { formatNumber, formatPercent } from '@/lib/formatters';
+import { FeedbackIconTrigger } from '@/components/FeedbackModal';
 
 type KpiRow = {
   label: string;
@@ -268,9 +269,12 @@ function BrokerTable({
       {/* ── Broker-first table ── */}
       <div className={styles.section}>
         <div className={styles.sectionHeader}>
-          <div className={styles.sectionTitle}>
-            {icon}
-            <span>{title}</span>
+          <div className={styles.sectionTitle} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              {icon}
+              <span>{title}</span>
+            </div>
+            <FeedbackIconTrigger context={{ type: 'table', title, page: '/sales/plan-fact', date: 'Current View' }} />
           </div>
         </div>
 
@@ -405,9 +409,12 @@ function BrokerTable({
       {/* ── Source-first table ── */}
       <div className={styles.section} style={{ marginTop: '24px' }}>
         <div className={styles.sectionHeader}>
-          <div className={styles.sectionTitle}>
-            <BarChart3 size={14} />
-            <span>Эффективность источников (брокеры в дропдауне)</span>
+          <div className={styles.sectionTitle} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <BarChart3 size={14} />
+              <span>Эффективность источников (брокеры в дропдауне)</span>
+            </div>
+            <FeedbackIconTrigger context={{ type: 'table', title: 'Эффективность источников', page: '/sales/plan-fact', date: 'Current View' }} />
           </div>
         </div>
 
@@ -604,7 +611,10 @@ export default function PlanFactUI({ startDate, endDate }: { startDate: string; 
       <div className={styles.summaryGrid}>
         {visibleKpis.map((k) => (
           <div key={k.label} className={styles.kpiCard} style={{ height: '140px' }}>
-            <div className={styles.kpiTitle}>{k.label}</div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div className={styles.kpiTitle}>{k.label}</div>
+              <FeedbackIconTrigger context={{ type: 'scorecard', title: k.label, page: '/sales/plan-fact', date: 'Current View' }} />
+            </div>
             <div className={styles.kpiMainValue}>
               <span className={styles.actualValue} style={{ color: 'var(--white-soft)' }}>
                 {formatNumber(k.plan)}

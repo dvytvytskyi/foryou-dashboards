@@ -14,6 +14,8 @@ type DealRow = {
   gross?: number;
   net?: number;
   source?: string;
+  info?: string;
+  originalCategory?: string;
 };
 
 type OverviewResponse = {
@@ -93,8 +95,23 @@ function normalizeSourceLabel(label: string): string {
   return clean || 'Other';
 }
 
-function shouldExcludeSource(label: string): boolean {
-  return normalizeSourceLabel(label) === '__exclude__';
+function shouldExcludeDeal(deal: DealRow): boolean {
+  if (normalizeSourceLabel(String(deal.source || '')) === '__exclude__') return true;
+
+  const sourceLabel = String(deal.source || '').toLowerCase();
+  const catLabel = String(deal.originalCategory || '').toLowerCase();
+
+  // Exclude Partnership
+  if (sourceLabel.includes('partnership') || catLabel.includes('partnership') || catLabel.includes('партнер')) {
+    return true;
+  }
+  
+  // Exclude Support (Сопровождение) so we only leave Real Estate & CB
+  if (sourceLabel.includes('support') || catLabel.includes('support') || catLabel.includes('сопровождение')) {
+    return true;
+  }
+
+  return false;
 }
 
 function buildSourceRows(deals: DealRow[] = []) {
@@ -161,7 +178,7 @@ export default function CompanyDealsSummaryPage() {
         throw new Error(json.error || 'Failed to load company deals data');
       }
 
-      const filteredDeals = (json.deals || []).filter((deal) => !shouldExcludeSource(String(deal.source || '')));
+      const filteredDeals = (json.deals || []).filter((deal) => !shouldExcludeDeal(deal));
       const typeSummary = buildTypeSummary(filteredDeals);
       setSummary(typeSummary);
       setRows(buildSourceRows(filteredDeals));
@@ -214,7 +231,6 @@ export default function CompanyDealsSummaryPage() {
               <CompanyDealCard title="Первичка" data={summary.perType.Offplan} currency={currency} />
               <CompanyDealCard title="Вторичка" data={summary.perType.Вторичка} currency={currency} />
               <CompanyDealCard title="Аренда" data={summary.perType.Аренда} currency={currency} />
-              <CompanyDealCard title="Сопровождение" data={summary.perType.Сопровождение} currency={currency} />
             </div>
 
             <CompanyDealsTable title="Доходность по источникам" rows={rows} currency={currency} />

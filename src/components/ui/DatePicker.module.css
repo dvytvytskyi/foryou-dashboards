@@ -1,0 +1,229 @@
+.container {
+  position: relative;
+  z-index: 50;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  height: 38px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--white-soft);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.trigger:hover {
+  background: var(--panel);
+}
+
+.icon {
+  color: var(--muted);
+}
+
+.popover {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 8px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  z-index: 100;
+  width: max-content;
+  /* Ensure horizontal layout for 2 months */
+}
+
+:global([data-dashboard-theme="night"]) .popover {
+  background-color: #1f2023;
+  border-color: #303134;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.hintText {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+:global([data-dashboard-theme="night"]) .footer {
+  border-top-color: #303134;
+}
+
+.cancelBtn {
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #64748b;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.cancelBtn:hover {
+  background-color: #f1f5f9;
+}
+
+:global([data-dashboard-theme="night"]) .cancelBtn:hover {
+  background-color: #303134;
+  color: #e2e8f0;
+}
+
+.applyBtn {
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #0f172a;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.applyBtn:hover {
+  background-color: #1e293b;
+}
+
+:global([data-dashboard-theme="night"]) .applyBtn {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+:global([data-dashboard-theme="night"]) .applyBtn:hover {
+  background-color: #e2e8f0;
+}
+
+.applyBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* React Day Picker Overrides */
+.calendar {
+  --rdp-accent-color: #1e293b;
+  --rdp-background-color: var(--panel-2);
+  --rdp-range_middle-background-color: var(--panel-2);
+  --rdp-cell-size: 32px;
+  --rdp-day-height: 32px;
+  --rdp-day-width: 32px;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+:global([data-dashboard-theme="night"]) .calendar {
+  --rdp-accent-color: #ffffff;
+  color: #f1f5f9;
+}
+
+/* Ensure text is readable on selected dates */
+.calendar :global(.rdp-selected) {
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: none !important;
+  position: relative;
+  z-index: 1;
+}
+
+/* Fill the gap between the circle and the range background */
+.calendar :global(.rdp-range_start)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  right: -5px; /* ensure it overlaps perfectly */
+  background-color: var(--panel-2);
+  z-index: -1;
+}
+
+.calendar :global(.rdp-range_end)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -5px;
+  right: 50%;
+  background-color: var(--panel-2);
+  z-index: -1;
+}
+
+/* Fix for single day selection so it doesn't show the half background */
+.calendar :global(.rdp-range_start.rdp-range_end)::before {
+  display: none;
+}
+
+/* Remove bold, size changes, and focus outlines from all days */
+.calendar :global(.rdp-day) {
+  font-weight: 400 !important;
+  font-size: 13px !important;
+  transition: color 0.1s;
+  /* Make all days circles by default so hover doesn't flash a square */
+  border-radius: 999px !important;
+}
+
+/* Hover effect on days */
+.calendar :global(.rdp-day:not(.rdp-selected):not(.rdp-outside):hover) {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+}
+
+:global([data-dashboard-theme="night"]) .calendar :global(.rdp-day:not(.rdp-selected):not(.rdp-outside):hover) {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+/* Fix range middle background getting cut off by the border-radius */
+.calendar :global(.rdp-range_middle) {
+  border-radius: 0 !important;
+  color: var(--text-color, #1e293b) !important;
+}
+
+:global([data-dashboard-theme="night"]) .calendar :global(.rdp-range_middle) {
+  color: #f1f5f9 !important;
+}
+
+.calendar :global(.rdp-day:focus),
+.calendar :global(.rdp-day:focus-visible),
+.calendar :global(.rdp-day:active) {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Make month titles smaller */
+.calendar :global(.rdp-caption_label) {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+/* Make navigation arrows smaller */
+.calendar button svg {
+  width: 12px !important;
+  height: 12px !important;
+  stroke-width: 1.5px !important;
+}

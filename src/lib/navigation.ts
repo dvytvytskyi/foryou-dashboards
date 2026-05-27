@@ -56,15 +56,10 @@ export const NAVIGATION_SECTIONS = [
     items: [
       { label: 'Marketing', icon: Megaphone, href: '/marketing' },
       { label: 'RED', icon: Zap, href: '/red' },
-      { label: 'Facebook_Target point', icon: Facebook, href: '/facebook' },
+      // { label: 'Facebook_Target point', icon: Facebook, href: '/facebook' },
       { label: 'Website', icon: Globe, href: '/website' },
       { label: 'Property Finder', icon: FileText, href: '/property-finder' },
     ],
   },
-  {
-    title: 'Система',
-    items: [
-      { label: 'Інтеграції', icon: Settings, href: '/settings/integrations' },
-    ],
-  },
+
 ] as const;

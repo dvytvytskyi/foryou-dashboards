@@ -11,6 +11,7 @@ import {
   Loader
 } from 'lucide-react';
 import { formatCompactNumber, formatPercent } from '@/lib/formatters';
+import { FeedbackIconTrigger } from '@/components/FeedbackModal';
 
 interface BrokersUIProps {
   selectedBroker: { value: string; label: string; id: number } | null;
@@ -315,22 +316,34 @@ export default function BrokersUI({ selectedBroker, startDate, endDate }: Broker
       {/* KPI Scorecards */}
       <div className={styles.kpiGrid} style={{ marginTop: '24px' }}>
         <div className={styles.kpiCard}>
-          <div className={styles.kpiLabel}>ЛИДЫ (ПЛАН / ФАКТ)</div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div className={styles.kpiLabel}>ЛИДЫ (ПЛАН / ФАКТ)</div>
+            <FeedbackIconTrigger context={{ type: 'scorecard', title: 'ЛИДЫ (ПЛАН / ФАКТ)', page: '/sales/brokers', date: 'Current View' }} />
+          </div>
           <div className={styles.kpiValue}>{metrics.totals.leads} <span style={{ color: 'var(--muted)', fontSize: '16px' }}>/ {metrics.plan.lids}</span></div>
           <PlanProgress actual={metrics.totals.leads} plan={metrics.plan.lids} />
         </div>
         <div className={styles.kpiCard}>
-          <div className={styles.kpiLabel}>QL LEADS (ПЛАН / ФАКТ)</div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div className={styles.kpiLabel}>QL LEADS (ПЛАН / ФАКТ)</div>
+            <FeedbackIconTrigger context={{ type: 'scorecard', title: 'QL LEADS (ПЛАН / ФАКТ)', page: '/sales/brokers', date: 'Current View' }} />
+          </div>
           <div className={styles.kpiValue}>{metrics.totals.ql_leads} <span style={{ color: 'var(--muted)', fontSize: '16px' }}>/ {metrics.plan.ql}</span></div>
           <PlanProgress actual={metrics.totals.ql_leads} plan={metrics.plan.ql} />
         </div>
         <div className={styles.kpiCard}>
-          <div className={styles.kpiLabel}>ВЫРУЧКА (ПЛАН / ФАКТ)</div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div className={styles.kpiLabel}>ВЫРУЧКА (ПЛАН / ФАКТ)</div>
+            <FeedbackIconTrigger context={{ type: 'scorecard', title: 'ВЫРУЧКА (ПЛАН / ФАКТ)', page: '/sales/brokers', date: 'Current View' }} />
+          </div>
           <div className={styles.kpiValue}>{formatCompactNumber(metrics.totals.revenue)} <span style={{ color: 'var(--muted)', fontSize: '14px' }}>/ {formatCompactNumber(metrics.plan.revenue)} AED</span></div>
           <PlanProgress actual={metrics.totals.revenue} plan={metrics.plan.revenue} />
         </div>
         <div className={styles.kpiCard}>
-          <div className={styles.kpiLabel}>СДЕЛКИ (ПЛАН / ФАКТ)</div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div className={styles.kpiLabel}>СДЕЛКИ (ПЛАН / ФАКТ)</div>
+            <FeedbackIconTrigger context={{ type: 'scorecard', title: 'СДЕЛКИ (ПЛАН / ФАКТ)', page: '/sales/brokers', date: 'Current View' }} />
+          </div>
           <div className={styles.kpiValue}>{metrics.totals.won_leads} <span style={{ color: 'var(--muted)', fontSize: '16px' }}>/ {metrics.plan.deals}</span></div>
           <PlanProgress actual={metrics.totals.won_leads} plan={metrics.plan.deals} />
         </div>
@@ -338,7 +351,10 @@ export default function BrokersUI({ selectedBroker, startDate, endDate }: Broker
 
       {/* Table 1: Что сейчас в работе */}
       <div className={styles.section} style={{ marginTop: '16px' }}>
-        <div className={styles.sectionTitle}>Что сейчас в работе</div>
+        <div className={styles.sectionTitle} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+          <span>Что сейчас в работе</span>
+          <FeedbackIconTrigger context={{ type: 'table', title: 'Что сейчас в работе', page: '/sales/brokers', date: 'Current View' }} />
+        </div>
         <div className={styles.tableWrapper}>
           <div className={styles.tableScroll}>
             <table className={`${styles.table} ${styles.workTable}`}>
@@ -422,7 +438,10 @@ export default function BrokersUI({ selectedBroker, startDate, endDate }: Broker
 
       {/* Table 2: Lifetime Performance */}
       <div className={styles.section} style={{ marginTop: '16px' }}>
-        <div className={styles.sectionTitle}>В целом за весь срок работы</div>
+        <div className={styles.sectionTitle} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+          <span>В целом за весь срок работы</span>
+          <FeedbackIconTrigger context={{ type: 'table', title: 'В целом за весь срок работы', page: '/sales/brokers', date: 'Current View' }} />
+        </div>
         <div className={styles.tableWrapper}>
           <div className={styles.tableScroll}>
             <table className={styles.table}>
@@ -484,11 +503,14 @@ export default function BrokersUI({ selectedBroker, startDate, endDate }: Broker
       {/* Table 3: Overdue Tasks */}
       {metrics.overdue_tasks && metrics.overdue_tasks.length > 0 && (
         <div className={styles.section} style={{ marginTop: '16px', marginBottom: '32px' }}>
-          <div className={styles.sectionTitle} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            Просроченные задачи 
-            <span style={{ background: '#f43f5e', color: 'white', padding: '2px 8px', borderRadius: '12px', fontSize: '11px' }}>
-              {metrics.overdue_tasks.length} штук
-            </span>
+          <div className={styles.sectionTitle} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              Просроченные задачи 
+              <span style={{ background: '#f43f5e', color: 'white', padding: '2px 8px', borderRadius: '12px', fontSize: '11px' }}>
+                {metrics.overdue_tasks.length} штук
+              </span>
+            </div>
+            <FeedbackIconTrigger context={{ type: 'table', title: 'Просроченные задачи', page: '/sales/brokers', date: 'Current View' }} />
           </div>
           <div className={styles.tableWrapper}>
             <div className={styles.tableScroll}>

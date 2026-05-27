@@ -1,10 +1,10 @@
-import { BigQuery } from '@google-cloud/bigquery';
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
 import { readPlanDataFromSheets, PlanByBroker } from '@/lib/sheets/planReader';
 import { classifyLeadSource, CLOSED_DEAL_STATUS_IDS } from '@/lib/crmRules.js';
 import { amoFetchJson as sharedAmoFetchJson } from '@/lib/amo';
+import { createBigQueryClient } from '@/lib/googleAuth';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -69,24 +69,7 @@ const BQ_DATASET = 'foryou_analytics';
 const BQ_LEADS_TABLE = 'plan_fact_crm_leads';
 const BQ_TASKS_TABLE = 'plan_fact_crm_tasks';
 
-function getValidatedBqCredentials() {
-  try {
-    if (!process.env.GOOGLE_AUTH_JSON) return undefined;
-    const parsed = JSON.parse(process.env.GOOGLE_AUTH_JSON);
-    if (!parsed || typeof parsed !== 'object') return undefined;
-    if (!parsed.client_email || !parsed.private_key) return undefined;
-    return parsed;
-  } catch {
-    return undefined;
-  }
-}
-
-const bqCredentials = getValidatedBqCredentials();
-const bq = new BigQuery({
-  projectId: BQ_PROJECT_ID,
-  credentials: bqCredentials,
-  keyFilename: !bqCredentials ? path.resolve(process.cwd(), 'secrets/crypto-world-epta-2db29829d55d.json') : undefined,
-});
+const bq = createBigQueryClient(BQ_PROJECT_ID);
 
 type RawData = {
   leads: RawLead[];

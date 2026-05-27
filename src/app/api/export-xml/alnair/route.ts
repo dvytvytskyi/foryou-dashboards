@@ -41,8 +41,10 @@ export async function GET() {
       xml += `  <property last_update="${escapeXml(lastUpdate)}">\n`;
       
       // Basic Info
+      xml += `    <id>${escapeXml(p.id)}</id>\n`;
       xml += `    <reference_number>${escapeXml(p.reference || r.reference)}</reference_number>\n`;
-      xml += `    <property_type>${escapeXml(p.propertyType || p.category || r.category)}</property_type>\n`;
+      xml += `    <property_type>${escapeXml(p.propertyType || p.type || r.type)}</property_type>\n`;
+      xml += `    <category>${escapeXml(p.category || r.category)}</category>\n`;
       xml += `    <offer_type>${escapeXml(p.price?.type || r.offering_type)}</offer_type>\n`;
       xml += `    <title>${cdata(p.title?.en || p.title || r.title)}</title>\n`;
       xml += `    <description>${cdata(p.description?.en || p.description || '')}</description>\n`;
@@ -53,7 +55,7 @@ export async function GET() {
       
       // Location Details
       xml += `    <city>${escapeXml(p.uaeEmirate || 'Dubai')}</city>\n`;
-      // If we don't have community/sub_community mapped, we output what we have or empty
+      xml += `    <location_id>${escapeXml(p.location?.id || '')}</location_id>\n`;
       xml += `    <community>${escapeXml(p.location?.community || p.locationName || '')}</community>\n`;
       xml += `    <sub_community>${escapeXml(p.location?.subCommunity || '')}</sub_community>\n`;
       xml += `    <building_name>${escapeXml(p.project?.name || p.building?.name || '')}</building_name>\n`;
@@ -65,10 +67,24 @@ export async function GET() {
       xml += `    <size>${escapeXml(p.size || '')}</size>\n`;
       xml += `    <parking>${escapeXml(p.parkingSlots || '')}</parking>\n`;
       xml += `    <furnished>${escapeXml(p.furnishingType || '')}</furnished>\n`;
+      xml += `    <project_status>${escapeXml(p.projectStatus || '')}</project_status>\n`;
       
-      // Agent & URL
+      // Dates
+      xml += `    <available_from>${escapeXml(p.availableFrom || '')}</available_from>\n`;
+      xml += `    <created_at>${escapeXml(p.createdAt || '')}</created_at>\n`;
+      xml += `    <updated_at>${escapeXml(p.updatedAt || '')}</updated_at>\n`;
+      xml += `    <published_at>${escapeXml(p.portals?.propertyfinder?.publishedAt || '')}</published_at>\n`;
+      
+      // Compliance & Verification
+      xml += `    <verification_status>${escapeXml(p.verificationStatus || '')}</verification_status>\n`;
+      xml += `    <rera_license>${escapeXml(p.compliance?.issuingClientLicenseNumber || '')}</rera_license>\n`;
+      xml += `    <rera_permit>${escapeXml(p.compliance?.listingAdvertisementNumber || '')}</rera_permit>\n`;
+      xml += `    <quality_score>${escapeXml(p.qualityScore?.value || '')}</quality_score>\n`;
+      
+      // Agent & Team
       const agent = p.assignedTo?.name || p.agent?.name || '';
-      xml += `    <agent>\n      <name>${cdata(agent)}</name>\n    </agent>\n`;
+      xml += `    <agent>\n      <id>${escapeXml(p.assignedTo?.id || '')}</id>\n      <name>${cdata(agent)}</name>\n    </agent>\n`;
+      xml += `    <created_by>${cdata(p.createdBy?.name || '')}</created_by>\n`;
       xml += `    <url>${escapeXml(p.shareUrl || '')}</url>\n`;
       
       // Amenities

@@ -10,12 +10,12 @@
   <array>
     <string>/bin/zsh</string>
     <string>-lc</string>
-    <string>cd /Users/vytvytskyi/foryou-dashboards &amp;&amp; /usr/local/bin/npm run sync:plan-fact:bq &amp;&amp; /usr/local/bin/npm run sync:sales:full</string>
+    <string>cd /Users/vytvytskyi/foryou-dashboards &amp;&amp; /usr/local/bin/npm run sync:plan-fact:bq &amp;&amp; /usr/local/bin/npm run sync:sales</string>
   </array>
   <key>RunAtLoad</key>
   <true/>
   <key>StartInterval</key>
-  <integer>1800</integer>
+  <integer>3600</integer>
   <key>StandardOutPath</key>
   <string>/Users/vytvytskyi/foryou-dashboards/data/logs/plan-fact-sync.log</string>
   <key>StandardErrorPath</key>

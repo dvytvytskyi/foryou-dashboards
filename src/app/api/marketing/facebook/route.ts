@@ -1,19 +1,8 @@
-import { BigQuery } from '@google-cloud/bigquery';
 import { NextRequest, NextResponse } from 'next/server';
-import path from 'path';
+import { bigQueryQuery } from '@/lib/bigqueryClient';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
-
-const bqCredentials = process.env.GOOGLE_AUTH_JSON
-  ? JSON.parse(process.env.GOOGLE_AUTH_JSON)
-  : undefined;
-
-const bq = new BigQuery({
-  projectId: 'crypto-world-epta',
-  credentials: bqCredentials,
-  keyFilename: !bqCredentials ? path.resolve(process.cwd(), 'secrets/crypto-world-epta-2db29829d55d.json') : undefined,
-});
 
 function toIsoDate(date: Date): string {
   return date.toISOString().slice(0, 10);
@@ -77,7 +66,7 @@ export async function GET(request: NextRequest) {
       ORDER BY report_date DESC, source_name ASC
     `;
 
-    const [rows] = await bq.query({
+    const rows = await bigQueryQuery({
       query,
       params: { startDate, endDate },
       useLegacySql: false,

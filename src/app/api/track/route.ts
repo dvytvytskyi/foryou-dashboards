@@ -1,22 +1,12 @@
-import { BigQuery } from '@google-cloud/bigquery';
 import { NextResponse } from 'next/server';
-import path from 'path';
+import { createBigQueryClient } from '@/lib/googleAuth';
 
 const PROJECT_ID = 'crypto-world-epta';
 const DATASET_ID = 'foryou_analytics';
-const SERVICE_ACCOUNT_FILE = path.resolve('./secrets/crypto-world-epta-2db29829d55d.json');
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8745230277:AAGhKq1wNjt-RU_MWfO_dU2bCiay5xoUVXE';
 const CHAT_ID = process.env.TELEGRAM_CHAT_ID || '-5190606289';
 
-const bqCredentials = process.env.GOOGLE_AUTH_JSON 
-  ? JSON.parse(process.env.GOOGLE_AUTH_JSON)
-  : undefined;
-
-const bq = new BigQuery({
-  projectId: PROJECT_ID,
-  credentials: bqCredentials,
-  keyFilename: !bqCredentials ? SERVICE_ACCOUNT_FILE : undefined
-});
+const bq = createBigQueryClient(PROJECT_ID);
 
 export async function POST(req: Request) {
     const data = await req.json();

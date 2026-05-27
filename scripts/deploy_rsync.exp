@@ -1,0 +1,29 @@
+#!/usr/bin/expect -f
+set timeout 600
+set password "pb+-L,7#EstXEk"
+
+# First run rsync
+spawn rsync -avz --exclude=.git --exclude=node_modules --exclude=.next ./ root@109.73.194.70:/root/foryou-admin-ru/
+expect {
+    "*assword:*" {
+        send "$password\r"
+        exp_continue
+    }
+    eof
+}
+
+# Then restart docker
+spawn ssh -o StrictHostKeyChecking=no root@109.73.194.70
+expect {
+    "*assword:*" {
+        send "$password\r"
+        exp_continue
+    }
+    "*#*" {
+        send "cd /root/foryou-admin-ru && if docker compose version >/dev/null 2>&1; then docker compose build app && docker compose up -d --force-recreate app; else docker-compose build app && docker-compose up -d --force-recreate app; fi\r"
+    }
+}
+expect "*#*" {
+    send "exit\r"
+}
+expect eof

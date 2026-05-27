@@ -2,83 +2,40 @@
 
 import React, { useState, useCallback, useEffect } from 'react';
 import DashboardPage from '@/components/DashboardPage';
-import { IncomeTable, SummaryTable, ExpenseDetailsTable, ExpensesSkeleton } from './ExpensesUI';
+import { ExpensesSummaryCard, ExpenseCategoriesTable, ExpensesSkeleton } from './ExpensesOverviewUI';
 import styles from './expenses.module.css';
-
-type IncomeRow = {
-  type: string;
-  deals: number;
-  income: number;
-  isTotal?: boolean;
-};
-
-type SummaryRow = {
-  category: string;
-  amount: number;
-};
-
-type ExpenseDetailRow = {
-  name: string;
-  current: number;
-  mom: number;
-  qoq: number;
-  yoy: number;
-  average: number;
-  isTotal?: boolean;
-  isResult?: boolean;
-};
-
-type ExpensesOverviewPayload = {
-  incomeRows: IncomeRow[];
-  summaryRows: SummaryRow[];
-  expenseDetails: ExpenseDetailRow[];
-  result: number;
-};
-
-const EMPTY_DATA: ExpensesOverviewPayload = {
-  incomeRows: [],
-  summaryRows: [],
-  expenseDetails: [],
-  result: 0,
-};
+import RedFilters from '@/components/dashboard/filters/RedFilters';
 
 export default function ExpensesOverviewPage() {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [currency, setCurrency] = useState<'aed' | 'usd'>(() => {
     try { return (localStorage.getItem('dashboard-currency') as 'aed' | 'usd') || 'aed'; } catch { return 'aed'; }
   });
-  const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<ExpensesOverviewPayload>(EMPTY_DATA);
-
-  const [dateRange, setDateRange] = useState(() => {
+  
+  const [expenseData, setExpenseData] = useState<any[]>([]);
+  
+  const [dateRange, setDateRange] = useState<{ startDate: string; endDate: string }>(() => {
     if (typeof window !== 'undefined') {
       const s = localStorage.getItem('dashboard-startDate');
       const e = localStorage.getItem('dashboard-endDate');
       if (s && e) return { startDate: s, endDate: e };
     }
-    return {
-      startDate: '2024-01-01',
-      endDate: new Date().toISOString().split('T')[0],
-    };
+    return { startDate: '2024-01-01', endDate: new Date().toISOString().split('T')[0] };
   });
 
-  const fetchData = useCallback(async (start: string, end: string) => {
+  const fetchData = useCallback(async (startDate: string, endDate: string) => {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch(`/api/expenses/overview?startDate=${start}&endDate=${end}`);
+      const res = await fetch(`/api/expenses/overview?startDate=${startDate}&endDate=${endDate}`);
       const json = await res.json();
-      if (!json.success) throw new Error(json.error || 'Failed to load expenses overview');
-
-      setData({
-        incomeRows: json.data?.incomeRows || [],
-        summaryRows: json.data?.summaryRows || [],
-        expenseDetails: json.data?.expenseDetails || [],
-        result: Number(json.data?.result || 0),
-      });
+      if (!json.success) throw new Error(json.error || 'Failed to load data');
+      
+      setExpenseData(json.data.expenseDetails || []);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to load expenses overview');
-      setData(EMPTY_DATA);
+      setError(e instanceof Error ? e.message : 'Error loading data');
+      setExpenseData([]);
     } finally {
       setLoading(false);
     }
@@ -88,19 +45,19 @@ export default function ExpensesOverviewPage() {
     fetchData(dateRange.startDate, dateRange.endDate);
   }, [dateRange, fetchData]);
 
-  const handleDateChange = (startDate: string, endDate: string) => {
-    setDateRange({ startDate, endDate });
-  };
+  const totalExpenseNode = expenseData.find(d => d.isTotal);
+  const netIncomeNode = expenseData.find(d => d.isResult);
 
   return (
     <DashboardPage
-      title="Расходы: Обзор"
+      title="Расходы и доходы"
       hideTable={true}
-      onDateChange={handleDateChange}
-      currency={currency}
-      setCurrency={setCurrency}
+      FilterComponent={RedFilters}
+      onDateChange={(s, e) => setDateRange({ startDate: s, endDate: e })}
+      currency={currency as any}
+      setCurrency={setCurrency as any}
       hideSourceFilter={true}
-      layoutVariant="red"
+      datePresetMode="expenses-months"
     >
       <div className={styles.container}>
         {loading ? (
@@ -111,15 +68,18 @@ export default function ExpensesOverviewPage() {
           </div>
         ) : (
           <>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
-              <IncomeTable rows={data.incomeRows} currency={currency} />
-              <SummaryTable rows={data.summaryRows} result={data.result} currency={currency} />
+            <div className={styles.kpiGrid} style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
+              <ExpensesSummaryCard data={totalExpenseNode} currency={currency} isIncome={false} />
+              <ExpensesSummaryCard data={netIncomeNode} currency={currency} isIncome={true} />
             </div>
             
-            <ExpenseDetailsTable categories={data.expenseDetails} currency={currency} />
+            <div style={{ marginTop: '16px' }}>
+              <ExpenseCategoriesTable rows={expenseData} currency={currency} />
+            </div>
           </>
         )}
       </div>
     </DashboardPage>
   );
 }
+

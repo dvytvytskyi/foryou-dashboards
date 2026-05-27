@@ -3,8 +3,8 @@
 import React from 'react';
 import styles from './directions.module.css';
 import { Activity, BarChart3, Database, Search } from 'lucide-react';
-
 import { formatMoney as sysFormatMoney } from '@/lib/formatters';
+import { FeedbackIconTrigger } from '@/components/FeedbackModal';
 
 const formatPct = (v: number) => `${((v || 0) * 100).toFixed(1)}%`;
 
@@ -15,7 +15,10 @@ function DisplayMoney({ value, currency }: { value: number, currency: 'aed' | 'u
 export function DirectionCard({ title, data, currency }: { title: string, data: any, currency: 'aed' | 'usd' }) {
   return (
     <div className={styles.kpiCard}>
-      <div className={styles.kpiLabel}>{title}</div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div className={styles.kpiLabel}>{title}</div>
+        <FeedbackIconTrigger context={{ type: 'scorecard', title, page: '/sales/directions', date: 'Current View' }} />
+      </div>
       <div className={styles.kpiValue} style={{ fontSize: '20px', marginBottom: '12px' }}>
         {data.deals || 0} <span style={{ fontSize: '12px', fontWeight: 500, color: 'var(--muted)' }}>сделок</span>
       </div>
@@ -58,6 +61,7 @@ export function SourcePerformanceTable({ sources, currency }: { sources: any[], 
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Activity size={14} />
           <span>Эффективность по источникам</span>
+          <FeedbackIconTrigger context={{ type: 'table', title: 'Эффективность по источникам', page: '/sales/directions', date: 'Current View' }} />
         </div>
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
           <Search size={12} style={{ position: 'absolute', left: '10px', color: 'var(--muted)' }} />

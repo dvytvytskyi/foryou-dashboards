@@ -62,7 +62,15 @@ const Sidebar: React.FC<SidebarProps> = ({
   return (
     <aside className={styles.sidebar}>
       {/* User Profile Header */}
-      <div className={styles.sidebarProfile}>
+      <div 
+        className={styles.sidebarProfile}
+        onClick={() => {
+          if (user?.role === 'admin') {
+            window.location.href = '/settings';
+          }
+        }}
+        style={{ cursor: user?.role === 'admin' ? 'pointer' : 'default' }}
+      >
         <div className={styles.profileCard} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
           <div className={styles.profileInfo}>
             <div className={styles.profileName}>{displayName}</div>

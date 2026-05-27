@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server';
 import { isPostgresConfigured, queryPostgres } from '@/lib/postgres';
-import { BigQuery } from '@google-cloud/bigquery';
 import path from 'path';
+import { createBigQueryClient } from '@/lib/googleAuth';
+import { getDynamicPfRate } from '@/lib/pfBudget';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
-
-const CREDIT_TO_AED_RATE = 1.9;
 
 const RE_QL_DIRECT_STATUSES = new Set([
   70457466,
@@ -37,17 +36,7 @@ type LeadBqFlags = {
   hasProgressHistory: boolean;
 };
 
-const bqCredentials = process.env.GOOGLE_AUTH_JSON
-  ? JSON.parse(process.env.GOOGLE_AUTH_JSON)
-  : undefined;
-
-const bq = new BigQuery({
-  projectId: 'crypto-world-epta',
-  credentials: bqCredentials,
-  keyFilename: !bqCredentials
-    ? path.resolve(process.cwd(), 'secrets/crypto-world-epta-2db29829d55d.json')
-    : undefined,
-});
+const bq = createBigQueryClient('crypto-world-epta');
 
 type ListingSnapshotRow = {
   listing_id: string;
@@ -345,6 +334,31 @@ function monthKeyOverlapsRange(monthKey: string, startDate: string | null, endDa
   return true;
 }
 
+function getBudgetForDateRange(budgetByMonth: Record<string, number> | null, startDate: string | null, endDate: string | null): number {
+  if (!budgetByMonth) return 0;
+  let totalCredits = 0;
+  for (const [month, credits] of Object.entries(budgetByMonth)) {
+    if (!month || month.length < 7) continue;
+    const monthStart = `${month.slice(0, 7)}-01`;
+    const [year, m] = month.slice(0, 7).split('-');
+    const monthEnd = new Date(Date.UTC(Number(year), Number(m), 0)).toISOString().slice(0, 10);
+    
+    if (startDate && monthEnd < startDate) continue;
+    if (endDate && monthStart > endDate) continue;
+    
+    let overlapStart = monthStart;
+    let overlapEnd = monthEnd;
+    if (startDate && startDate > overlapStart) overlapStart = startDate;
+    if (endDate && endDate < overlapEnd) overlapEnd = endDate;
+    
+    const overlapDays = (new Date(overlapEnd).getTime() - new Date(overlapStart).getTime()) / (1000 * 60 * 60 * 24) + 1;
+    const totalDays = (new Date(monthEnd).getTime() - new Date(monthStart).getTime()) / (1000 * 60 * 60 * 24) + 1;
+    
+    totalCredits += Number(credits || 0) * (overlapDays / totalDays);
+  }
+  return totalCredits;
+}
+
 async function loadListingMatchStatsFromPostgres(targetGroup: string | null) {
   const { rows } = await queryPostgres<ListingMatchStatsRow>(
     `
@@ -454,8 +468,8 @@ async function loadListingsFromPostgres(targetGroup: string | null) {
       (row.offering_type === 'sale' ? 'Sell' : row.offering_type === 'rent' ? 'Rent' : 'Other'),
     Title: row.title || row.reference || row.listing_id,
     status: row.status || 'Active',
-    Budget: (Number(row.budget || 0) || 0) * CREDIT_TO_AED_RATE,
-    BudgetByMonth: Object.fromEntries(Object.entries(row.budget_by_month || {}).map(([k, v]) => [k, Number(v) * CREDIT_TO_AED_RATE])),
+    Budget: Number(row.budget || 0),
+    BudgetByMonth: row.budget_by_month || {},
 
     LeadsPF: Number(row.leads_count || 0) || 0,
     LeadsByMonth: row.leads_by_month || {},
@@ -483,6 +497,8 @@ export async function GET(request: Request) {
     const viewMode = searchParams.get('view');
     const startDate = searchParams.get('startDate');
     const endDate = searchParams.get('endDate');
+    
+    const dynamicRate = await getDynamicPfRate(startDate, endDate);
 
     // Exact day-range metrics for "Our" group (no monthly aggregation in UI responses)
     if (targetGroup === 'Our') {
@@ -513,7 +529,8 @@ export async function GET(request: Request) {
         const qlActual = Number(metrics?.ql_actual || 0);
         const meetings = Number(metrics?.meetings || 0);
         const deals = Number(metrics?.deals || 0);
-        const budget = Number(listing.Budget || 0);
+        const budgetCredits = getBudgetForDateRange(listing.BudgetByMonth, startDate, endDate);
+        const budget = budgetCredits * dynamicRate;
 
         const category = listing.Category || 'Other';
         const listingTitle = listing.Title || listing.Reference || listing.ListingId;
@@ -580,7 +597,8 @@ export async function GET(request: Request) {
         const qlActual = Number(metrics?.ql_actual || 0);
         const meetings = Number(metrics?.meetings || 0);
         const deals = Number(metrics?.deals || 0);
-        const budget = Number(listing.Budget || 0);
+        const budgetCredits = getBudgetForDateRange(listing.BudgetByMonth, startDate, endDate);
+        const budget = budgetCredits * dynamicRate;
 
         const category = listing.Category || 'Other';
         const listingTitle = listing.Title || listing.Reference || listing.ListingId;
@@ -653,13 +671,13 @@ export async function GET(request: Request) {
         const months = Object.keys(budgetByMonth);
 
         if (months.length > 0) {
-          const categoryBudget = months
+          const categoryBudgetCredits = months
             .filter((m) => monthInRange(m))
             .reduce((sum, m) => sum + Number(budgetByMonth[m] || 0), 0);
-          budgetByCategory[category] += categoryBudget;
+          budgetByCategory[category] += categoryBudgetCredits * dynamicRate;
         } else {
           if (dateInRange(listing.CreatedAt || null)) {
-            budgetByCategory[category] += Number(listing.Budget || 0);
+            budgetByCategory[category] += Number(listing.Budget || 0) * dynamicRate;
           }
         }
       }
@@ -820,6 +838,8 @@ export async function GET(request: Request) {
       const budgetByMonth = l.BudgetByMonth || {};
       const leadsByMonth = l.LeadsByMonth || {};
       const months = Object.keys(budgetByMonth);
+      const useSpamLeadBase = false; // Always use CRM leads as "leads" column
+      const useCrmLeadBase = true;
 
       if (months.length > 0) {
         const filteredMonths = months.filter((m) => monthInRange(m));
@@ -831,8 +851,6 @@ export async function GET(request: Request) {
           const monthLeads = Number(leadsByMonth[month] || 0);
           const crmLeads = Number(amoCrmLeadsByMonth[month] || 0);
           const spam = Number(amoSpamByMonth[month] || 0);
-          const useSpamLeadBase = false; // Always use CRM leads as "leads" column
-          const useCrmLeadBase = true;
           const leadBase = useSpamLeadBase ? spam : (useCrmLeadBase ? crmLeads : monthLeads);
           const qualifiedLeads = Number(amoQualifiedByMonth[month] || 0);
           const qlActual = Number(amoQlActualByMonth[month] || 0);
@@ -844,7 +862,7 @@ export async function GET(request: Request) {
             level_1: categoryLabel,
             level_2: listingLabel,
             level_3: month,
-            budget: Number(budgetByMonth[month] || 0),
+            budget: Number(budgetByMonth[month] || 0) * dynamicRate,
             leads: leadBase,
             crm_leads: crmLeads,
             no_answer_spam: spam,
@@ -855,13 +873,13 @@ export async function GET(request: Request) {
             revenue: revenue,
             company_revenue: 0,
             date: month,
-            cpl: leadBase > 0 ? Number(budgetByMonth[month] || 0) / leadBase : 0,
+            cpl: leadBase > 0 ? (Number(budgetByMonth[month] || 0) * dynamicRate) / leadBase : 0,
             rate_answer: crmLeads > 0 ? (crmLeads - spam) / crmLeads : 0,
-            cost_per_qualified_leads: qualifiedLeads > 0 ? Number(budgetByMonth[month] || 0) / qualifiedLeads : 0,
-            cpql_actual: qlActual > 0 ? Number(budgetByMonth[month] || 0) / qlActual : 0,
-            cp_meetings: meetings > 0 ? Number(budgetByMonth[month] || 0) / meetings : 0,
-            cost_per_deal: deals > 0 ? Number(budgetByMonth[month] || 0) / deals : 0,
-            roi: Number(budgetByMonth[month] || 0) > 0 ? revenue / Number(budgetByMonth[month] || 0) : 0,
+            cost_per_qualified_leads: qualifiedLeads > 0 ? (Number(budgetByMonth[month] || 0) * dynamicRate) / qualifiedLeads : 0,
+            cpql_actual: qlActual > 0 ? (Number(budgetByMonth[month] || 0) * dynamicRate) / qlActual : 0,
+            cp_meetings: meetings > 0 ? (Number(budgetByMonth[month] || 0) * dynamicRate) / meetings : 0,
+            cost_per_deal: deals > 0 ? (Number(budgetByMonth[month] || 0) * dynamicRate) / deals : 0,
+            roi: Number(budgetByMonth[month] || 0) > 0 ? revenue / (Number(budgetByMonth[month] || 0) * dynamicRate) : 0,
             cr_ql: leadBase > 0 ? qualifiedLeads / leadBase : 0,
             sort_order: sort_order,
             status: l.status || 'Active'
@@ -889,7 +907,7 @@ export async function GET(request: Request) {
           level_1: categoryLabel,
           level_2: listingLabel,
           level_3: null,
-          budget: Number(l.Budget || 0),
+          budget: Number(l.Budget || 0) * dynamicRate,
           leads: leadBase,
           crm_leads: crmLeads,
           no_answer_spam: spam,
@@ -900,13 +918,13 @@ export async function GET(request: Request) {
           revenue: revenue,
           company_revenue: listingCompRevenue,
           date: l.CreatedAt ? l.CreatedAt.slice(0, 10) : '-',
-          cpl: leadBase > 0 ? Number(l.Budget || 0) / leadBase : 0,
+          cpl: leadBase > 0 ? (Number(l.Budget || 0) * dynamicRate) / leadBase : 0,
           rate_answer: crmLeads > 0 ? (crmLeads - spam) / crmLeads : 0,
-          cost_per_qualified_leads: qualifiedLeads > 0 ? Number(l.Budget || 0) / qualifiedLeads : 0,
-          cpql_actual: qlActual > 0 ? Number(l.Budget || 0) / qlActual : 0,
-          cp_meetings: meetings > 0 ? Number(l.Budget || 0) / meetings : 0,
-          cost_per_deal: deals > 0 ? Number(l.Budget || 0) / deals : 0,
-          roi: Number(l.Budget || 0) > 0 ? revenue / Number(l.Budget || 0) : 0,
+          cost_per_qualified_leads: qualifiedLeads > 0 ? (Number(l.Budget || 0) * dynamicRate) / qualifiedLeads : 0,
+          cpql_actual: qlActual > 0 ? (Number(l.Budget || 0) * dynamicRate) / qlActual : 0,
+          cp_meetings: meetings > 0 ? (Number(l.Budget || 0) * dynamicRate) / meetings : 0,
+          cost_per_deal: deals > 0 ? (Number(l.Budget || 0) * dynamicRate) / deals : 0,
+          roi: Number(l.Budget || 0) > 0 ? revenue / (Number(l.Budget || 0) * dynamicRate) : 0,
           cr_ql: leadBase > 0 ? qualifiedLeads / leadBase : 0,
           sort_order: sort_order,
           status: l.status || 'Active'

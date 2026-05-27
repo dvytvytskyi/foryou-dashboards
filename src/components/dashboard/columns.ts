@@ -17,8 +17,6 @@ export const MARKETING_COLUMNS: DashboardColumn[] = [
   { key: 'deals', label: 'Deals' },
   { key: 'cost_per_deal', label: 'Cost Per Deal' },
   { key: 'revenue', label: 'Revenue' },
-  { key: 'roi', label: 'ROI' },
-  { key: 'company_revenue', label: 'Company revenue' },
 ];
 
 export const RED_COLUMNS_MAIN: DashboardColumn[] = [

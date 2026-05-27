@@ -4,6 +4,7 @@ import React from 'react';
 import styles from './invoices.module.css';
 import { Activity, Search } from 'lucide-react';
 import { formatMoney as sysFormatMoney } from '@/lib/formatters';
+import { FeedbackIconTrigger } from '@/components/FeedbackModal';
 
 function DisplayMoney({ value, currency }: { value: number; currency: 'aed' | 'usd' }) {
   return <span>{sysFormatMoney(value, currency)}</span>;
@@ -24,7 +25,10 @@ export function InvoiceCard({
 }) {
   return (
     <div className={styles.kpiCard}>
-      <div className={styles.kpiLabel}>{title}</div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div className={styles.kpiLabel}>{title}</div>
+        <FeedbackIconTrigger context={{ type: 'scorecard', title, page: '/invoices/overview', date: 'Current View' }} />
+      </div>
       <div className={styles.kpiValue}>
         {isMoney ? <DisplayMoney value={value} currency={currency} /> : value.toLocaleString()}
       </div>
@@ -59,6 +63,7 @@ export function InvoicesTable({
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Activity size={14} />
             <span>{title}</span>
+            <FeedbackIconTrigger context={{ type: 'table', title, page: '/invoices/overview', date: 'Current View' }} />
           </div>
 
           <div className={styles.tabToggle}>

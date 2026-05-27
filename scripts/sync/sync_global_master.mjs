@@ -59,10 +59,20 @@ async function syncGlobalMaster() {
     console.log('--- Starting Full Global Master Feed Sync (6 Sources) ---');
     let unified = [];
 
-    // 1. SECONDARY (Date at Col O / index 14)
+    // 1. SECONDARY 
+    // Format: 0: Date, 1: Object, 2: Broker, 4: Deal Type (Аренда/Вторичка), 5: Dept, 6: Price, 8: Comm, 15: Income
     const sec = await sheets.spreadsheets.values.get({ spreadsheetId: SOURCE_IDS.SECONDARY, range: 'Лист1!A2:Z' });
-    (sec.data.values || []).filter(r => r[13] || r[14]).forEach(r => {
-        unified.push({ date: parseDate(r[14]), cat: 'Secondary', broker: r[13] || '', price: n(r[15]), comm: n(r[16]), income: n(r[17]), src: 'SECONDARY', obj: r[1] });
+    (sec.data.values || []).filter(r => r[0] && r[2]).forEach(r => {
+        unified.push({ 
+            date: parseDate(r[0]), 
+            cat: r[4] || 'Secondary', 
+            broker: r[2] || '', 
+            price: n(r[6]), 
+            comm: n(r[8]), 
+            income: n(r[15]), 
+            src: 'SECONDARY', 
+            obj: r[1] 
+        });
     });
 
     // 2. OP_REESTR (Primary/Off-Plan) - Date at Col N / index 13
@@ -96,11 +106,11 @@ async function syncGlobalMaster() {
         });
     }
 
-    // 6. RENTAL (Secondary)
-    const rent = await sheets.spreadsheets.values.get({ spreadsheetId: SOURCE_IDS.RENTAL, range: 'Лист1!A2:Z' });
-    (rent.data.values || []).filter(r => r[0]).forEach(r => {
-        unified.push({ date: parseDate(r[0]), obj: r[1], cat: 'Rental', broker: r[3], price: n(r[5]), comm: n(r[6]), income: n(r[7]), src: 'RENTAL' });
-    });
+    // 6. RENTAL (Skipped - now inside SECONDARY sheet)
+    // const rent = await sheets.spreadsheets.values.get({ spreadsheetId: SOURCE_IDS.RENTAL, range: 'Лист1!A2:Z' });
+    // (rent.data.values || []).filter(r => r[0]).forEach(r => {
+    //     unified.push({ date: parseDate(r[0]), obj: r[1], cat: 'Rental', broker: r[3], price: n(r[5]), comm: n(r[6]), income: n(r[7]), src: 'RENTAL' });
+    // });
 
     // Deduplication (Date + Price + Broker)
     const unique = [];

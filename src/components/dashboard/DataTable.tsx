@@ -3,6 +3,7 @@
 import React, { CSSProperties } from 'react';
 import { ChevronRight, ChevronDown } from 'lucide-react';
 import Skeleton from '@/components/ui/Skeleton';
+import { FeedbackIconTrigger } from '@/components/FeedbackModal';
 import styles from './DataTable.module.css';
 
 interface DataTableProps {
@@ -118,8 +119,11 @@ const DataTable: React.FC<DataTableProps> = ({
     <section className={styles.card} ref={tableWrapRef}>
       {(title || icon) && (
         <div className={styles.cardHeader}>
-          {icon && <span className={styles.cardIcon}>{icon}</span>}
-          {title && <h2 className={styles.cardTitle}>{title}</h2>}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {icon && <span className={styles.cardIcon}>{icon}</span>}
+            {title && <h2 className={styles.cardTitle} style={{ margin: 0 }}>{title}</h2>}
+            <FeedbackIconTrigger context={{ type: 'table', title: title || 'Table', page: typeof window !== 'undefined' ? window.location.pathname : '', date: 'Current View' }} />
+          </div>
         </div>
       )}
       <div className={styles.cardBody}>

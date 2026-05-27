@@ -1,0 +1,29 @@
+#!/usr/bin/expect -f
+set timeout 600
+set password "pb+-L,7#EstXEk"
+
+# Rsync the updated wrapper and install script
+spawn rsync -avz --exclude=.git ./scripts root@109.73.194.70:/root/foryou-admin-ru/
+expect {
+    "*assword:*" {
+        send "$password\r"
+        exp_continue
+    }
+    eof
+}
+
+# Run the install script on the remote server
+spawn ssh -o StrictHostKeyChecking=no root@109.73.194.70
+expect {
+    "*assword:*" {
+        send "$password\r"
+        exp_continue
+    }
+    "*#*" {
+        send "cd /root/foryou-admin-ru && bash scripts/sync/install_amo_pf_fast_sync_cron.sh\r"
+    }
+}
+expect "*#*" {
+    send "exit\r"
+}
+expect eof

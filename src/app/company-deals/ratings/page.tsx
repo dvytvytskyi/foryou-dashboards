@@ -100,6 +100,14 @@ function buildSupportDetailsRows(deals: DealRow[] = []) {
     .sort((a, b) => b.revenue - a.revenue);
 }
 
+function pluralize(count: number, words: [string, string, string]): string {
+  const mod10 = count % 10;
+  const mod100 = count % 100;
+  if (mod10 === 1 && mod100 !== 11) return words[0];
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return words[1];
+  return words[2];
+}
+
 function buildBrokerRatingsRows(deals: DealRow[] = []) {
   const brokerMap = new Map<string, { revenue: number; deals: number; partners: Set<string> }>();
 
@@ -124,14 +132,18 @@ function buildBrokerRatingsRows(deals: DealRow[] = []) {
   }
 
   return Array.from(brokerMap.entries())
-    .map(([name, stats]) => ({
-      name,
-      revenue: stats.revenue,
-      deals: stats.deals,
-      partners: stats.partners.size,
-      activityValue: stats.deals,
-      activityLabel: `${stats.deals} сделок / ${stats.partners.size} партнеров`,
-    }))
+    .map(([name, stats]) => {
+      const dealWord = pluralize(stats.deals, ['сделка', 'сделки', 'сделок']);
+      const partnerWord = pluralize(stats.partners.size, ['партнер', 'партнера', 'партнеров']);
+      return {
+        name,
+        revenue: stats.revenue,
+        deals: stats.deals,
+        partners: stats.partners.size,
+        activityValue: stats.deals,
+        activityLabel: `${stats.deals} ${dealWord} / ${stats.partners.size} ${partnerWord}`,
+      };
+    })
     .sort((a, b) => b.revenue - a.revenue);
 }
 

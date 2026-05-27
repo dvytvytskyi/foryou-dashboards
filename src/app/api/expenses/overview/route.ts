@@ -166,8 +166,11 @@ export async function GET(request: NextRequest) {
       const yValue = twelveMonthsAgo ? categoryCurrent(twelveMonthsAgo, key) : 0;
       return {
         mom: pctDelta(currentValue, prevValue),
+        momAbs: round2(currentValue - prevValue),
         qoq: pctDelta(currentValue, qValue),
+        qoqAbs: round2(currentValue - qValue),
         yoy: pctDelta(currentValue, yValue),
+        yoyAbs: round2(currentValue - yValue),
       };
     }
 
@@ -258,8 +261,11 @@ export async function GET(request: NextRequest) {
       current: currentTotalExpense,
       average: avgMonthlyExpense,
       mom: pctDelta(currentTotalExpense, prevExpense),
+      momAbs: round2(currentTotalExpense - prevExpense),
       qoq: pctDelta(currentTotalExpense, qExpense),
+      qoqAbs: round2(currentTotalExpense - qExpense),
       yoy: pctDelta(currentTotalExpense, yExpense),
+      yoyAbs: round2(currentTotalExpense - yExpense),
       isTotal: true,
       details: totalExpenseDetails,
     });
@@ -283,8 +289,11 @@ export async function GET(request: NextRequest) {
       current: currentResult,
       average: avgMonthlyResult,
       mom: pctDelta(currentResult, prevResult),
+      momAbs: round2(currentResult - prevResult),
       qoq: pctDelta(currentResult, qResult),
+      qoqAbs: round2(currentResult - qResult),
       yoy: pctDelta(currentResult, yResult),
+      yoyAbs: round2(currentResult - yResult),
       isResult: true,
       details: resultDetails,
     });

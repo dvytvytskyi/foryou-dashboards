@@ -3,10 +3,19 @@
 import React from 'react';
 import styles from './company-deals.module.css';
 import { Activity, ChevronDown, ChevronRight, Search } from 'lucide-react';
+import { FeedbackIconTrigger } from '@/components/FeedbackModal';
 
 import { formatMoney as sysFormatMoney } from '@/lib/formatters';
 
 const formatPct = (v: number) => `${Math.round(v || 0)}%`;
+
+export function pluralize(count: number, words: [string, string, string]): string {
+  const mod10 = count % 10;
+  const mod100 = count % 100;
+  if (mod10 === 1 && mod100 !== 11) return words[0];
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return words[1];
+  return words[2];
+}
 
 function DisplayMoney({ value, currency }: { value: number, currency: 'aed' | 'usd' }) {
   return <span>{sysFormatMoney(value, currency)}</span>;
@@ -22,9 +31,12 @@ function formatDealDate(value: string) {
 export function CompanyDealCard({ title, data, currency }: { title: string, data: any, currency: 'aed' | 'usd' }) {
   return (
     <div className={styles.kpiCard}>
-      <div className={styles.kpiLabel}>{title}</div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+        <div className={styles.kpiLabel} style={{ marginBottom: 0 }}>{title}</div>
+        <FeedbackIconTrigger context={{ type: 'scorecard', title, page: '/company-deals', date: 'Current View' }} />
+      </div>
       <div className={styles.kpiValue} style={{ fontSize: '20px', marginBottom: '12px' }}>
-        {data.deals || 0} <span style={{ fontSize: '12px', fontWeight: 500, color: 'var(--muted)' }}>сделок</span>
+        {data.deals || 0} <span style={{ fontSize: '12px', fontWeight: 500, color: 'var(--muted)' }}>{pluralize(data.deals || 0, ['сделка', 'сделки', 'сделок'])}</span>
       </div>
       
       <div className={styles.metricsRow} style={{ gap: '16px' }}>
@@ -57,10 +69,11 @@ export function CompanyDealsTable({ rows, title, currency }: { rows: any[], titl
 
   return (
     <div className={styles.tableContainer}>
-      <div className={styles.sectionTitle} style={{ padding: '14px 18px', borderBottom: '1px solid var(--line)', marginBottom: 0 }}>
+      <div className={styles.sectionTitle} style={{ padding: '14px 18px', borderBottom: '1px solid var(--line)', marginBottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Activity size={14} />
           <span>{title}</span>
+          <FeedbackIconTrigger context={{ type: 'table', title, page: '/company-deals', date: 'Current View' }} />
         </div>
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
           <Search size={12} style={{ position: 'absolute', left: '10px', color: 'var(--muted)' }} />
@@ -131,10 +144,11 @@ export function SupportDetailsTable({ rows, currency }: { rows: any[], currency:
 
   return (
     <div className={styles.tableContainer}>
-      <div className={styles.sectionTitle} style={{ padding: '14px 18px', borderBottom: '1px solid var(--line)', marginBottom: 0 }}>
+      <div className={styles.sectionTitle} style={{ padding: '14px 18px', borderBottom: '1px solid var(--line)', marginBottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Activity size={14} />
           <span>Детализация сопровождения</span>
+          <FeedbackIconTrigger context={{ type: 'table', title: 'Детализация сопровождения', page: '/company-deals', date: 'Current View' }} />
         </div>
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
           <Search size={12} style={{ position: 'absolute', left: '10px', color: 'var(--muted)' }} />
@@ -286,10 +300,11 @@ export function BrokerRatingsTable({ rows, currency }: { rows: any[], currency: 
 
   return (
     <div className={styles.tableContainer}>
-      <div className={styles.sectionTitle} style={{ padding: '14px 18px', borderBottom: '1px solid var(--line)', marginBottom: 0 }}>
+      <div className={styles.sectionTitle} style={{ padding: '14px 18px', borderBottom: '1px solid var(--line)', marginBottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Activity size={14} />
           <span>Рейтинг брокеров и партнеров</span>
+          <FeedbackIconTrigger context={{ type: 'table', title: 'Рейтинг брокеров и партнеров', page: '/company-deals/ratings', date: 'Current View' }} />
         </div>
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
           <Search size={12} style={{ position: 'absolute', left: '10px', color: 'var(--muted)' }} />
@@ -345,7 +360,7 @@ export function BrokerRatingsTable({ rows, currency }: { rows: any[], currency: 
                     <ValueWithBar 
                       value={s.deals || 0} 
                       max={maxDeals} 
-                      subtext={`${s.deals || 0} сделок`}
+                      subtext={`${s.deals || 0} ${pluralize(s.deals || 0, ['сделка', 'сделки', 'сделок'])}`}
                     />
                   </td>
                 </tr>
@@ -413,10 +428,11 @@ export function AllianceTable({ rows, currency }: { rows: any[], currency: 'aed'
 
   return (
     <div className={styles.tableContainer}>
-      <div className={styles.sectionTitle} style={{ padding: '14px 18px', borderBottom: '1px solid var(--line)', marginBottom: 0 }}>
+      <div className={styles.sectionTitle} style={{ padding: '14px 18px', borderBottom: '1px solid var(--line)', marginBottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Activity size={14} />
           <span>Сделки: Альянс</span>
+          <FeedbackIconTrigger context={{ type: 'table', title: 'Сделки: Альянс', page: '/company-deals/alliance', date: 'Current View' }} />
         </div>
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
           <Search size={12} style={{ position: 'absolute', left: '10px', color: 'var(--muted)' }} />

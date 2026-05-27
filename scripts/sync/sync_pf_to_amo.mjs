@@ -516,13 +516,14 @@ function buildLeadPayload(pfLead, sourceEnumId, projectMeta = null) {
   const listingRef = isPrimPlus
     ? String(pfLead?.project?.id || '').trim()
     : (pfLead?.listing?.reference ? String(pfLead.listing.reference) : '');
+  const amoListingId = isPrimPlus ? listingId : (listingRef || listingId);
   const listingUrl = buildPfListingUrl(pfLead, projectMeta);
   const responseLink = firstNonEmptyString(pfLead?.responseLink);
 
   const customFields = [
     { field_id: PF_FIELD_LEAD_ID, values: [{ value: pfLeadId }] },
     { field_id: PF_FIELD_LISTING_REF, values: [{ value: listingRef || listingId || '' }] },
-    { field_id: PF_FIELD_LISTING_ID, values: [{ value: listingId || '' }] },
+    { field_id: PF_FIELD_LISTING_ID, values: [{ value: amoListingId || '' }] },
     { field_id: PF_FIELD_CATEGORY, values: [{ value: pfCategory }] },
     { field_id: PF_FIELD_CHANNEL_TYPE, values: [{ value: channelType }] },
     { field_id: PF_FIELD_STATUS, values: [{ value: pfStatus }] },
@@ -536,14 +537,15 @@ function buildLeadPayload(pfLead, sourceEnumId, projectMeta = null) {
             `PF Lead ID: ${pfLeadId}`,
             `Name: ${senderName || '-'}`,
             `Phone: ${phone || '-'}`,
-            isPrimPlus ? `Project ID: ${listingId || '-'}` : `Listing ID: ${listingId || '-'}`,
+            isPrimPlus ? `Project ID: ${listingId || '-'}` : `Listing ID: ${amoListingId || '-'}`,
             isPrimPlus ? `Project Title: ${projectTitle || '-'}` : `Listing Ref: ${listingRef || '-'}`,
+            !isPrimPlus && listingId && listingId !== amoListingId ? `PF Listing UID: ${listingId}` : null,
             `URL: ${listingUrl || '-'}`,
             `Response Link: ${responseLink || '-'}`,
             `Channel: ${channelType || '-'}`,
             `Status: ${pfStatus || '-'}`,
             `CreatedAt: ${pfLead?.createdAt || '-'}`,
-          ].join('\n'),
+          ].filter(Boolean).join('\n'),
         },
       ],
     },

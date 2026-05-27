@@ -51,6 +51,7 @@ import Header from '@/components/dashboard/Header';
 import FilterBar from '@/components/dashboard/FilterBar';
 import DataTable from '@/components/dashboard/DataTable';
 import TableSkeleton from '@/components/dashboard/skeletons/TableSkeleton';
+import { FeedbackIconTrigger } from '@/components/FeedbackModal';
 import styles from './DashboardPage.module.css';
 
 export {
@@ -341,6 +342,7 @@ function formatStatusDateTime(iso: string | null) {
 
 export default function DashboardPage({
   extraContent = null,
+  renderSummary = null,
   title = 'General Marketing',
   initialSourceFilter = 'all',
   hideSourceFilter = false,
@@ -380,8 +382,11 @@ export default function DashboardPage({
   isolateLocalStorage = false,
   datePresetMode = 'default',
   maxEndDate,
+  disableUppercaseChannel = false,
+  isLoading,
 }: { 
   extraContent?: React.ReactNode, 
+  renderSummary?: (rows: Row[]) => React.ReactNode,
   initialSourceFilter?: SourceFilter,
   hideSourceFilter?: boolean,
   hiddenColumns?: string[],
@@ -419,8 +424,10 @@ export default function DashboardPage({
   defaultEndDate?: string;
   forceDefaultDateRange?: boolean;
   isolateLocalStorage?: boolean;
-  datePresetMode?: 'default' | 'plan-fact-months';
+  datePresetMode?: 'default' | 'plan-fact-months' | 'expenses-months';
   maxEndDate?: string;
+  disableUppercaseChannel?: boolean;
+  isLoading?: boolean;
 }) {
   const activeColumns = useMemo(() => {
     const base = customColumns || MARKETING_COLUMNS;
@@ -434,6 +441,7 @@ export default function DashboardPage({
   const MAX_CHANNEL_WIDTH = 620;
 
   const today = new Date().toISOString().slice(0, 10);
+  const pathname = typeof window !== 'undefined' ? window.location.pathname : '';
 
   const [internalCurrency, setInternalCurrency] = useState<Currency>(() => {
     if (isNested) return 'aed';
@@ -443,13 +451,12 @@ export default function DashboardPage({
   const setCurrency = externalSetCurrency || setInternalCurrency;
   const [startDate, setStartDate] = useState(() => {
     if (defaultStartDate && forceDefaultDateRange) return defaultStartDate;
-    if (isNested) return defaultStartDate || '2026-01-01';
+    if (isNested) return defaultStartDate || '2024-01-01';
     if (defaultStartDate) return defaultStartDate;
     try {
       const saved = localStorage.getItem('dashboard-startDate');
-      // Ignore any saved date before 2026
-      return (saved && saved >= '2026-01-01') ? saved : '2026-01-01';
-    } catch { return '2026-01-01'; }
+      return saved ? saved : '2024-01-01';
+    } catch { return '2024-01-01'; }
   });
   const [endDate, setEndDate] = useState(() => {
     if (defaultEndDate && forceDefaultDateRange) return defaultEndDate;
@@ -459,12 +466,12 @@ export default function DashboardPage({
   });
   const [draftStartDate, setDraftStartDate] = useState(() => {
     if (defaultStartDate && forceDefaultDateRange) return defaultStartDate;
-    if (isNested) return defaultStartDate || '2026-01-01';
+    if (isNested) return defaultStartDate || '2024-01-01';
     if (defaultStartDate) return defaultStartDate;
     try {
       const saved = localStorage.getItem('dashboard-startDate');
-      return (saved && saved >= '2026-01-01') ? saved : '2026-01-01';
-    } catch { return '2026-01-01'; }
+      return saved ? saved : '2024-01-01';
+    } catch { return '2024-01-01'; }
   });
   const [draftEndDate, setDraftEndDate] = useState(() => {
     if (defaultEndDate && forceDefaultDateRange) return defaultEndDate;
@@ -484,7 +491,8 @@ export default function DashboardPage({
     return obj;
   });
   const [expandedDetails, setExpandedDetails] = useState<Record<string, boolean>>({});
-  const [loading, setLoading] = useState(() => (apiUrl && !initialRows));
+  const [internalLoading, setInternalLoading] = useState(() => (apiUrl && !initialRows));
+  const loading = isLoading !== undefined ? isLoading : internalLoading;
   const [error, setError] = useState<string | null>(null);
   const [rows, setRows] = useState<Row[]>([]);
   const [dataStatus, setDataStatus] = useState<{ lastUpdatedAt: string | null; freshnessError: string | null }>({
@@ -692,9 +700,9 @@ export default function DashboardPage({
     if (!isNested && !authChecked) return;
     if (!isNested && !user) return;
 
-    if (initialRows && isFirstMount.current) {
+    if (initialRows) {
       setRows(initialRows);
-      setLoading(false);
+      setInternalLoading(false);
       isFirstMount.current = false;
     } else {
       load().then(() => {
@@ -882,7 +890,7 @@ export default function DashboardPage({
     const requestEndDate = overrides?.endDate ?? endDate;
     const requestSourceFilter = overrides?.sourceFilter ?? sourceFilter;
 
-    setLoading(true);
+    setInternalLoading(true);
     setError(null);
     try {
       const buildRequestUrl = (baseApiUrl: string, extra?: Record<string, string>) => {
@@ -948,7 +956,7 @@ export default function DashboardPage({
       setRows([]);
       setDataStatus({ lastUpdatedAt: null, freshnessError: null });
     } finally {
-      setLoading(false);
+      setInternalLoading(false);
     }
   }
 
@@ -997,7 +1005,7 @@ export default function DashboardPage({
 
     const byChannel: Record<string, Row[]> = {};
     for (const r of rows) {
-      const standardKey = r.channel.trim().toUpperCase();
+      const standardKey = disableUppercaseChannel ? r.channel.trim() : r.channel.trim().toUpperCase();
       if (!byChannel[standardKey]) byChannel[standardKey] = [];
       byChannel[standardKey].push(r);
     }
@@ -1005,20 +1013,20 @@ export default function DashboardPage({
     const channelRows: Array<{ channel: string; total: Row; index: number; grouped: Row[] }> = [];
 
     // Calculate channels dynamically based on data (using standardized keys)
-    const dataChannels = Array.from(new Set(rows.map(r => r.channel.trim().toUpperCase()))).filter(c => (c !== 'TOTAL' && !c.startsWith('SKELETON')));
+    const dataChannels = Array.from(new Set(rows.map(r => disableUppercaseChannel ? r.channel.trim() : r.channel.trim().toUpperCase()))).filter(c => (c !== 'TOTAL' && !c.startsWith('SKELETON')));
     
     let displayChannels: string[] = [];
     
     // Default channels only for the main unnested marketing dashboard
     if (!isNested && apiUrl === '/api/marketing' && dataChannels.length === 0 && !loading) {
-      displayChannels = [...SOURCE_CHANNELS].map(c => c.toUpperCase());
+      displayChannels = [...SOURCE_CHANNELS].map(c => disableUppercaseChannel ? c : c.toUpperCase());
     } else {
       displayChannels = dataChannels;
     }
 
     if (sourceFilter !== 'all') {
-      const match = dataChannels.find(c => c === sourceFilter.toUpperCase());
-      displayChannels = match ? [match] : [sourceFilter.toUpperCase()];
+      const match = dataChannels.find(c => c === (disableUppercaseChannel ? sourceFilter : sourceFilter.toUpperCase()));
+      displayChannels = match ? [match] : [disableUppercaseChannel ? sourceFilter : sourceFilter.toUpperCase()];
     }
     
 
@@ -1262,7 +1270,7 @@ export default function DashboardPage({
               title={title}
             />
 
-            {!hideFilters && (
+            {!hideFilters ? (
               <FilterComponent 
                 hideSourceFilter={hideSourceFilter}
                 sourceFilter={sourceFilter}
@@ -1304,11 +1312,21 @@ export default function DashboardPage({
                 datePresetMode={datePresetMode}
                 maxEndDate={maxEndDate}
               />
+            ) : (
+              <div className={styles.header}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <span className={styles.icon}>{icon}</span>
+                  <h1 className={styles.title}>{title}</h1>
+                  <FeedbackIconTrigger context={{ type: 'table', title, page: pathname, date: `${formatDateDisplay(startDate)} - ${formatDateDisplay(endDate)}` }} />
+                </div>
+                <div className={styles.dateLabel}>{datePresetMode === 'default' ? `${formatDateDisplay(startDate)} - ${formatDateDisplay(endDate)}` : ''}</div>
+              </div>
             )}
           </div>
         )}
 
         {error ? <div className={styles.error}>{error}</div> : null}
+        {renderSummary ? renderSummary(rows) : null}
         {!isNested && extraContent}
 
         {!hideTable && (
@@ -1369,7 +1387,27 @@ export default function DashboardPage({
     return (
       <div className={styles.page} data-theme={themeMode}>
         <div className={styles.layout} style={{ justifyContent: 'center', alignItems: 'center' }}>
-           <div style={{ color: 'var(--muted)', fontSize: '14px' }}>Loading...</div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <svg 
+              width="24" 
+              height="24" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              style={{ color: 'var(--muted, #64748b)', animation: 'simpleSpin 1s linear infinite' }}
+            >
+              <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+            </svg>
+            <style>{`
+              @keyframes simpleSpin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+              }
+            `}</style>
+          </div>
         </div>
       </div>
     );

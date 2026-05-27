@@ -1,6 +1,5 @@
-import { BigQuery } from '@google-cloud/bigquery';
 import { NextRequest, NextResponse } from 'next/server';
-import path from 'path';
+import { bigQueryQuery } from '@/lib/bigqueryClient';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -39,31 +38,23 @@ const RE_MEETING_STATUSES = [70457474, 70457478, 70457482, 70457486, 70757586, 7
 // Deals = Документи підписані SPA (70457486) + Post Sales (70757586) + Won (142)
 const WON_STATUSES = [142, 70457486, 70757586];
 
-const QL_DIRECT_SQL = RE_QL_DIRECT_STATUSES.join(', ');
-const QL_HISTORY_REQUIRED_SQL = RE_QL_HISTORY_REQUIRED_STATUSES.join(', ');
-const QL_ACTUAL_DIRECT_SQL = RE_QL_ACTUAL_DIRECT_STATUSES.join(', ');
-const QL_ACTUAL_HISTORY_REQUIRED_SQL = RE_QL_ACTUAL_HISTORY_REQUIRED_STATUSES.join(', ');
-const MEETING_SQL = RE_MEETING_STATUSES.join(', ');
-const WON_SQL = WON_STATUSES.join(', ');
-
-const bqCredentials = process.env.GOOGLE_AUTH_JSON
-  ? JSON.parse(process.env.GOOGLE_AUTH_JSON)
-  : undefined;
-
-const bq = new BigQuery({
-  projectId: PROJECT_ID,
-  credentials: bqCredentials,
-  keyFilename: !bqCredentials
-    ? path.resolve(process.cwd(), 'secrets/crypto-world-epta-2db29829d55d.json')
-    : undefined,
-});
+const QL_DIRECT_SQL = RE_QL_DIRECT_STATUSES.join(', ') || '-1';
+const QL_HISTORY_REQUIRED_SQL = RE_QL_HISTORY_REQUIRED_STATUSES.join(', ') || '-1';
+const QL_ACTUAL_DIRECT_SQL = RE_QL_ACTUAL_DIRECT_STATUSES.join(', ') || '-1';
+const QL_ACTUAL_HISTORY_REQUIRED_SQL = RE_QL_ACTUAL_HISTORY_REQUIRED_STATUSES.join(', ') || '-1';
+const MEETING_SQL = RE_MEETING_STATUSES.join(', ') || '-1';
+const WON_SQL = WON_STATUSES.join(', ') || '-1';
 
 export async function GET(req: NextRequest) {
   try {
     const { getSession } = await import('@/lib/auth');
     const session = await getSession();
     if (!session) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+      // In local development, allow unauthenticated access so we can debug SQL errors.
+      if (process.env.NODE_ENV === 'production') {
+        return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+      }
+      console.warn('[red-2026] no session, continuing in non-production mode');
     }
 
     const params = req.nextUrl.searchParams;
@@ -85,11 +76,11 @@ export async function GET(req: NextRequest) {
       )
       SELECT
         COALESCE(tag, 'UNKNOWN')                   AS channel,
-        CASE WHEN REGEXP_CONTAINS(COALESCE(utm_source,''), r'^(1|0|\\{\\{.*\\}\\})$') THEN '—'
+           CASE WHEN COALESCE(utm_source,'') IN ('1','0') OR STARTS_WITH(COALESCE(utm_source,''), '{{') THEN '—'
              ELSE COALESCE(utm_source, '—') END     AS level_1,
-        CASE WHEN REGEXP_CONTAINS(COALESCE(utm_medium,''), r'^(1|0|\\{\\{.*\\}\\})$') THEN '—'
+           CASE WHEN COALESCE(utm_medium,'') IN ('1','0') OR STARTS_WITH(COALESCE(utm_medium,''), '{{') THEN '—'
              ELSE COALESCE(utm_medium, '—') END     AS level_2,
-        CASE WHEN REGEXP_CONTAINS(COALESCE(utm_campaign,''), r'^(1|0|\\{\\{.*\\}\\})$') THEN '—'
+           CASE WHEN COALESCE(utm_campaign,'') IN ('1','0') OR STARTS_WITH(COALESCE(utm_campaign,''), '{{') THEN '—'
              ELSE COALESCE(utm_campaign, '—') END   AS level_3,
         COUNT(*)                                    AS leads,
         COUNTIF(
@@ -116,7 +107,8 @@ export async function GET(req: NextRequest) {
       ORDER BY channel, level_1, level_2, level_3
     `;
 
-    const [bqRows] = await bq.query({
+    const bqRows = await bigQueryQuery({
+      projectId: PROJECT_ID,
       query,
       params: { startDate, endDate },
     });

@@ -1,107 +1,219 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { google } from 'googleapis';
+import { BetaAnalyticsDataClient } from '@google-analytics/data';
+import { bigQueryQuery } from '@/lib/bigqueryClient';
+import { getSession } from '@/lib/auth';
 
-import { NextResponse } from 'next/server';
+const GA4_PROPERTY_ID = '510214784';
+const keyFilename = 'crypto-world-epta-3d8cb91d7676.json';
+const GSC_SITE_URL = 'sc-domain:foryou-realestate.com';
 
-export async function GET() {
+function getYYYYMMDD(d: Date) {
+    return d.toISOString().split('T')[0];
+}
 
-    // Mock data for Website dashboard
-    // In real scenario, this would fetch from Google Analytics + amoCRM
-    const data = [
-        {
-            channel: 'Organic',
-            level_1: 'Google',
-            level_2: null,
-            level_3: null,
-            impressions: 50000,
-            clicks: 1200,
-            ad_cost: 0,
-            sessions: 1100,
-            bounce_rate: 0.35,
-            avg_duration: 145,
-            leads_crm: 45,
-            leads_wa: 20,
-            no_answer: 5,
-            qualified_leads: 12,
-            meetings: 3,
-            deals: 1,
-            revenue: 15000,
-        },
-        {
-            channel: 'Organic',
-            level_1: 'Yahoo',
-            level_2: null,
-            level_3: null,
-            impressions: 5000,
-            clicks: 150,
-            ad_cost: 0,
-            sessions: 140,
-            bounce_rate: 0.40,
-            avg_duration: 90,
-            leads_crm: 5,
-            leads_wa: 2,
-            no_answer: 1,
-            qualified_leads: 1,
-            meetings: 0,
-            deals: 0,
-            revenue: 0,
-        },
-        {
-            channel: 'Direct',
-            level_1: null,
-            level_2: null,
-            level_3: null,
-            impressions: 0,
-            clicks: 0,
-            ad_cost: 0,
-            sessions: 800,
-            bounce_rate: 0.25,
-            avg_duration: 210,
-            leads_crm: 30,
-            leads_wa: 15,
-            no_answer: 2,
-            qualified_leads: 8,
-            meetings: 2,
-            deals: 1,
-            revenue: 12000,
-        },
-        {
-            channel: 'Google Ads',
-            level_1: 'Search_Brand',
-            level_2: 'Google / cpc',
-            level_3: 'Creative_1',
-            impressions: 25000,
-            clicks: 800,
-            ad_cost: 4500,
-            sessions: 750,
-            bounce_rate: 0.45,
-            avg_duration: 120,
-            leads_crm: 40,
-            leads_wa: 10,
-            no_answer: 8,
-            qualified_leads: 15,
-            meetings: 5,
-            deals: 2,
-            revenue: 45000,
-        },
-        {
-            channel: 'Facebook Ads',
-            level_1: 'Retargeting_UAE',
-            level_2: 'Facebook / social',
-            level_3: 'Video_AD',
-            impressions: 120000,
-            clicks: 3500,
-            ad_cost: 2100,
-            sessions: 3200,
-            bounce_rate: 0.65,
-            avg_duration: 45,
-            leads_crm: 85,
-            leads_wa: 40,
-            no_answer: 15,
-            qualified_leads: 20,
-            meetings: 4,
-            deals: 1,
-            revenue: 25000,
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+export async function GET(request: NextRequest) {
+    try {
+        // Init client inside the handler with fallback: true to use REST API instead of gRPC
+        // This prevents the "Name resolution failed for target dns:analyticsdata.googleapis.com:443" error
+        const analyticsDataClient = new BetaAnalyticsDataClient({ 
+            keyFilename,
+            fallback: true
+        });
+        
+        const session = await getSession();
+        if (!session) {
+            return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
         }
-    ];
 
-    return NextResponse.json({ success: true, data });
+        const searchParams = request.nextUrl.searchParams;
+        const startDate = searchParams.get('startDate') || '30daysAgo';
+        const endDate = searchParams.get('endDate') || 'today';
+
+        // 1. Fetch from GA4
+        const [gaResponse] = await analyticsDataClient.runReport({
+            property: `properties/${GA4_PROPERTY_ID}`,
+            dateRanges: [{ startDate, endDate }],
+            dimensions: [
+                { name: 'sessionDefaultChannelGroup' },
+                { name: 'sessionSource' },
+                { name: 'sessionMedium' },
+                { name: 'sessionCampaignName' }
+            ],
+            metrics: [
+                { name: 'sessions' },
+                { name: 'bounceRate' },
+                { name: 'averageSessionDuration' },
+                { name: 'advertiserAdClicks' },
+                { name: 'advertiserAdCost' },
+                { name: 'advertiserAdImpressions' }
+            ],
+        });
+
+        // 1.5 Fetch total impressions and clicks from Google Search Console
+        const auth = new google.auth.GoogleAuth({
+            keyFile: keyFilename,
+            scopes: ['https://www.googleapis.com/auth/webmasters.readonly'],
+        });
+        const searchconsole = google.searchconsole({ version: 'v1', auth });
+        
+        let gscTotals = { impressions: 0, clicks: 0 };
+        try {
+            const gscRes = await searchconsole.searchanalytics.query({
+                siteUrl: GSC_SITE_URL,
+                requestBody: {
+                    startDate: startDate === '30daysAgo' ? getYYYYMMDD(new Date(Date.now() - 30*24*60*60*1000)) : startDate,
+                    endDate: endDate === 'today' ? getYYYYMMDD(new Date()) : endDate,
+                    // No dimensions provided means it returns grand totals for the site!
+                }
+            });
+            if (gscRes.data.rows && gscRes.data.rows.length > 0) {
+                gscTotals.impressions = gscRes.data.rows[0].impressions || 0;
+                gscTotals.clicks = gscRes.data.rows[0].clicks || 0;
+            }
+        } catch (e) {
+            console.error('Failed to fetch GSC totals:', e);
+        }
+
+        // Parse GA4
+        const gaData: Record<string, any> = {};
+        if (gaResponse.rows) {
+            gaResponse.rows.forEach(row => {
+                const channel = row.dimensionValues?.[0].value || '(not set)';
+                const source = row.dimensionValues?.[1].value || '(not set)';
+                const medium = row.dimensionValues?.[2].value || '(not set)';
+                const campaign = row.dimensionValues?.[3].value || '(not set)';
+                
+                const sessions = parseInt(row.metricValues?.[0].value || '0', 10);
+                const bounceRate = parseFloat(row.metricValues?.[1].value || '0');
+                const avgDuration = parseFloat(row.metricValues?.[2].value || '0');
+                const clicks = parseInt(row.metricValues?.[3].value || '0', 10);
+                const adCost = parseFloat(row.metricValues?.[4].value || '0');
+                const impressions = parseInt(row.metricValues?.[5].value || '0', 10);
+
+                const key = `${channel}|${source}|${medium}|${campaign}`;
+                gaData[key] = {
+                    channel,
+                    level_1: source === '(not set)' ? null : source,
+                    level_2: medium === '(not set)' ? null : medium,
+                    level_3: campaign === '(not set)' ? null : campaign,
+                    sessions,
+                    bounce_rate: bounceRate,
+                    avg_duration: avgDuration,
+                    clicks,
+                    ad_cost: adCost,
+                    impressions,
+                    leads_crm: 0,
+                    leads_wa: 0,
+                    no_answer: 0,
+                    qualified_leads: 0,
+                    meetings: 0,
+                    deals: 0,
+                    revenue: 0,
+                };
+            });
+        }
+
+        // 2. Fetch from BigQuery for AmoCRM Website leads
+        const bqRows = await bigQueryQuery({
+            query: `
+                SELECT 
+                    level_1, 
+                    level_2, 
+                    level_3,
+                    SUM(leads) as leads_crm,
+                    SUM(no_answer_spam) as no_answer,
+                    SUM(qualified_leads) as qualified_leads,
+                    SUM(meetings) as meetings,
+                    SUM(deals) as deals,
+                    SUM(revenue) as revenue
+                FROM \`crypto-world-epta.foryou_analytics.marketing_channel_drilldown_daily\`
+                WHERE report_date BETWEEN @startDate AND @endDate
+                  AND channel = 'Website'
+                GROUP BY level_1, level_2, level_3
+            `,
+            params: { startDate, endDate }
+        });
+
+        // 3. Merge BigQuery data into GA4 data
+        (bqRows || []).forEach((r: any) => {
+            const source = (r.level_1 || '(not set)').toLowerCase();
+            const medium = (r.level_2 || '(not set)').toLowerCase();
+            const campaign = (r.level_3 || '(not set)').toLowerCase();
+
+            // Try to find a match in GA4 data by source, medium, campaign
+            let matchedKey = Object.keys(gaData).find(k => k.toLowerCase().endsWith(`|${source}|${medium}|${campaign}`));
+            
+            // Fallback match: just source and medium
+            if (!matchedKey) {
+                 matchedKey = Object.keys(gaData).find(k => k.toLowerCase().includes(`|${source}|${medium}|`));
+            }
+            
+            // Fallback match: just source
+            if (!matchedKey) {
+                 matchedKey = Object.keys(gaData).find(k => k.toLowerCase().includes(`|${source}|`));
+            }
+
+            if (matchedKey) {
+                gaData[matchedKey].leads_crm += Number(r.leads_crm || 0);
+                gaData[matchedKey].no_answer += Number(r.no_answer || 0);
+                gaData[matchedKey].qualified_leads += Number(r.qualified_leads || 0);
+                gaData[matchedKey].meetings += Number(r.meetings || 0);
+                gaData[matchedKey].deals += Number(r.deals || 0);
+                gaData[matchedKey].revenue += Number(r.revenue || 0);
+            } else {
+                // If no GA4 data matches, create a new row for CRM data
+                const key = `Website CRM|${r.level_1 || '(not set)'}|${r.level_2 || '(not set)'}|${r.level_3 || '(not set)'}`;
+                gaData[key] = {
+                    channel: 'Website CRM (No GA4 match)',
+                    level_1: r.level_1,
+                    level_2: r.level_2,
+                    level_3: r.level_3,
+                    sessions: 0,
+                    bounce_rate: 0,
+                    avg_duration: 0,
+                    clicks: 0,
+                    ad_cost: 0,
+                    impressions: 0,
+                    leads_crm: Number(r.leads_crm || 0),
+                    leads_wa: 0,
+                    no_answer: Number(r.no_answer || 0),
+                    qualified_leads: Number(r.qualified_leads || 0),
+                    meetings: Number(r.meetings || 0),
+                    deals: Number(r.deals || 0),
+                    revenue: Number(r.revenue || 0),
+                };
+            }
+        });
+
+        // 4. Inject GSC Organic totals into the Organic Search channel
+        const organicKey = Object.keys(gaData).find(k => k.startsWith('Organic Search|'));
+        if (organicKey) {
+            gaData[organicKey].impressions += gscTotals.impressions;
+            gaData[organicKey].clicks += gscTotals.clicks;
+        } else if (gscTotals.impressions > 0 || gscTotals.clicks > 0) {
+            const key = 'Organic Search|(not set)|(not set)|(not set)';
+            gaData[key] = {
+                channel: 'Organic Search',
+                level_1: null, level_2: null, level_3: null,
+                sessions: 0, bounce_rate: 0, avg_duration: 0, ad_cost: 0,
+                leads_crm: 0, leads_wa: 0, no_answer: 0, qualified_leads: 0, meetings: 0, deals: 0, revenue: 0,
+                impressions: gscTotals.impressions,
+                clicks: gscTotals.clicks
+            };
+        }
+
+        const data = Object.values(gaData).sort((a: any, b: any) => {
+            if (b.sessions !== a.sessions) return b.sessions - a.sessions;
+            return b.leads_crm - a.leads_crm;
+        });
+
+        return NextResponse.json({ success: true, data });
+    } catch (error: any) {
+        console.error('Website API error:', error);
+        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    }
 }

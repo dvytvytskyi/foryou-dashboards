@@ -310,6 +310,7 @@ function getCommentText(lead) {
 
 function buildUpdateData(pfLeadId, amoLead, payload, projectMeta = null) {
   const comment = getCommentText(amoLead);
+  const entityType = String(payload?.entityType || payload?.pf_category || '').trim().toLowerCase();
 
   const listingRef = normalizeFromPayload(
     payload?.pf_listing_ref ||
@@ -324,6 +325,7 @@ function buildUpdateData(pfLeadId, amoLead, payload, projectMeta = null) {
       getLeadFieldValue(amoLead, PF_FIELD_LISTING_ID) ||
       extractFieldFromComment(comment, 'Listing ID'),
   );
+  const amoListingId = entityType === 'project' ? listingId : (listingRef || listingId);
 
   const rebuiltListingUrl = buildListingUrlFromStoredPayload(payload, listingRef, listingId, projectMeta);
   const listingUrl = normalizeFromPayload(
@@ -360,7 +362,7 @@ function buildUpdateData(pfLeadId, amoLead, payload, projectMeta = null) {
   const customFields = [
     { field_id: PF_FIELD_LEAD_ID, values: [{ value: String(pfLeadId) }] },
     { field_id: PF_FIELD_LISTING_REF, values: [{ value: listingRef }] },
-    { field_id: PF_FIELD_LISTING_ID, values: [{ value: listingId }] },
+    { field_id: PF_FIELD_LISTING_ID, values: [{ value: amoListingId }] },
     { field_id: PF_FIELD_LISTING_URL, values: [{ value: listingUrl }] },
     { field_id: PF_FIELD_CHANNEL_TYPE, values: [{ value: channel }] },
   ];
@@ -464,7 +466,7 @@ async function main() {
         SELECT pf_lead_id, amo_lead_id, payload
         FROM pf_amo_sync_state
         WHERE amo_lead_id IS NOT NULL
-        ORDER BY synced_at ASC
+        ORDER BY synced_at DESC
         LIMIT $1
       `,
       [MAX_BACKFILL_ROWS],

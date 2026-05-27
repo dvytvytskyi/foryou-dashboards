@@ -4,6 +4,7 @@ import React from 'react';
 import styles from './sales.module.css';
 import { ArrowUpRight, ArrowDownRight, Info, User, Search, X, Filter, PieChart, Trophy, TrendingUp, HeartHandshake, Briefcase } from 'lucide-react';
 import { formatMoney } from '@/lib/formatters';
+import { FeedbackIconTrigger } from '@/components/FeedbackModal';
 
 const formatNum = (v: number) => v.toLocaleString();
 const formatPct = (v: number) => `${(v * 100).toFixed(2)}%`;
@@ -32,7 +33,10 @@ export function SalesScoreboard({ data, currency, onClick }: { data: any, curren
     <div className={styles.kpiGrid}>
       {kpis.map((c) => (
         <div key={c.label} className={styles.kpiCard} style={{ cursor: 'pointer' }} onClick={() => onClick(c.id)}>
-          <div className={styles.kpiLabel}>{c.label}</div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div className={styles.kpiLabel}>{c.label}</div>
+            <FeedbackIconTrigger context={{ type: 'scorecard', title: c.label, page: '/sales', date: 'Current View' }} />
+          </div>
           <div className={styles.kpiValue}>{c.value}</div>
           <div className={styles.dynamicsRow}>
             {c.dynamics.map(d => (
@@ -165,9 +169,12 @@ export function DealTypeStackedBar({ data }: { data: any[] }) {
   return (
     <div className={styles.section} style={{ padding: 0 }}>
       <div className={styles.sectionTitle} style={{ padding: '14px 18px', borderBottom: '1px solid var(--line)', marginBottom: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <PieChart size={14} />
-          <span>Распределение по типам</span>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <PieChart size={14} />
+            <span>Распределение по типам</span>
+          </div>
+          <FeedbackIconTrigger context={{ type: 'table', title: 'Распределение по типам', page: '/sales', date: 'Current View' }} />
         </div>
       </div>
       <div className={styles.distributionContainer} style={{ padding: '18px' }}>
@@ -222,9 +229,12 @@ export function DepartmentBreakdown({ data, currency }: { data: any[], currency:
   return (
     <div className={styles.section} style={{ padding: 0 }}>
       <div className={styles.sectionTitle} style={{ padding: '14px 18px', borderBottom: '1px solid var(--line)', marginBottom: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <TrendingUp size={14} />
-          <span>Доходность по источникам</span>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <TrendingUp size={14} />
+            <span>Доходность по источникам</span>
+          </div>
+          <FeedbackIconTrigger context={{ type: 'table', title: 'Доходность по источникам', page: '/sales', date: 'Current View' }} />
         </div>
       </div>
       <div className={styles.deptListScroll} style={{ padding: '0 18px 18px 18px' }}>
@@ -270,9 +280,12 @@ export function SupportSection({ data, currency }: { data: any[], currency: stri
   return (
     <div className={styles.section} style={{ padding: 0 }}>
       <div className={styles.sectionTitle} style={{ padding: '14px 18px', borderBottom: '1px solid var(--line)', marginBottom: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <HeartHandshake size={14} />
-          <span>Сопровождение</span>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <HeartHandshake size={14} />
+            <span>Сопровождение</span>
+          </div>
+          <FeedbackIconTrigger context={{ type: 'table', title: 'Сопровождение', page: '/sales', date: 'Current View' }} />
         </div>
       </div>
       <div className={styles.supportGrid} style={{ padding: '18px' }}>
@@ -319,9 +332,12 @@ export function ProfitBarChart({ brokers, currency }: { brokers: any[], currency
   return (
     <div className={styles.section} style={{ padding: 0 }}>
       <div className={styles.sectionTitle} style={{ padding: '14px 18px', borderBottom: '1px solid var(--line)', marginBottom: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Trophy size={14} />
-          <span>Top по чистому доходу</span>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Trophy size={14} />
+            <span>Top по чистому доходу</span>
+          </div>
+          <FeedbackIconTrigger context={{ type: 'table', title: 'Top по чистому доходу', page: '/sales', date: 'Current View' }} />
         </div>
       </div>
       <div className={styles.chartListScroll} style={{ padding: '0 18px 18px 18px' }}>
@@ -372,6 +388,7 @@ export function BrokerKpiTable({ brokers, currency }: { brokers: any[], currency
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Briefcase size={14} />
           <span>KPI брокеров</span>
+          <FeedbackIconTrigger context={{ type: 'table', title: 'KPI брокеров', page: '/sales', date: 'Current View' }} />
         </div>
         <div className={styles.searchWrapper}>
           <Search size={14} className={styles.searchIcon} />
@@ -424,6 +441,7 @@ export function PartnersTable({ partners, currency }: { partners: any[], currenc
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Briefcase size={14} />
           <span>Рейтинг Партнеров</span>
+          <FeedbackIconTrigger context={{ type: 'table', title: 'Рейтинг Партнеров', page: '/sales', date: 'Current View' }} />
         </div>
         <div className={styles.searchWrapper}>
           <Search size={14} className={styles.searchIcon} />
