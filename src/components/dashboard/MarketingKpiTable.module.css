@@ -1,0 +1,225 @@
+.container {
+  background: var(--card-bg, #ffffff);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  border: 1px solid var(--border-color, #e2e8f0);
+  margin-bottom: 24px;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+.header {
+  background-color: #1e3a6a; /* Dark blue from screenshot */
+  color: white;
+  padding: 12px 24px;
+  font-weight: 600;
+  text-align: center;
+  font-size: 15px;
+  border-bottom: 1px solid var(--border-color, #e2e8f0);
+}
+
+.dateInfo {
+  display: flex;
+  background-color: #e6efff; /* Light blue */
+  padding: 8px 0;
+  border-bottom: 1px solid #1e3a6a;
+}
+
+.dateBlock {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e3a6a;
+}
+
+.dateLabel {
+  opacity: 0.9;
+}
+
+.dateValue {
+  color: #2563eb;
+  background: white;
+  padding: 2px 16px;
+  border-radius: 4px;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-color, #334155);
+}
+
+.table th {
+  background-color: #1e3a6a;
+  color: white;
+  padding: 12px 8px;
+  font-weight: 500;
+  white-space: nowrap;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border-color, #e2e8f0);
+}
+
+.table th:last-child {
+  border-right: none;
+}
+
+.table td {
+  padding: 10px 8px;
+  border-right: 1px solid var(--border-color, #e2e8f0);
+  border-bottom: 1px solid var(--border-color, #e2e8f0);
+  white-space: nowrap;
+}
+
+.table td:last-child {
+  border-right: none;
+}
+
+.thLeft, .tdLeft {
+  text-align: left !important;
+  padding-left: 16px !important;
+}
+
+.rowOdd {
+  background-color: var(--card-bg, #ffffff);
+}
+
+.rowEven {
+  background-color: var(--row-hover, #f8fafc);
+}
+
+.rowFooter {
+  background-color: #e6efff;
+  font-weight: 600;
+  color: #1e3a6a;
+}
+
+.rowFooter td {
+  border-bottom: none;
+}
+
+.tdFact {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.tdBlue {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.tdNegative {
+  background-color: #fee2e2;
+  color: #991b1b;
+  font-weight: 500;
+}
+
+.tdPositive {
+  background-color: #dcfce7;
+  color: #166534;
+  font-weight: 500;
+}
+
+.tdResultNegative {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.tdResultPositive {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.resultBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.dotRed, .dotGreen {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.dotRed {
+  background-color: #ef4444;
+}
+
+.dotGreen {
+  background-color: #22c55e;
+}
+
+/* Dark mode support */
+[data-theme='night'] .container {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+[data-theme='night'] .header {
+  background-color: #1e293b;
+}
+
+[data-theme='night'] .dateInfo {
+  background-color: #334155;
+  border-color: #1e293b;
+}
+
+[data-theme='night'] .dateBlock {
+  color: #e2e8f0;
+}
+
+[data-theme='night'] .dateValue {
+  background: #1e293b;
+  color: #60a5fa;
+}
+
+[data-theme='night'] .table th {
+  background-color: #1e293b;
+}
+
+[data-theme='night'] .rowOdd {
+  background-color: var(--card-bg);
+}
+
+[data-theme='night'] .rowEven {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+[data-theme='night'] .rowFooter {
+  background-color: #334155;
+  color: #e2e8f0;
+}
+
+[data-theme='night'] .table td, 
+[data-theme='night'] .table th {
+  border-color: var(--border-color);
+}
+
+[data-theme='night'] .tdFact, 
+[data-theme='night'] .tdBlue {
+  color: #60a5fa;
+}
+
+[data-theme='night'] .tdNegative,
+[data-theme='night'] .tdResultNegative {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+}
+
+[data-theme='night'] .tdPositive,
+[data-theme='night'] .tdResultPositive {
+  background-color: rgba(34, 197, 94, 0.2);
+  color: #86efac;
+}

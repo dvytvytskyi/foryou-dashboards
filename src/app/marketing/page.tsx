@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import DashboardPage, { MARKETING_COLUMNS } from '@/components/DashboardPage';
 import MarketingFilters from '@/components/dashboard/filters/MarketingFilters';
+import MarketingKpiTable from '@/components/dashboard/MarketingKpiTable';
 
 type Currency = 'aed' | 'usd';
 
@@ -41,6 +42,13 @@ export default function MarketingPage() {
         setMarketingStartDate(start);
         setMarketingEndDate(end);
       }}
+      renderSummary={(rows) => (
+        <MarketingKpiTable 
+          rows={rows} 
+          startDate={marketingStartDate} 
+          endDate={marketingEndDate} 
+        />
+      )}
     >
       {/* Partners section — UTM hierarchy: source → medium → campaign → content */}
       <DashboardPage
