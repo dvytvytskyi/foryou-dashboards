@@ -1,0 +1,30 @@
+{
+  "widget": {
+    "name": {
+      "ru": "Контроль дублей контактов",
+      "en": "Contact Duplicates Control"
+    },
+    "description": {
+      "ru": "Запрещает сохранение контакта, если такой номер телефона уже существует в базе.",
+      "en": "Prevents saving a contact if the phone number already exists in the database."
+    },
+    "short_description": {
+      "ru": "Контроль дублей по номеру телефона.",
+      "en": "Phone duplicates control."
+    },
+    "tour_details": {
+      "ru": "Виджет проверяет номер телефона при сохранении контакта и запрещает создание дубля.",
+      "en": "The widget checks the phone number when saving a contact and prevents creating a duplicate."
+    },
+    "version": "1.0.0",
+    "support": "admin@foryou-admin.ru",
+    "avatar": "https://foryou-admin.ru/favicon.ico"
+  },
+  "locations": [
+    "lcard",
+    "ccard"
+  ],
+  "dp": {
+    "pipelines": []
+  }
+}
