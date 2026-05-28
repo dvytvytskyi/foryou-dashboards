@@ -22,7 +22,6 @@ export async function POST(req: NextRequest) {
     }
 
     // Process each added contact asynchronously
-    // (We don't await this so AmoCRM gets a fast 200 OK)
     processDuplicates(Array.from(addedContactIds)).catch(console.error);
 
     return NextResponse.json({ success: true });
@@ -47,8 +46,6 @@ async function processDuplicates(contactIds: string[]) {
       }
 
       const phone = phoneField.values[0].value;
-      // We take the last 10 digits to match loosely if needed, or exact match.
-      // Exact match is safer.
       const sanitizedPhone = phone.replace(/[^\d+]/g, '');
 
       // 2. Search AmoCRM for this phone number
@@ -79,38 +76,120 @@ async function processDuplicates(contactIds: string[]) {
           continue;
       }
 
-      console.log(`Primary contact is ${primaryContact.id}. Merging ${contactId} into it.`);
+      console.log(`Primary contact is ${primaryContact.id}. Analyzing its leads...`);
 
-      // 3. Move leads from the new contact to the primary contact
-      const leadsToMove = newContact._embedded?.leads || [];
-      for (const lead of leadsToMove) {
-        const leadId = lead.id;
-        
-        // Link to primary
+      // 3. Check for ACTIVE leads on the Primary Contact
+      const primaryLeadIds = primaryContact._embedded?.leads?.map((l: any) => l.id) || [];
+      
+      let activeLeadId = null;
+      let responsibleUserId = primaryContact.responsible_user_id;
+
+      if (primaryLeadIds.length > 0) {
         try {
-          await amoFetchJson(`api/v4/leads/${leadId}/link`, {
-            method: 'POST',
-            body: JSON.stringify([ { to_entity_id: primaryContact.id, to_entity_type: 'contacts' } ])
-          });
-          console.log(`Linked lead ${leadId} to primary contact ${primaryContact.id}`);
+          // Fetch all primary leads details
+          const leadsRes = await amoFetchJson<any>(`api/v4/leads?filter[id]=${primaryLeadIds.join(',')}`);
+          const primaryLeads = leadsRes?._embedded?.leads || [];
+          
+          // Find if there is any active lead (status_id !== 142 && status_id !== 143)
+          for (const lead of primaryLeads) {
+            if (lead.status_id !== 142 && lead.status_id !== 143) {
+              activeLeadId = lead.id;
+              responsibleUserId = lead.responsible_user_id || responsibleUserId;
+              break; // Found an active lead
+            }
+          }
         } catch(e: any) {
-          console.error(`Failed to link lead ${leadId}:`, e.message);
+            console.error(`Error fetching primary leads details:`, e.message);
         }
+      }
+
+      const newLeads = newContact._embedded?.leads || [];
+
+      if (activeLeadId) {
+        console.log(`Primary contact ${primaryContact.id} has ACTIVE lead ${activeLeadId}. Merging as Note/Task.`);
         
-        // Unlink from the duplicate contact
-        try {
-          await amoFetchJson(`api/v4/leads/${leadId}/unlink`, {
-            method: 'POST',
-            body: JSON.stringify([ { to_entity_id: contactId, to_entity_type: 'contacts' } ])
-          });
-          console.log(`Unlinked lead ${leadId} from duplicate contact ${contactId}`);
-        } catch(e: any) {
-          console.error(`Failed to unlink lead ${leadId}:`, e.message);
+        for (const lead of newLeads) {
+           const leadId = lead.id;
+           
+           try {
+               const fullNewLead = await amoFetchJson<any>(`api/v4/leads/${leadId}`);
+               
+               let noteText = `⚠️ ПОВТОРНЫЙ ЗАПРОС!\nКлиент оставил заявку.\n\nДанные из новой заявки:\n`;
+               
+               if (fullNewLead.custom_fields_values) {
+                  for (const field of fullNewLead.custom_fields_values) {
+                     const value = field.values.map((v: any) => v.value || v.enum_code || '').join(', ');
+                     noteText += `- ${field.field_name}: ${value}\n`;
+                  }
+               } else {
+                   noteText += `(нет дополнительных данных)\n`;
+               }
+               
+               // Add note to ACTIVE lead
+               await amoFetchJson(`api/v4/leads/${activeLeadId}/notes`, {
+                 method: 'POST',
+                 body: JSON.stringify([{
+                     note_type: 'common',
+                     params: { text: noteText }
+                 }])
+               });
+
+               // Add task to ACTIVE lead
+               await amoFetchJson(`api/v4/tasks`, {
+                 method: 'POST',
+                 body: JSON.stringify([{
+                     task_type_id: 1, // Follow-up type
+                     text: 'Клиент из активной сделки снова обратился! Проверь новые данные',
+                     complete_till: Math.floor(Date.now() / 1000) + 3600, // +1 hour
+                     entity_id: activeLeadId,
+                     entity_type: 'leads',
+                     responsible_user_id: responsibleUserId
+                 }])
+               });
+
+               // Close new lead (set status 143)
+               await amoFetchJson(`api/v4/leads/${leadId}`, {
+                 method: 'PATCH',
+                 body: JSON.stringify({
+                     status_id: 143,
+                     name: `[DUBL] ${fullNewLead.name || 'Сделка'}`
+                 })
+               });
+               
+               console.log(`Successfully merged lead ${leadId} into active lead ${activeLeadId} via Note/Task.`);
+           } catch(e: any) {
+               console.error(`Failed to process new lead ${leadId} for active lead merge:`, e.message);
+           }
+        }
+      } else {
+        console.log(`Primary contact ${primaryContact.id} has NO active leads. Linking new leads to it.`);
+        
+        for (const lead of newLeads) {
+          const leadId = lead.id;
+          
+          try {
+            await amoFetchJson(`api/v4/leads/${leadId}/link`, {
+              method: 'POST',
+              body: JSON.stringify([ { to_entity_id: primaryContact.id, to_entity_type: 'contacts' } ])
+            });
+            console.log(`Linked lead ${leadId} to primary contact ${primaryContact.id}`);
+          } catch(e: any) {
+            console.error(`Failed to link lead ${leadId}:`, e.message);
+          }
+          
+          try {
+            await amoFetchJson(`api/v4/leads/${leadId}/unlink`, {
+              method: 'POST',
+              body: JSON.stringify([ { to_entity_id: contactId, to_entity_type: 'contacts' } ])
+            });
+            console.log(`Unlinked lead ${leadId} from duplicate contact ${contactId}`);
+          } catch(e: any) {
+            console.error(`Failed to unlink lead ${leadId}:`, e.message);
+          }
         }
       }
 
       // 4. Invalidate the duplicate contact to prevent future matches
-      // We append "DUPLICATE_" to the phone so it won't match future exact searches
       try {
         await amoFetchJson(`api/v4/contacts/${contactId}`, {
           method: 'PATCH',
