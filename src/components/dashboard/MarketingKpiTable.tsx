@@ -91,26 +91,27 @@ export default function MarketingKpiTable({ rows, startDate, endDate }: KpiProps
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        KPI по лидогенерации — месячный план, темп и ожидаемые сделки
-      </div>
-      
-      <div className={styles.dateInfo}>
-        <div className={styles.dateBlock}>
-          <span className={styles.dateLabel}>Год</span>
-          <span className={styles.dateValue}>{year}</span>
-        </div>
-        <div className={styles.dateBlock}>
-          <span className={styles.dateLabel}>Месяц</span>
-          <span className={styles.dateValue}>{month}</span>
-        </div>
-        <div className={styles.dateBlock}>
-          <span className={styles.dateLabel}>Прошло дней</span>
-          <span className={styles.dateValue}>{daysPassed}</span>
-        </div>
-        <div className={styles.dateBlock}>
-          <span className={styles.dateLabel}>Дней в месяце</span>
-          <span className={styles.dateValue}>{daysInMonth}</span>
+      <div className={styles.headerRow}>
+        <h2 className={styles.header}>
+          KPI по лидогенерации — месячный план, темп и ожидаемые сделки
+        </h2>
+        <div className={styles.dateInfo}>
+          <div className={styles.dateBlock}>
+            <span className={styles.dateLabel}>Год</span>
+            <span className={styles.dateValue}>{year}</span>
+          </div>
+          <div className={styles.dateBlock}>
+            <span className={styles.dateLabel}>Месяц</span>
+            <span className={styles.dateValue}>{month}</span>
+          </div>
+          <div className={styles.dateBlock}>
+            <span className={styles.dateLabel}>Прошло дней</span>
+            <span className={styles.dateValue}>{daysPassed}</span>
+          </div>
+          <div className={styles.dateBlock}>
+            <span className={styles.dateLabel}>Дней в месяце</span>
+            <span className={styles.dateValue}>{daysInMonth}</span>
+          </div>
         </div>
       </div>
 
@@ -135,7 +136,7 @@ export default function MarketingKpiTable({ rows, startDate, endDate }: KpiProps
           </thead>
           <tbody>
             {data.map((row, i) => (
-              <tr key={row.id} className={i % 2 === 1 ? styles.rowEven : styles.rowOdd}>
+              <tr key={row.id}>
                 <td className={styles.tdLeft}>{row.source}</td>
                 <td>{formatInt(row.planLeads)}</td>
                 <td className={styles.tdFact}>{formatInt(row.factLeads)}</td>

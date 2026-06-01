@@ -1326,7 +1326,6 @@ export default function DashboardPage({
         )}
 
         {error ? <div className={styles.error}>{error}</div> : null}
-        {renderSummary ? renderSummary(rows) : null}
         {!isNested && extraContent}
 
         {!hideTable && (
@@ -1377,6 +1376,7 @@ export default function DashboardPage({
         )}
 
         {children}
+        {renderSummary ? renderSummary(rows) : null}
       </div>
     </div>
   );

@@ -1,156 +1,152 @@
 .container {
-  background: var(--card-bg, #ffffff);
+  background: var(--panel-2);
   border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  border: 1px solid var(--border-color, #e2e8f0);
+  border: 1px solid var(--line);
+  margin-top: 18px;
   margin-bottom: 24px;
+  margin-left: 32px;
+  margin-right: 32px;
   overflow: hidden;
   font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 8px 20px;
 }
 
 .header {
-  background-color: #1e3a6a; /* Dark blue from screenshot */
-  color: white;
-  padding: 12px 24px;
-  font-weight: 600;
-  text-align: center;
-  font-size: 15px;
-  border-bottom: 1px solid var(--border-color, #e2e8f0);
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--white-soft);
+  letter-spacing: -0.01em;
 }
 
 .dateInfo {
   display: flex;
-  background-color: #e6efff; /* Light blue */
-  padding: 8px 0;
-  border-bottom: 1px solid #1e3a6a;
+  gap: 16px;
+  font-size: 12px;
 }
 
 .dateBlock {
-  flex: 1;
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 16px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #1e3a6a;
+  gap: 6px;
+  color: var(--muted);
 }
 
 .dateLabel {
-  opacity: 0.9;
+  opacity: 0.8;
 }
 
 .dateValue {
-  color: #2563eb;
-  background: white;
-  padding: 2px 16px;
-  border-radius: 4px;
+  color: var(--text);
+  font-weight: 600;
+  background: var(--panel);
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
 }
 
 .tableWrapper {
+  width: 100%;
   overflow-x: auto;
+  padding: 0 12px 12px 12px;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-  text-align: center;
+  text-align: right;
   font-size: 13px;
-  color: var(--text-color, #334155);
+  color: var(--table-body-text);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .table th {
-  background-color: #1e3a6a;
-  color: white;
-  padding: 12px 8px;
-  font-weight: 500;
+  background: var(--panel);
+  color: var(--muted);
+  padding: 14px 12px;
+  font-weight: 600;
   white-space: nowrap;
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid var(--border-color, #e2e8f0);
-}
-
-.table th:last-child {
-  border-right: none;
+  font-size: 12px;
+  border-bottom: 1px solid var(--line);
 }
 
 .table td {
-  padding: 10px 8px;
-  border-right: 1px solid var(--border-color, #e2e8f0);
-  border-bottom: 1px solid var(--border-color, #e2e8f0);
+  padding: 12px 12px;
+  border-bottom: 1px solid var(--line-soft);
   white-space: nowrap;
 }
 
-.table td:last-child {
-  border-right: none;
+.table tbody tr:nth-child(even) td {
+  background: var(--row-even);
+}
+
+.table tbody tr:hover td {
+  background: var(--row-hover);
 }
 
 .thLeft, .tdLeft {
   text-align: left !important;
-  padding-left: 16px !important;
-}
-
-.rowOdd {
-  background-color: var(--card-bg, #ffffff);
-}
-
-.rowEven {
-  background-color: var(--row-hover, #f8fafc);
 }
 
 .rowFooter {
-  background-color: #e6efff;
-  font-weight: 600;
-  color: #1e3a6a;
+  background: var(--row-total-bg);
+  color: var(--row-total-text);
+  font-weight: 500;
 }
 
 .rowFooter td {
+  border-top: 1px solid var(--row-total-border);
   border-bottom: none;
+  padding-top: 14px;
+  padding-bottom: 14px;
 }
 
-.tdFact {
-  color: #2563eb;
-  font-weight: 600;
-}
-
-.tdBlue {
-  color: #2563eb;
-  font-weight: 600;
+.tdFact, .tdBlue {
+  color: var(--text);
+  font-weight: 500;
 }
 
 .tdNegative {
-  background-color: #fee2e2;
-  color: #991b1b;
+  color: #ef4444;
   font-weight: 500;
 }
 
 .tdPositive {
-  background-color: #dcfce7;
-  color: #166534;
+  color: #10b981;
   font-weight: 500;
 }
 
 .tdResultNegative {
-  background-color: #fee2e2;
-  color: #991b1b;
+  color: #ef4444;
+  font-weight: 500;
 }
 
 .tdResultPositive {
-  background-color: #dcfce7;
-  color: #166534;
+  color: #10b981;
+  font-weight: 500;
 }
 
 .resultBadge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-weight: 600;
 }
 
 .dotRed, .dotGreen {
-  width: 12px;
-  height: 12px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
 }
 
 .dotRed {
@@ -158,68 +154,5 @@
 }
 
 .dotGreen {
-  background-color: #22c55e;
-}
-
-/* Dark mode support */
-[data-theme='night'] .container {
-  background: var(--card-bg);
-  border-color: var(--border-color);
-}
-
-[data-theme='night'] .header {
-  background-color: #1e293b;
-}
-
-[data-theme='night'] .dateInfo {
-  background-color: #334155;
-  border-color: #1e293b;
-}
-
-[data-theme='night'] .dateBlock {
-  color: #e2e8f0;
-}
-
-[data-theme='night'] .dateValue {
-  background: #1e293b;
-  color: #60a5fa;
-}
-
-[data-theme='night'] .table th {
-  background-color: #1e293b;
-}
-
-[data-theme='night'] .rowOdd {
-  background-color: var(--card-bg);
-}
-
-[data-theme='night'] .rowEven {
-  background-color: rgba(255, 255, 255, 0.02);
-}
-
-[data-theme='night'] .rowFooter {
-  background-color: #334155;
-  color: #e2e8f0;
-}
-
-[data-theme='night'] .table td, 
-[data-theme='night'] .table th {
-  border-color: var(--border-color);
-}
-
-[data-theme='night'] .tdFact, 
-[data-theme='night'] .tdBlue {
-  color: #60a5fa;
-}
-
-[data-theme='night'] .tdNegative,
-[data-theme='night'] .tdResultNegative {
-  background-color: rgba(239, 68, 68, 0.2);
-  color: #fca5a5;
-}
-
-[data-theme='night'] .tdPositive,
-[data-theme='night'] .tdResultPositive {
-  background-color: rgba(34, 197, 94, 0.2);
-  color: #86efac;
+  background-color: #10b981;
 }
