@@ -384,6 +384,7 @@ export default function DashboardPage({
   maxEndDate,
   disableUppercaseChannel = false,
   isLoading,
+  hideTitleHeader = false,
 }: { 
   extraContent?: React.ReactNode, 
   renderSummary?: (rows: Row[], isLoading: boolean) => React.ReactNode,
