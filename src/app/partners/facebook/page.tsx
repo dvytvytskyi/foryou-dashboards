@@ -98,6 +98,7 @@ export default function FacebookKanban() {
       hideTable={true}
       hideSourceFilter={true}
       hideFilters={true}
+      hideTitleHeader={true}
       hideSidebar={false}
     >
       <div className={styles.kanbanWrapper}>

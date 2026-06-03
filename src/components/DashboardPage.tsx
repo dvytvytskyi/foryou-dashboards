@@ -408,8 +408,9 @@ export default function DashboardPage({
   hideSidebar?: boolean,
   hideCurrency?: boolean,
   customFilterContent?: React.ReactNode,
-  customColumns?: any[],
+  customColumns?: any[];
   onDateChange?: (start: string, end: string) => void;
+  hideTitleHeader?: boolean;
   icon?: React.ReactNode;
   FilterComponent?: React.FC<any>;
   customTableStyle?: React.CSSProperties;
@@ -428,6 +429,7 @@ export default function DashboardPage({
   maxEndDate?: string;
   disableUppercaseChannel?: boolean;
   isLoading?: boolean;
+  hideTitleHeader?: boolean;
 }) {
   const activeColumns = useMemo(() => {
     const base = customColumns || MARKETING_COLUMNS;
@@ -1312,7 +1314,7 @@ export default function DashboardPage({
                 datePresetMode={datePresetMode}
                 maxEndDate={maxEndDate}
               />
-            ) : (
+            ) : !hideTitleHeader ? (
               <div className={styles.header}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <span className={styles.icon}>{icon}</span>
@@ -1321,7 +1323,7 @@ export default function DashboardPage({
                 </div>
                 <div className={styles.dateLabel}>{datePresetMode === 'default' ? `${formatDateDisplay(startDate)} - ${formatDateDisplay(endDate)}` : ''}</div>
               </div>
-            )}
+            ) : null}
           </div>
         )}
 

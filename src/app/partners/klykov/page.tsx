@@ -118,6 +118,7 @@ export default function KlykovKanban() {
       hideTable={true}
       hideSourceFilter={true}
       hideFilters={true}
+      hideTitleHeader={true}
       hideSidebar={false}
     >
       <div className={styles.kanbanWrapper}>
