@@ -42,11 +42,12 @@ export default function MarketingPage() {
         setMarketingStartDate(start);
         setMarketingEndDate(end);
       }}
-      renderSummary={(rows) => (
+      renderSummary={(rows, isLoading) => (
         <MarketingKpiTable 
           rows={rows} 
           startDate={marketingStartDate} 
           endDate={marketingEndDate} 
+          isLoading={isLoading}
         />
       )}
     >

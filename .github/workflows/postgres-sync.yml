@@ -1,8 +1,6 @@
 name: PostgreSQL Near-Realtime Sync
 
 on:
-  schedule:
-    - cron: '0 * * * *' # every hour
   workflow_dispatch:
 
 jobs:

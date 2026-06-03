@@ -156,3 +156,29 @@
 .dotGreen {
   background-color: #10b981;
 }
+
+.skeletonValue {
+  position: relative;
+  display: inline-block;
+  height: 12px;
+  width: 72%;
+  min-width: 48px;
+  border-radius: 999px;
+  background: var(--skeleton-base, #e2e8f0);
+  overflow: hidden;
+}
+
+.skeletonValue::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, var(--skeleton-shimmer, rgba(255,255,255,0.4)), transparent);
+  animation: skeletonSweep 1.2s ease-in-out infinite;
+}
+
+@keyframes skeletonSweep {
+  100% {
+    transform: translateX(100%);
+  }
+}

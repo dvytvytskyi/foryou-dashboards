@@ -386,7 +386,7 @@ export default function DashboardPage({
   isLoading,
 }: { 
   extraContent?: React.ReactNode, 
-  renderSummary?: (rows: Row[]) => React.ReactNode,
+  renderSummary?: (rows: Row[], isLoading: boolean) => React.ReactNode,
   initialSourceFilter?: SourceFilter,
   hideSourceFilter?: boolean,
   hiddenColumns?: string[],
@@ -1376,7 +1376,7 @@ export default function DashboardPage({
         )}
 
         {children}
-        {renderSummary ? renderSummary(rows) : null}
+        {renderSummary ? renderSummary(rows, showTableSkeletons) : null}
       </div>
     </div>
   );

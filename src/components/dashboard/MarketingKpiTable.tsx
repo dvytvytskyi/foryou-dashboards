@@ -18,21 +18,23 @@ const PLAN_DATA = [
   { id: 'klykov', source: 'Klykov', planLeads: 50, match: (r: Row) => r.channel === 'Klykov' },
 ];
 
-export default function MarketingKpiTable({ rows, startDate, endDate }: KpiProps) {
-  if (!rows || rows.length === 0) return null;
+export default function MarketingKpiTable({ rows, startDate, endDate, isLoading }: KpiProps) {
+  if ((!rows || rows.length === 0) && !isLoading) return null;
 
-  const end = new Date(endDate);
+  const end = new Date(endDate || new Date().toISOString());
   const year = end.getFullYear();
   const month = end.getMonth() + 1;
   const daysInMonth = new Date(year, month, 0).getDate();
   const daysPassed = end.getDate();
+
+  const safeRows = rows || [];
 
   const data = PLAN_DATA.map((plan) => {
     let factLeads = 0;
     let factDeals = 0;
     let factBudget = 0;
 
-    for (const r of rows) {
+    for (const r of safeRows) {
       if (plan.match(r)) {
         factLeads += Number(r.leads || 0);
         factDeals += Number(r.deals || 0);
@@ -89,6 +91,11 @@ export default function MarketingKpiTable({ rows, startDate, endDate }: KpiProps
     return new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 }).format(num);
   };
 
+  const renderCell = (content: React.ReactNode) => {
+    if (isLoading) return <span className={styles.skeletonValue}></span>;
+    return content;
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.headerRow}>
@@ -135,27 +142,31 @@ export default function MarketingKpiTable({ rows, startDate, endDate }: KpiProps
             </tr>
           </thead>
           <tbody>
-            {data.map((row, i) => (
+            {data.map((row) => (
               <tr key={row.id}>
                 <td className={styles.tdLeft}>{row.source}</td>
-                <td>{formatInt(row.planLeads)}</td>
-                <td className={styles.tdFact}>{formatInt(row.factLeads)}</td>
-                <td>{formatNumber(row.pctDone)}%</td>
-                <td>{formatNumber(row.planPerDay)}</td>
-                <td>{formatNumber(row.planCurrentDay)}</td>
+                <td>{renderCell(formatInt(row.planLeads))}</td>
+                <td className={styles.tdFact}>{renderCell(formatInt(row.factLeads))}</td>
+                <td>{renderCell(`${formatNumber(row.pctDone)}%`)}</td>
+                <td>{renderCell(formatNumber(row.planPerDay))}</td>
+                <td>{renderCell(formatNumber(row.planCurrentDay))}</td>
                 <td className={row.deviation < 0 ? styles.tdNegative : styles.tdPositive}>
-                  {row.deviation > 0 ? '+' : ''}{formatNumber(row.deviation)}
+                  {renderCell(
+                    <>{row.deviation > 0 ? '+' : ''}{formatNumber(row.deviation)}</>
+                  )}
                 </td>
-                <td>{formatNumber(row.pace)}%</td>
-                <td className={styles.tdBlue}>{formatNumber(row.conversion)}%</td>
-                <td>{formatNumber(row.expectedDeals)}</td>
-                <td>{formatInt(row.costPerLead)}</td>
-                <td>{formatInt(row.factBudget)}</td>
+                <td>{renderCell(`${formatNumber(row.pace)}%`)}</td>
+                <td className={styles.tdBlue}>{renderCell(`${formatNumber(row.conversion)}%`)}</td>
+                <td>{renderCell(formatNumber(row.expectedDeals))}</td>
+                <td>{renderCell(formatInt(row.costPerLead))}</td>
+                <td>{renderCell(formatInt(row.factBudget))}</td>
                 <td className={row.deviation < 0 ? styles.tdResultNegative : styles.tdResultPositive}>
-                  <div className={styles.resultBadge}>
-                    <div className={row.deviation < 0 ? styles.dotRed : styles.dotGreen}></div>
-                    {row.deviation < 0 ? 'Отставание' : 'В плане'}
-                  </div>
+                  {renderCell(
+                    <div className={styles.resultBadge}>
+                      <div className={row.deviation < 0 ? styles.dotRed : styles.dotGreen}></div>
+                      {row.deviation < 0 ? 'Отставание' : 'В плане'}
+                    </div>
+                  )}
                 </td>
               </tr>
             ))}
@@ -163,24 +174,28 @@ export default function MarketingKpiTable({ rows, startDate, endDate }: KpiProps
           <tfoot>
             <tr className={styles.rowFooter}>
               <td className={styles.tdLeft}>Итого</td>
-              <td>{formatInt(totals.planLeads)}</td>
-              <td>{formatInt(totals.factLeads)}</td>
-              <td>{formatNumber(totalPctDone)}%</td>
-              <td>{formatNumber(totalPlanPerDay)}</td>
-              <td>{formatNumber(totals.planCurrentDay)}</td>
+              <td>{renderCell(formatInt(totals.planLeads))}</td>
+              <td>{renderCell(formatInt(totals.factLeads))}</td>
+              <td>{renderCell(`${formatNumber(totalPctDone)}%`)}</td>
+              <td>{renderCell(formatNumber(totalPlanPerDay))}</td>
+              <td>{renderCell(formatNumber(totals.planCurrentDay))}</td>
               <td className={totalDeviation < 0 ? styles.tdNegative : styles.tdPositive}>
-                {totalDeviation > 0 ? '+' : ''}{formatNumber(totalDeviation)}
+                {renderCell(
+                  <>{totalDeviation > 0 ? '+' : ''}{formatNumber(totalDeviation)}</>
+                )}
               </td>
-              <td>{formatNumber(totalPace)}%</td>
-              <td>{formatNumber(totalConversion)}%</td>
-              <td>{formatNumber(totalExpectedDeals)}</td>
-              <td>{formatInt(totalCostPerLead)}</td>
-              <td>{formatInt(totals.factBudget)}</td>
+              <td>{renderCell(`${formatNumber(totalPace)}%`)}</td>
+              <td>{renderCell(`${formatNumber(totalConversion)}%`)}</td>
+              <td>{renderCell(formatNumber(totalExpectedDeals))}</td>
+              <td>{renderCell(formatInt(totalCostPerLead))}</td>
+              <td>{renderCell(formatInt(totals.factBudget))}</td>
               <td className={totalDeviation < 0 ? styles.tdResultNegative : styles.tdResultPositive}>
-                <div className={styles.resultBadge}>
-                  <div className={totalDeviation < 0 ? styles.dotRed : styles.dotGreen}></div>
-                  {totalDeviation < 0 ? 'Отставание' : 'В плане'}
-                </div>
+                {renderCell(
+                  <div className={styles.resultBadge}>
+                    <div className={totalDeviation < 0 ? styles.dotRed : styles.dotGreen}></div>
+                    {totalDeviation < 0 ? 'Отставание' : 'В плане'}
+                  </div>
+                )}
               </td>
             </tr>
           </tfoot>

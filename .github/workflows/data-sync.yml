@@ -1,8 +1,6 @@
 name: Data Sync
 
 on:
-  schedule:
-    - cron: '0 * * * *' # Every hour (UTC)
   workflow_dispatch: # Allow manual trigger
 
 concurrency:
